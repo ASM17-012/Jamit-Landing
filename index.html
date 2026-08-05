@@ -747,33 +747,50 @@ function play(hz, delay = 0){
 bell.classList.toggle("on", sound);
 bell.setAttribute("aria-pressed", String(sound));
 
-// 첫 조작에서 오디오를 깨운다. 터치 스크롤은 touchend가 남으므로 모바일은 자연히 걸리고,
-// 키보드로 스크롤해도 걸린다. 휠만 굴리는 데스크톱 사용자는 안 걸리므로 버튼이 마지막 수단이다.
+// 첫 조작에서 오디오를 깨운다.
+// 두 가지를 조심해야 한다:
+//  1) 사파리는 '끝난' 제스처만 인정한다. pointerdown/touchstart로는 안 풀린다.
+//  2) 그래서 한 번 시도하고 포기하면 안 된다. state가 running이 될 때까지 계속 노린다.
+//     (예전에는 once:true + ac가 있으면 return이라, 안 통하는 pointerdown이 기회를 태워버렸다)
 if (sound){
-  const wake = () => {
-    if (!sound || ac) return;
+  const GESTURES = ["pointerup", "touchend", "click", "keydown"];
+  const stopWatching = () => GESTURES.forEach(t => removeEventListener(t, wake));
+  function wake(){
+    if (!sound) return;
     arm();
-    ac.resume();
-    if (active >= 1 && active <= HZ.length) play(HZ[active - 1]);   // 켜져 있다는 신호
-  };
-  ["pointerdown", "keydown", "touchend"].forEach(t =>
-    addEventListener(t, wake, {once: true, passive: true}));
+    if (ac.state === "running"){ stopWatching(); return; }
+    ac.resume().then(() => {
+      if (ac.state !== "running") return;                            // 아직 안 풀렸으면 계속 기다린다
+      stopWatching();
+      if (active >= 1 && active <= HZ.length) play(HZ[active - 1]);  // 켜져 있다는 신호
+    }).catch(() => {});
+  }
+  GESTURES.forEach(t => addEventListener(t, wake, {passive: true}));
 }
 
 bell.addEventListener("click", () => {
   arm();
-  if (ac.state === "suspended") ac.resume();
+  const locked = ac.state !== "running";     // 아직 브라우저가 소리를 막고 있는 상태
+  const after  = locked ? ac.resume().catch(() => {}) : Promise.resolve();
 
   if (reduce){                          // 폴백에는 정거장이 없으니 버튼이 곧 재생 버튼
     bell.classList.add("on");
-    HZ.forEach((hz, k) => play(hz, k * .34));
+    after.then(() => HZ.forEach((hz, k) => play(hz, k * .34)));
     setTimeout(() => bell.classList.remove("on"), HZ.length * 340 + 500);
     return;
   }
-  sound = !sound;
+
+  // 잠겨 있던 상태에서의 첫 탭은 '끄기'가 아니라 '깨우기'다.
+  // 버튼이 켜짐인데 소리가 안 나던 상황에서 탭했더니 꺼지면, 사용자는 고장으로 읽는다.
+  // (아이폰에서 "탭해도 소리가 안 난다"의 정체가 이것이었다 — 첫 탭이 소리를 꺼버렸다)
+  if (!(locked && sound)) sound = !sound;
+
   bell.classList.toggle("on", sound);
   bell.setAttribute("aria-pressed", String(sound));
-  if (sound && active >= 1 && active <= HZ.length) play(HZ[active - 1]);
+  // resume은 비동기다. 풀리기 전에 play를 부르면 예약만 되고 안 들린다.
+  after.then(() => {
+    if (sound && active >= 1 && active <= HZ.length) play(HZ[active - 1]);
+  });
 });
 
 let active = -1;
