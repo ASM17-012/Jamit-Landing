@@ -740,7 +740,7 @@ function play(hz, delay = 0){
   env.connect(master);
   env.gain.setValueAtTime(.0001, t);
   env.gain.linearRampToValueAtTime(.18, t + .012);             // 어택은 짧게 — 튕기는 느낌
-  env.gain.exponentialRampToValueAtTime(.0001, t + 1.9);       // 디케이는 길게 — 종처럼 남는다
+  env.gain.exponentialRampToValueAtTime(.0001, t + 1.8);       // 디케이는 길게 — 종처럼 남는다
   // 기음 + 배음 2개. 사인 하나만 쓰면 악기가 아니라 알림음으로 들린다.
   [[1, 1], [2, .3], [3, .1]].forEach(([mul, amp]) => {
     const o = ac.createOscillator(), g = ac.createGain();
@@ -864,7 +864,7 @@ function smoothTo(to){
   if (reduce || dist < 4){ scrollTo({top: to, behavior: "instant"}); return; }
   const span  = Math.max(1, rail.offsetHeight - innerHeight);
   const moved = dist / span * (STOPS - 1);            // 몇 정거장을 지나가는지
-  const dur   = Math.min(3000, 400 + moved * 420);    // 정거장당 420ms
+  const dur   = Math.min(1600, 200 + moved * 160);    // 정거장당 160ms — 더 내리면 음이 뭉친다
   const st = document.documentElement.style;
   st.scrollSnapType = "none";     // 굴리는 동안 스냅이 끼어들면 튄다
   st.scrollBehavior = "auto";     // 매 프레임 smooth로 애니메이션되면 도착하지 못한다
