@@ -1,0 +1,14 @@
+<!doctype html><meta charset=utf-8>
+<style>html,body{margin:0;background:#555}iframe{border:0;display:block;margin:0}</style>
+<iframe id=f width=390 height=844 src="index.html"></iframe>
+<script>
+const q=new URLSearchParams(location.search);
+const stop=q.get('stop'), abs=q.get('y');
+(function loop(){
+  const w=f.contentWindow,d=f.contentDocument,rail=d&&d.querySelector('.rail');
+  if(rail){ d.documentElement.style.scrollBehavior='auto';
+    if(abs!==null) w.scrollTo(0, d.documentElement.scrollHeight * (+abs));
+    else w.scrollTo(0, rail.offsetTop+(rail.offsetHeight-w.innerHeight)*((+stop||0)/6)); }
+  requestAnimationFrame(loop);
+})();
+</script>
