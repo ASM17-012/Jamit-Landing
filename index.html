@@ -57,8 +57,6 @@ body.scrolled .top{background:rgba(10,12,28,.72);border-bottom-color:var(--line)
 .top__in{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 0}
 .top__id{display:flex;cursor:pointer;transition:opacity .18s;align-items:center;gap:9px;font-weight:750;font-size:17px;letter-spacing:-.02em}
 .top__id:hover{opacity:.72}
-.top__cta{padding:9px 17px;border-radius:999px;background:var(--grad);color:#0a0c1c;font-size:14px;font-weight:650;transition:filter .18s}
-.top__cta:hover{filter:brightness(1.1)}
 
 /* ══════════════════════════════════════════════════════
    레일 — 스크롤이 카메라를 움직인다
@@ -129,7 +127,7 @@ html{scroll-snap-type:y mandatory}
   left:0;right:0;top:50%;translate:0 -50%;text-align:center;
   padding-inline:var(--edge);
 }
-.panel--intro h1{font-size:clamp(2.1rem,5.2vw,4rem);line-height:1.08;font-weight:800}
+.panel--intro h1{font-size:clamp(2.55rem,5.2vw,4rem);line-height:1.08;font-weight:800}
 .panel--intro h1 .hi{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .panel--intro p{margin-top:20px;color:var(--copy);font-size:clamp(1rem,1.4vw,1.15rem);max-width:38em;margin-inline:auto}
 .panel--intro .signup{margin:26px auto 0;max-width:470px}
@@ -138,7 +136,7 @@ html{scroll-snap-type:y mandatory}
    buildStops가 높이를 실측하므로 여기서 줄이면 오선지 위치도 자동으로 따라온다 */
 @media(max-height:760px){
   .panel--intro .pill{margin-bottom:12px}
-  .panel--intro h1{font-size:clamp(1.7rem,3.6vw,2.5rem)}
+  .panel--intro h1{font-size:clamp(2.05rem,3.6vw,2.5rem)}
   .panel--intro p{margin-top:12px;font-size:.97rem}
   .panel--intro .signup{margin-top:18px}
   .panel--intro .note{margin-top:9px;font-size:11.5px}
@@ -185,17 +183,15 @@ html{scroll-snap-type:y mandatory}
 
 /* ── 착지 화면: 카메라가 줌아웃하고 악보가 완성된 자리에서 끝난다 ── */
 .panel--land{
-  left:var(--edge);right:var(--edge);top:50%;translate:0 -50%;
-  background:rgba(20,22,52,.84);backdrop-filter:blur(16px);
-  border:1px solid var(--line);border-radius:var(--r-xl);
-  padding:clamp(24px,3.4vw,44px);box-shadow:var(--sh-lg);
-  max-width:1060px;margin-inline:auto;
-  max-height:calc(100dvh - 90px);overflow-y:auto;overscroll-behavior:contain;
+  /* 상자를 씌우지 않는다. 페이지 전체가 풀블리드 카메라인데 마지막만 카드면 언어가 어긋난다.
+     첫 화면(오선지 + 가운데 폼)과 같은 구성으로 닫아서 수미상관을 만든다 */
+  left:var(--edge);right:var(--edge);top:auto;bottom:clamp(48px,5.2vh,64px);translate:0;   /* SCROLL 힌트 띠(하단 26~42px)를 피한다 */
+  max-width:min(1040px,90vw);margin-inline:auto;text-align:center;
 }
 @media(max-width:820px){
   /* 위로 스크롤해 이전 화면으로 돌아갈 수 있어야 한다 — contain이면 카드 안에 갇힌다 */
-  .panel--land{top:calc(var(--topbar) + 8px);translate:0;
-    max-height:calc(100dvh - var(--topbar) - 20px);overscroll-behavior:auto}
+  .panel--land{top:calc(var(--topbar) + 8px);translate:0}
+  .land__faq .faq{grid-template-columns:1fr}
   .land__faq .faq summary{padding:11px 2px;font-size:.92rem}
   .land__faq .faq details p{padding:0 2px 12px;font-size:.87rem}
   .panel--stop{bottom:16px}
@@ -210,16 +206,48 @@ html{scroll-snap-type:y mandatory}
   .panel--wide .reel{margin-top:12px}
   .panel--wide .reel__frame{width:min(132px,15vh)}
 }
-.land{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,56px);align-items:start}
-@media(max-width:860px){.land{grid-template-columns:1fr;gap:24px}}
-.land__cta h2{font-size:clamp(1.4rem,2.6vw,2.05rem);margin-top:12px}
-.land__cta p{margin-top:14px;color:var(--copy)}
-.land__cta .signup{margin:22px 0 0;max-width:none}
-.land__faq .eyebrow{display:block;margin-bottom:6px}
-.land__faq .faq{margin-top:6px;max-width:none}
-.land__faq .faq summary{padding:14px 2px;font-size:.95rem}
-.land__faq .faq details p{padding:0 2px 16px;font-size:.9rem}
-.land__foot{margin-top:18px;font-size:12px;color:var(--muted)}
+/* 폼이 가운데, 질문은 그 아래로. 좌우 2열은 폼과 FAQ가 서로 시선을 뺏었다 */
+.land{display:block}
+/* 그리드 아이템은 min-width:auto라 내용의 min-content 아래로 안 줄어든다.
+   폼 한 줄(입력칸+버튼)이 349px을 요구해서 320px 화면에서 칸을 밀고 나갔다 */
+.land > *{min-width:0}
+
+/* 세로가 짧은 노트북(1366x768 등): 내용이 화면을 넘겨 스크롤과 겹침이 생긴다 */
+@media(min-width:861px) and (max-height:780px){
+  .land__cta p{margin-top:7px;font-size:.94rem}
+  .land__cta .signup{margin-top:12px}
+  .land__cta .note{margin-top:9px}
+  .land__faq{margin-top:13px;padding-top:10px}
+  .land__faq .faq summary{padding:7px 2px;font-size:.9rem}
+  .land__faq .faq details p{padding:0 2px 9px;font-size:.85rem}
+  .land__foot{margin-top:8px}
+}
+/* 세로가 넉넉한 화면: 여백과 글자를 한 단계 더 키운다.
+   clamp만으로는 안 된다 — 계수를 올리면 짧은 화면까지 같이 커져 스크롤이 생긴다 */
+@media(min-width:861px) and (min-height:940px){
+  .panel--land{padding:clamp(40px,4.6vh,68px)}
+  .land{gap:clamp(40px,5vh,80px)}
+  .land__cta h2{font-size:clamp(2.2rem,4.2vh,3.2rem)}
+  .land__cta p{font-size:clamp(1.05rem,2vh,1.3rem)}
+  .land__faq .faq summary{padding:clamp(18px,2.3vh,32px) 2px;font-size:clamp(1rem,2vh,1.25rem)}
+  .land__faq .faq details p{padding:0 2px clamp(16px,2vh,28px);font-size:clamp(.95rem,1.85vh,1.15rem)}
+  .signup input,.btn{font-size:clamp(15px,1.9vh,18px);padding-block:clamp(15px,1.9vh,20px)}
+}
+.land__cta{max-width:540px;margin-inline:auto}
+.land__cta h2{font-size:clamp(1.5rem,4vh,2.9rem);margin-top:0}
+.land__cta p{margin-top:clamp(8px,1.4vh,18px);color:var(--copy);font-size:clamp(.92rem,1.75vh,1.2rem)}
+.land__cta .signup{margin:clamp(14px,2.2vh,30px) auto 0;max-width:none}
+.land__cta .note{text-align:center}
+
+/* 질문은 아래로 내리고 2열로 눕힌다 — 세로로 6줄이면 폼보다 무거워진다 */
+.land__faq{margin-top:clamp(18px,3vh,46px);padding-top:clamp(14px,2.2vh,32px);border-top:1px solid var(--line)}
+.land__faq .eyebrow{display:none}
+.land__faq .faq{margin-top:0;max-width:none;text-align:left;
+  display:grid;grid-template-columns:1fr 1fr;column-gap:clamp(24px,4vw,64px);align-items:start}
+.land__faq .faq details{border-bottom:1px solid var(--line);border-top:0}
+.land__faq .faq summary{padding:clamp(8px,1.4vh,18px) 2px;font-size:clamp(.86rem,1.6vh,1.04rem)}
+.land__faq .faq details p{padding:0 2px clamp(9px,1.4vh,18px);font-size:clamp(.82rem,1.5vh,.98rem)}
+.land__foot{margin-top:clamp(10px,1.8vh,24px);font-size:clamp(11px,1.35vh,14px);color:var(--muted);text-align:center}
 .land__foot a:hover{color:var(--ink)}
 
 /* 레일 밖으로 나온 착지 화면.
@@ -279,7 +307,7 @@ body.moved .hint{opacity:0}
 @media(max-width:820px){
   /* 헤더 줄 안, CTA 왼쪽. z-index는 헤더(60)보다 높아야 블러 뒤로 안 깔린다.
      좁은 화면에서는 글자를 빼고 아이콘만 — 어두운 헤더 위 어두운 알약은 안 보인다 */
-  .sound{top:15px;bottom:auto;left:auto;right:calc(var(--edge) + 100px);
+  .sound{top:15px;bottom:auto;left:auto;right:var(--edge);
     z-index:70;width:40px;height:40px;padding:0;justify-content:center;gap:0;
     background:rgba(28,32,68,.95)}
   .sound span{display:none}
@@ -333,12 +361,17 @@ body.moved .hint{opacity:0}
 
 .signup{margin:34px auto 0;max-width:490px}
 .signup__row{display:flex;gap:9px}
-@media(max-width:480px){.signup__row{flex-direction:column}}
+/* 좁은 화면에서도 한 줄로 — 대신 버튼 좌우 여백을 줄여 입력칸 폭을 확보한다 */
+@media(max-width:480px){
+  .signup input{padding:14px 16px}
+  .btn{padding:14px 15px;font-size:14.5px}
+  .signup__row{gap:7px}
+}
 .signup input{flex:1;min-width:0;padding:15px 18px;font:inherit;font-size:15px;color:var(--ink);
   border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.06)}
 .signup input::placeholder{color:var(--muted)}
 .signup input:focus{outline:none;border-color:var(--c-cyan);box-shadow:0 0 0 4px rgba(152,207,246,.18)}
-.btn{padding:15px 26px;font:inherit;font-size:15px;font-weight:650;border:0;border-radius:999px;
+.btn{padding:15px 20px;font:inherit;font-size:15px;font-weight:650;border:0;border-radius:999px;
   cursor:pointer;white-space:nowrap;background:var(--grad);color:#0a0c1c;
   box-shadow:0 10px 26px -8px rgba(152,207,246,.45);transition:filter .18s,transform .18s}
 .btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
@@ -382,7 +415,6 @@ footer nav{display:flex;gap:24px}
       </svg>
       JamIT
     </a>
-    <a class="top__cta" href="#signup">사전등록</a>
   </div>
 </header>
 
@@ -427,12 +459,12 @@ footer nav{display:flex;gap:24px}
     <div class="panels">
       <!-- 0 · 전경 -->
       <article class="panel panel--intro on" data-i="0">
-        <span class="pill">2026년 9월 정식 출시 예정 · iOS &amp; Android</span>
-        <h1>나의 연주가<br>너의 <span class="hi">합주로</span></h1>
+        <span class="pill">2026년 9월 출시 예정</span>
+        <h1>나만의 연주가<br>우리의 <span class="hi">합주</span>로</h1>
         <p>
           올려두면 누가 베이스를 얹습니다.<br>
           또 누가 드럼을 얹습니다. 보컬도 붙습니다.<br>
-          그렇게 아홉 명까지. 서로 만난 적은 없습니다.
+          그렇게 아홉 명까지. 서로 만나지 않습니다.
         </p>
 
         <!-- TODO: action을 실제 Formspree 폼 ID로 교체 (착지 화면 폼과 동일한 ID) -->
@@ -440,9 +472,9 @@ footer nav{display:flex;gap:24px}
           <div class="signup__row">
             <input type="email" name="email" required autocomplete="email" enterkeyhint="send"
                    placeholder="이메일 주소" aria-label="이메일 주소">
-            <button class="btn" type="submit">출시 알림 받기</button>
+            <button class="btn" type="submit">사전 예약</button>
           </div>
-          <p class="note">출시하는 날 딱 한 통만 보냅니다. 광고는 보내지 않습니다.</p>
+          <p class="note">출시일에 딱 한 번만, 광고는 보내지 않습니다.</p>
           <p class="msg" role="status" aria-live="polite"></p>
         </form>
       </article>
@@ -450,7 +482,6 @@ footer nav{display:flex;gap:24px}
       <!-- 1 · J — jam -->
       <article class="panel panel--stop" data-i="1" style="--c:#98cff6">
         <span class="acro"><b>J</b>am</span>
-        <span class="eyebrow">문제</span>
         <h2>합주는 하고 싶은데</h2>
         <div class="voice voice--a">
           <b>&ldquo;드럼만 구하면 되는데&rdquo;</b>
@@ -465,7 +496,6 @@ footer nav{display:flex;gap:24px}
       <!-- 2 · a — apart, / a part — 중의는 설명하지 않는다. 카피에서 '파트'를 쓰면 알아서 연결된다 -->
       <article class="panel panel--stop" data-i="2" style="--c:#a9bef6">
         <span class="acro"><b>a</b>part,</span>
-        <span class="eyebrow">01 — 올린다</span>
         <h2>자기 파트만 찍습니다<br>그게 전부입니다</h2>
         <p>
           기타면 기타만. 드럼이면 드럼만.<br>
@@ -477,7 +507,6 @@ footer nav{display:flex;gap:24px}
       <!-- 3 · m — mix -->
       <article class="panel panel--stop" data-i="3" style="--c:#baadf5">
         <span class="acro"><b>m</b>ix</span>
-        <span class="eyebrow">02 — 합쳐진다</span>
         <h2>섞는 건 앱이 합니다</h2>
         <p>
           올라온 파트 중에 마음에 드는 걸 고릅니다.<br>
@@ -489,7 +518,6 @@ footer nav{display:flex;gap:24px}
       <!-- 4 · I — it / 문장이 가리키는 '그것'을 여기서 보여준다. 그래서 영상이 이 패널에 있다 -->
       <article class="panel panel--stop panel--wide" data-i="4" style="--c:#cc9cf4">
         <span class="acro"><b>I</b>t</span>
-        <span class="eyebrow">03 — 나온다</span>
         <h2>남는 건 이겁니다</h2>
         <figure class="reel">
           <div class="reel__frame">
@@ -515,7 +543,6 @@ footer nav{display:flex;gap:24px}
       <!-- 5 · T — together -->
       <article class="panel panel--stop" data-i="5" style="--c:#dd8bf4">
         <span class="acro"><b>T</b>ogether</span>
-        <span class="eyebrow">결과</span>
         <h2>만난 적 없는데<br>합주가 됐습니다</h2>
         <p>
           서로 얼굴도 모릅니다. 시간을 맞춘 적도 없습니다.<br>
@@ -539,7 +566,7 @@ footer nav{display:flex;gap:24px}
               <div class="signup__row">
                 <input type="email" name="email" required autocomplete="email" enterkeyhint="send"
                        placeholder="이메일 주소" aria-label="이메일 주소">
-                <button class="btn" type="submit">출시 알림 받기</button>
+                <button class="btn" type="submit">사전 예약</button>
               </div>
               <p class="note">
                 출시하는 날 딱 한 통만 보냅니다.<br>
@@ -610,11 +637,19 @@ if (reduce) document.body.classList.add("fallback");
 // 정거장 수(STOPS)는 그대로 7 — 마지막 정거장은 카드 없이 완성된 문장만 보여준다.
 const land      = document.querySelector(".panel--land");
 const panelsBox = document.querySelector(".panels");
+// 내부 스크롤은 만들지 않는다 — 다른 정거장 패널과 같은 규칙이다.
+// 한 화면에 안 들어가면 잘라내는 대신 레일 밖 일반 문서로 흘려보낸다.
+// 기준을 숫자로 박지 않고 실제로 재본다.
+function setFlow(on){
+  if (on === land.classList.contains("panel--flow")) return;
+  if (on){ rail.after(land); land.classList.add("panel--flow"); }
+  else   { panelsBox.append(land); land.classList.remove("panel--flow"); }
+}
 function placeLand(){
-  const flow = innerWidth <= 820;
-  if (flow === land.classList.contains("panel--flow")) return;
-  if (flow){ rail.after(land); land.classList.add("panel--flow"); }
-  else     { panelsBox.append(land); land.classList.remove("panel--flow"); }
+  if (innerWidth <= 820){ setFlow(true); return; }   // 모바일은 무조건 문서로
+  setFlow(false);                                     // 일단 레일 안에 넣고 재본다
+  const need = land.scrollHeight + 130;               // 내용 + 문장이 앉을 자리
+  if (need > innerHeight - TOPBAR - 24) setFlow(true);
 }
 placeLand();
 addEventListener("resize", placeLand);
@@ -680,8 +715,17 @@ function buildStops(){
     });
   });
   // 6 착지 — 줌아웃해서 완성된 문장을 보여준다.
-  // 데스크톱은 카드가 화면 가운데를 덮으므로 문장을 아래로 밀고(0.88), 모바일은 카드가 없으니 가운데.
-  P.push({x:3000, y:500, s:wide ? fit*0.92 : fit, ax:0.5, ay:wide ? 0.88 : 0.5});
+  // 데스크톱은 카드가 위를 덮는다. 카드 높이는 화면마다 달라지니 0.88 같은 고정 비율로 두면
+  // 짧은 화면에서 문장이 카드 뒤로 들어간다. 정거장 1~5과 같은 방식으로 실측해서 배치한다.
+  let landS = fit, landAy = 0.5;
+  if (!land.classList.contains("panel--flow")){   // 레일 안에 카드가 있을 때만 자리를 비운다
+    // 내용이 화면 아래에 깔린다. 문장은 그 위 남는 공간 한가운데 — 첫 화면과 같은 순서다
+    const top  = TOPBAR + 8;
+    const free = Math.max(80, land.offsetTop - top - 22);   // bottom 배치라 실제 위치를 잰다
+    landS  = Math.min(fit, (free - 20) / STAFF_WORLD_H);
+    landAy = (top + free * 0.52) / vh;
+  }
+  P.push({x:3000, y:500, s:landS, ax:0.5, ay:landAy});
   return P;
 }
 let S = buildStops();
@@ -886,26 +930,6 @@ if (!reduce){
   // 로고는 기본 앵커(#top)라 브라우저가 빠르게 튕겨 올린다 — 같은 속도로 통일한다
   document.querySelectorAll('a[href="#top"]').forEach(a =>
     a.addEventListener("click", (e) => { e.preventDefault(); smoothTo(0); }));
-  // 상단 바의 '사전등록'은 마지막 정거장(착지 화면)으로
-  document.querySelectorAll('a[href="#signup"]').forEach(a => {
-    const focusEmail = () =>
-      setTimeout(() => document.querySelector("#signup input")?.focus({preventScroll:true}), 700);
-    a.addEventListener("click", (e) => {
-      // 레일 밖(모바일)이면 폼이 일반 문서에 있으므로 브라우저 기본 앵커 이동이 정확하다.
-      // html{scroll-behavior:smooth}가 부드럽게 처리한다.
-      if (land.classList.contains("panel--flow")){
-        e.preventDefault();
-        const y = document.querySelector("#signup").getBoundingClientRect().top + scrollY - 90;
-        smoothTo(y);
-        focusEmail();
-        return;
-      }
-      // 레일 안(데스크톱)이면 앵커가 통하지 않는다 — sticky 안 요소는 문서상 위치가 레일 최상단이다
-      e.preventDefault();
-      goTo(STOPS - 1);
-      focusEmail();
-    });
-  });
 }
 
 // ── 상단 바 경계선 ──
@@ -930,23 +954,17 @@ if (!("name" in document.createElement("details"))){
   }));
 }
 
-// ── FAQ 자리 미리 잡기 ──
-// 착지 카드는 세로 중앙 정렬(top:50% + translate -50%)이라, 높이가 늘면 아래로만이 아니라
-// 위아래 양쪽으로 벌어진다. 답변을 여닫을 때마다 카드가 통째로 요동치는 원인이다.
-// 배타 열림이라 답변은 한 번에 하나뿐 — 제일 긴 답변 높이를 미리 확보해두면 높이가 상수가 된다.
+// ── 착지 화면 재배치 ──
+// 답변 자리를 미리 확보하던 방식은 버렸다. 카드가 세로 중앙일 때는 그게 필요했지만
+// 지금은 내용이 화면 아래에 고정돼 있어서 답변이 열리면 위로만 자란다.
+// 대신 열고 닫을 때마다 문장 자리를 다시 계산한다 — 예약해두면 74px을 늘 낭비한다.
 const faqBox = document.querySelector(".land__faq .faq");
 if (faqBox){
-  const items = [...faqBox.querySelectorAll("details")];
-  const reserveFaq = () => {
-    const wasOpen = items.find(d => d.open);
-    faqBox.style.minHeight = "";
-    let max = 0;
-    items.forEach(d => { d.open = true; max = Math.max(max, faqBox.offsetHeight); d.open = false; });
-    items.forEach(d => { d.open = d === wasOpen; });   // 측정 전 상태로 되돌린다
-    faqBox.style.minHeight = innerWidth > 820 ? max + "px" : "";   // 모바일은 상단 정렬이라 아래로만 자란다
-  };
-  reserveFaq();
-  addEventListener("resize", reserveFaq);              // 폭이 바뀌면 답변 줄 수가 달라진다
+  const relayout = () => { S = buildStops(); render(); };
+  relayout();
+  addEventListener("resize", relayout);
+  // toggle 이벤트는 버블링하지 않는다. 컨테이너에서 캡처로 받는다
+  faqBox.addEventListener("toggle", relayout, true);
 }
 
 // ── 사전등록 제출 ──
@@ -957,7 +975,7 @@ document.querySelectorAll(".signup").forEach((form) => {
     e.preventDefault();
     if (form.action.includes("YOUR_FORM_ID")){
       msg.dataset.state = "error";
-      msg.textContent = "폼이 아직 연결되지 않았습니다. concept-staff.html의 YOUR_FORM_ID를 교체해 주십시오.";
+      msg.textContent = "폼이 아직 연결되지 않았습니다. index.html의 YOUR_FORM_ID를 교체해 주십시오.";
       return;
     }
     btn.disabled = true; msg.dataset.state = ""; msg.textContent = "등록 중…";
