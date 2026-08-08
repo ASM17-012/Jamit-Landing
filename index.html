@@ -534,6 +534,8 @@ footer nav{display:flex;gap:24px}
 
         <!-- TODO: action을 실제 Formspree 폼 ID로 교체 (착지 화면 폼과 동일한 ID) -->
         <form class="signup" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <!-- 두 폼이 같은 ID로 들어간다. 어느 쪽이 일하는지 알아야 다음에 뭘 고칠지 안다 -->
+          <input type="hidden" name="source" value="hero">
           <div class="signup__row">
             <input type="email" name="email" required autocomplete="email" enterkeyhint="send"
                    placeholder="이메일 주소" aria-label="이메일 주소">
@@ -628,6 +630,7 @@ footer nav{display:flex;gap:24px}
             </p>
             <!-- TODO: action을 실제 Formspree 폼 ID로 교체 -->
             <form class="signup" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" id="signup">
+              <input type="hidden" name="source" value="landing">
               <div class="signup__row">
                 <input type="email" name="email" required autocomplete="email" enterkeyhint="send"
                        placeholder="이메일 주소" aria-label="이메일 주소">
@@ -1059,9 +1062,12 @@ document.querySelectorAll(".signup").forEach((form) => {
   const btn = form.querySelector("button");
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    // 방문자에게는 평범한 실패로 보이게 하고, 진짜 원인은 콘솔로만 알린다.
+    // 내부 지시사항("YOUR_FORM_ID를 교체하세요")을 화면에 띄우면 그대로 미완성 티가 난다.
     if (form.action.includes("YOUR_FORM_ID")){
+      console.warn("[JamIT] Formspree 폼 ID가 아직 index.html에 들어가지 않았습니다.");
       msg.dataset.state = "error";
-      msg.textContent = "폼이 아직 연결되지 않았습니다. index.html의 YOUR_FORM_ID를 교체해 주십시오.";
+      msg.textContent = "지금은 등록을 받을 수 없습니다. 잠시 후 다시 시도해 주십시오.";
       return;
     }
     btn.disabled = true; msg.dataset.state = ""; msg.textContent = "등록 중…";
