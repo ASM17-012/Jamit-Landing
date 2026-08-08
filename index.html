@@ -273,6 +273,13 @@ html{scroll-snap-type:y mandatory}
 .land__faq .faq details p{padding:0 2px clamp(9px,1.4vh,18px);font-size:clamp(.82rem,1.5vh,.98rem)}
 .land__foot{margin-top:clamp(10px,1.8vh,24px);font-size:clamp(11px,1.35vh,14px);color:var(--muted);text-align:center}
 .land__foot a:hover{color:var(--ink)}
+/* 이메일을 받으려면 수집 고지가 있어야 한다. 접어두되 숨기지는 않는다 */
+.privacy{margin-top:6px;text-align:center;font-size:clamp(11px,1.35vh,14px);color:var(--muted)}
+.privacy summary{list-style:none;cursor:pointer;display:inline-block;text-decoration:underline;text-underline-offset:3px}
+.privacy summary::-webkit-details-marker{display:none}
+.privacy summary:hover{color:var(--ink)}
+.privacy p{margin-top:8px;max-width:52em;margin-inline:auto;line-height:1.7}
+.privacy a{text-decoration:underline;text-underline-offset:2px}
 
 /* 레일 밖으로 나온 착지 화면.
    카드 안 스크롤은 위로 되돌아가기가 어렵다 — 문서 흐름에 두면 그냥 페이지 스크롤이다.
@@ -658,6 +665,14 @@ footer nav{display:flex;gap:24px}
                 <p>두 플랫폼 모두 지원합니다.</p></details>
             </div>
             <p class="land__foot">© 2026 JamIT · <a href="mailto:yghun021007@knu.ac.kr">문의</a></p>
+            <details class="privacy">
+              <summary>개인정보 수집·이용 안내</summary>
+              <p>
+                수집 항목은 이메일 주소 하나입니다. 출시 알림을 한 번 보내는 데에만 쓰고, 보낸 뒤에는 바로 파기합니다.
+                동의하지 않아도 되며, 그 경우 출시 알림을 받지 못합니다.
+                그 전에라도 <a href="mailto:yghun021007@knu.ac.kr">문의</a>로 요청하시면 즉시 지워 드립니다.
+              </p>
+            </details>
           </div>
         </div>
       </article>
@@ -1028,7 +1043,8 @@ if (!("name" in document.createElement("details"))){
 // 답변 자리를 미리 확보하던 방식은 버렸다. 카드가 세로 중앙일 때는 그게 필요했지만
 // 지금은 내용이 화면 아래에 고정돼 있어서 답변이 열리면 위로만 자란다.
 // 대신 열고 닫을 때마다 문장 자리를 다시 계산한다 — 예약해두면 74px을 늘 낭비한다.
-const faqBox = document.querySelector(".land__faq .faq");
+// .faq가 아니라 .land__faq에 건다 — 개인정보 안내 details도 열리면 높이가 바뀐다
+const faqBox = document.querySelector(".land__faq");
 if (faqBox){
   const relayout = () => { S = buildStops(); render(); };
   relayout();
