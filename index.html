@@ -422,12 +422,8 @@ footer{padding:36px 0 48px;display:flex;justify-content:space-between;gap:20px;f
   font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
 footer nav{display:flex;gap:24px}
 
-[data-r]{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
-[data-r].in{opacity:1;transform:none}
-
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  [data-r]{opacity:1;transform:none;transition:none}
   .pill::before,.hint,.sound.on b i{animation:none}
   .btn,.staff-note::before{transition:none}
 }
@@ -1024,15 +1020,6 @@ if (!reduce){
 new IntersectionObserver(([e]) => {
   document.body.classList.toggle("scrolled", !e.isIntersecting);
 }).observe(rail);
-
-// ── 진입 애니메이션 ──
-const io = new IntersectionObserver((es) => {
-  es.forEach(e => { if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
-}, {rootMargin: "0px 0px -8% 0px"});
-document.querySelectorAll("[data-r]").forEach((el, i) => {
-  el.style.transitionDelay = `${Math.min(i % 3, 2) * 70}ms`;
-  io.observe(el);
-});
 
 // ── FAQ 배타 열림: name 속성 미지원 브라우저 폴백 ──
 if (!("name" in document.createElement("details"))){
