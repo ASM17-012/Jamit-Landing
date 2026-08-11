@@ -66,15 +66,24 @@ body{
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
 img,video{display:block;max-width:100%}
-h1,h2,h3{letter-spacing:-.03em;font-weight:750;line-height:1.15;text-wrap:balance}
+/* 자간은 크기마다 달라야 한다 — 하나로 고정하면 어딘가는 반드시 틀린다.
+   큰 글자는 그대로 두면 사이가 벌어져 보이고, 작은 글자는 좁히면 뭉친다.
+   한글은 글자폭이 고르기 때문에 라틴만큼 좁히지 않는다 */
+h1,h2,h3{letter-spacing:-.02em;font-weight:750;line-height:1.15;text-wrap:balance}
 p{text-wrap:pretty}
 .wrap{width:min(1180px,calc(100% - var(--edge)*2));margin-inline:auto}
-.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:600}
+/* 대문자 + 넓은 자간은 그 자체로 읽기 느리다. 11px까지 작으면 아이폰에서 흐릿하게만 보인다 */
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
 
 /* ════ 상단 바 ════ */
-.top{position:fixed;top:0;left:0;right:0;z-index:60;backdrop-filter:blur(14px);
-  border-bottom:1px solid transparent;transition:border-color .2s,background .2s}
-body.scrolled .top{background:rgba(10,12,28,.72);border-bottom-color:var(--line)}
+.top{position:fixed;top:0;left:0;right:0;z-index:60;backdrop-filter:blur(18px) saturate(180%);
+  transition:background .2s}
+body.scrolled .top{background:rgba(10,12,28,.72)}
+/* 딱딱한 1px 선 대신 아래로 풀리는 그늘. 떠 있는 층이 내용 위에 겹칠 때만 나타난다 */
+.top::after{content:"";position:absolute;left:0;right:0;top:100%;height:22px;pointer-events:none;
+  background:linear-gradient(rgba(10,12,28,.5),rgba(10,12,28,0));
+  opacity:0;transition:opacity .3s}
+body.scrolled .top::after{opacity:1}
 /* 줄 여백 10px + 손가락 자리 44px = --topbar(64px). 셋 중 하나를 바꾸면 나머지도 같이 바꾼다 */
 .top__in{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px 0}
 /* 손가락으로 누르는 것은 전부 44×44 이상 — 애플이 정한 최소 크기다 */
@@ -149,9 +158,11 @@ html{scroll-snap-type:y mandatory}
 
 /* 설명 패널 — 화면에 고정, 카메라와 무관하게 교차 페이드 */
 .panels{position:absolute;inset:0;pointer-events:none}
+/* transition을 걸지 않는다. 카메라는 스크롤을 1:1로 따라가는데 패널만 0.45초짜리
+   페이드로 뒤늦게 따라오면 손가락과 화면이 따로 논다. JS가 rAF마다 진행도로 직접 그린다.
+   아래 값들은 JS가 뜨기 전과 JS가 없을 때를 위한 것이다 */
 .panel{
   position:absolute;opacity:0;transform:translateY(14px);
-  transition:opacity .45s var(--ease),transform .45s var(--ease);
   pointer-events:none;
 }
 .panel.on{opacity:1;transform:none;pointer-events:auto}
@@ -161,10 +172,12 @@ html{scroll-snap-type:y mandatory}
   left:0;right:0;top:50%;translate:0 -50%;text-align:center;
   padding-inline:var(--edge);
 }
-.panel--intro h1{font-size:clamp(2.55rem,5.2vw,4rem);line-height:1.08;font-weight:800}
+.panel--intro h1{font-size:clamp(2.55rem,5.2vw,4rem);line-height:1.06;font-weight:800;letter-spacing:-.035em}
 .panel--intro h1 .hi{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.panel--intro p{margin-top:20px;color:var(--copy);font-size:clamp(1rem,1.4vw,1.15rem);max-width:38em;margin-inline:auto}
-.panel--intro .signup{margin:26px auto 0;max-width:470px}
+/* 제목과 설명은 한 덩어리로 붙이고, 폼은 떼어 놓는다. 간격이 고르면 무엇이 한 묶음인지
+   읽히지 않는다 — 가까운 것끼리 묶여 보이는 게 위계다 */
+.panel--intro p{margin-top:13px;color:var(--copy);font-size:clamp(1rem,1.4vw,1.15rem);max-width:38em;margin-inline:auto}
+.panel--intro .signup{margin:32px auto 0;max-width:470px}
 .panel--intro .note{max-width:none}
 /* 아래 미디어쿼리보다 앞에 와야 한다 — 명시도가 같아서, 뒤에 두면 짧은 화면에서도
    22px가 이겨 12px가 통째로 무시된다 */
@@ -174,8 +187,8 @@ html{scroll-snap-type:y mandatory}
 @media(max-height:760px){
   .panel--intro .pill{margin-bottom:12px}
   .panel--intro h1{font-size:clamp(2.05rem,3.6vw,2.5rem)}
-  .panel--intro p{margin-top:12px;font-size:.97rem}
-  .panel--intro .signup{margin-top:18px}
+  .panel--intro p{margin-top:9px;font-size:.97rem}
+  .panel--intro .signup{margin-top:22px}
   .panel--intro .note{margin-top:9px;font-size:11.5px}
 }
 /* 가로로 눕힌 폰: 세로가 320px 남짓이다. 줄바꿈을 풀어 넓어진 가로를 쓰고,
@@ -184,8 +197,8 @@ html{scroll-snap-type:y mandatory}
   .panel--intro h1 br,.panel--intro p br{display:none}
   .panel--intro .pill{margin-bottom:6px;padding:5px 12px;font-size:10.5px}
   .panel--intro h1{font-size:1.55rem}
-  .panel--intro p{margin-top:8px;font-size:.85rem}
-  .panel--intro .signup{margin-top:10px;max-width:420px}
+  .panel--intro p{margin-top:6px;font-size:.85rem}
+  .panel--intro .signup{margin-top:14px;max-width:420px}
   .panel--intro .note{margin-top:5px;font-size:10.5px}
   .signup input,.btn{padding-block:11px}   /* 46px — 손가락 최소치는 지킨다 */
 }
@@ -193,14 +206,16 @@ html{scroll-snap-type:y mandatory}
 /* 정거장 패널 = 오른쪽 카드 */
 .panel--stop{
   right:var(--edge);top:50%;translate:0 -50%;width:min(430px,calc(100% - var(--edge)*2));
-  background:rgba(20,22,52,.84);backdrop-filter:blur(16px);
+  background:rgba(20,22,52,.78);backdrop-filter:blur(22px) saturate(180%);
   border:1px solid var(--line);border-radius:var(--r-lg);
-  padding:clamp(24px,3vw,34px);box-shadow:var(--sh-lg);
+  padding:clamp(24px,3vw,34px);
+  /* 유리 윗면에 빛이 걸린다. 큰 판일수록 두껍게 읽혀야 해서 그림자도 함께 깊다 */
+  box-shadow:var(--sh-lg),inset 0 1px 0 rgba(255,255,255,.08);
 }
 .panel--stop .eyebrow{display:block;margin-bottom:12px}
 .acro{display:block;font-size:1rem;font-weight:750;letter-spacing:-.02em;color:var(--copy);margin-bottom:10px}
 .acro b{font-size:1.55em;font-weight:800;color:var(--c);vertical-align:-.07em}
-.panel--stop h2{font-size:clamp(1.3rem,2.4vw,1.8rem)}
+.panel--stop h2{font-size:clamp(1.3rem,2.4vw,1.8rem);letter-spacing:-.022em;line-height:1.22}
 .panel--stop p{margin-top:14px;color:var(--copy);font-size:.97rem}
 .panel--stop .voice{margin-top:14px;padding:16px 18px;border-radius:14px;border:1px solid}
 .panel--stop .voice--a{background:rgba(244,63,94,.13);border-color:rgba(244,63,94,.3)}
@@ -216,7 +231,7 @@ html{scroll-snap-type:y mandatory}
 .pill{
   display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border-radius:999px;
   background:var(--accent-soft);color:var(--accent-dark);border:1px solid rgba(185,163,247,.26);
-  font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;font-weight:500;
+  font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;font-weight:500;
 }
 .pill::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--c-cyan);box-shadow:0 0 10px var(--c-cyan);animation:pulse 3.2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
@@ -294,7 +309,7 @@ html{scroll-snap-type:y mandatory}
   .signup input,.btn{font-size:clamp(15px,1.9vh,18px);padding-block:clamp(15px,1.9vh,20px)}
 }
 .land__cta{max-width:540px;margin-inline:auto}
-.land__cta h2{font-size:clamp(1.5rem,4vh,2.9rem);margin-top:0}
+.land__cta h2{font-size:clamp(1.5rem,4vh,2.9rem);margin-top:0;letter-spacing:-.03em;line-height:1.12}
 .land__cta p{margin-top:clamp(8px,1.4vh,18px);color:var(--copy);font-size:clamp(.92rem,1.75vh,1.2rem)}
 .land__cta .signup{margin:clamp(14px,2.2vh,30px) auto 0;max-width:none}
 .land__cta .note{text-align:center}
@@ -355,6 +370,19 @@ html{scroll-snap-type:y mandatory}
 .ticks button.on::before{background:var(--c-cyan);transform:scale(1.55);box-shadow:0 0 14px var(--c-cyan)}
 @media(max-width:820px),(max-height:500px){.ticks{display:none}}
 
+/* ── 마지막 정거장의 한 줄 ──
+   착지 화면이 문서로 빠지면 완성된 문장만 남고 화면 위쪽이 통째로 빈다.
+   그 자리에 문장을 가리키는 한 줄을 놓는다. at-end는 착지 화면이 레일 밖일 때만 붙는다 */
+.coda{
+  position:absolute;left:var(--edge);right:var(--edge);top:max(calc(var(--topbar) + 20px),26%);
+  text-align:center;color:var(--copy);font-size:clamp(1rem,3.6vw,1.25rem);
+  opacity:0;transform:translateY(10px);
+  transition:opacity .6s var(--ease),transform .6s var(--ease);
+  pointer-events:none;
+}
+body.at-end .coda{opacity:1;transform:none}
+.fallback .coda{display:none}       /* 폴백에는 정거장이 없다 */
+
 .hint{
   position:absolute;left:50%;bottom:calc(26px + env(safe-area-inset-bottom,0px));translate:-50% 0;z-index:2;
   font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
@@ -369,7 +397,7 @@ body.at-end .hint{opacity:1}
   position:fixed;left:var(--edge);bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:5;
   display:inline-flex;align-items:center;gap:9px;padding:8px 15px 8px 12px;
   border:1px solid var(--line);border-radius:999px;cursor:pointer;
-  background:rgba(20,22,52,.72);backdrop-filter:blur(12px);
+  background:rgba(20,22,52,.72);backdrop-filter:blur(16px) saturate(180%);
   font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--muted);transition:color .25s,border-color .25s,transform .1s;
 }
@@ -457,7 +485,7 @@ body.at-end .hint{opacity:1}
   cursor:pointer;white-space:nowrap;background:var(--grad);color:#0a0c1c;
   box-shadow:0 10px 26px -8px rgba(152,207,246,.45);transition:filter .18s,transform .18s}
 .btn:disabled{opacity:.5;cursor:progress;transform:none}
-.note{margin-top:14px;font-size:12.5px;color:var(--muted)}
+.note{margin-top:14px;font-size:13px;color:var(--muted)}
 .msg{margin-top:10px;font-size:14px;color:var(--accent);min-height:1.4em;font-weight:500}
 .msg[data-state="error"]{color:#fca5a5}
 .proof[hidden]{display:none}
@@ -490,6 +518,14 @@ footer nav{display:flex;gap:24px}
 .sound:active{transform:scale(.92)}
 .faq summary:active,.privacy summary:active,.land__foot a:active{color:var(--accent)}
 .ticks button:active::before{transform:scale(1.5)}
+
+/* 투명을 줄여달라고 설정한 사람에게는 유리를 걷고 불투명한 판을 준다 */
+@media(prefers-reduced-transparency:reduce){
+  .top,.panel--stop,.sound{backdrop-filter:none}
+  body.scrolled .top{background:rgba(10,12,28,.97)}
+  .panel--stop{background:rgba(18,20,46,.98)}
+  .sound{background:rgba(24,27,58,.98)}
+}
 
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -748,6 +784,9 @@ footer nav{display:flex;gap:24px}
       </article>
     </div>
 
+    <!-- 마지막 정거장에만 나온다. 완성된 오선지를 가리키는 한 줄 -->
+    <p class="coda">이름 그대로입니다.</p>
+
     <span class="hint">Scroll</span>
   </div>
 </section>
@@ -795,8 +834,10 @@ const applySnap = () =>
 
 function setFlow(on){
   if (on === land.classList.contains("panel--flow")) return;
-  if (on){ rail.after(land); land.classList.add("panel--flow"); }
-  else   { panelsBox.append(land); land.classList.remove("panel--flow"); }
+  if (on){
+    rail.after(land); land.classList.add("panel--flow");
+    land.style.opacity = land.style.transform = "";   // render가 남긴 값을 지운다 — 문서 안에서는 늘 보여야 한다
+  } else { panelsBox.append(land); land.classList.remove("panel--flow"); }
   applySnap();
 }
 function placeLand(){
@@ -831,8 +872,11 @@ function buildStops(){
   clefEl.style.left = squeeze(BASE_CLEF) + "px";
 
   // 전경 배율은 글자가 실제로 차지하는 폭에서 역산한다
+  // 좌우 끝 글자 폭 + 마지막 글자 뒤에 붙는 철자('ogether')만큼 여유.
+  // 뒤 철자를 어림수로 잡으면 실제보다 넉넉해져 오선지가 필요 이상으로 작아진다
   const xs = BASE_X.map(squeeze);
-  const contentW = (Math.max(...xs) - Math.min(...xs)) + 760;   // 좌우 끝 글자 폭만큼 여유
+  const tailEm = notes[notes.length - 1].querySelector("em");
+  const contentW = (Math.max(...xs) - Math.min(...xs)) + 380 + (tailEm ? tailEm.offsetWidth : 380);
   const fit = wide
     ? Math.min((vw - 80) / 6000, (vh - 200) / 900)
     : Math.min((vw - 40) / contentW, (vh - 220) / 900);
@@ -1027,6 +1071,21 @@ function render(){
 
   world.style.transform =
     `translate(${innerWidth * ax}px, ${vh * ay}px) scale(${s}) translate(${-cx}px, ${-cy}px)`;
+
+  // 패널도 카메라와 같은 시계를 쓴다. 자기 정거장에서 1, 옆 정거장에서 0.
+  // 오는 것은 아래에서 올라오고 지나간 것은 위로 빠진다 — 스크롤 방향과 같은 쪽이다.
+  // 폴백에서는 건드리지 않는다. CSS가 패널을 전부 펼쳐 놓는데 인라인 값이 그걸 덮어버린다
+  // (relayout이 reduced-motion에서도 render를 한 번 부른다).
+  if (!reduce) panels.forEach((el, k) => {
+    if (el === land && land.classList.contains("panel--flow")) return;   // 문서로 빠진 착지 화면은 늘 보인다
+    const dt = p - k;                                  // 음수면 아직 안 온 정거장, 양수면 지나간 정거장
+    const d  = Math.abs(dt);
+    // 정거장의 45%만 지나면 완전히 지운다. 절반쯤에서 두 카드가 같이 반투명하게 뜨면
+    // 같은 자리에 글자가 두 겹으로 깔려 아무것도 읽히지 않는다.
+    // 그 짧은 구간은 카드가 비고 오선지만 남는다 — 정거장 사이를 지나는 중이라는 뜻이다.
+    el.style.opacity   = Math.max(0, 1 - d * 2.2);
+    el.style.transform = `translateY(${dt * -28}px)`;
+  });
 
   const near = Math.round(p);
   if (near !== active){
