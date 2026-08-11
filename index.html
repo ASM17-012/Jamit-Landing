@@ -828,9 +828,15 @@ const panelsBox = document.querySelector(".panels");
 // 스냅 지점이 없어서 내려가지 못하고 되돌아온다 — 아이폰 SE에서 개인정보 고지가
 // 화면 밖 855px에 갇혀 있었다. proximity는 정거장 근처에서만 붙고 나머지는 놓아준다.
 // 착지 화면이 레일 안에 있는 큰 화면은 지금까지대로 mandatory다.
+// 마지막 정거장 아래로는 스냅 지점이 없다. 스냅이 켜진 채로는 화면의 30%를 한 번에
+// 내려야 착지 화면으로 넘어가고, 그보다 조금 내리면 매번 마지막 정거장으로 튕겨 올라온다.
+// snapOff는 그 구간에 들어섰는지를 들고 있다 — syncSnap이 갱신한다.
+let snapOff = false;
 const applySnap = () =>
   document.documentElement.style.scrollSnapType =
-    reduce ? "none" : land.classList.contains("panel--flow") ? "y proximity" : "";
+    reduce ? "none"
+    : !land.classList.contains("panel--flow") ? ""
+    : snapOff ? "none" : "y proximity";
 
 function setFlow(on){
   if (on === land.classList.contains("panel--flow")) return;
@@ -1101,6 +1107,20 @@ function render(){
       near === STOPS - 1 && land.classList.contains("panel--flow"));
   }
   if (p > .04) document.body.classList.add("moved");
+  syncSnap();
+}
+
+// 손가락이 끄는 동안에는 스냅이 관여하지 않는다 — 스크롤 이벤트는 그때도 계속 들어온다.
+// 그 사이에 미리 꺼 두면 손을 뗐을 때 되돌아갈 스냅 지점이 없다.
+// 48px은 끄는 도중 바로 넘어가는 거리다. 다시 켜지는 선을 16px로 낮게 둔 건
+// 경계에서 껐다 켰다 하며 떠는 걸 막기 위해서다.
+function syncSnap(){
+  if (!land.classList.contains("panel--flow")) return;
+  const past = scrollY - (rail.offsetTop + SNAP_H * (STOPS - 1));
+  const want = snapOff ? past > 16 : past > 48;
+  if (want === snapOff) return;
+  snapOff = want;
+  applySnap();
 }
 
 if (!reduce){
