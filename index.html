@@ -8,7 +8,7 @@
 <title>JamIT — 온라인 합주 앱 · 혼자 찍어 올리면 합주가 완성됩니다</title>
 <meta name="description" content="드럼이 없어도, 날짜를 못 맞춰도 합주할 수 있습니다. 자기 파트만 찍어 올리면 다른 사람이 베이스를 얹고 드럼을 얹습니다. 최대 아홉 명, 휴대폰 하나면 됩니다. iOS·Android 2026년 9월 출시 예정.">
 <link rel="canonical" href="https://asm17-012.github.io/Jamit-Landing/">
-<meta name="theme-color" content="#0a0c1c">
+<meta name="theme-color" content="#0b0b12">
 
 <!-- 공유 카드 — 이 앱이 퍼지는 길은 검색보다 밴드 단톡방·디스코드다.
      og:image는 절대 URL이어야 한다. 상대 경로는 카카오가 안 읽는다. -->
@@ -27,22 +27,27 @@
 
 <style>
 :root{
-  /* 앱 아이콘에서 픽셀로 추출한 값 */
-  --bg:#0a0c1c;
-  --bg-2:#141634;
-  --ink:#eef0fa;              /* 배경 대비 17:1 */
-  --copy:#a8b0cc;             /* 9.0:1 */
-  --muted:#8f98b5;            /* 6.8:1 — 작은 글씨도 AA */
-  --line:rgba(255,255,255,.12);
+  /* 바탕은 색을 거의 뺀다. 남보라로 물들여 두면 그 위에 올린 색이 전부 물들어서,
+     어떤 색을 써도 같은 화면으로 읽힌다. 브랜드 두 색이 설 자리를 비워 두는 쪽을 택했다 */
+  --bg:#0b0b12;
+  --bg-2:#15151e;             /* 카드가 앉는 면 */
+  --ink:#f0f0f5;              /* 배경 대비 17.3:1 */
+  --copy:#adadba;             /* 8.8:1 */
+  --muted:#9c9ca8;            /* 7.2:1 — 작은 글씨도 AA */
+  --line:rgba(255,255,255,.11);
+  /* 앱 아이콘에서 픽셀로 추출한 값. 이 둘은 못 바꾼다 — 대신 섞지 않고 역할을 나눈다.
+     시안은 이 페이지의 세계(오선지·음·상태), 바이올렛은 사람이 누르는 것 하나뿐 */
   --c-cyan:#98cff6;
   --c-violet:#dd8bf4;
-  --grad:linear-gradient(100deg,var(--c-cyan),var(--c-violet));
-  --accent:#b9a3f7;
-  --accent-dark:#c9b6f9;
-  --accent-soft:rgba(185,163,247,.14);
+  --accent:#bbaee9;
+  --accent-dark:#cbbdf2;
+  --accent-soft:rgba(187,174,233,.13);
+  /* 그림자에는 색을 넣지 않는다. 깊이는 검정의 농도이지 빛의 색이 아니다 */
   --sh:0 8px 24px -8px rgba(0,0,0,.6);
   --sh-lg:0 24px 60px -16px rgba(0,0,0,.7),0 4px 14px rgba(0,0,0,.4);
-  --r:16px; --r-lg:24px; --r-xl:32px;
+  /* 반경은 요소 크기를 따른다. 작은 컨트롤까지 완전한 알약이면 크기 차이가 지워진다.
+     알약으로 남기는 것은 배지(.pill)와 원형 아이콘(.sound)뿐이다 */
+  --r-sm:10px; --r:14px; --r-lg:20px; --r-xl:26px;
   --topbar:64px;
   /* 가로로 눕힌 아이폰은 노치가 옆으로 온다. 여백이 그 폭보다 좁으면 글자가 깎인다 */
   --edge:max(clamp(20px,5vw,40px),env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));
@@ -55,14 +60,16 @@
 html{scroll-behavior:smooth;background:var(--bg)}
 body{
   font-family:var(--sans);color:var(--ink);line-height:1.6;
-  background:linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 100%);
+  /* 위아래로 물드는 그라디언트를 걷었다. 아래로 갈수록 보라가 짙어지면
+     페이지 전체가 한 장의 배경 이미지처럼 읽히고, 그 위 요소들은 다 그 위에 뜬 스티커가 된다 */
+  background:var(--bg);
   -webkit-font-smoothing:antialiased;overflow-x:hidden;word-break:keep-all;
   /* 탭할 때마다 iOS 기본 회색 사각형이 뜬다. 눌린 느낌은 :active로 직접 준다 */
   -webkit-tap-highlight-color:transparent;
   /* 가로로 돌렸을 때 사파리가 본문 글자를 제멋대로 키우는 걸 막는다 */
   -webkit-text-size-adjust:100%;
 }
-::selection{background:var(--c-violet);color:#0a0c1c}
+::selection{background:var(--c-violet);color:#12081a}
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
 img,video{display:block;max-width:100%}
@@ -76,12 +83,12 @@ p{text-wrap:pretty}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
 
 /* ════ 상단 바 ════ */
-.top{position:fixed;top:0;left:0;right:0;z-index:60;backdrop-filter:blur(18px) saturate(180%);
+.top{position:fixed;top:0;left:0;right:0;z-index:60;backdrop-filter:blur(18px) saturate(140%);
   transition:background .2s}
-body.scrolled .top{background:rgba(10,12,28,.72)}
+body.scrolled .top{background:rgba(11,11,18,.72)}
 /* 딱딱한 1px 선 대신 아래로 풀리는 그늘. 떠 있는 층이 내용 위에 겹칠 때만 나타난다 */
 .top::after{content:"";position:absolute;left:0;right:0;top:100%;height:22px;pointer-events:none;
-  background:linear-gradient(rgba(10,12,28,.5),rgba(10,12,28,0));
+  background:linear-gradient(rgba(11,11,18,.5),rgba(11,11,18,0));
   opacity:0;transition:opacity .3s}
 body.scrolled .top::after{opacity:1}
 /* 줄 여백 10px + 손가락 자리 44px = --topbar(64px). 셋 중 하나를 바꾸면 나머지도 같이 바꾼다 */
@@ -90,13 +97,17 @@ body.scrolled .top::after{opacity:1}
 .top__id{display:flex;cursor:pointer;transition:opacity .18s;align-items:center;gap:9px;min-height:44px;
   font-weight:750;font-size:17px;letter-spacing:-.02em}
 /* 이미 설득돼서 들어온 사람(친구 추천)이 여섯 정거장을 긁지 않게 한다 */
+/* 채워진 버튼은 이 페이지에 하나뿐이어야 한다 — 폼의 제출 버튼.
+   상단 CTA는 폼으로 돌아가는 길이지 목적지가 아니라서 윤곽만 남긴다 */
 .top__cta{
-  padding:11px 16px;border-radius:999px;font-size:13.5px;line-height:22px;font-weight:650;white-space:nowrap;
-  background:var(--grad);color:#0a0c1c;
-  box-shadow:0 8px 20px -8px rgba(152,207,246,.45);transition:filter .18s,transform .18s;
+  /* 위아래 10 + 글자 22 + 테두리 2 = 44. 채움 버튼일 때보다 padding이 1px 작은 건
+     테두리가 그 자리를 차지하기 때문이다. 44를 넘기면 헤더가 --topbar(64px)를 밀어낸다 */
+  padding:10px 16px;border-radius:var(--r-sm);font-size:13.5px;line-height:22px;font-weight:650;white-space:nowrap;
+  background:transparent;color:var(--c-violet);border:1px solid rgba(221,139,244,.42);
+  transition:background .18s,border-color .18s;
 }
 /* 모바일은 소리 토글(44px)이 fixed로 헤더 오른쪽 끝에 앉는다. 그 폭만큼 비켜준다 */
-@media(max-width:820px),(max-height:500px){.top__cta{margin-right:54px;padding:11px 14px;font-size:13px}}
+@media(max-width:820px),(max-height:500px){.top__cta{margin-right:54px;padding:10px 14px;font-size:13px}}
 
 /* ══════════════════════════════════════════════════════
    레일 — 스크롤이 카메라를 움직인다
@@ -141,7 +152,9 @@ html{scroll-snap-type:y mandatory}
   color:var(--c);opacity:.62;
   transition:opacity .45s var(--ease),text-shadow .45s var(--ease);
 }
-.staff-note.on{opacity:1;text-shadow:0 0 48px currentColor}
+/* 페이지에서 빛나도 되는 것은 이것뿐이다 — 지금 소리를 내고 있는 글자.
+   48px은 글자 모양까지 뭉갰다. 번지는 폭을 줄여 빛이 아니라 글자가 먼저 보이게 한다 */
+.staff-note.on{opacity:1;text-shadow:0 0 22px currentColor}
 /* N행시 — 확대된 글자 옆으로 나머지 철자가 밀려 들어온다.
    left:100%로 띄워 글자 자체의 박스 크기(=중심 정렬)에 영향을 주지 않는다 */
 .staff-note em{
@@ -173,7 +186,9 @@ html{scroll-snap-type:y mandatory}
   padding-inline:var(--edge);
 }
 .panel--intro h1{font-size:clamp(2.55rem,5.2vw,4rem);line-height:1.06;font-weight:800;letter-spacing:-.035em}
-.panel--intro h1 .hi{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* 글자에 그라디언트를 입히지 않는다. 한 단어를 가리키는 데는 색 하나면 충분하고,
+   두 색을 섞으면 그 단어가 아니라 그라디언트가 먼저 보인다 */
+.panel--intro h1 .hi{color:var(--c-cyan)}
 /* 제목과 설명은 한 덩어리로 붙이고, 폼은 떼어 놓는다. 간격이 고르면 무엇이 한 묶음인지
    읽히지 않는다 — 가까운 것끼리 묶여 보이는 게 위계다 */
 .panel--intro p{margin-top:13px;color:var(--copy);font-size:clamp(1rem,1.4vw,1.15rem);max-width:38em;margin-inline:auto}
@@ -206,7 +221,7 @@ html{scroll-snap-type:y mandatory}
 /* 정거장 패널 = 오른쪽 카드 */
 .panel--stop{
   right:var(--edge);top:50%;translate:0 -50%;width:min(430px,calc(100% - var(--edge)*2));
-  background:rgba(20,22,52,.78);backdrop-filter:blur(22px) saturate(180%);
+  background:rgba(24,24,34,.78);backdrop-filter:blur(22px) saturate(180%);
   border:1px solid var(--line);border-radius:var(--r-lg);
   padding:clamp(24px,3vw,34px);
   /* 유리 윗면에 빛이 걸린다. 큰 판일수록 두껍게 읽혀야 해서 그림자도 함께 깊다 */
@@ -397,7 +412,7 @@ body.at-end .hint{opacity:1}
   position:fixed;left:var(--edge);bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:5;
   display:inline-flex;align-items:center;gap:9px;padding:8px 15px 8px 12px;
   border:1px solid var(--line);border-radius:999px;cursor:pointer;
-  background:rgba(20,22,52,.72);backdrop-filter:blur(16px) saturate(180%);
+  background:rgba(24,24,34,.72);backdrop-filter:blur(16px) saturate(180%);
   font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--muted);transition:color .25s,border-color .25s,transform .1s;
 }
@@ -417,12 +432,12 @@ body.at-end .hint{opacity:1}
   /* 44px은 손가락 최소 크기다. top은 (64 - 44) / 2 — 헤더 줄 한가운데 */
   .sound{top:10px;bottom:auto;left:auto;right:var(--edge);
     z-index:70;width:44px;height:44px;padding:0;justify-content:center;gap:0;
-    background:rgba(28,32,68,.95)}
+    background:rgba(30,30,42,.95)}
   .sound span{display:none}
   /* 2px 막대 3개는 44px 버튼 안에서 안 보인다. 굵고 크게 */
   .sound b{height:16px;gap:3px}
   .sound b i{width:3px}
-  .sound.on{border-color:rgba(152,207,246,.75);box-shadow:0 0 0 1px rgba(152,207,246,.2)}
+  .sound.on{border-color:rgba(152,207,246,.75)}
   .hint{display:none}          /* 모바일은 스크롤을 안내할 필요가 없고, 패널과 계속 겹친다 */
   body.at-end .hint{display:block}   /* 마지막 정거장만 예외 — 폼이 이 아래 있다는 유일한 신호다 */
 }
@@ -440,7 +455,7 @@ body.at-end .hint{opacity:1}
   width:auto;max-width:820px;margin:0 auto clamp(28px,5vw,52px);inset:auto;
 }
 .fallback .panel--intro{text-align:center}
-.fallback .panel--stop{background:rgba(20,22,52,.9)}
+.fallback .panel--stop{background:rgba(24,24,34,.92)}
 
 /* ════ 이하 평범한 스크롤 구간 ════ */
 
@@ -454,7 +469,7 @@ body.at-end .hint{opacity:1}
 .reel__ph{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:16px;text-align:center;
   background:linear-gradient(160deg,rgba(152,207,246,.14),rgba(221,139,244,.08) 72%)}
 .reel__ph b{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;
-  background:var(--grad);color:#0a0c1c;font-size:21px;padding-left:4px;box-shadow:0 12px 34px -8px rgba(152,207,246,.5)}
+  background:var(--c-cyan);color:#0b0b12;font-size:21px;padding-left:4px;box-shadow:0 10px 26px -10px rgba(0,0,0,.7)}
 .reel__ph span{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--muted);line-height:2}
 
 .faq{margin-top:clamp(30px,4vw,44px);max-width:820px;margin-inline:auto}
@@ -478,12 +493,14 @@ body.at-end .hint{opacity:1}
 /* 16px 미만이면 iOS가 포커스 순간 페이지를 확대한다. 확대는 저절로 돌아오지 않고,
    이 페이지는 고정 헤더 + 스냅 + 카메라 구조라 그 순간 레이아웃이 통째로 어긋난다 */
 .signup input{flex:1;min-width:0;padding:15px 18px;font:inherit;font-size:16px;color:var(--ink);
-  border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.06)}
+  border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.05)}
 .signup input::placeholder{color:var(--muted)}
-.signup input:focus{outline:none;border-color:var(--c-cyan);box-shadow:0 0 0 4px rgba(152,207,246,.18)}
-.btn{padding:15px 20px;font:inherit;font-size:15px;font-weight:650;border:0;border-radius:999px;
-  cursor:pointer;white-space:nowrap;background:var(--grad);color:#0a0c1c;
-  box-shadow:0 10px 26px -8px rgba(152,207,246,.45);transition:filter .18s,transform .18s}
+/* 포커스 링은 색이 있어야 한다 — 지금 어디에 입력하는지 알리는 유일한 신호다 */
+.signup input:focus{outline:none;border-color:var(--c-cyan);box-shadow:0 0 0 3px rgba(152,207,246,.2)}
+/* 이 페이지에서 유일하게 색으로 채운 것. 목표가 사전등록 하나이므로 눈에 띄는 것도 하나다 */
+.btn{padding:15px 20px;font:inherit;font-size:15px;font-weight:650;border:0;border-radius:var(--r);
+  cursor:pointer;white-space:nowrap;background:var(--c-violet);color:#12081a;
+  box-shadow:0 6px 18px -8px rgba(0,0,0,.6);transition:filter .18s,transform .18s}
 .btn:disabled{opacity:.5;cursor:progress;transform:none}
 .note{margin-top:14px;font-size:13px;color:var(--muted)}
 .msg{margin-top:10px;font-size:14px;color:var(--accent);min-height:1.4em;font-weight:500}
@@ -492,8 +509,10 @@ body.at-end .hint{opacity:1}
 .proof{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:20px;font-size:13.5px;color:var(--copy)}
 .proof b{color:var(--ink);font-weight:700}
 .proof__dots{display:flex;flex:none}
-.proof__dots i{width:24px;height:24px;border-radius:50%;border:2px solid var(--bg-2);margin-left:-8px;
-  background:var(--grad)}
+.proof__dots i{width:24px;height:24px;border-radius:50%;border:2px solid var(--bg);margin-left:-8px;
+  background:var(--c-cyan)}
+.proof__dots i:nth-child(2){background:#baadf5}
+.proof__dots i:nth-child(3){background:var(--c-violet)}
 .proof__dots i:first-child{margin-left:0}
 
 footer{padding:36px 0 48px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
@@ -507,13 +526,16 @@ footer nav{display:flex;gap:24px}
    반응은 손을 떼기 전에, 100ms 안에 나와야 한다 */
 @media(hover:hover){
   .top__id:hover{opacity:.72}
-  .top__cta:hover,.btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
+  /* 윤곽만 있는 버튼은 밝기를 올려도 변하는 게 없다. 면을 옅게 채워서 답한다 */
+  .top__cta:hover{background:rgba(221,139,244,.13);border-color:rgba(221,139,244,.66)}
+  .btn:hover{filter:brightness(1.06)}
   .ticks button:hover::before{background:rgba(255,255,255,.5);transform:scale(1.3)}
   .sound:hover{color:var(--ink);border-color:rgba(255,255,255,.24)}
   .faq summary:hover{color:var(--accent)}
   .land__foot a:hover,.privacy summary:hover{color:var(--ink)}
 }
-.top__cta:active,.btn:not(:disabled):active{transform:scale(.97);filter:brightness(.94);transition-duration:.08s}
+.top__cta:active{background:rgba(221,139,244,.22);transform:scale(.97);transition-duration:.08s}
+.btn:not(:disabled):active{transform:scale(.97);filter:brightness(.93);transition-duration:.08s}
 .top__id:active{opacity:.6}
 .sound:active{transform:scale(.92)}
 .faq summary:active,.privacy summary:active,.land__foot a:active{color:var(--accent)}
@@ -522,9 +544,9 @@ footer nav{display:flex;gap:24px}
 /* 투명을 줄여달라고 설정한 사람에게는 유리를 걷고 불투명한 판을 준다 */
 @media(prefers-reduced-transparency:reduce){
   .top,.panel--stop,.sound{backdrop-filter:none}
-  body.scrolled .top{background:rgba(10,12,28,.97)}
-  .panel--stop{background:rgba(18,20,46,.98)}
-  .sound{background:rgba(24,27,58,.98)}
+  body.scrolled .top{background:rgba(11,11,18,.97)}
+  .panel--stop{background:rgba(21,21,30,.98)}
+  .sound{background:rgba(28,28,38,.98)}
 }
 
 @media(prefers-reduced-motion:reduce){
