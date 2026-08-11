@@ -23,7 +23,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="오선지 위에 음표처럼 놓인 JamIT — Jam apart, mix It Together">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="%230d0f24"/><rect x="8" y="13" width="3" height="6" rx="1.5" fill="%2398cff6"/><rect x="14" y="8" width="3" height="16" rx="1.5" fill="%23baadf5"/><rect x="20" y="11" width="3" height="10" rx="1.5" fill="%23dd8bf4"/></svg>'>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="%230d0f24"/><rect x="8" y="13" width="3" height="6" rx="1.5" fill="%235fa3f1"/><rect x="14" y="8" width="3" height="16" rx="1.5" fill="%2398cff6"/><rect x="20" y="11" width="3" height="10" rx="1.5" fill="%23bdeaf9"/></svg>'>
 
 <style>
 :root{
@@ -36,12 +36,18 @@
   --copy:#a1a1a6;             /* 8.6:1 */
   --muted:#86868b;            /* 5.4:1 — 애플이 캡션에 쓰는 회색 */
   --line:rgba(255,255,255,.12);
-  /* 앱 아이콘에서 픽셀로 추출한 값. 애플이 파랑(#0071e3)을 두는 자리에 이 둘을 넣는다 */
-  --c-cyan:#98cff6;
-  --c-violet:#dd8bf4;
-  --accent:#b9a3f7;
-  --accent-dark:#c9b6f9;
-  --accent-soft:rgba(185,163,247,.14);
+  /* 파랑 한 축이다. 색상 195~218°에서 밝기만 옮겼다.
+     --blue가 앱 아이콘에서 뽑은 값이고 나머지는 같은 축 위에 있다.
+     라이트 모드로 갈 때는 --action과 --on-action 두 줄만 --blue-deep/#fff로 바꾸면 된다.
+     그때 쓸 나머지 값도 재 뒀다 — 본문 #1d1d1f(16.8:1), 보조 #424245(10:1), 캡션 #6e6e73(5.1:1) */
+  --blue-deep:#0f69a9;        /* 흰 바탕에서 5.8:1 — 라이트 모드의 누르는 색 */
+  --blue:#98cff6;             /* 브랜드. 검정 바탕에서 12.6:1 */
+  --blue-soft:#bdeaf9;
+  --action:var(--blue);       /* 사람이 누르는 것 */
+  --on-action:#000;           /* 그 위에 얹는 글자 */
+  --accent:#8fc9f2;
+  --accent-dark:#a8d8f8;
+  --accent-soft:rgba(143,201,242,.13);
   --sh:0 8px 24px -8px rgba(0,0,0,.6);
   --sh-lg:0 24px 60px -16px rgba(0,0,0,.7),0 4px 14px rgba(0,0,0,.4);
   /* 애플 웹의 두 가지 반경뿐이다 — 버튼은 알약(980px), 면은 18px */
@@ -65,7 +71,7 @@ body{
   /* 가로로 돌렸을 때 사파리가 본문 글자를 제멋대로 키우는 걸 막는다 */
   -webkit-text-size-adjust:100%;
 }
-::selection{background:var(--c-violet);color:#000}
+::selection{background:var(--action);color:var(--on-action)}
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
 img,video{display:block;max-width:100%}
@@ -98,7 +104,7 @@ body.scrolled .top::after{opacity:1}
 .top__cta{
   opacity:0;transform:translateY(-6px);pointer-events:none;
   padding:12px 16px;border-radius:var(--r-pill);font-size:14px;line-height:20px;font-weight:400;white-space:nowrap;
-  background:var(--c-violet);color:#000;
+  background:var(--action);color:var(--on-action);
   transition:filter .18s,transform .3s,opacity .3s;
 }
 body.moved .top__cta{opacity:1;transform:none;pointer-events:auto}
@@ -182,7 +188,7 @@ html{scroll-snap-type:y mandatory}
   padding-inline:var(--edge);
 }
 .panel--intro h1{font-size:clamp(2.7rem,6.6vw,4.4rem);line-height:1.05;font-weight:600;letter-spacing:-.018em}
-.panel--intro h1 .hi{color:var(--c-cyan)}
+.panel--intro h1 .hi{color:var(--blue)}
 /* 제목과 설명은 한 덩어리로 붙이고, 폼은 떼어 놓는다. 간격이 고르면 무엇이 한 묶음인지
    읽히지 않는다 — 가까운 것끼리 묶여 보이는 게 위계다 */
 .panel--intro p{margin-top:16px;color:var(--copy);font-size:clamp(1.0625rem,1.7vw,1.3125rem);max-width:34em;margin-inline:auto}
@@ -242,7 +248,7 @@ html{scroll-snap-type:y mandatory}
   background:var(--accent-soft);color:var(--accent-dark);border:1px solid rgba(185,163,247,.26);
   font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;font-weight:500;
 }
-.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--c-cyan);box-shadow:0 0 10px var(--c-cyan);animation:pulse 3.2s ease-in-out infinite}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 10px var(--blue);animation:pulse 3.2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 
 /* 영상이 세로(9:16)라 패널은 좁게, 영상 높이는 뷰포트에 묶는다 */
@@ -410,7 +416,7 @@ body.at-end .hint{opacity:1}
   font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--muted);transition:color .25s,border-color .25s,transform .1s;
 }
-.sound.on{color:var(--c-cyan);border-color:rgba(152,207,246,.4)}
+.sound.on{color:var(--blue);border-color:rgba(152,207,246,.4)}
 .sound b{display:flex;align-items:flex-end;gap:2px;height:11px}
 .sound b i{width:2px;border-radius:1px;background:currentColor;transform-origin:bottom;height:34%}
 .sound b i:nth-child(2){height:100%}
@@ -463,7 +469,7 @@ body.at-end .hint{opacity:1}
 .reel__ph{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:16px;text-align:center;
   background:linear-gradient(160deg,rgba(152,207,246,.14),rgba(221,139,244,.08) 72%)}
 .reel__ph b{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;
-  background:var(--c-cyan);color:#000;font-size:21px;padding-left:4px;box-shadow:0 10px 26px -10px rgba(0,0,0,.7)}
+  background:var(--action);color:var(--on-action);font-size:21px;padding-left:4px;box-shadow:0 10px 26px -10px rgba(0,0,0,.7)}
 .reel__ph span{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--muted);line-height:2}
 
 .faq{margin-top:clamp(30px,4vw,44px);max-width:820px;margin-inline:auto}
@@ -489,9 +495,9 @@ body.at-end .hint{opacity:1}
 .signup input{flex:1;min-width:0;padding:15px 18px;font:inherit;font-size:16px;color:var(--ink);
   border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.06)}
 .signup input::placeholder{color:var(--muted)}
-.signup input:focus{outline:none;border-color:var(--c-cyan);box-shadow:0 0 0 4px rgba(152,207,246,.18)}
+.signup input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(152,207,246,.18)}
 .btn{padding:12px 22px;font:inherit;font-size:17px;font-weight:400;border:0;border-radius:var(--r-pill);
-  cursor:pointer;white-space:nowrap;background:var(--c-violet);color:#000;
+  cursor:pointer;white-space:nowrap;background:var(--action);color:var(--on-action);
   transition:filter .18s,transform .18s}
 .btn:disabled{opacity:.5;cursor:progress;transform:none}
 .note{margin-top:14px;font-size:12px;color:var(--muted)}
@@ -502,7 +508,7 @@ body.at-end .hint{opacity:1}
 .proof b{color:var(--ink);font-weight:700}
 .proof__dots{display:flex;flex:none}
 .proof__dots i{width:24px;height:24px;border-radius:50%;border:2px solid var(--bg-2);margin-left:-8px;
-  background:var(--c-cyan)}
+  background:var(--action)}
 .proof__dots i:first-child{margin-left:0}
 
 footer{padding:36px 0 48px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
@@ -581,9 +587,9 @@ footer nav{display:flex;gap:24px}
     <a class="top__id" href="#top">
       <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
         <rect width="32" height="32" rx="7" fill="#0d0f24"/>
-        <rect x="8" y="13" width="3" height="6" rx="1.5" fill="#98cff6"/>
-        <rect x="14" y="8" width="3" height="16" rx="1.5" fill="#baadf5"/>
-        <rect x="20" y="11" width="3" height="10" rx="1.5" fill="#dd8bf4"/>
+        <rect x="8" y="13" width="3" height="6" rx="1.5" fill="#5fa3f1"/>
+        <rect x="14" y="8" width="3" height="16" rx="1.5" fill="#98cff6"/>
+        <rect x="20" y="11" width="3" height="10" rx="1.5" fill="#bdeaf9"/>
       </svg>
       JamIT
     </a>
@@ -613,11 +619,11 @@ footer nav{display:flex;gap:24px}
       <span class="bar" style="left:4550px"></span>
       <span class="bar" style="left:5650px"></span>
 
-      <span class="staff-note" data-i="1" style="--x:700px;--y:621px;--c:#98cff6">J<em>am</em></span>
-      <span class="staff-note" data-i="2" style="--x:1800px;--y:561px;--c:#a9bef6">a<em>part,</em></span>
-      <span class="staff-note" data-i="3" style="--x:2900px;--y:531px;--c:#baadf5">m<em>ix</em></span>
-      <span class="staff-note" data-i="4" style="--x:4000px;--y:471px;--c:#cc9cf4">I<em>t</em></span>
-      <span class="staff-note" data-i="5" style="--x:5100px;--y:411px;--c:#dd8bf4">T<em>ogether</em></span>
+      <span class="staff-note" data-i="1" style="--x:700px;--y:621px;--c:#3a7cee">J<em>am</em></span>
+      <span class="staff-note" data-i="2" style="--x:1800px;--y:561px;--c:#5fa3f1">a<em>part,</em></span>
+      <span class="staff-note" data-i="3" style="--x:2900px;--y:531px;--c:#80c2f4">m<em>ix</em></span>
+      <span class="staff-note" data-i="4" style="--x:4000px;--y:471px;--c:#98cff6">I<em>t</em></span>
+      <span class="staff-note" data-i="5" style="--x:5100px;--y:411px;--c:#bdeaf9">T<em>ogether</em></span>
     </div>
 
     <nav class="ticks" aria-label="정거장 바로가기">
@@ -659,7 +665,7 @@ footer nav{display:flex;gap:24px}
       </article>
 
       <!-- 1 · J — jam -->
-      <article class="panel panel--stop" data-i="1" style="--c:#98cff6">
+      <article class="panel panel--stop" data-i="1" style="--c:#3a7cee">
         <span class="acro"><b>J</b>am</span>
         <h2>합주는 하고 싶은데</h2>
         <div class="voice voice--a">
@@ -673,7 +679,7 @@ footer nav{display:flex;gap:24px}
       </article>
 
       <!-- 2 · a — apart, / a part — 중의는 설명하지 않는다. 카피에서 '파트'를 쓰면 알아서 연결된다 -->
-      <article class="panel panel--stop" data-i="2" style="--c:#a9bef6">
+      <article class="panel panel--stop" data-i="2" style="--c:#5fa3f1">
         <span class="acro"><b>a</b>part,</span>
         <h2>자기 파트만 찍습니다<br>그게 전부입니다</h2>
         <p>
@@ -684,7 +690,7 @@ footer nav{display:flex;gap:24px}
       </article>
 
       <!-- 3 · m — mix -->
-      <article class="panel panel--stop" data-i="3" style="--c:#baadf5">
+      <article class="panel panel--stop" data-i="3" style="--c:#80c2f4">
         <span class="acro"><b>m</b>ix</span>
         <h2>섞는 건 앱이 합니다</h2>
         <p>
@@ -695,7 +701,7 @@ footer nav{display:flex;gap:24px}
       </article>
 
       <!-- 4 · I — it / 문장이 가리키는 '그것'을 여기서 보여준다. 그래서 영상이 이 패널에 있다 -->
-      <article class="panel panel--stop panel--wide" data-i="4" style="--c:#cc9cf4">
+      <article class="panel panel--stop panel--wide" data-i="4" style="--c:#98cff6">
         <span class="acro"><b>I</b>t</span>
         <h2>남는 건 이겁니다</h2>
         <figure class="reel">
@@ -720,7 +726,7 @@ footer nav{display:flex;gap:24px}
       </article>
 
       <!-- 5 · T — together -->
-      <article class="panel panel--stop" data-i="5" style="--c:#dd8bf4">
+      <article class="panel panel--stop" data-i="5" style="--c:#bdeaf9">
         <span class="acro"><b>T</b>ogether</span>
         <h2>만난 적 없는데<br>합주가 됐습니다</h2>
         <p>
