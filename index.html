@@ -201,8 +201,8 @@ p{text-wrap:pretty}
    레일 — 스크롤이 장면을 넘긴다. 클릭할 것은 없다.
    높이 = 장면 수 × 100vh, 그 안에서 무대(stage)가 붙어 있는다.
    ══════════════════════════════════════════════════════════ */
-.rail{--stops:4;height:calc(var(--stops) * 100vh);background:var(--cream);position:relative}
-.stage{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;background:var(--cream);
+.rail{--stops:4;height:calc(var(--stops) * var(--vh, 100vh));background:var(--cream);position:relative}
+.stage{position:sticky;top:0;height:100vh;height:var(--vh, 100dvh);overflow:hidden;background:var(--cream);
   border-bottom:1px solid var(--ink);display:flex;align-items:center}
 /* 장면 번호를 크게 깔아둔다 — 몇 번째 판인지 글자를 안 읽어도 보인다 */
 .bignum{position:absolute;left:calc(var(--edge) + 34px);top:50%;translate:0 -50%;z-index:0;
@@ -362,8 +362,8 @@ p{text-wrap:pretty}
 .scr[data-n="3"]{grid-template-columns:1fr}
 /* 릴 — 스크롤 길이가 곧 넘길 장수다. 세 장이 창 하나 안에 세로로 붙어 있고,
    스크롤이 트랙을 밀어 올린다. 창은 붙박이라 넘기는 동안 화면 밖으로 나가지 않는다 */
-.reels{height:300vh}
-.reels__stick{position:sticky;top:0;height:100vh;display:grid;place-items:center}
+.reels{height:calc(3 * var(--vh, 100vh))}
+.reels__stick{position:sticky;top:0;height:var(--vh, 100vh);display:grid;place-items:center}
 .reel{width:min(340px,42vh)}
 .reel__win{aspect-ratio:9/16;overflow:hidden;border:1px solid var(--ink);box-shadow:9px 9px 0 var(--ink);background:var(--ink)}
 .reel__track{height:100%;display:grid;grid-auto-rows:100%;will-change:transform}
@@ -469,8 +469,8 @@ p{text-wrap:pretty}
    레일·릴·전단지는 이미 자기 움직임이 있으므로 제외한다
    ══════════════════════════════════════════════════════════ */
 @media(prefers-reduced-motion:no-preference){
-  .rise{opacity:0;transform:translateY(34px);
-        transition:opacity .62s ease, transform .62s cubic-bezier(.22,.7,.28,1)}
+  .rise{opacity:0;transform:translateY(24px);
+        transition:opacity .4s ease, transform .4s cubic-bezier(.22,.7,.28,1)}
   .rise.in{opacity:1;transform:none}
   /* 나란히 놓인 것들은 한 박자 늦게 따라 올라온다. 같이 움직이면 한 덩어리로 보인다 */
   .quote:nth-child(2n), .feat > div:nth-child(2n), .who > div:nth-child(2n),
@@ -961,6 +961,22 @@ const SPB = 60 / 92 / 2;         // 8분음표 하나 길이(초) — 92BPM. LED
 
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+/* ══════════════════════════════════════════════════════════
+   뷰포트 높이 고정 — 인앱 브라우저에서 화면이 튀는 것을 막는다.
+   인스타·카톡의 웹뷰는 스크롤 방향을 바꿀 때 툴바를 접었다 폈다 하는데,
+   그때 100vh 값 자체가 바뀐다. 이 페이지는 vh에 묶인 구간이 700vh(레일 400 + 릴 300)라
+   툴바 50px 한 번에 문서 높이가 350px씩 요동치고, 그 구간이 전부 위쪽에 있으므로
+   읽던 자리가 통째로 밀려난다 — 이것이 "되감으면 화면이 확 올라가는" 증상의 정체다.
+   그래서 높이를 로드 시점에 px로 못 박고, 화면 폭이 실제로 바뀔 때(회전)만 다시 잰다.
+   JS 계산도 같은 값을 써야 CSS와 어긋나지 않는다
+   ══════════════════════════════════════════════════════════ */
+let VH = innerHeight, lastVW = innerWidth;
+function lockVH(){
+  VH = innerHeight;
+  document.documentElement.style.setProperty("--vh", VH + "px");
+}
+lockVH();
+
 const rail   = document.getElementById("rail");
 const stage  = document.getElementById("stage");
 const grid   = document.getElementById("grid");
@@ -1011,7 +1027,7 @@ function setTiles(n){
 
 let lastN = -1, lastCh = -1;
 function railTick(){
-  const vh = innerHeight;
+  const vh = VH;
   const span = Math.max(1, rail.offsetHeight - vh);
   const p = clamp01((scrollY - rail.offsetTop) / span);
   const t = p * CH;
@@ -1071,7 +1087,7 @@ let tailRatio = 0;                                // 뒷자리 길이 ÷ 글자 
 function paper(){
   if (reduce){ slip.hidden = true; bignum.style.opacity = "1"; return; }
   const a = tear.getBoundingClientRect();
-  const vw = innerWidth, vh = innerHeight;
+  const vw = innerWidth, vh = VH;
   // 종이는 9:16 한 장이다. 화면이 가로로 길면 눕히고(-90°), 세로로 길면 세운 채로 덮는다.
   // 눕히지 않으면 가로 화면에서 종이 높이가 화면의 세 배까지 튀어나가 낭비가 크다.
   const land = vw / vh > 9 / 16;
@@ -1168,7 +1184,7 @@ let reelOn = -1;
 function reelTick(){
   if (reduce) return;
   const r = reels.getBoundingClientRect();
-  const span = r.height - innerHeight;                 // 창이 붙어 있는 동안의 스크롤 길이
+  const span = r.height - VH;                 // 창이 붙어 있는 동안의 스크롤 길이
   const last = reelSlides.length - 1;
   const seg  = clamp01(-r.top / Math.max(1, span)) * last;
   const i    = Math.min(Math.floor(seg), last - 1);
@@ -1189,7 +1205,12 @@ function onScroll(){
   requestAnimationFrame(() => { paper(); railTick(); reelTick(); queued = false; });
 }
 addEventListener("scroll", onScroll, {passive:true});
-addEventListener("resize", onScroll);
+// 툴바가 접혔다 펴지는 것만으로도 resize가 온다 — 폭이 그대로면 무시한다.
+// 그때마다 다시 재면 고정해 둔 의미가 없어지고, 화면이 다시 튄다
+addEventListener("resize", () => {
+  if (innerWidth === lastVW) return;
+  lastVW = innerWidth; lockVH(); onScroll();
+});
 paper(); railTick(); reelTick();
 
 // ── 모션을 줄이는 사람에게 자동 재생은 부담이다 — 첫 프레임만 남기고 세운다 ──
@@ -1204,11 +1225,16 @@ if (matchMedia("(prefers-reduced-motion:no-preference)").matches){
     '.probs > div, .quote, .feat__k, .feat > div, .who > div, .need li, .faq details, .cta__box'
   )];
   rise.forEach(el => el.classList.add("rise"));
-  // 화면 밖으로 나가면 다시 내려간다 — 되돌아 올려도 같은 등장을 한 번 더 본다.
-  // 리셋은 화면 밖에서만 일어나므로 사라지는 장면은 보이지 않는다
+  // 한 번 올라오면 그대로 둔다. 되돌아갈 때마다 다시 재생하면 느린 인앱 브라우저에서는
+  // 왕복 스크롤 내내 반투명한 것들이 화면에 남는다.
+  // 여백을 화면 밖 240px까지 넉넉히 줘서, 눈에 닿기 전에 이미 켜져 있게 한다
   const io = new IntersectionObserver((ents) => {
-    ents.forEach(e => e.target.classList.toggle("in", e.isIntersecting));
-  }, {rootMargin:"0px 0px -12% 0px"});
+    ents.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add("in");
+      io.unobserve(e.target);
+    });
+  }, {rootMargin:"240px 0px 240px 0px"});
   rise.forEach(el => io.observe(el));
 }
 
