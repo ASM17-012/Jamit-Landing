@@ -467,6 +467,40 @@ p{text-wrap:pretty}
   .probs > div:nth-child(2n), .need li:nth-child(2n){transition-delay:.11s}
 }
 
+/* ══════════════════════════════════════════════════════════
+   모바일 — 전부 가운데 정렬.
+   720px 이하에서는 모든 그리드가 이미 한 줄이라 가운데로 모아도 열이 어긋나지 않는다.
+   text-align만으로는 부족한 게 셋이다:
+   ① max-width가 걸린 문단은 왼쪽에 붙는다 → margin-inline:auto
+   ② flex 줄(버튼·링크·입력)은 justify-content로 따로 모아야 한다
+   ③ 왼쪽에 붙어 있던 표식(아이콘·불릿)은 글 위로 올린다
+   상단 바는 제외한다 — 로고와 메뉴가 양 끝을 잡는 게 그 줄의 일이다
+   ══════════════════════════════════════════════════════════ */
+@media(max-width:720px){
+  body{text-align:center}
+
+  /* ① 폭이 묶인 문단들 */
+  .lede,.sec__lede,.chap p,.feat p,.who p,.quote p,.probs p,
+  .faq details p,.privacy p,.need li,.cta__box{margin-inline:auto}
+  .last .privacy p{text-align:center}
+
+  /* ② 가로로 늘어서는 줄들 */
+  .hero__cta,.signup__row,.foot__b,.ph__foot{justify-content:center}
+  .faq summary{justify-content:center;gap:10px}
+  footer{justify-items:center}
+
+  /* 레일 장면은 flex 세로단이라 교차축을 따로 가운데로 */
+  .chap{align-items:center}
+  .chap .btn{align-self:center}
+
+  /* ③ 왼쪽 표식 → 글 위로 */
+  .feat > div{grid-template-columns:1fr;justify-items:center;row-gap:10px}
+  .feat > div > :not(svg){grid-column:1}
+  .need ul{justify-items:center}
+  .need li{padding-left:0;padding-top:19px}
+  .need li::before{left:50%;top:0;translate:-50% 0}
+}
+
 footer{padding:30px 0 46px;border-top:1px solid var(--ink);display:grid;gap:16px}
 .foot__id{font-size:18px;font-weight:800;letter-spacing:-.03em;color:var(--ink)}
 .foot__t{display:block;margin-top:5px;font-size:12.5px;color:var(--ink-2)}
