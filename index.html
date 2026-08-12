@@ -21,7 +21,28 @@
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/jetbrains-mono-latin.woff2" crossorigin>
 <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23ecedf1"/><rect x="3" y="3" width="26" height="26" fill="none" stroke="%231a1f2b" stroke-width="2"/><rect x="9" y="13" width="3" height="6" fill="%231a1f2b"/><rect x="15" y="8" width="3" height="16" fill="%234c8df6"/><rect x="21" y="11" width="3" height="10" fill="%231a1f2b"/></svg>'>
 
+<!-- 첫 화면 제목에 바로 걸리는 폰트다. 늦게 오면 시스템 폰트로 한 번 그렸다가 바뀌는데,
+     이 페이지는 레일·릴의 높이를 --vh와 실측값으로 잡고 있어서 그 순간 계산이 흔들린다.
+     crossorigin은 같은 도메인이어도 빼면 안 된다 — 폰트는 CORS 모드로만 받는다 -->
+<link rel="preload" href="assets/fonts/pretendard-subset.woff2" as="font" type="font/woff2" crossorigin>
+
 <style>
+/* ── 한글 폰트 ──
+   기기 기본 폰트에 맡기면 결과가 셋으로 갈린다. iOS는 Apple SD Gothic Neo,
+   안드로이드는 Roboto(라틴) + Noto Sans KR(한글)이 한 줄에서 섞여 베이스라인이 어긋난다.
+   무엇보다 두 폰트 다 700까지밖에 없어서, 이 페이지가 제목에 쓰는 800이 전부
+   합성 볼드로 그려진다 — 브라우저가 획을 강제로 부풀린 그 글자가 뭉개져 보이는 원인이다.
+   그래서 폰트를 직접 들고 온다. 같은 도메인에 두어 외부 요청 0은 그대로다.
+   KS X 1001 상용 2350자로 줄인 가변 폰트 하나(300KB) */
+@font-face{
+  font-family:"Pretendard";
+  src:url("assets/fonts/pretendard-subset.woff2") format("woff2");
+  /* 축이 400~800이라 그 사이 굵기는 폰트가 직접 그린다. 합성 볼드가 낄 자리가 없다 */
+  font-weight:400 800;
+  font-style:normal;
+  /* 폰트를 기다리며 글자를 감추지 않는다. 시스템 폰트로 먼저 읽히는 편이 낫다 */
+  font-display:swap;
+}
 /* ══════════════════════════════════════════════════════════
    합주실 벽에 붙은 전단지. 인쇄물 규칙으로 짠다:
    둥근 모서리 없음 · 블러 그림자 없음(잉크는 번지지 않는다) ·
@@ -90,9 +111,15 @@
   --edge:clamp(18px,5vw,44px);
   /* 영문·숫자는 mono(MonoEn), 한글은 산세리프. 아래 @font-face가 글자 범위를 가른다.
      mono 계열을 그냥 앞에 세우기만 하면 한글은 글리프가 없어 알아서 넘어가지만
-     띄어쓰기(U+0020)는 mono 폭으로 잡혀 한글 단어 사이가 벌어진다 — 그래서 공백은 범위에서 뺐다 */
-  --sans:"MonoEn",-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
-  --mono:"MonoAll",ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,monospace;
+     띄어쓰기(U+0020)는 mono 폭으로 잡혀 한글 단어 사이가 벌어진다 — 그래서 공백은 범위에서 뺐다.
+     MonoEn이 영문·숫자를 가져가고 남는 자리(한글)를 Pretendard가 받는다.
+     -apple-system보다 앞이어야 한다 — BlinkMacSystemFont는 안드로이드 크롬에서도
+     매칭돼서, 뒤에 두면 한글이 기기 기본 폰트로 떨어지고 800이 다시 합성 볼드가 된다 */
+  --sans:"MonoEn","Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  /* 모노 스택에도 한글은 없다. MonoAll은 글자 범위를 안 가르지만 JetBrains Mono에
+     한글 글리프가 없어 그대로 넘어가는데, 그 다음이 브라우저 기본 폴백이라
+     "휴대폰 하나로 만드는 온라인 합주" 같은 라벨이 기기마다 다른 글꼴로 나왔다 */
+  --mono:"MonoAll",ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,"Pretendard",monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 [hidden]{display:none!important}
