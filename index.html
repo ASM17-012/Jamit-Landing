@@ -18,6 +18,7 @@
 <!-- og:image는 비워 둔다. 예전 디자인으로 만든 og.png는 지금 페이지와 맞지 않아 지웠다.
      새 이미지를 만들면 여기에 절대 주소로 넣고 twitter:card를 summary_large_image로 되돌린다 -->
 <meta name="twitter:card" content="summary">
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/jetbrains-mono-latin.woff2" crossorigin>
 <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23ecedf1"/><rect x="3" y="3" width="26" height="26" fill="none" stroke="%231a1f2b" stroke-width="2"/><rect x="9" y="13" width="3" height="6" fill="%231a1f2b"/><rect x="15" y="8" width="3" height="16" fill="%234c8df6"/><rect x="21" y="11" width="3" height="10" fill="%231a1f2b"/></svg>'>
 
 <style>
@@ -26,31 +27,25 @@
    둥근 모서리 없음 · 블러 그림자 없음(잉크는 번지지 않는다) ·
    색은 종이 + 검정 + 스팟 잉크 몇 개 · 작은 글씨는 전부 모노.
    ══════════════════════════════════════════════════════════ */
-/* 영문 전용 고정폭. 설치된 것 중 먼저 찾는 것을 쓴다 — iOS·macOS는 Menlo가 항상 있고,
-   개발 도구가 깔린 기기는 SF Mono나 JetBrains Mono가 잡힌다.
-   범위에서 U+0020(공백)을 뺀 것이 핵심이다. 넣으면 한글 문장의 어절 사이가 벌어진다 */
+/* 영문·숫자 전용 고정폭 — JetBrains Mono(OFL, assets/fonts/OFL.txt).
+   처음에는 설치된 글꼴을 local()로 찾아 썼는데, 그 이름들(SF Mono·Menlo·Consolas)은
+   안드로이드에 하나도 없어서 그 기기에서만 산세리프로 떨어졌다. 그래서 파일을 직접 얹는다.
+   가변 글꼴이라 파일 하나(31KB)가 100~800 굵기를 모두 낸다 — 합성 볼드가 생기지 않는다.
+   MonoEn은 글자·숫자만 맡고(부호는 한글 글꼴에), MonoAll은 모노 라벨 전체를 맡는다.
+   두 선언이 같은 파일을 가리키므로 내려받기는 한 번이다 */
 @font-face{
   font-family:"MonoEn";
-  /* local()은 패밀리 이름이 아니라 PostScript·풀네임을 받는다.
-     local("Menlo")는 매칭되지 않고 local("Menlo-Regular")만 잡힌다 — 이름 형태가 곧 성패다 */
-  src:local("SFMono-Regular"),local("SF Mono Regular"),
-      local("JetBrainsMono-Regular"),local("JetBrains Mono Regular"),
-      local("Menlo-Regular"),local("Consolas"),local("DejaVuSansMono");
-  /* 영문자와 숫자만. 마침표·쉼표까지 넣으면 고정폭 셀 가운데에 찍혀
-     한글 문장에서 "하나 ."처럼 앞이 벌어진다. 부호는 한글 쪽 글꼴에 맡긴다 */
+  src:url("assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-weight:100 800;
+  font-display:swap;
+  /* 마침표·쉼표까지 넣으면 고정폭 셀 가운데에 찍혀 한글 문장에서 "하나 ."처럼 앞이 벌어진다 */
   unicode-range:U+0030-0039, U+0041-005A, U+0061-007A;
 }
 @font-face{
-  /* 굵은 얼굴을 따로 주지 않으면 브라우저가 400짜리를 늘려 합성 볼드를 만든다 —
-     제목의 영문이 뭉개져 보이는 원인이 그것이다 */
-  font-family:"MonoEn";
-  font-weight:600 900;
-  src:local("SFMono-Bold"),local("SF Mono Bold"),
-      local("JetBrainsMono-Bold"),local("JetBrains Mono Bold"),
-      local("Menlo-Bold"),local("Consolas-Bold"),local("DejaVuSansMono-Bold");
-  /* 영문자와 숫자만. 마침표·쉼표까지 넣으면 고정폭 셀 가운데에 찍혀
-     한글 문장에서 "하나 ."처럼 앞이 벌어진다. 부호는 한글 쪽 글꼴에 맡긴다 */
-  unicode-range:U+0030-0039, U+0041-005A, U+0061-007A;
+  font-family:"MonoAll";
+  src:url("assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-weight:100 800;
+  font-display:swap;
 }
 :root{
   /* 앱에 그대로 들고 갈 수 있는 색으로 잡았다.
@@ -76,7 +71,7 @@
      mono 계열을 그냥 앞에 세우기만 하면 한글은 글리프가 없어 알아서 넘어가지만
      띄어쓰기(U+0020)는 mono 폭으로 잡혀 한글 단어 사이가 벌어진다 — 그래서 공백은 범위에서 뺐다 */
   --sans:"MonoEn",-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
-  --mono:ui-monospace,SFMono-Regular,"SF Mono","JetBrains Mono",Menlo,monospace;
+  --mono:"MonoAll",ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 [hidden]{display:none!important}
