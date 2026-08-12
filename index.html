@@ -310,11 +310,19 @@ p{text-wrap:pretty}
 
 @media(max-width:860px){
   .stage__in{grid-template-columns:1fr;gap:18px;justify-items:center}
-  .chaps{min-height:clamp(230px,34vh,300px);order:2;width:100%}
+  .chaps{min-height:clamp(230px,calc(var(--vh, 100vh) * .34),300px);order:2;width:100%}
   .chap{position:absolute;justify-content:flex-start}
   .chap h2{font-size:clamp(1.5rem,6vw,2rem)}
   .chap p{font-size:.95rem}
-  .phone{order:1;max-width:min(216px,50vw)}
+  /* 폰 크기는 남는 높이에서 역산한다. 고정 크기로 두면 작은 화면에서 무대 내용이
+     화면보다 커지고, 그때 가운데 정렬은 넘친 만큼을 위아래로 반씩 밀어낸다 —
+     위로 밀린 쪽이 상단 바 뒤로 들어가 잘린다(안쪽 여백으로는 막지 못한다).
+     빼는 값: 상단 바 + 글 칸 + 칸 사이 여백 18 + 폰에서 화면이 아닌 부분 79(실측: 안쪽 여백
+     18 + 머리 14 + 칸 사이 16 + 진행 막대 6 + 상태줄 14) + 여유 3.
+     남은 높이가 곧 화면(9:16)의 높이이므로 9/16을 곱해 폭으로 되돌린다 */
+  .phone{order:1;max-width:min(216px, 50vw,
+    calc((var(--vh, 100vh) - var(--top, 56px)
+          - clamp(230px, calc(var(--vh, 100vh) * .34), 300px) - 100px) * 9 / 16 + 18px))}
   .scrollhint{display:none}
 }
 
@@ -383,7 +391,7 @@ p{text-wrap:pretty}
 .big + .btn{margin-top:11px}
 @media(max-width:860px){
   .result{grid-template-columns:1fr}
-  .reel{width:min(300px,44vh)}
+  .reel{width:min(300px,calc(var(--vh, 100vh) * .44))}
   /* 좁은 화면에서는 잇츠를 먼저 보여주고 그다음에 권한다 —
      결과물을 보기도 전에 버튼부터 나오면 무엇이 마음에 드는지 알 수 없다.
      왼쪽 칸을 display:contents로 풀어 제목·설명·릴·CTA를 같은 줄에 세운 뒤 순서만 바꾼다 */
