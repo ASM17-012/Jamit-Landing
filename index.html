@@ -469,8 +469,8 @@ p{text-wrap:pretty}
    레일·릴·전단지는 이미 자기 움직임이 있으므로 제외한다
    ══════════════════════════════════════════════════════════ */
 @media(prefers-reduced-motion:no-preference){
-  .rise{opacity:0;transform:translateY(24px);
-        transition:opacity .4s ease, transform .4s cubic-bezier(.22,.7,.28,1)}
+  .rise{opacity:0;transform:translateY(30px);
+        transition:opacity .55s ease, transform .55s cubic-bezier(.22,.7,.28,1)}
   .rise.in{opacity:1;transform:none}
   /* 나란히 놓인 것들은 한 박자 늦게 따라 올라온다. 같이 움직이면 한 덩어리로 보인다 */
   .quote:nth-child(2n), .feat > div:nth-child(2n), .who > div:nth-child(2n),
@@ -1227,14 +1227,15 @@ if (matchMedia("(prefers-reduced-motion:no-preference)").matches){
   rise.forEach(el => el.classList.add("rise"));
   // 한 번 올라오면 그대로 둔다. 되돌아갈 때마다 다시 재생하면 느린 인앱 브라우저에서는
   // 왕복 스크롤 내내 반투명한 것들이 화면에 남는다.
-  // 여백을 화면 밖 240px까지 넉넉히 줘서, 눈에 닿기 전에 이미 켜져 있게 한다
+  // 여백은 0이다 — 화면 아래끝에 닿는 순간 시작해서, 올라오는 동안이 곧 보이는 구간이다.
+  // 여기에 양수 여백을 주면 화면 밖에서 다 끝나 버려 모션이 없는 것처럼 보인다
   const io = new IntersectionObserver((ents) => {
     ents.forEach(e => {
       if (!e.isIntersecting) return;
       e.target.classList.add("in");
       io.unobserve(e.target);
     });
-  }, {rootMargin:"240px 0px 240px 0px"});
+  }, {rootMargin:"0px"});
   rise.forEach(el => io.observe(el));
 }
 
