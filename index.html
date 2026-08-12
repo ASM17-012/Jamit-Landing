@@ -3,1025 +3,1173 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>JamIT — 온라인 합주 앱 · 혼자 찍어 올리면 합주가 완성됩니다</title>
-<meta name="description" content="드럼이 없어도, 날짜를 못 맞춰도 합주할 수 있습니다. 자기 파트만 찍어 올리면 다른 사람이 베이스를 얹고 드럼을 얹습니다. 최대 아홉 명, 휴대폰 하나면 됩니다. iOS·Android 2026년 9월 출시 예정.">
-<link rel="canonical" href="https://asm17-012.github.io/Jamit-Landing/">
-<meta name="theme-color" content="#0a0c1c">
+<title>JAMIT — 드럼이 없어도 합주는 됩니다 · 혼자 찍어 올리면 합주가 되는 앱</title>
+<meta name="description" content="각자 자기 파트만 연주해 올리면 JAMIT이 박자를 맞춰 하나의 합주 영상 '잇츠'로 이어 붙입니다. 혼자 시작해서 최대 아홉 명까지. 준비물은 휴대폰 하나. iOS·Android 2026년 9월 출시 예정.">
+<!-- 색인 차단은 그대로 둔다 — 아직 index.html이 정본이라, 같은 문구로 두 페이지가 색인되면 서로 순위를 깎는다.
+     이 페이지를 정본으로 올릴 때 이 줄을 지우고 canonical을 함께 넣어야 한다 -->
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#ecedf1">
 
-<!-- 공유 카드 — 이 앱이 퍼지는 길은 검색보다 밴드 단톡방·디스코드다.
-     og:image는 절대 URL이어야 한다. 상대 경로는 카카오가 안 읽는다. -->
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://asm17-012.github.io/Jamit-Landing/">
-<meta property="og:site_name" content="JamIT">
+<meta property="og:site_name" content="JAMIT">
 <meta property="og:locale" content="ko_KR">
-<meta property="og:title" content="JamIT — 혼자 찍어 올리면, 합주가 완성됩니다">
-<meta property="og:description" content="자기 파트만 찍어 올리면 누가 베이스를 얹고, 누가 드럼을 얹습니다. 최대 아홉 명. 서로 만나지 않습니다.">
-<meta property="og:image" content="https://asm17-012.github.io/Jamit-Landing/og.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="오선지 위에 음표처럼 놓인 JamIT — Jam apart, mix It Together">
+<meta property="og:title" content="JAMIT — 드럼이 없어도 합주는 됩니다">
+<meta property="og:description" content="자기 파트 하나만 올리세요. 박자를 맞추고 한 화면으로 붙이는 건 JAMIT이 합니다. 혼자 시작해서 최대 아홉 명까지.">
+<meta property="og:image" content="https://asm17-012.github.io/JAMIT-Landing/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="%230d0f24"/><rect x="8" y="13" width="3" height="6" rx="1.5" fill="%2398cff6"/><rect x="14" y="8" width="3" height="16" rx="1.5" fill="%23baadf5"/><rect x="20" y="11" width="3" height="10" rx="1.5" fill="%23dd8bf4"/></svg>'>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23ecedf1"/><rect x="3" y="3" width="26" height="26" fill="none" stroke="%231a1f2b" stroke-width="2"/><rect x="9" y="13" width="3" height="6" fill="%231a1f2b"/><rect x="15" y="8" width="3" height="16" fill="%234c8df6"/><rect x="21" y="11" width="3" height="10" fill="%231a1f2b"/></svg>'>
 
 <style>
+/* ══════════════════════════════════════════════════════════
+   합주실 벽에 붙은 전단지. 인쇄물 규칙으로 짠다:
+   둥근 모서리 없음 · 블러 그림자 없음(잉크는 번지지 않는다) ·
+   색은 종이 + 검정 + 스팟 잉크 몇 개 · 작은 글씨는 전부 모노.
+   ══════════════════════════════════════════════════════════ */
 :root{
-  /* 앱 아이콘에서 픽셀로 추출한 값 */
-  --bg:#0a0c1c;
-  --bg-2:#141634;
-  --ink:#eef0fa;              /* 배경 대비 17:1 */
-  --copy:#a8b0cc;             /* 9.0:1 */
-  --muted:#8f98b5;            /* 6.8:1 — 작은 글씨도 AA */
-  --line:rgba(255,255,255,.12);
-  --c-cyan:#98cff6;
-  --c-violet:#dd8bf4;
-  --grad:linear-gradient(100deg,var(--c-cyan),var(--c-violet));
-  --accent:#b9a3f7;
-  --accent-dark:#c9b6f9;
-  --accent-soft:rgba(185,163,247,.14);
-  --sh:0 8px 24px -8px rgba(0,0,0,.6);
-  --sh-lg:0 24px 60px -16px rgba(0,0,0,.7),0 4px 14px rgba(0,0,0,.4);
-  --r:16px; --r-lg:24px; --r-xl:32px;
-  --topbar:64px;
-  --edge:clamp(20px,5vw,40px);
+  /* 앱에 그대로 들고 갈 수 있는 색으로 잡았다.
+     따뜻한 계열(갱지·주홍·노랑)은 화면에서 오래 보면 눈이 먼저 지친다 —
+     차가운 무채색을 바탕으로 깔고, 색은 인디고 하나로 통일했다.
+     순백(#fff)과 순검정(#000)은 쓰지 않는다: 눈부심과 대비 피로의 주범이다 */
+  --paper:#ecedf1;            /* 차가운 회색 종이(재생지) */
+  --paper-2:#dfe1e8;
+  --cream:#f7f8fb;
+  --ink:#1a1f2b;              /* 남빛 먹. 종이 대비 14.1:1 */
+  --ink-2:#4b5468;            /* 6.5:1 */
+  --mute:#5f6779;             /* 4.7:1 — 모노 라벨의 하한 */
+  --dark:#181c26;             /* 영상이 들어갈 어두운 면 */
+  --hot:#4a5bd4;              /* 강조는 인디고 하나로만 (4.8:1) */
+  --hot-2:#3644a8;            /* 작은 글자용 (7.0:1) */
+  --mark:#bfd6ff;                   /* 형광펜 자리 — 옅은 하늘. 위에 먹 글자가 11.2:1로 얹힌다 */
+  --line-soft:rgba(26,31,43,.16);   /* 나열용 구분선 — 컨테이너 선(1px ink)보다 약하게 */
+  /* 파트 다섯 — 어두운 영상 면 위에서 5:1 이상으로 읽히도록 맞춘 값이다.
+     앱은 영상이 깔린 어두운 화면이 기본이라, 밝은 면이 아니라 그쪽을 기준으로 잡았다 */
+  --c1:#4c8df6; --c2:#17a29a; --c3:#8b7bf0; --c4:#d071a6; --c5:#d09a3f;
+  --edge:clamp(18px,5vw,44px);
   --sans:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
-  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
-  --ease:cubic-bezier(.22,1,.36,1);
-  --stops:7;                     /* 정거장 수 — JS는 패널 개수로 자동 계산한다 */
+  --mono:ui-monospace,SFMono-Regular,"SF Mono","JetBrains Mono",Menlo,monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;background:var(--bg)}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;background:var(--paper)}
 body{
-  font-family:var(--sans);color:var(--ink);line-height:1.6;
-  background:linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 100%);
-  -webkit-font-smoothing:antialiased;overflow-x:hidden;word-break:keep-all;
+  font-family:var(--sans);color:var(--ink);line-height:1.6;word-break:keep-all;
+  /* clip이지 hidden이 아니다. hidden은 body를 스크롤 컨테이너로 만들고,
+     그러면 진입 애니메이션의 view() 타임라인이 실제 화면이 아니라 그 가짜 스크롤 상자를 기준으로 잡힌다 */
+  background:var(--paper);-webkit-font-smoothing:antialiased;overflow-x:clip;
 }
-::selection{background:var(--c-violet);color:#0a0c1c}
+/* 종이 결. 외부 요청 없이 SVG 노이즈 한 장을 깔고 곱하기로 섞는다 */
+body::before{
+  content:"";position:fixed;inset:0;z-index:99;pointer-events:none;opacity:.5;mix-blend-mode:multiply;
+  background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3"/></filter><rect width="120" height="120" filter="url(%23n)" opacity="0.28"/></svg>');
+}
 a{color:inherit;text-decoration:none}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
-img,video{display:block;max-width:100%}
-h1,h2,h3{letter-spacing:-.03em;font-weight:750;line-height:1.15;text-wrap:balance}
-p{text-wrap:pretty}
+:focus-visible{outline:3px solid var(--hot);outline-offset:2px}
+img,svg{display:block}
+::selection{background:var(--mark);color:var(--ink)}
 .wrap{width:min(1180px,calc(100% - var(--edge)*2));margin-inline:auto}
-.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1,h2,h3{font-weight:800;letter-spacing:-.035em;line-height:.94;text-wrap:balance}
+p{text-wrap:pretty}
+
+/* 형광펜: 글자 뒤에 깔린다. 글자는 검정 그대로라 대비가 안 깎인다 */
+.mark{background:linear-gradient(var(--mark),var(--mark)) 0 78%/100% 42% no-repeat}
 
 /* ════ 상단 바 ════ */
-.top{position:fixed;top:0;left:0;right:0;z-index:60;backdrop-filter:blur(14px);
-  border-bottom:1px solid transparent;transition:border-color .2s,background .2s}
-body.scrolled .top{background:rgba(10,12,28,.72);border-bottom-color:var(--line)}
-.top__in{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 0}
-.top__id{display:flex;cursor:pointer;transition:opacity .18s;align-items:center;gap:9px;font-weight:750;font-size:17px;letter-spacing:-.02em}
-.top__id:hover{opacity:.72}
-/* 이미 설득돼서 들어온 사람(친구 추천)이 여섯 정거장을 긁지 않게 한다.
-   padding은 7px — 8px을 넘기면 헤더가 --topbar(64px)보다 커져서 레이아웃 실측이 어긋난다 */
-.top__cta{
-  padding:7px 16px;border-radius:999px;font-size:13.5px;font-weight:650;white-space:nowrap;
-  background:var(--grad);color:#0a0c1c;
-  box-shadow:0 8px 20px -8px rgba(152,207,246,.45);transition:filter .18s,transform .18s;
-}
-.top__cta:hover{filter:brightness(1.1);transform:translateY(-1px)}
-/* 모바일은 소리 토글(40px)이 fixed로 헤더 오른쪽 끝에 앉는다. 그 폭만큼 비켜준다 */
-@media(max-width:820px){.top__cta{margin-right:50px;padding:7px 13px;font-size:12.5px}}
+.top{position:sticky;top:0;z-index:60;background:var(--paper);border-bottom:1px solid var(--ink)}
+.top__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 0}
+.top__id{display:flex;align-items:center;gap:9px;font-weight:800;font-size:18px;letter-spacing:-.03em}
+.top__nav{display:flex;align-items:center;gap:clamp(14px,2.4vw,28px)}
+.top__nav a{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
+.top__nav a:hover{color:var(--hot)}
+@media(max-width:640px){.top__nav .m--hide{display:none}}
 
-/* ══════════════════════════════════════════════════════
-   레일 — 스크롤이 카메라를 움직인다
-   ══════════════════════════════════════════════════════ */
-.rail{height:calc(var(--stops) * 100dvh);position:relative}
-/* 스냅 지점 — 레일 안에만 둔다. 레일 뒤 일반 구간은 자유롭게 스크롤된다 */
-html{scroll-snap-type:y mandatory}
-.snaps{position:absolute;inset:0;pointer-events:none}
-.snaps i{display:block;height:100dvh;scroll-snap-align:start}
-.fallback .snaps{display:none}
-@media(prefers-reduced-motion:reduce){html{scroll-snap-type:none}}
-.viewport{position:sticky;top:0;height:100dvh;overflow:hidden}
+/* 버튼 — 검정 판에 크림 글자, 그림자는 블러 없는 잉크 덩어리 */
+.btn{
+  display:inline-flex;align-items:center;gap:10px;padding:14px 22px;
+  font:inherit;font-size:15px;font-weight:800;letter-spacing:-.01em;
+  background:var(--ink);color:var(--cream);border:1px solid var(--ink);cursor:pointer;
+  box-shadow:6px 6px 0 var(--hot);transition:transform .12s,box-shadow .12s;
+}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--hot)}
+.btn:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--hot)}
+.btn:disabled{cursor:not-allowed;background:var(--paper-2);color:var(--mute);box-shadow:none;
+  border-style:dashed}
+.btn--sm{padding:9px 15px;font-size:13px;box-shadow:4px 4px 0 var(--hot)}
+.btn--sm:hover{box-shadow:6px 6px 0 var(--hot)}
 
-/* 월드: 오선지가 놓인 좌표계. JS가 transform만 갈아끼운다 */
-.world{
-  position:absolute;top:0;left:0;width:6000px;height:1000px;
-  transform-origin:0 0;will-change:transform;
-}
+/* ════ 히어로 ════ */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,4vw,56px);align-items:center;
+  padding:clamp(34px,6vw,72px) 0 clamp(30px,5vw,64px)}
+.eye{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11.5px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--hot-2)}
+.eye::before{content:"";width:8px;height:8px;background:var(--hot);animation:blink 2.6s steps(1) infinite}
+@keyframes blink{0%,60%{opacity:1}61%,100%{opacity:.25}}
+.hero h1{margin-top:18px;font-size:clamp(2.9rem,7.4vw,5.6rem);line-height:.9;letter-spacing:-.045em;font-weight:800}
+.hero h1 em{font-style:normal;color:var(--hot)}
+.lede{margin-top:clamp(16px,2.2vw,22px);max-width:27em;font-size:clamp(1rem,1.4vw,1.16rem);color:var(--ink-2);line-height:1.6}
+.lede b{color:var(--ink);font-weight:800}
+.hero .btn{margin-top:clamp(20px,2.8vw,30px)}
+.hero__note{margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--mute)}
+@media(max-width:860px){.hero{grid-template-columns:1fr;gap:34px}}
 
-/* 오선지 */
-.staff{position:absolute;left:0;top:380px;width:100%}
-.staff i{display:block;height:2px;background:rgba(255,255,255,.13);margin-bottom:58px}
-.staff i:last-child{margin-bottom:0}
-/* 마디선 */
-.bar{position:absolute;top:380px;width:2px;height:242px;background:rgba(255,255,255,.10)}
-/* 음자리표 자리 */
-.clef{
-  position:absolute;left:80px;top:330px;font:340px/1 Georgia,serif;color:rgba(255,255,255,.10);
-  user-select:none;
+/* ── 전단지 일러스트: 이 앱이 대체하려는 물건 그 자체 ── */
+.flyer{position:relative;color:var(--ink);width:min(330px,86%);margin-inline:auto;transform:rotate(-2.4deg);
+  background:var(--cream);border:1px solid var(--ink);box-shadow:10px 10px 0 var(--ink);
+  padding:26px 22px 0}
+.flyer__pin{position:absolute;top:-11px;left:50%;translate:-50% 0;width:22px;height:22px;border-radius:50%;
+  background:var(--hot);border:1px solid var(--ink);box-shadow:2px 3px 0 rgba(0,0,0,.35)}
+.flyer__k{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--mute);text-align:center}
+.flyer h3{margin-top:8px;text-align:center;font-size:clamp(1.7rem,3.4vw,2.2rem);line-height:1.05}
+.flyer p{margin-top:10px;text-align:center;font-size:13px;color:var(--ink-2);line-height:1.55}
+.flyer__stamp{position:absolute;right:-14px;top:64px;rotate:12deg;padding:5px 10px;
+  border:2px solid var(--hot);color:var(--hot);background:var(--cream);
+  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em}
+/* 뜯어가는 술 — 두 장은 이미 뜯겨 나갔다 */
+.tabs{display:flex;align-items:flex-start;margin-top:18px;border-top:1px dashed var(--ink)}
+/* 술의 비율은 화면과 같은 9:16이다. 그래야 뜯긴 종이가 늘어나지 않고
+   회전 + 균일 확대만으로 그대로 화면이 된다 */
+.tabs span{width:20%;flex:none;aspect-ratio:9/16;display:grid;place-items:center;border-right:1px dashed var(--ink);
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-2);writing-mode:vertical-rl}
+.tabs span:last-child{border-right:0}
+.tabs .gone{color:transparent;background:repeating-linear-gradient(-45deg,transparent 0 5px,rgba(26,31,43,.08) 5px 6px)}
+/* 뜯겨 나온 종이. 헤더(z 60) 밑으로 지나간다 — 물건이니까 앞이 아니라 뒤로 흐른다.
+   크기는 transform:scale로만 바꾼다. 폭과 높이를 따로 늘리면 종이가 아니라 고무가 된다.
+   대신 테두리·그림자·글자는 --inv(=1/scale)로 되돌려서 늘 같은 두께로 보이게 한다 */
+.slip{
+  position:fixed;left:0;top:0;z-index:50;pointer-events:none;overflow:hidden;
+  background:var(--cream);transform-origin:50% 0;
+  border:calc(1px * var(--inv,1)) solid var(--ink);
+  /* 붙어 있던 윗변만 찢긴 자국을 남긴다. 나머지 세 변은 원래 잘려 있던 면이다 */
+  clip-path:polygon(0% .9%, 4% .15%, 9% .8%, 14% .1%, 20% .95%, 26% .3%, 33% 1%, 39% .2%,
+    46% .85%, 53% .15%, 60% .95%, 67% .35%, 74% .75%, 81% .1%, 88% .9%, 94% .3%, 100% .8%,
+    100% 100%, 0% 100%);
 }
+/* 종이에 찍힌 번호. 위치는 종이 안의 좌표(px)로만 준다 — 나머지는 종이가 알아서 데려간다.
+   세로쓰기라 술에 찍힌 모습 그대로고, 종이가 눕는 순간 저절로 바로 선다 */
+.flynum{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;
+  font-family:var(--mono);font-weight:700;line-height:.8;letter-spacing:.02em}
+.flynum.v{writing-mode:vertical-rl}
+/* 뒷자리는 글자 박스 밖으로 뺀다. 투명해져도 폭을 차지하면 01의 중심이 밀린다 */
+.flynum b{display:inline-block;position:relative}
+.flynum i{position:absolute;font-style:normal}
+.flynum i{left:100%;top:0}
+.flynum.v i{left:0;top:100%}
+.hero__cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(20px,2.8vw,30px)}
+.hero .btn{margin-top:0}
+.hero__note{margin-top:13px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;line-height:1.9;color:var(--mute)}
+.hero__note b{color:var(--ink-2);font-weight:400}
 
-/* 음표 = 글자 자체. 원 안에 넣지 않는다 — 글자가 곧 음표 머리다 */
-.staff-note{
-  position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);
-  /* 음표 머리는 기울어진 타원 + 굵기 대비. Didone 세리프가 그 인상에 가장 가깝다.
-     웹폰트는 쓰지 않는다 — 외부 요청 0을 유지한다 */
-  font-family:Georgia,"Times New Roman","Noto Serif",serif;
-  font-weight:700;font-style:italic;font-size:150px;line-height:.74;letter-spacing:-.01em;
-  color:var(--c);opacity:.62;
-  transition:opacity .45s var(--ease),text-shadow .45s var(--ease);
-}
-.staff-note.on{opacity:1;text-shadow:0 0 48px currentColor}
-/* N행시 — 확대된 글자 옆으로 나머지 철자가 밀려 들어온다.
-   left:100%로 띄워 글자 자체의 박스 크기(=중심 정렬)에 영향을 주지 않는다 */
-.staff-note em{
-  position:absolute;left:100%;bottom:.07em;white-space:nowrap;
-  font-size:.52em;font-weight:700;letter-spacing:-.01em;
-  opacity:0;transform:translateX(-16px);
-  transition:opacity .55s var(--ease) .12s,transform .55s var(--ease) .12s;
-}
-.staff-note.on em{opacity:1;transform:none}
-/* a만 아주 살짝 띄운다 — 문장은 'apart,'로 읽히고 눈에는 'a part,'로 보이게 */
-.staff-note[data-i="2"] em{margin-left:.06em}
-/* 좁은 화면에서도 문장이 보여야 한다. 넘침은 buildStops가 덩어리를 중앙에 놓아 막는다 */
-@media(max-width:820px){.staff-note em{font-size:.46em}}   /* 폭이 좁으니 철자만 조금 더 줄인다 */
+/* 히어로 오른쪽은 '이 앱이 만들어주는 것' 하나만 크게. 문제(전단지)는 다음 섹션이 맡는다 */
+.hero__proof{display:flex;justify-content:center;align-items:center}
+.hero__phone{width:clamp(168px,20vw,224px);
+  background:var(--cream);border:1px solid var(--ink);box-shadow:9px 9px 0 var(--ink);padding:7px;
+  display:flex;flex-direction:column;gap:6px}
+.hero__phone .ph__head{font-size:9px}
+.hero__phone .ph__body{aspect-ratio:9/16;background:var(--ink);overflow:hidden}
+.hero__phone .ph__txt{font-size:9px}
+@media(max-width:860px){.hero__phone{width:min(186px,52%)}}
 
-/* 설명 패널 — 화면에 고정, 카메라와 무관하게 교차 페이드 */
-.panels{position:absolute;inset:0;pointer-events:none}
-.panel{
-  position:absolute;opacity:0;transform:translateY(14px);
-  transition:opacity .45s var(--ease),transform .45s var(--ease);
-  pointer-events:none;
-}
-.panel.on{opacity:1;transform:none;pointer-events:auto}
-
-/* 전경 패널 = 히어로 */
-.panel--intro{
-  left:0;right:0;top:50%;translate:0 -50%;text-align:center;
-  padding-inline:var(--edge);
-}
-.panel--intro h1{font-size:clamp(2.55rem,5.2vw,4rem);line-height:1.08;font-weight:800}
-.panel--intro h1 .hi{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.panel--intro p{margin-top:20px;color:var(--copy);font-size:clamp(1rem,1.4vw,1.15rem);max-width:38em;margin-inline:auto}
-.panel--intro .signup{margin:26px auto 0;max-width:470px}
-.panel--intro .note{max-width:none}
-/* 낮은 화면(가로 모드·작은 노트북)에선 인트로가 뷰포트보다 커져 중앙 정렬이 깨진다.
-   buildStops가 높이를 실측하므로 여기서 줄이면 오선지 위치도 자동으로 따라온다 */
-@media(max-height:760px){
-  .panel--intro .pill{margin-bottom:12px}
-  .panel--intro h1{font-size:clamp(2.05rem,3.6vw,2.5rem)}
-  .panel--intro p{margin-top:12px;font-size:.97rem}
-  .panel--intro .signup{margin-top:18px}
-  .panel--intro .note{margin-top:9px;font-size:11.5px}
-}
-.panel--intro .pill{margin-bottom:22px}
-
-/* 정거장 패널 = 오른쪽 카드 */
-.panel--stop{
-  right:var(--edge);top:50%;translate:0 -50%;width:min(430px,calc(100% - var(--edge)*2));
-  background:rgba(20,22,52,.84);backdrop-filter:blur(16px);
-  border:1px solid var(--line);border-radius:var(--r-lg);
-  padding:clamp(24px,3vw,34px);box-shadow:var(--sh-lg);
-}
-.panel--stop .eyebrow{display:block;margin-bottom:12px}
-.acro{display:block;font-size:1rem;font-weight:750;letter-spacing:-.02em;color:var(--copy);margin-bottom:10px}
-.acro b{font-size:1.55em;font-weight:800;color:var(--c);vertical-align:-.07em}
-.panel--stop h2{font-size:clamp(1.3rem,2.4vw,1.8rem)}
-.panel--stop p{margin-top:14px;color:var(--copy);font-size:.97rem}
-.panel--stop .voice{margin-top:14px;padding:16px 18px;border-radius:14px;border:1px solid}
-.panel--stop .voice--a{background:rgba(244,63,94,.13);border-color:rgba(244,63,94,.3)}
-.panel--stop .voice--b{background:rgba(245,158,11,.13);border-color:rgba(245,158,11,.3)}
-.panel--stop .voice b{display:block;margin-bottom:6px;font-size:.95rem}
-.panel--stop .voice--a b{color:#fda4af}
-.panel--stop .voice--b b{color:#fcd34d}
-.panel--stop .voice p{margin-top:0;font-size:.9rem}
-@media(max-width:820px){
-  .panel--stop{left:var(--edge);right:var(--edge);width:auto;top:auto;bottom:clamp(20px,5vh,48px);translate:0}
+/* 세로가 짧은 화면(노트북 가로 모드 등)에서도 첫 화면 안에 가치 제안과 CTA가 들어와야 한다 */
+@media(min-width:861px) and (max-height:720px){
+  .hero{padding-top:clamp(18px,2.4vh,30px)}
+  .hero h1{font-size:clamp(2rem,4.4vh,3rem)}
+  .lede{margin-top:12px;font-size:1rem}
+  .hero__cta{margin-top:16px}
+  .hero__note{margin-top:10px;line-height:1.7}
 }
 
-.pill{
-  display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border-radius:999px;
-  background:var(--accent-soft);color:var(--accent-dark);border:1px solid rgba(185,163,247,.26);
-  font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;font-weight:500;
-}
-.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--c-cyan);box-shadow:0 0 10px var(--c-cyan);animation:pulse 3.2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+/* ════ 마퀴 띠 ════ */
+.band{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);background:var(--ink);
+  overflow:hidden;padding:12px 0}
+.band__in{display:flex;gap:34px;width:max-content;animation:roll 26s linear infinite}
+.band span{font-family:var(--mono);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);white-space:nowrap}
+.band b{color:var(--hot)}
+@keyframes roll{to{transform:translateX(-50%)}}
+.band__in span{padding-right:34px}
+@media(prefers-reduced-motion:reduce){.band__in{animation:none}}
 
-/* 영상이 세로(9:16)라 패널은 좁게, 영상 높이는 뷰포트에 묶는다 */
-.panel--wide{width:min(430px,calc(100% - var(--edge)*2))}
-.panel--wide .reel{margin:16px 0 0}
-.panel--wide .reel__frame{border-radius:var(--r);width:min(178px,19vh)}
-.panel--wide .reel__ph{gap:12px}
-.panel--wide .reel__ph b{width:46px;height:46px;font-size:16px}
+/* ════ 섹션 공통 ════ */
+.sec{padding:clamp(48px,7vw,96px) 0;border-bottom:1px solid var(--ink)}
+.sec h2{font-size:clamp(2.1rem,5.4vw,4rem);line-height:1.08}
+.sec__lede{margin-top:16px;max-width:32em;color:var(--ink-2);font-size:clamp(.95rem,1.2vw,1.05rem);line-height:1.65}
+.sec--dark{background:var(--ink);color:var(--cream);border-bottom-color:var(--ink)}
+.sec--dark .sec--dark .sec__lede{color:#c6cbd8}
+/* 어두운 섹션에선 글자색이 먹으로 뒤집히므로, 형광펜 띠가 글자 전체를 덮어야 읽힌다 */
+.sec--dark .mark{color:var(--ink);background-position:0 0;background-size:100% 100%;padding:.04em .14em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 
-/* ── 착지 화면: 카메라가 줌아웃하고 악보가 완성된 자리에서 끝난다 ── */
-.panel--land{
-  /* 상자를 씌우지 않는다. 페이지 전체가 풀블리드 카메라인데 마지막만 카드면 언어가 어긋난다.
-     첫 화면(오선지 + 가운데 폼)과 같은 구성으로 닫아서 수미상관을 만든다 */
-  left:var(--edge);right:var(--edge);top:auto;bottom:clamp(48px,5.2vh,64px);translate:0;   /* SCROLL 힌트 띠(하단 26~42px)를 피한다 */
-  max-width:min(1040px,90vw);margin-inline:auto;text-align:center;
-}
-@media(max-width:820px){
-  /* 위로 스크롤해 이전 화면으로 돌아갈 수 있어야 한다 — contain이면 카드 안에 갇힌다 */
-  .panel--land{top:calc(var(--topbar) + 8px);translate:0}
-  .land__faq .faq{grid-template-columns:1fr}
-  .land__faq .faq summary{padding:11px 2px;font-size:.92rem}
-  .land__faq .faq details p{padding:0 2px 12px;font-size:.87rem}
-  .panel--stop{bottom:16px}
-}
-/* 세로가 짧은 폰: 패널을 줄이지 않으면 글자가 들어갈 자리가 남지 않는다 */
-@media(max-width:820px) and (max-height:700px){
-  .panel--stop{padding:18px 20px}
-  .panel--stop h2{font-size:1.12rem}
-  .panel--stop p{margin-top:10px;font-size:.9rem}
-  .panel--stop .voice{margin-top:10px;padding:12px 14px}
-  .panel--stop .voice p{font-size:.85rem}
-  .panel--wide .reel{margin-top:12px}
-  .panel--wide .reel__frame{width:min(132px,15vh)}
-}
-/* 폼이 가운데, 질문은 그 아래로. 좌우 2열은 폼과 FAQ가 서로 시선을 뺏었다 */
-.land{display:block}
-/* 그리드 아이템은 min-width:auto라 내용의 min-content 아래로 안 줄어든다.
-   폼 한 줄(입력칸+버튼)이 349px을 요구해서 320px 화면에서 칸을 밀고 나갔다 */
-.land > *{min-width:0}
+/* ══════════════════════════════════════════════════════════
+   레일 — 스크롤이 장면을 넘긴다. 클릭할 것은 없다.
+   높이 = 장면 수 × 100vh, 그 안에서 무대(stage)가 붙어 있는다.
+   ══════════════════════════════════════════════════════════ */
+.rail{--stops:4;height:calc(var(--stops) * 100vh);background:var(--cream);position:relative}
+.stage{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;background:var(--cream);
+  border-bottom:1px solid var(--ink);display:flex;align-items:center}
+/* 장면 번호를 크게 깔아둔다 — 몇 번째 판인지 글자를 안 읽어도 보인다 */
+.bignum{position:absolute;left:calc(var(--edge) + 34px);top:50%;translate:0 -50%;z-index:0;
+  font-family:var(--mono);font-weight:700;font-size:clamp(11rem,26vw,26rem);line-height:.8;
+  color:var(--paper-2);pointer-events:none;user-select:none;transition:color .45s ease}
+@media(max-width:1180px){.bignum{left:var(--edge)}}
+@media(max-width:860px){.bignum{font-size:clamp(8rem,40vw,14rem);left:auto;right:var(--edge);top:auto;bottom:6vh;translate:0}}
+/* 레일 전체 진행 — 지금 어디쯤인지 계속 보인다 */
+.railbar{position:absolute;top:0;left:0;right:0;height:3px;background:rgba(120,130,150,.22);z-index:3}
+.railbar i{display:block;height:100%;width:0;background:var(--hot)}
 
-/* 세로가 짧은 노트북(1366x768 등): 내용이 화면을 넘겨 스크롤과 겹침이 생긴다 */
-@media(min-width:861px) and (max-height:780px){
-  .land__cta p{margin-top:7px;font-size:.94rem}
-  .land__cta .signup{margin-top:12px}
-  .land__cta .note{margin-top:9px}
-  .land__faq{margin-top:13px;padding-top:10px}
-  .land__faq .faq summary{padding:7px 2px;font-size:.9rem}
-  .land__faq .faq details p{padding:0 2px 9px;font-size:.85rem}
-  .land__foot{margin-top:8px}
-}
-/* 세로가 넉넉한 화면: 여백과 글자를 한 단계 더 키운다.
-   clamp만으로는 안 된다 — 계수를 올리면 짧은 화면까지 같이 커져 스크롤이 생긴다 */
-@media(min-width:861px) and (min-height:940px){
-  .panel--land{padding:clamp(40px,4.6vh,68px)}
-  .land{gap:clamp(40px,5vh,80px)}
-  .land__cta h2{font-size:clamp(2.2rem,4.2vh,3.2rem)}
-  .land__cta p{font-size:clamp(1.05rem,2vh,1.3rem)}
-  .land__faq .faq summary{padding:clamp(18px,2.3vh,32px) 2px;font-size:clamp(1rem,2vh,1.25rem)}
-  .land__faq .faq details p{padding:0 2px clamp(16px,2vh,28px);font-size:clamp(.95rem,1.85vh,1.15rem)}
-  .signup input,.btn{font-size:clamp(15px,1.9vh,18px);padding-block:clamp(15px,1.9vh,20px)}
-}
-.land__cta{max-width:540px;margin-inline:auto}
-.land__cta h2{font-size:clamp(1.5rem,4vh,2.9rem);margin-top:0}
-.land__cta p{margin-top:clamp(8px,1.4vh,18px);color:var(--copy);font-size:clamp(.92rem,1.75vh,1.2rem)}
-.land__cta .signup{margin:clamp(14px,2.2vh,30px) auto 0;max-width:none}
-.land__cta .note{text-align:center}
+.stage__in{position:relative;z-index:1;
+  opacity:var(--enter,1);transform:translateY(calc((1 - var(--enter,1)) * 30px));display:grid;grid-template-columns:1fr minmax(0,300px);gap:clamp(24px,5vw,80px);align-items:center;width:min(1180px,calc(100% - var(--edge)*2))}
 
-/* 질문은 아래로 내리고 2열로 눕힌다 — 세로로 6줄이면 폼보다 무거워진다 */
-.land__faq{margin-top:clamp(18px,3vh,46px);padding-top:clamp(14px,2.2vh,32px);border-top:1px solid var(--line)}
-.land__faq .eyebrow{display:none}
-.land__faq .faq{margin-top:0;max-width:none;text-align:left;
-  display:grid;grid-template-columns:1fr 1fr;column-gap:clamp(24px,4vw,64px);align-items:start}
-.land__faq .faq details{border-bottom:1px solid var(--line);border-top:0}
-.land__faq .faq summary{padding:clamp(8px,1.4vh,18px) 2px;font-size:clamp(.86rem,1.6vh,1.04rem)}
-.land__faq .faq details p{padding:0 2px clamp(9px,1.4vh,18px);font-size:clamp(.82rem,1.5vh,.98rem)}
-.land__foot{margin-top:clamp(10px,1.8vh,24px);font-size:clamp(11px,1.35vh,14px);color:var(--muted);text-align:center}
-.land__foot a:hover{color:var(--ink)}
-/* 이메일을 받으려면 수집 고지가 있어야 한다. 접어두되 숨기지는 않는다 */
-.privacy{margin-top:6px;text-align:center;font-size:clamp(11px,1.35vh,14px);color:var(--muted)}
-.privacy summary{list-style:none;cursor:pointer;display:inline-block;text-decoration:underline;text-underline-offset:3px}
-.privacy summary::-webkit-details-marker{display:none}
-.privacy summary:hover{color:var(--ink)}
-.privacy p{margin-top:8px;max-width:52em;margin-inline:auto;line-height:1.7}
-.privacy a{text-decoration:underline;text-underline-offset:2px}
+/* 장면 카피 — 한 자리에서 교차한다 */
+.chaps{position:relative;min-height:clamp(320px,46vh,420px)}
+/* 종이 한 장 넘기듯 옆으로 지나간다. 지나간 장면은 왼쪽으로 빠지고, 올 장면은 오른쪽에서 들어온다 */
+.chap{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+  opacity:0;transform:translateX(52px);pointer-events:none;
+  transition:opacity .38s ease,transform .58s cubic-bezier(.22,1,.36,1)}
+.chap.past{transform:translateX(-52px)}
+.chap.on{opacity:1;transform:none;pointer-events:auto}
 
-/* 레일 밖으로 나온 착지 화면.
-   카드 안 스크롤은 위로 되돌아가기가 어렵다 — 문서 흐름에 두면 그냥 페이지 스크롤이다.
-   .panel--land 뒤에 와야 한다(명시도 같음, 순서로 이긴다) */
-.panel--flow{
-  scroll-snap-align:start;
-  position:static;opacity:1;transform:none;translate:none;pointer-events:auto;
-  inset:auto;max-height:none;overflow:visible;
-  width:min(1060px,calc(100% - var(--edge)*2));margin:0 auto;
-  padding:clamp(30px,8vw,52px) 0 calc(env(safe-area-inset-bottom,0px) + 56px);
-  background:none;backdrop-filter:none;border:0;border-radius:0;box-shadow:none;
-  border-top:1px solid var(--line);
+.chap h2{font-size:clamp(1.9rem,4.4vw,3.4rem);line-height:.98}
+.chap p{margin-top:16px;max-width:30em;color:var(--ink-2);font-size:clamp(.98rem,1.4vw,1.14rem)}
+/* 이름을 붙이는 한 문장 — 설명 문단보다 진하게 두어 여기서 새 단어가 나온다는 걸 알린다 */
+.chap p.coin{margin-top:13px;color:var(--ink)}
+.chap p.coin b{font-weight:800}
+.chap .btn{margin-top:26px;align-self:flex-start}
+
+/* 앱 화면 */
+.phone{width:100%;max-width:300px;transform:scale(calc(.94 + var(--enter,1) * .06));justify-self:center;background:var(--cream);
+  border:1px solid var(--ink);box-shadow:10px 10px 0 var(--ink);padding:9px;
+  display:flex;flex-direction:column;gap:8px}
+.ph__head{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--ink-2)}
+.ph__dot{width:8px;height:8px;background:var(--hot);animation:blink 1.4s steps(1) infinite}
+.beat{display:flex;gap:3px;margin-left:auto}
+.beat i{width:6px;height:6px;border:1px solid var(--ink)}
+.beat i.on{background:var(--ink)}
+.beat i:nth-child(4n+1).on{background:var(--hot)}
+/* 화면 본체 — 세 장면이 같은 자리에서 바뀐다 */
+.ph__body{position:relative;aspect-ratio:9/16;background:var(--ink);overflow:hidden}   /* 밀려나는 화면이 기기 밖으로 나가면 안 된다 */
+/* 앱 화면이 넘어가는 것도 보여야 한다. 지나간 화면은 왼쪽으로 밀려나고 다음 화면이 오른쪽에서 들어온다 */
+.sc{position:absolute;inset:0;opacity:0;transform:translateX(38%);padding:5px;
+  transition:opacity .34s ease,transform .52s cubic-bezier(.22,1,.36,1)}
+.sc.past{transform:translateX(-38%)}
+.sc.on{opacity:1;transform:none}
+/* 01 내 파트 */
+.me{width:100%;height:100%;position:relative;display:grid;place-items:center;background:var(--dark);
+  border:1px solid var(--c3)}
+.me svg{width:38%;max-width:56px;fill:var(--c3)}
+.me__tag{position:absolute;left:7px;bottom:6px;font-family:var(--mono);font-size:10px;color:var(--cream)}
+/* 02 이미 올라와 있는 연주들 */
+.sc--pick{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.cd{position:relative;display:grid;place-items:center;background:var(--dark);border:1px solid #2e3444;
+  transition:border-color .3s,background .3s}
+.cd svg{width:34%;max-width:40px;fill:#454d61;transition:fill .3s}
+.cd b{position:absolute;left:6px;bottom:5px;font-family:var(--mono);font-size:9.5px;font-weight:400;color:#7b8397}
+.cd i{position:absolute;right:6px;top:6px;width:13px;height:13px;border:1px solid #454d61}
+.cd.on{border-color:var(--cream)}
+.cd.on b{color:var(--cream)}
+.cd[data-c="1"].on svg{fill:var(--c1)} .cd[data-c="2"].on svg{fill:var(--c2)}
+.cd[data-c="4"].on svg{fill:var(--c4)} .cd[data-c="5"].on svg{fill:var(--c5)}
+.cd.on i{background:var(--hot);border-color:var(--hot)}
+.cd.on i::after{content:"";position:absolute;left:3px;top:5px;width:6px;height:3px;
+  border-left:2px solid var(--cream);border-bottom:2px solid var(--cream);transform:rotate(-45deg)}
+/* 03·04 합쳐진 화면 */
+.screen__grid{width:100%;height:100%;display:grid;gap:5px;grid-template-columns:1fr;grid-auto-rows:1fr}
+.screen__grid[data-n="3"],.screen__grid[data-n="4"],.screen__grid[data-n="5"]{grid-template-columns:1fr 1fr}
+.tile{position:relative;overflow:hidden;display:grid;place-items:center;background:var(--dark);
+  border:1px solid color-mix(in srgb,var(--c) 55%,#000);animation:pop .34s ease both}
+.tile.wide{grid-column:span 2}
+.tile svg{width:40%;max-width:46px;fill:var(--c)}
+.tile__tag{position:absolute;left:5px;bottom:4px;display:flex;align-items:center;gap:4px;
+  font-family:var(--mono);font-size:9.5px;color:var(--cream)}
+.tile__tag i{width:6px;height:6px;background:var(--c)}
+@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+/* 진행 막대 + 상태 줄 */
+.ph__bar{height:6px;border:1px solid var(--ink)}
+.ph__bar i{display:block;height:100%;width:0;background:var(--hot)}
+.ph__foot{display:flex;align-items:center;gap:10px}
+.ph__txt{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-2);white-space:nowrap}
+
+/* 진행 표시 · 스크롤 힌트 */
+.ticks{position:absolute;left:var(--edge);top:50%;translate:0 -50%;list-style:none;display:grid;gap:14px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#a7aebd}
+.ticks li{transition:color .3s}
+.stage[data-ch="0"] .ticks li:nth-child(1),.stage[data-ch="1"] .ticks li:nth-child(2),
+.stage[data-ch="2"] .ticks li:nth-child(3),.stage[data-ch="3"] .ticks li:nth-child(4){color:var(--hot);font-weight:700}
+@media(max-width:1180px){.ticks{display:none}}
+.scrollhint{position:absolute;left:50%;bottom:22px;translate:-50% 0;font-family:var(--mono);font-size:10px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--mute);animation:bob 2.4s ease-in-out infinite}
+.stage:not([data-ch="0"]) .scrollhint{opacity:0;animation:none;transition:opacity .3s}
+@keyframes bob{0%,100%{translate:-50% 0;opacity:.5}50%{translate:-50% 6px;opacity:1}}
+
+@media(max-width:860px){
+  .stage__in{grid-template-columns:1fr;gap:18px;justify-items:center}
+  .chaps{min-height:clamp(230px,34vh,300px);order:2;width:100%}
+  .chap{position:absolute;justify-content:flex-start}
+  .chap h2{font-size:clamp(1.5rem,6vw,2rem)}
+  .chap p{font-size:.95rem}
+  .phone{order:1;max-width:min(216px,50vw)}
+  .scrollhint{display:none}
 }
 
-/* 진행 표시 — 어디쯤 왔는지 */
-.ticks{position:absolute;left:var(--edge);top:50%;translate:0 -50%;display:grid;gap:6px;z-index:3}
-.ticks button{
-  display:grid;place-items:center;width:26px;height:26px;   /* 클릭 영역은 넉넉히, 점만 작게 */
-  border:0;background:none;padding:0;cursor:pointer;
-}
-.ticks button::before{
-  content:"";width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.22);
-  transition:background .3s,transform .3s;
-}
-.ticks button:hover::before{background:rgba(255,255,255,.5);transform:scale(1.3)}
-.ticks button.on::before{background:var(--c-cyan);transform:scale(1.55);box-shadow:0 0 14px var(--c-cyan)}
-@media(max-width:820px){.ticks{display:none}}
+/* ════ 문제 — 흑백 반전 ════ */
+.quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(14px,2vw,20px);margin-top:clamp(26px,4vw,40px)}
+.quote{border:1px solid var(--cream);padding:clamp(20px,2.6vw,28px)}
+.quote b{display:block;font-size:clamp(1.05rem,1.8vw,1.3rem);color:var(--mark);letter-spacing:-.02em}
+.quote p{margin-top:12px;color:#c6cbd8;font-size:.96rem}
+.quote__k{display:block;margin-bottom:12px;font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:#8892a5}
 
-.hint{
-  position:absolute;left:50%;bottom:26px;translate:-50% 0;z-index:2;
-  font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
-  animation:bob 2.4s ease-in-out infinite;transition:opacity .3s;
+/* ════ 문제 ════ 어두운 벽에 붙은 전단지. 이 종이가 곧 뜯겨 나간다 */
+/* 해결 선언의 오른쪽 칸. 좁은 화면에선 글 아래로 떨어지므로 그때만 위 여백을 준다 */
+.prob__fly{width:min(300px,100%);margin-inline:auto}
+.probs{display:grid;gap:0;margin-top:clamp(22px,3vw,32px)}
+.probs > div{padding:14px 0;border-top:1px solid rgba(255,255,255,.16);display:grid;
+  grid-template-columns:minmax(0,10em) 1fr;gap:4px 18px;align-items:baseline}
+.probs b{font-size:clamp(1rem,1.5vw,1.14rem);letter-spacing:-.03em;color:var(--mark)}
+.probs p{color:#c6cbd8;font-size:.93rem}
+.prob__fly .flyer{width:100%;margin:0;padding:22px 16px 0;transform:rotate(-2.4deg)}
+.prob__fly .flyer h3{font-size:clamp(1.3rem,2.2vw,1.62rem);margin-top:6px}
+.prob__fly .flyer p{font-size:12px;margin-top:8px}
+.prob__fly .flyer__stamp{right:-10px;top:52px;padding:4px 8px;font-size:10px}
+.prob__fly .flyer__k{font-size:9.5px}
+@media(max-width:860px){.probs > div{grid-template-columns:1fr}
+  .prob__fly{width:min(258px,70%);margin-top:clamp(30px,5vw,50px)}}
+
+/* ════ 해결 선언 ════ 페이지 전체의 멘탈 모델이 여기서 확정된다 */
+.turn{margin-top:clamp(42px,6vw,74px);padding-top:clamp(30px,4vw,44px);border-top:1px solid rgba(255,255,255,.22);
+  display:grid;grid-template-columns:1.1fr minmax(0,430px);gap:clamp(24px,4vw,64px);align-items:center}
+.turn h2{line-height:1.08}
+.steps4{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--cream)}
+.steps4 li{padding:clamp(12px,1.6vw,18px) clamp(8px,1vw,12px);border-right:1px solid var(--cream);text-align:center}
+.steps4 li:last-child{border-right:0}
+.steps4 b{display:block;font-family:var(--mono);font-size:clamp(10px,1.1vw,12px);letter-spacing:.1em;color:var(--mark)}
+.steps4 span{display:block;margin-top:6px;font-size:clamp(.78rem,1vw,.88rem);color:#c6cbd8;line-height:1.4}
+@media(max-width:860px){.turn{grid-template-columns:1fr}}
+@media(max-width:520px){.steps4{grid-template-columns:1fr 1fr}
+  .steps4 li:nth-child(2){border-right:0}
+  .steps4 li:nth-child(-n+2){border-bottom:1px solid var(--cream)}}
+
+/* ════ 결과물 ════ 이 페이지에서 제일 크게 보여야 하는 건 이 앱이 만들어주는 물건이다 */
+.result{display:grid;grid-template-columns:1fr minmax(0,520px);gap:clamp(28px,5vw,72px);align-items:start}
+.scr{aspect-ratio:9/16;background:var(--ink);border:1px solid var(--ink);box-shadow:9px 9px 0 var(--ink);
+  padding:5px;display:grid;gap:4px;grid-template-columns:1fr 1fr;grid-auto-rows:1fr}
+.scr[data-n="2"]{grid-template-columns:1fr}
+.scr[data-n="9"]{grid-template-columns:repeat(3,1fr);gap:3px}
+/* 릴 — 스크롤 길이가 곧 넘길 장수다. 세 장이 창 하나 안에 세로로 붙어 있고,
+   스크롤이 트랙을 밀어 올린다. 창은 붙박이라 넘기는 동안 화면 밖으로 나가지 않는다 */
+.reels{height:300vh}
+.reels__stick{position:sticky;top:0;height:100vh;display:grid;place-items:center}
+.reel{width:min(340px,42vh)}
+.reel__win{aspect-ratio:9/16;overflow:hidden;border:1px solid var(--ink);box-shadow:9px 9px 0 var(--ink);background:var(--ink)}
+.reel__track{height:100%;display:grid;grid-auto-rows:100%;will-change:transform}
+.reel__win .scr{height:100%;aspect-ratio:auto;border:0;box-shadow:none}
+.reel__dots{list-style:none;display:flex;justify-content:center;gap:6px;margin-top:14px}
+.reel__dots li{width:5px;height:5px;border:1px solid var(--ink);opacity:.3}
+.reel__dots li.on{opacity:1;background:var(--ink)}
+.reel__cap{margin-top:9px;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--mute)}
+/* 왼쪽 글도 같이 붙어 있어야 한다 — 릴만 붙으면 설명 없는 화면만 세 번 지나간다 */
+@media(min-width:861px){.result > div:first-child{position:sticky;top:22vh}}
+/* CTA 앞의 물음 — 답이 바로 아래 버튼이다. 버튼에서 떼어 놓으면 세 번째 제목처럼 읽힌다 */
+.big{margin-top:clamp(28px,3.6vw,42px);font-size:clamp(1.02rem,1.4vw,1.16rem);font-weight:700;letter-spacing:-.02em}
+.big + .btn{margin-top:11px}
+@media(max-width:860px){.result{grid-template-columns:1fr}.reel{width:min(300px,44vh)}}
+/* 모션을 줄이는 사람에게 붙박이 화면은 부담이다 — 세 장을 그냥 아래로 이어 붙인다 */
+@media(prefers-reduced-motion:reduce){
+  .reels{height:auto}
+  .reels__stick{position:static;height:auto}
+  .reel{width:min(340px,100%);margin-inline:auto}
+  .reel__win{aspect-ratio:auto;overflow:visible;border:0;box-shadow:none;background:none}
+  .reel__track{height:auto;grid-auto-rows:auto;gap:22px;transform:none !important}
+  .reel__win .scr{height:auto;aspect-ratio:9/16;border:1px solid var(--ink);box-shadow:9px 9px 0 var(--ink)}
+  .reel__dots{display:none}
 }
-body.moved .hint{opacity:0}
 
-/* ── 소리 토글 ── 자동재생 정책상 클릭으로만 켤 수 있어서 항상 보여야 한다 */
-.sound{
-  position:fixed;left:var(--edge);bottom:22px;z-index:5;
-  display:inline-flex;align-items:center;gap:9px;padding:8px 15px 8px 12px;
-  border:1px solid var(--line);border-radius:999px;cursor:pointer;
-  background:rgba(20,22,52,.72);backdrop-filter:blur(12px);
-  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--muted);transition:color .25s,border-color .25s;
-}
-.sound:hover{color:var(--ink);border-color:rgba(255,255,255,.24)}
-.sound.on{color:var(--c-cyan);border-color:rgba(152,207,246,.4)}
-.sound b{display:flex;align-items:flex-end;gap:2px;height:11px}
-.sound b i{width:2px;border-radius:1px;background:currentColor;transform-origin:bottom;height:34%}
-.sound b i:nth-child(2){height:100%}
-.sound b i:nth-child(3){height:62%}
-.sound.on b i{animation:eq 1.1s ease-in-out infinite}
-.sound.on b i:nth-child(2){animation-delay:.18s}
-.sound.on b i:nth-child(3){animation-delay:.36s}
+/* ════ 기능 ════ 기능 이름이 아니라 이득을 제목으로 */
+.feat__k{display:block;margin-top:clamp(26px,3.4vw,38px);font-family:var(--mono);font-size:11px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
+.feat__k + .feat{margin-top:4px}
+/* 한 묶음이 네 개다. auto-fit로 두면 넓은 화면에서 3+1로 떨어져 오른쪽이 통째로 빈다 */
+.feat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(28px,4vw,60px);
+  margin-top:clamp(26px,4vw,40px)}
+@media(max-width:720px){.feat{grid-template-columns:1fr}}
+.feat > div{padding:clamp(18px,2.2vw,24px) 0;border-top:1px solid var(--line-soft);
+  display:grid;grid-template-columns:26px minmax(0,1fr);column-gap:13px;align-items:start}
+.feat > div > svg{width:22px;height:22px;margin-top:1px;fill:none;stroke:var(--hot);
+  stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.feat > div > :not(svg){grid-column:2}
+.feat b{display:block;font-size:clamp(1rem,1.5vw,1.14rem);font-weight:800;letter-spacing:-.03em;line-height:1.3}
+.feat p{margin-top:8px;color:var(--ink-2);font-size:.92rem;line-height:1.6}
+.feat .tag{display:inline-block;margin-top:9px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mute)}
 
-/* 모바일은 위아래 모두 패널·카드가 차지한다. 유일하게 비는 헤더 줄, CTA 왼쪽에 둔다 */
-@media(max-width:820px){
-  /* 헤더 줄 안, CTA 왼쪽. z-index는 헤더(60)보다 높아야 블러 뒤로 안 깔린다.
-     좁은 화면에서는 글자를 빼고 아이콘만 — 어두운 헤더 위 어두운 알약은 안 보인다 */
-  .sound{top:15px;bottom:auto;left:auto;right:var(--edge);
-    z-index:70;width:40px;height:40px;padding:0;justify-content:center;gap:0;
-    background:rgba(28,32,68,.95)}
-  .sound span{display:none}
-  /* 2px 막대 3개는 40px 버튼 안에서 안 보인다. 굵고 크게 */
-  .sound b{height:16px;gap:3px}
-  .sound b i{width:3px}
-  .sound.on{border-color:rgba(152,207,246,.75);box-shadow:0 0 0 1px rgba(152,207,246,.2)}
-  .hint{display:none}          /* 모바일은 스크롤을 안내할 필요가 없고, 패널과 계속 겹친다 */
-}
-@keyframes eq{0%,100%{transform:scaleY(.34)}50%{transform:scaleY(1)}}
-@keyframes bob{0%,100%{translate:-50% 0;opacity:.55}50%{translate:-50% 6px;opacity:1}}
+/* ════ 이런 사람에게 ════ */
+.who{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:clamp(18px,3vw,40px);
+  margin-top:clamp(26px,4vw,40px)}
+.who__n{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--hot-2)}
+.who b{display:block;margin-top:8px;font-size:clamp(1rem,1.5vw,1.16rem);font-weight:800;letter-spacing:-.03em}
+.who p{margin-top:7px;color:var(--ink-2);font-size:.92rem;line-height:1.6}
 
-/* ── 카메라를 못 쓰는 환경: 레일을 평범한 세로 문서로 되돌린다 ── */
-.fallback .rail{height:auto}
-.fallback .viewport{position:static;height:auto;overflow:visible;padding:calc(var(--topbar) + 40px) 0 40px}
-.fallback .world{display:none}
-.fallback .ticks,.fallback .hint{display:none}
-.fallback .panels{position:static;pointer-events:auto}
-.fallback .panel{
-  position:static;opacity:1;transform:none;translate:none;pointer-events:auto;
-  width:auto;max-width:820px;margin:0 auto clamp(28px,5vw,52px);inset:auto;
-}
-.fallback .panel--intro{text-align:center}
-.fallback .panel--stop{background:rgba(20,22,52,.9)}
+/* ════ 준비물 ════ */
+.need__in{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(24px,5vw,70px);align-items:start}
+.need ul{list-style:none;display:grid;gap:14px}
+.need li{padding-left:20px;position:relative;color:var(--ink-2);font-size:clamp(.95rem,1.3vw,1.05rem);line-height:1.6}
+.need li::before{content:"";position:absolute;left:0;top:.52em;width:9px;height:9px;background:var(--hot)}
+.need li b{color:var(--ink);font-weight:800}
+@media(max-width:860px){.need__in{grid-template-columns:1fr}}
 
-/* ════ 이하 평범한 스크롤 구간 ════ */
+/* ════ 마지막 ════ */
+/* 마지막 섹션은 가운데 정렬 — 여기서 할 일은 읽는 게 아니라 하나(입력)뿐이다.
+   본문 좌측 정렬을 유지한 건 안내문 두 개뿐이다. 긴 글을 가운데 맞추면 줄 시작점이 흔들려 읽기 나쁘다 */
+.last{border-bottom:0;text-align:center}
+.last .cta__box{margin-inline:auto}
+.last .signup__row{justify-content:center}
+.last .privacy p{text-align:left;margin-inline:auto}
+.cta__lead{font-size:clamp(1.15rem,2vw,1.5rem);font-weight:800;letter-spacing:-.03em}
+.cta__meta{margin-top:16px;padding-top:14px;border-top:1px solid var(--line-soft);
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--mute)}
 
-.reel{margin-top:clamp(32px,4vw,48px)}
-.reel__frame{
-  position:relative;aspect-ratio:9/16;width:min(300px,66vw);margin-inline:auto;
-  overflow:hidden;border-radius:var(--r-xl);background:rgba(255,255,255,.04);
-  border:1px solid var(--line);box-shadow:var(--sh-lg);
-}
-.reel__frame video,.reel__frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.reel__ph{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:16px;text-align:center;
-  background:linear-gradient(160deg,rgba(152,207,246,.14),rgba(221,139,244,.08) 72%)}
-.reel__ph b{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;
-  background:var(--grad);color:#0a0c1c;font-size:21px;padding-left:4px;box-shadow:0 12px 34px -8px rgba(152,207,246,.5)}
-.reel__ph span{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--muted);line-height:2}
+/* ════ 사전등록 ════ */
+.cta__box{margin-top:clamp(26px,4vw,40px);border:1px solid var(--ink);background:var(--cream);
+  box-shadow:10px 10px 0 var(--hot);padding:clamp(24px,4vw,44px);max-width:680px}
+.signup{margin-top:22px}
+.signup__row{display:flex;gap:10px;flex-wrap:wrap}
+.signup input{flex:1;min-width:190px;padding:14px 16px;font:inherit;font-size:15px;color:var(--ink);
+  background:var(--paper);border:1px solid var(--ink)}
+.signup input::placeholder{color:var(--mute)}
+.signup input:focus{outline:none;box-shadow:inset 0 0 0 2px var(--hot)}
+.note{margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;line-height:1.9;color:var(--mute)}
+.msg{margin-top:10px;font-size:14px;font-weight:700;color:var(--hot-2);min-height:1.4em}
+.msg[data-state="error"]{color:var(--hot-2)}
 
-.faq{margin-top:clamp(30px,4vw,44px);max-width:820px;margin-inline:auto}
-.faq details{border-bottom:1px solid var(--line)}
-.faq details:first-of-type{border-top:1px solid var(--line)}
-.faq summary{list-style:none;cursor:pointer;padding:22px 4px;font-size:1.04rem;font-weight:650;
-  display:flex;justify-content:space-between;align-items:center;gap:24px;transition:color .18s}
+/* ════ FAQ ════ */
+.faq{margin-top:clamp(22px,3vw,34px);border-top:1px solid var(--ink)}
+.faq details{border-bottom:1px solid var(--ink)}
+.faq summary{list-style:none;cursor:pointer;padding:18px 2px;font-size:1.02rem;font-weight:700;letter-spacing:-.02em;
+  display:flex;justify-content:space-between;align-items:center;gap:18px}
 .faq summary::-webkit-details-marker{display:none}
-.faq summary:hover{color:var(--accent)}
-.faq summary::after{content:"+";font-family:var(--mono);font-weight:300;font-size:1.4rem;color:var(--muted);transition:transform .25s var(--ease)}
-.faq details[open] summary::after{transform:rotate(45deg);color:var(--accent)}
-.faq details p{padding:0 4px 24px;color:var(--copy);font-size:.98rem}
+.faq summary::after{content:"+";font-family:var(--mono);font-size:1.3rem;color:var(--hot)}
+.faq details[open] summary::after{content:"–"}
+.faq details p{padding:0 2px 20px;color:var(--ink-2);font-size:.95rem;max-width:56em}
+.privacy{margin-top:20px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--mute)}
+.privacy summary{cursor:pointer;list-style:none;text-decoration:underline;text-underline-offset:3px;display:inline-block}
+.privacy summary::-webkit-details-marker{display:none}
+.privacy p{margin-top:9px;max-width:56em;line-height:1.9;font-family:var(--sans);font-size:12.5px;letter-spacing:0}
+.privacy a{text-decoration:underline}
 
-.signup{margin:34px auto 0;max-width:490px}
-.signup__row{display:flex;gap:9px}
-/* 좁은 화면에서도 한 줄로 — 대신 버튼 좌우 여백을 줄여 입력칸 폭을 확보한다 */
-@media(max-width:480px){
-  .signup input{padding:14px 16px}
-  .btn{padding:14px 15px;font-size:14.5px}
-  .signup__row{gap:7px}
+/* ══════════════════════════════════════════════════════════
+   진입 — 자기 연출이 없는 정적 블록만 화면에 들어올 때 한 번 떠오른다.
+   스크롤 위치를 진행도로 쓰면(animation-timeline:view()) 중간에서 멈췄을 때
+   반쯤 투명한 상태로 굳는다. 그래서 "보이면 한 번 재생하고 끝"으로 바꿨다.
+   .rise 클래스는 JS가 붙인다 — JS가 죽어도 숨은 채로 남지 않는다.
+   레일·릴·전단지는 이미 자기 움직임이 있으므로 제외한다
+   ══════════════════════════════════════════════════════════ */
+@media(prefers-reduced-motion:no-preference){
+  .rise{opacity:0;transform:translateY(34px);
+        transition:opacity .62s ease, transform .62s cubic-bezier(.22,.7,.28,1)}
+  .rise.in{opacity:1;transform:none}
+  /* 나란히 놓인 것들은 한 박자 늦게 따라 올라온다. 같이 움직이면 한 덩어리로 보인다 */
+  .quote:nth-child(2n), .feat > div:nth-child(2n), .who > div:nth-child(2n),
+  .probs > div:nth-child(2n), .need li:nth-child(2n){transition-delay:.11s}
 }
-.signup input{flex:1;min-width:0;padding:15px 18px;font:inherit;font-size:15px;color:var(--ink);
-  border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.06)}
-.signup input::placeholder{color:var(--muted)}
-.signup input:focus{outline:none;border-color:var(--c-cyan);box-shadow:0 0 0 4px rgba(152,207,246,.18)}
-.btn{padding:15px 20px;font:inherit;font-size:15px;font-weight:650;border:0;border-radius:999px;
-  cursor:pointer;white-space:nowrap;background:var(--grad);color:#0a0c1c;
-  box-shadow:0 10px 26px -8px rgba(152,207,246,.45);transition:filter .18s,transform .18s}
-.btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
-.btn:disabled{opacity:.5;cursor:progress;transform:none}
-.note{margin-top:14px;font-size:12.5px;color:var(--muted)}
-.msg{margin-top:10px;font-size:14px;color:var(--accent);min-height:1.4em;font-weight:500}
-.msg[data-state="error"]{color:#fca5a5}
-.proof[hidden]{display:none}
-.proof{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:20px;font-size:13.5px;color:var(--copy)}
-.proof b{color:var(--ink);font-weight:700}
-.proof__dots{display:flex;flex:none}
-.proof__dots i{width:24px;height:24px;border-radius:50%;border:2px solid var(--bg-2);margin-left:-8px;
-  background:var(--grad)}
-.proof__dots i:first-child{margin-left:0}
 
-footer{padding:36px 0 48px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
-  font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
-footer nav{display:flex;gap:24px}
+footer{padding:30px 0 46px;border-top:1px solid var(--ink);display:grid;gap:16px}
+.foot__id{font-size:18px;font-weight:800;letter-spacing:-.03em;color:var(--ink)}
+.foot__t{display:block;margin-top:5px;font-size:12.5px;color:var(--ink-2)}
+.foot__b{display:flex;flex-wrap:wrap;gap:6px 22px}
+.foot__b a{font-size:13px;font-weight:700;color:var(--ink-2)}
+.foot__b a:hover{color:var(--hot)}
+.foot__c{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--mute)}
+footer a:hover{color:var(--hot)}
 
 @media(prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  .pill::before,.hint,.sound.on b i{animation:none}
-  .btn,.staff-note::before{transition:none}
+  *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
 }
 </style>
-
-<!-- 구조화 데이터 — 답변은 화면에 보이는 FAQ 문장과 글자 그대로 같아야 한다.
-     FAQ를 고치면 여기도 같이 고친다. -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "SoftwareApplication",
-      "name": "JamIT",
-      "applicationCategory": "MultimediaApplication",
-      "operatingSystem": "iOS, Android",
-      "inLanguage": "ko",
-      "url": "https://asm17-012.github.io/Jamit-Landing/",
-      "image": "https://asm17-012.github.io/Jamit-Landing/og.png",
-      "description": "자기 파트만 찍어 올리면 다른 사람이 베이스와 드럼을 얹어 합주가 완성되는 온라인 합주 앱. 최대 아홉 명까지 합칠 수 있고 휴대폰 하나면 됩니다."
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {"@type":"Question","name":"악기를 얼마나 잘 다뤄야 하나요?","acceptedAnswer":{"@type":"Answer","text":"한 파트를 끝까지 칠 수 있으면 됩니다. 마음에 들 때까지 다시 찍어도 아무도 안 기다립니다."}},
-        {"@type":"Question","name":"녹음 장비가 따로 있어야 하나요?","acceptedAnswer":{"@type":"Answer","text":"휴대폰이면 됩니다. 오디오 인터페이스가 있으면 소리가 더 좋아지지만, 없다고 못 하는 건 아닙니다."}},
-        {"@type":"Question","name":"내 영상은 누가 보게 되나요?","acceptedAnswer":{"@type":"Answer","text":"올릴 때 공개 범위를 직접 정합니다. 공개로 두면 다른 사람이 자기 합주에 가져다 쓸 수 있고, 비공개로 두면 나만 봅니다. 내 연주가 어떤 합주에 들어갔는지는 앱에서 확인할 수 있습니다."}},
-        {"@type":"Question","name":"몇 개까지 합칠 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"아홉 개까지입니다. 둘이서도 합주가 되고, 고른 수에 맞춰 화면이 알아서 나뉩니다."}},
-        {"@type":"Question","name":"언제 사용할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"2026년 9월 중순 정식 출시를 목표로 개발 중입니다. 사전등록해 두시면 출시되는 날 이메일로 알려드립니다."}},
-        {"@type":"Question","name":"iOS와 Android 모두 지원하나요?","acceptedAnswer":{"@type":"Answer","text":"두 플랫폼 모두 지원합니다."}}
-      ]
-    }
-  ]
-}
-</script>
 </head>
 <body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="person" viewBox="0 0 40 40">
+    <circle cx="20" cy="13.5" r="6.6"/>
+    <path d="M5.8 38c1.4-8 7-12.2 14.2-12.2S32.8 30 34.2 38z"/>
+  </symbol>
+  <!-- 기능 목록용 선 아이콘. 채우기 없이 1.7px 획 하나로만 그린다 —
+       잉크로 그은 선이라는 이 페이지의 규칙을 아이콘도 따른다 -->
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 16V4m-5 5 5-5 5 5M4 19h16"/></symbol>
+  <symbol id="i-pick" viewBox="0 0 24 24"><path d="M4 6.5h10M4 12h8M4 17.5h6m4.6-.6 2.6 2.6 4.8-5.4"/></symbol>
+  <symbol id="i-tune" viewBox="0 0 24 24"><path d="M4 8h9m5 0h2M4 16h3m5 0h8"/><circle cx="15.5" cy="8" r="2.2"/><circle cx="9.5" cy="16" r="2.2"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17"/><path d="M9.2 3.5v17M14.8 3.5v17M3.5 9.2h17M3.5 14.8h17"/></symbol>
+  <symbol id="i-again" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.7-6M20 3.5V10h-6.2"/></symbol>
+  <symbol id="i-cut" viewBox="0 0 24 24"><circle cx="6.2" cy="17.6" r="2.6"/><circle cx="17.8" cy="17.6" r="2.6"/><path d="M8 15.8 18 4M16 15.8 6 4"/></symbol>
+</svg>
 
 <header class="top">
   <div class="wrap top__in">
     <a class="top__id" href="#top">
       <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
-        <rect width="32" height="32" rx="7" fill="#0d0f24"/>
-        <rect x="8" y="13" width="3" height="6" rx="1.5" fill="#98cff6"/>
-        <rect x="14" y="8" width="3" height="16" rx="1.5" fill="#baadf5"/>
-        <rect x="20" y="11" width="3" height="10" rx="1.5" fill="#dd8bf4"/>
+        <rect width="32" height="32" fill="#1a1f2b"/>
+        <rect x="9" y="13" width="3" height="6" fill="#f7f8fb"/>
+        <rect x="15" y="8" width="3" height="16" fill="#4c8df6"/>
+        <rect x="21" y="11" width="3" height="10" fill="#f7f8fb"/>
       </svg>
-      JamIT
+      JAMIT
     </a>
-    <!-- href는 진짜 앵커로 둔다 — JS가 죽거나 reduced-motion 폴백일 때 그대로 동작한다 -->
-    <a class="top__cta" href="#signup">사전 예약</a>
+    <nav class="top__nav">
+      <a href="#rail" class="m--hide">어떻게</a>
+      <a href="#features" class="m--hide">기능</a>
+      <a href="#faq" class="m--hide">질문</a>
+      <a class="btn btn--sm" href="#signup">출시 알림 받기</a>
+    </nav>
   </div>
 </header>
 
-<!-- 소리 토글은 .viewport 밖에 둔다. sticky는 쌓임 맥락을 만들어서,
-     안에 넣으면 z-index를 아무리 올려도 헤더(z 60) 밑에 깔린다. -->
-<button class="sound" type="button" aria-pressed="false">
-  <b aria-hidden="true"><i></i><i></i><i></i></b><span>소리</span>
-</button>
+<main id="top">
 
-<!-- ══════════ 레일: 오선지를 따라가는 카메라 ══════════ -->
-<section class="rail" id="rail">
-  <!-- 정거장마다 멈춤점. 세게 스크롤해도 글자와 글자 사이에 어정쩡하게 서지 않는다 -->
-  <div class="snaps" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-  <div class="viewport">
+  <!-- ══════════ 히어로 ══════════ -->
+  <section class="wrap hero">
+    <div>
+      <span class="eye">휴대폰 하나로 만드는 온라인 합주</span>
+      <h1>나만의 연주가<br>우리의 <em>합주</em>로</h1>
+      <!-- H1은 후킹, 이 문단은 설명 — 방문자가 3초 안에 '무엇인지'를 알아야 한다 -->
+      <p class="lede">
+        각자의 파트만 연주해서 올리면, <br>
+        JAMIT이 <b>하나의 합주 영상</b>으로 만듭니다. <br>
+        그렇게 최대 아홉 명까지.
+      </p>
+      <div class="hero__cta">
+        <a class="btn" href="#signup">출시 알림 받기 <span aria-hidden="true">→</span></a>
+      </div>
+      <p class="hero__note">iOS · Android · <b>2026년 9월 출시 예정</b></p>
 
-    <div class="world" id="world" aria-hidden="true">
-      <span class="clef">&#119070;</span>
-      <div class="staff"><i></i><i></i><i></i><i></i><i></i></div>
-      <span class="bar" style="left:1250px"></span>
-      <span class="bar" style="left:2350px"></span>
-      <span class="bar" style="left:3450px"></span>
-      <span class="bar" style="left:4550px"></span>
-      <span class="bar" style="left:5650px"></span>
-
-      <span class="staff-note" data-i="1" style="--x:700px;--y:621px;--c:#98cff6">J<em>am</em></span>
-      <span class="staff-note" data-i="2" style="--x:1800px;--y:561px;--c:#a9bef6">a<em>part,</em></span>
-      <span class="staff-note" data-i="3" style="--x:2900px;--y:531px;--c:#baadf5">m<em>ix</em></span>
-      <span class="staff-note" data-i="4" style="--x:4000px;--y:471px;--c:#cc9cf4">I<em>t</em></span>
-      <span class="staff-note" data-i="5" style="--x:5100px;--y:411px;--c:#dd8bf4">T<em>ogether</em></span>
     </div>
 
-    <nav class="ticks" aria-label="정거장 바로가기">
-      <button type="button" class="on" aria-label="전경"></button>
-      <button type="button" aria-label="문제"></button>
-      <button type="button" aria-label="찍어서 올립니다"></button>
-      <button type="button" aria-label="고릅니다"></button>
-      <button type="button" aria-label="합주가 완성됩니다"></button>
-      <button type="button" aria-label="준비물"></button>
-      <button type="button" aria-label="사전등록"></button>
-    </nav>
+    <!-- 히어로 오른쪽은 결과물 하나만. 문제(전단지)는 바로 다음 섹션이 맡는다 -->
+    <div class="hero__proof">
+      <!-- 이 앱이 만들어주는 것 -->
+      <div class="hero__phone" aria-label="완성된 합주 영상 예시">
+        <div class="ph__head"><span class="ph__dot" aria-hidden="true"></span><span class="ph__tag">On Air</span></div>
+        <div class="ph__body">
+          <div class="screen__grid" data-n="4" style="height:100%">
+            <div class="tile" style="--c:var(--c3)"><svg viewBox="0 0 40 40"><use href="#person"/></svg>
+              <span class="tile__tag"><i></i>기타</span></div>
+            <div class="tile" style="--c:var(--c1)"><svg viewBox="0 0 40 40"><use href="#person"/></svg>
+              <span class="tile__tag"><i></i>드럼</span></div>
+            <div class="tile" style="--c:var(--c2)"><svg viewBox="0 0 40 40"><use href="#person"/></svg>
+              <span class="tile__tag"><i></i>베이스</span></div>
+            <div class="tile" style="--c:var(--c4)"><svg viewBox="0 0 40 40"><use href="#person"/></svg>
+              <span class="tile__tag"><i></i>보컬</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <div class="panels">
-      <!-- 0 · 전경 -->
-      <article class="panel panel--intro on" data-i="0">
-        <!-- '앱'이라는 단어가 첫 화면에 없으면 방문자는 이게 웹서비스인지 커뮤니티인지 모른 채 나간다 -->
-        <span class="pill">합주 앱 · 2026년 9월 출시</span>
-        <h1>나만의 연주가<br>우리의 <span class="hi">합주</span>로</h1>
-        <p>
-          올려두면 누가 베이스를 얹습니다.<br>
-          또 누가 드럼을 얹습니다. 보컬도 붙습니다.<br>
-          그렇게 아홉 명까지. 서로 만나지 않습니다.
+<!-- 뜯겨 나온 그 한 장. 스크롤을 따라 콘솔의 첫 칸으로 내려앉는다 -->
+<!-- 종이와 그 위에 찍힌 번호는 한 덩어리다. 번호는 종이의 자식이라 종이가 돌고 커지는 대로
+     같이 움직이고, 종이 밖으로는 나갈 수 없다(overflow가 잘라낸다) -->
+<div class="slip" id="slip" aria-hidden="true" hidden>
+  <span class="flynum" id="flynum"><b>01</b><i>0-••••</i></span>
+</div>
+
+  <!-- ══════════ 02 문제 ══════════ 히어로에서 건 훅에 바로 답한다: 왜 지금까지 못 했나 -->
+  <section class="sec sec--dark prob">
+    <div class="wrap">
+        <h2>합주는 늘<br>사람에서 막힙니다</h2>
+        <p class="sec__lede">연주할 사람이 없는 것이 아닙니다. <br>한 명만 비거나 하루만 안 맞아도 그 합주는 무산됩니다.</p>
+        <div class="probs">
+          <div><b>사람이 없다</b><p>드럼 한 명이 비면 박자를 맞출 수 없습니다.</p></div>
+          <div><b>시간이 안 맞는다</b><p>모두의 일정을 맞추는 과정에 지칩니다.</p></div>
+          <div><b>장소도 부족하다</b><p>모두가 모일 장소도 대여해야 합니다.</p></div>
+        </div>
+        <div class="quotes">
+          <div class="quote">
+            <span class="quote__k">단톡방 · 3월</span>
+            <b>&ldquo;드럼만 있으면 되는데..&rdquo;</b>
+            <p>기타도 베이스도 모였는데 드럼만 없습니다. <br>구한다는 글은 한 달 전에 올렸고, 아직 답이 없습니다.</p>
+          </div>
+          <div class="quote">
+            <span class="quote__k">단톡방 · 금요일</span>
+            <b>&ldquo;이번 주는 좀 어려울 것 같아요.&rdquo;</b>
+            <p>네 명 중 한 명만 안 되면 그 합주는 무산됩니다. <br>달력은 넘어가고 단톡방 스크롤만 길어집니다.</p>
+          </div>
+        </div>
+      <!-- 해결 선언 — 페이지 전체의 멘탈 모델이 여기서 확정된다 -->
+      <div class="turn">
+        <div>
+          <h2>혼자 연주해도,<br><span class="mark">합주가 됩니다.</span></h2>
+          <p class="sec__lede">
+            자기 파트 하나를 올리세요. <br>
+            다른 사람이 올린 파트를 고르세요. <br>
+            나머지는 모두 JAMIT이 합니다.
+          </p>
+        </div>
+
+        <!-- 한 달째 벽에 붙어 있는 그것. 여기서 한 장이 뜯겨 나가 앱 화면이 된다.
+             해결 선언 오른쪽에 마주 놓았다 — 왼쪽이 답, 오른쪽이 그 답이 대체할 물건이다.
+             이 아래에는 레일만 와야 한다. 커지는 종이가 아래를 덮기 때문이다 -->
+        <div class="prob__fly">
+          <div class="flyer" aria-label="합주실 벽에 붙은 드럼 구인 전단지">
+            <span class="flyer__pin" aria-hidden="true"></span>
+            <span class="flyer__stamp" aria-hidden="true">한 달째</span>
+            <p class="flyer__k">급구</p>
+            <h3>드럼 구합니다</h3>
+            <p>기타 1 · 베이스 1 · 키보드 1 · 보컬 1<br>주 1회, 홍대 근처<br>연락 주세요</p>
+            <!-- 가운데 술 하나는 스크롤하면 실제로 뜯겨 나간다 (아래 .slip) -->
+            <div class="tabs" aria-hidden="true">
+              <span class="gone">010-••••</span>
+              <span>010-••••</span>
+              <span class="gone">010-••••</span>
+              <span>010-••••</span>
+              <span class="tear" id="tear">010-••••</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<div class="band" aria-hidden="true">
+  <div class="band__in">
+    <span>기타 <b>●</b> 베이스 <b>●</b> 드럼 <b>●</b> 키보드 <b>●</b> 보컬 <b>●</b> 어떤 파트든 <b>●</b></span>
+    <span>기타 <b>●</b> 베이스 <b>●</b> 드럼 <b>●</b> 키보드 <b>●</b> 보컬 <b>●</b> 어떤 파트든 <b>●</b></span>
+    <span>기타 <b>●</b> 베이스 <b>●</b> 드럼 <b>●</b> 키보드 <b>●</b> 보컬 <b>●</b> 어떤 파트든 <b>●</b></span>
+    <span>기타 <b>●</b> 베이스 <b>●</b> 드럼 <b>●</b> 키보드 <b>●</b> 보컬 <b>●</b> 어떤 파트든 <b>●</b></span>
+    <span>기타 <b>●</b> 베이스 <b>●</b> 드럼 <b>●</b> 키보드 <b>●</b> 보컬 <b>●</b> 어떤 파트든 <b>●</b></span>
+  </div>
+</div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       레일 — 뜯긴 종이가 화면을 덮고, 그 위에서 업로드→선택→합치기→완성이
+       스크롤을 따라 진행된다. 누를 것은 없다.
+       ══════════════════════════════════════════════════════════ -->
+  <section class="rail" id="rail" aria-label="앱이 어떻게 동작하는지">
+    <div class="stage" id="stage" data-ch="0">
+      <div class="railbar" aria-hidden="true"><i id="railFill"></i></div>
+      <span class="bignum" id="bignum" aria-hidden="true">01</span>
+      <div class="wrap stage__in">
+
+        <!-- 왼쪽: 장면마다 바뀌는 설명 -->
+        <div class="chaps">
+          <article class="chap" data-i="0">
+            <h2>나만의 연주를<br>업로드하세요</h2>
+            <p>기타면 기타만, 드럼이면 드럼만. 같이 할 사람도, 날짜도 정하지 않아요.
+               실수해도 괜찮아요. 마음에 들 때까지 다시 찍으세요.</p>
+          </article>
+          <article class="chap" data-i="1">
+            <h2>함께 할 친구를<br>선택하세요</h2>
+            <p>다른 사람이 올려둔 연주 중에서 마음에 드는 걸 고르기만 하면 돼요. <br>그렇게 총 아홉 명까지 함께 할 수 있어요.</p>
+          </article>
+          <article class="chap" data-i="2">
+            <h2>나머지는<br>JAMIT이 해드릴게요</h2>
+            <p>고른 수에 맞춰 화면이 나뉘고, 소리도, 영상도 모두 하나로 만들어요. <br>
+               음향 조절도, 믹싱도 자동입니다 — 복잡한 편집 앱은 꺼두세요.</p>
+          </article>
+          <article class="chap" data-i="3">
+            <h2>각자의 연주가<br>우리의 합주로</h2>
+            <!-- 결과물의 이름은 여기서 딱 한 번 정의한다. 만들어진 것을 눈으로 본 직후라
+                 "이게 그거구나"가 성립한다. 이 뒤 섹션부터는 설명 없이 그냥 쓴다 -->
+            <p>한 번도 만난 적 없는 사람들이 한 화면에서 같은 곡을 연주합니다. <br>약속도, 합주실도 없이 합주 하나가 끝났어요.</p>
+            <p class="coin">이렇게 완성된 합주 영상 한 편을 <b class="mark">잇츠</b>라고 불러요.</p>
+            <a class="btn" href="#signup">출시 알림 받기 <span aria-hidden="true">→</span></a>
+          </article>
+        </div>
+
+        <!-- 오른쪽: 앱 화면. 장면에 따라 안이 바뀐다 -->
+        <div class="phone" id="phone">
+          <div class="ph__head">
+            <span class="ph__dot" aria-hidden="true"></span>
+            <span class="ph__tag" id="phTag">REC</span>
+            <span class="beat" id="beat" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          </div>
+
+          <div class="ph__body">
+            <!-- 01 내 파트 한 개 -->
+            <div class="sc sc--up">
+              <div class="me"><svg viewBox="0 0 40 40"><use href="#person"/></svg>
+                <span class="me__tag">기타 · 내 파트</span></div>
+            </div>
+            <!-- 02 이미 올라와 있는 연주들 -->
+            <div class="sc sc--pick" id="picks">
+              <div class="cd" data-c="1"><svg viewBox="0 0 40 40"><use href="#person"/></svg><b>드럼</b><i></i></div>
+              <div class="cd" data-c="2"><svg viewBox="0 0 40 40"><use href="#person"/></svg><b>베이스</b><i></i></div>
+              <div class="cd" data-c="4"><svg viewBox="0 0 40 40"><use href="#person"/></svg><b>키보드</b><i></i></div>
+              <div class="cd" data-c="5"><svg viewBox="0 0 40 40"><use href="#person"/></svg><b>보컬</b><i></i></div>
+            </div>
+            <!-- 03·04 합쳐진 화면 -->
+            <div class="sc sc--mix">
+              <div class="screen__grid" id="grid" data-n="0">
+                <div class="tile" data-k="gtr"  style="--c:var(--c3)" hidden>
+                  <svg viewBox="0 0 40 40"><use href="#person"/></svg><span class="tile__tag"><i></i>기타</span></div>
+                <div class="tile" data-k="drum" style="--c:var(--c1)" hidden>
+                  <svg viewBox="0 0 40 40"><use href="#person"/></svg><span class="tile__tag"><i></i>드럼</span></div>
+                <div class="tile" data-k="bass" style="--c:var(--c2)" hidden>
+                  <svg viewBox="0 0 40 40"><use href="#person"/></svg><span class="tile__tag"><i></i>베이스</span></div>
+                <div class="tile" data-k="keys" style="--c:var(--c4)" hidden>
+                  <svg viewBox="0 0 40 40"><use href="#person"/></svg><span class="tile__tag"><i></i>키보드</span></div>
+                <div class="tile" data-k="lead" style="--c:var(--c5)" hidden>
+                  <svg viewBox="0 0 40 40"><use href="#person"/></svg><span class="tile__tag"><i></i>보컬</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ph__bar" aria-hidden="true"><i id="phFill"></i></div>
+          <div class="ph__foot">
+            <span class="ph__txt" id="phTxt">업로드 중</span>
+          </div>
+        </div>
+      </div>
+
+      <ol class="ticks" id="ticks" aria-hidden="true">
+        <li>01</li><li>02</li><li>03</li><li>04</li>
+      </ol>
+      <span class="scrollhint" id="scrollhint" aria-hidden="true">스크롤</span>
+    </div>
+  </section>
+
+  <!-- ══════════ 결과물 ══════════ -->
+  <section class="sec" id="result">
+    <div class="wrap result">
+      <div>
+        <h2>편하게 감상하세요</h2>
+        <p class="sec__lede">
+          만든 잇츠는 앱 안에도, 인스타그램·유튜브 어디에도 올릴 수 있어요.<br>
+          마음에 드는 잇츠에서 언제 어디서나 참여하세요.
         </p>
+        <p class="big">이 잇츠가 마음에 든다면?</p>
+        <a class="btn" href="#signup">출시 알림 받기 <span aria-hidden="true">→</span></a>
+      </div>
+      <!-- 결과물은 한 장씩 넘겨 보는 물건이다. 두 장을 나란히 두면 비교가 되지만,
+           숏폼처럼 한 장씩 넘어가면 "다음 장에는 몇 명이 있나"가 된다 -->
+      <div class="reels" id="reels">
+        <div class="reels__stick">
+          <div class="reel">
+            <div class="reel__win">
+              <div class="reel__track" id="reelTrack">
+                <div class="reel__slide" data-cap="잇츠 · 두 명 · 00:15">
+                  <div class="scr" data-n="2">
+                    <div class="tile" style="--c:var(--c3)"><svg viewBox="0 0 40 40"><use href="#person"/></svg><span class="tile__tag"><i></i>기타</span></div>
+                    <div class="tile" style="--c:var(--c4)"><svg viewBox="0 0 40 40"><use href="#person"/></svg><span class="tile__tag"><i></i>보컬</span></div>
+                  </div>
+                </div>
+                <div class="reel__slide" data-cap="잇츠 · 네 명 · 00:15">
+                  <div class="scr" data-n="4">
+                    <div class="tile" style="--c:var(--c3)"><svg viewBox="0 0 40 40"><use href="#person"/></svg><span class="tile__tag"><i></i>기타</span></div>
+                    <div class="tile" style="--c:var(--c1)"><svg viewBox="0 0 40 40"><use href="#person"/></svg><span class="tile__tag"><i></i>드럼</span></div>
+                    <div class="tile" style="--c:var(--c2)"><svg viewBox="0 0 40 40"><use href="#person"/></svg><span class="tile__tag"><i></i>베이스</span></div>
+                    <div class="tile" style="--c:var(--c4)"><svg viewBox="0 0 40 40"><use href="#person"/></svg><span class="tile__tag"><i></i>보컬</span></div>
+                  </div>
+                </div>
+                <div class="reel__slide" data-cap="잇츠 · 아홉 명 · 00:15">
+                  <div class="scr" data-n="9">
+            <div class="tile" style="--c:var(--c3)"><svg viewBox="0 0 40 40"><use href="#person"/></svg></div>
+            <div class="tile" style="--c:var(--c1)"><svg viewBox="0 0 40 40"><use href="#person"/></svg></div>
+            <div class="tile" style="--c:var(--c2)"><svg viewBox="0 0 40 40"><use href="#person"/></svg></div>
+            <div class="tile" style="--c:var(--c4)"><svg viewBox="0 0 40 40"><use href="#person"/></svg></div>
+            <div class="tile" style="--c:var(--c5)"><svg viewBox="0 0 40 40"><use href="#person"/></svg></div>
+            <div class="tile" style="--c:var(--c1)"><svg viewBox="0 0 40 40"><use href="#person"/></svg></div>
+            <div class="tile" style="--c:var(--c2)"><svg viewBox="0 0 40 40"><use href="#person"/></svg></div>
+            <div class="tile" style="--c:var(--c3)"><svg viewBox="0 0 40 40"><use href="#person"/></svg></div>
+            <div class="tile" style="--c:var(--c4)"><svg viewBox="0 0 40 40"><use href="#person"/></svg></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ol class="reel__dots" id="reelDots" aria-hidden="true"><li class="on"></li><li></li><li></li></ol>
+            <p class="reel__cap" id="reelCap">잇츠 · 두 명 · 00:15</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- TODO: action을 실제 Formspree 폼 ID로 교체 (착지 화면 폼과 동일한 ID) -->
+  <!-- ══════════ 기능 ══════════ -->
+  <section class="sec" id="features">
+    <div class="wrap">
+      <!-- 아래 항목 제목들과 이어 읽히는 도입구다. 끊긴 문장이 아니므로 완결형으로 고치지 말 것 —
+           "JAMIT에서는 → 자기 파트 하나만 올리세요 / 마음에 드는 연주를 고르세요 / …" -->
+      <h2>JAMIT에서는..</h2>
+      <div class="feat">
+        <div>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-tune"/></svg>
+          <b>편하게 연주하세요</b>
+          <p>지연은 간편히 측정하고, 음향은 악기에 따라 자동 조정합니다.</p>
+        </div>        
+
+        <div>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-again"/></svg>
+          <b>마음에 들 때까지 다시 연주할 수 있어요</b>
+          <p>누구도 눈치 주지 않습니다.</p>
+        </div>
+
+        <div>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-up"/></svg>
+          <b>자기 파트 하나만 올리세요</b>
+          <p>기타면 기타만, 드럼이면 드럼만. 같이 할 사람도 날짜도 정하지 않습니다.</p>
+        </div>
+
+        <div>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pick"/></svg>
+          <b>마음에 드는 연주를 고르세요</b>
+          <p>이미 올라온 트랙 중에서 고르기만 하면 됩니다. 사람을 구하러 다닐 필요가 없습니다.</p>
+        </div>
+
+        <div>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cut"/></svg>
+          <b>편집 앱은 닫으세요</b>
+          <p>자르기·맞추기·합치기·내보내기까지, 잇츠 한 편이 JAMIT 안에서 끝납니다.</p>
+        </div>
+
+        <div>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-grid"/></svg>
+          <b>결과물은 잇츠에서</b>
+          <p>앱에 게시하여 결과물을 공유할 수 있습니다.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 누구를 위한 것인가 ══════════ -->
+  <section class="sec">
+    <div class="wrap">
+      <h2>혼자여도,<br>멀리 있어도</h2>
+      <div class="who">
+        <div><span class="who__n">01</span><b>혼자 연주하는 사람</b><p>같이 할 사람을 못 구했을 때. 이미 올라와 있는 파트에 얹으면 됩니다.</p></div>
+        <div><span class="who__n">02</span><b>흩어진 밴드·친구</b><p>사는 곳이 다르고 시간이 안 맞아도, 각자 찍어 올리면 한 곡이 됩니다.</p></div>
+        <div><span class="who__n">03</span><b>실력이 걱정되는 사람</b><p>실수해도 괜찮습니다. 마음에 들 때 올리면 됩니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 준비물 ══════════ -->
+  <section class="sec need">
+    <div class="wrap need__in">
+      <div>
+        <h2>필요한 건<br>오직 휴대폰 하나.</h2>
+      </div>
+      <ul>
+        <li><b>이어폰</b>을 끼고 자기 파트를 연주해 주세요.</li>
+        <li>오디오 인터페이스, 마이크, 합주실 예약 <b>전부 필요 없습니다.</b></li>
+        <li>끝까지 도전하세요. 마음에 들 때까지 다시 찍어도 <b>아무도 기다리지 않습니다.</b></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══════════ 질문 ══════════ -->
+  <section class="sec" id="faq">
+    <div class="wrap">
+      <h2>시작하기 전에</h2>
+      <div class="faq">
+        <details name="faq"><summary>악기를 얼마나 잘 다뤄야 하나요?</summary>
+          <p>한 파트를 끝까지 연주할 수 있으면 됩니다. 마음에 들 때까지 다시 찍어도 아무도 안 기다립니다.</p></details>
+        <details name="faq"><summary>녹음 장비가 꼭 필요한가요?</summary>
+          <p>휴대전화와 이어폰이면 충분합니다. 오디오 인터페이스가 있으면 소리가 더 좋아지지만, 없다고 못 하는 건 아닙니다.</p></details>
+        <details name="faq"><summary>다른 사람의 연주는 어떻게 가져다 쓰나요?</summary>
+          <p>공개로 올라온 트랙 중에서 고르기만 하면 됩니다. 고른 트랙과 내 트랙을 앱이 자동으로 맞춰 하나로 합칩니다.</p></details>
+        <!-- 새 단어는 FAQ에도 한 항목을 준다. 본문을 놓친 사람이 여기서 다시 만난다 -->
+        <details name="faq"><summary>잇츠가 무엇인가요?</summary>
+          <p>JAMIT에서 완성된 합주 영상 한 편을 부르는 이름입니다. 인스타그램의 릴스, 유튜브의 쇼츠처럼 JAMIT에는 잇츠가 있습니다. 짧고, 세로로 보고, 여러 사람의 연주가 한 화면에 들어 있습니다.</p></details>
+        <details name="faq"><summary>내 잇츠는 누가 보게 되나요?</summary>
+          <p>올릴 때 공개 범위를 직접 정합니다. 공개로 두면 다른 사람이 자기 합주에 가져다 쓸 수 있고, 비공개로 두면 나만 봅니다. 내 연주가 어떤 합주에 들어갔는지는 앱에서 확인할 수 있습니다.</p></details>
+        <details name="faq"><summary>몇 명까지 함께할 수 있나요?</summary>
+          <p>아홉 명까지입니다. 혼자 올려도 되고, 고른 수에 맞춰 화면이 알아서 나뉩니다.</p></details>
+        <details name="faq"><summary>언제 출시하나요?</summary>
+          <p>2026년 9월 중순 정식 출시를 목표로 개발 중입니다.</p></details>
+        <details name="faq"><summary>iOS와 Android 모두 지원하나요?</summary>
+          <p>두 플랫폼 모두 지원합니다.</p></details>
+        <details name="faq"><summary>출시 알림을 신청하면 무엇을 받나요?</summary>
+          <p>출시하는 날 이메일 한 통을 받습니다. 그게 전부입니다. 광고나 소식지는 보내지 않고, 보낸 뒤에는 주소를 파기합니다.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 마지막 · 사전등록 ══════════ -->
+  <section class="sec last" id="signup">
+    <div class="wrap">
+      <h2>합주할 사람을 찾지 마세요</h2>
+      <div class="cta__box">
+        <p class="cta__lead">JAMIT에서 함께 하세요.</p>
+        <!-- TODO: action을 실제 Formspree 폼 ID로 교체 -->
         <form class="signup" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-          <!-- 두 폼이 같은 ID로 들어간다. 어느 쪽이 일하는지 알아야 다음에 뭘 고칠지 안다 -->
-          <input type="hidden" name="source" value="hero">
+          <input type="hidden" name="source" value="v3-flyer">
           <div class="signup__row">
             <input type="email" name="email" required autocomplete="email" enterkeyhint="send"
                    placeholder="이메일 주소" aria-label="이메일 주소">
-            <button class="btn" type="submit">사전 예약</button>
+            <button class="btn" type="submit">출시 알림 받기</button>
           </div>
-          <p class="note">출시일에 딱 한 번만, 광고는 보내지 않습니다.</p>
           <p class="msg" role="status" aria-live="polite"></p>
         </form>
-      </article>
-
-      <!-- 1 · J — jam -->
-      <article class="panel panel--stop" data-i="1" style="--c:#98cff6">
-        <span class="acro"><b>J</b>am</span>
-        <h2>합주는 하고 싶은데</h2>
-        <div class="voice voice--a">
-          <b>&ldquo;드럼만 구하면 되는데&rdquo;</b>
-          <p>기타도 베이스도 모였는데 드럼이 없습니다. 구한다는 글은 한 달 전에 올렸고, 아직 답이 없습니다.</p>
-        </div>
-        <div class="voice voice--b">
-          <b>&ldquo;이번 주는 좀 어려울 것 같아요&rdquo;</b>
-          <p>네 명 중 한 명만 안 되면 그 주는 없던 일이 됩니다. 달력은 넘어가고, 단톡방 스크롤만 길어집니다.</p>
-        </div>
-      </article>
-
-      <!-- 2 · a — apart, / a part — 중의는 설명하지 않는다. 카피에서 '파트'를 쓰면 알아서 연결된다 -->
-      <article class="panel panel--stop" data-i="2" style="--c:#a9bef6">
-        <span class="acro"><b>a</b>part,</span>
-        <h2>자기 파트만 찍습니다<br>그게 전부입니다</h2>
-        <p>
-          기타면 기타만. 드럼이면 드럼만.<br>
-          같이 할 사람도, 날짜도 안 정합니다.<br>
-          올려두면 끝입니다.
-        </p>
-      </article>
-
-      <!-- 3 · m — mix -->
-      <article class="panel panel--stop" data-i="3" style="--c:#baadf5">
-        <span class="acro"><b>m</b>ix</span>
-        <h2>섞는 건 앱이 합니다</h2>
-        <p>
-          올라온 파트 중에 마음에 드는 걸 고릅니다.<br>
-          고른 만큼 화면이 나뉩니다. 소리는 하나로 붙습니다.<br>
-          편집 앱은 안 열어도 됩니다.
-        </p>
-      </article>
-
-      <!-- 4 · I — it / 문장이 가리키는 '그것'을 여기서 보여준다. 그래서 영상이 이 패널에 있다 -->
-      <article class="panel panel--stop panel--wide" data-i="4" style="--c:#cc9cf4">
-        <span class="acro"><b>I</b>t</span>
-        <h2>남는 건 이겁니다</h2>
-        <figure class="reel">
-          <div class="reel__frame">
-            <!-- ▼ 실제 영상이 준비되면 아래 .reel__ph 블록을 지우고 이 주석만 풀면 끝.
-                 세로 9:16 (1080 × 1920) — 앱이 내보내는 비율 그대로.
-                 poster는 필수 — 없으면 로딩 전까지 검은 사각형만 보인다.
-            <video src="jam-demo.mp4" poster="jam-demo-poster.jpg"
-                   controls playsinline preload="metadata" aria-label="완성된 합주 영상"></video>
-            -->
-            <div class="reel__ph">
-              <b>&#9654;</b>
-              <span>합주 영상 자리<br>9 : 16</span>
-            </div>
-          </div>
-        </figure>
-        <p>
-          기타 둘에 드럼이 없어도 됩니다. 최대 아홉까지.<br>
-          오디오 인터페이스도, 합주실 예약도 없습니다.<br>
-          휴대폰 하나면 됩니다.
-        </p>
-      </article>
-
-      <!-- 5 · T — together -->
-      <article class="panel panel--stop" data-i="5" style="--c:#dd8bf4">
-        <span class="acro"><b>T</b>ogether</span>
-        <h2>만난 적 없는데<br>합주가 됐습니다</h2>
-        <p>
-          서로 얼굴도 모릅니다. 시간을 맞춘 적도 없습니다.<br>
-          그런데 소리는 맞습니다.<br>
-          다음 합주는 단톡방에서 시작하지 않습니다.
-        </p>
-      </article>
-
-      <!-- 6 · 착지 — 카메라가 줌아웃하고 악보가 완성된 화면 -->
-      <article class="panel panel--land" data-i="6">
-        <div class="land">
-          <div class="land__cta">
-            <span class="eyebrow">사전등록</span>
-            <h2>9월에 나옵니다</h2>
-            <p>
-              나오는 날 바로 알려드립니다.<br>
-              이메일 한 줄이면 됩니다.
-            </p>
-            <!-- TODO: action을 실제 Formspree 폼 ID로 교체 -->
-            <form class="signup" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" id="signup">
-              <input type="hidden" name="source" value="landing">
-              <div class="signup__row">
-                <input type="email" name="email" required autocomplete="email" enterkeyhint="send"
-                       placeholder="이메일 주소" aria-label="이메일 주소">
-                <button class="btn" type="submit">사전 예약</button>
-              </div>
-              <p class="note">
-                출시하는 날 딱 한 통만 보냅니다.<br>
-                광고는 보내지 않고, 수신 거부는 한 번이면 됩니다.
-              </p>
-              <p class="msg" role="status" aria-live="polite"></p>
-            </form>
-            <!-- ═══ 소셜 프루프 자리 ═══ 실제 숫자가 생기면 hidden만 지운다 -->
-            <div class="proof" hidden>
-              <span class="proof__dots"><i></i><i></i><i></i></span>
-              <span><b>0</b>명이 출시를 기다리고 있습니다</span>
-            </div>
-          </div>
-
-          <div class="land__faq">
-            <span class="eyebrow">궁금한 것들</span>
-            <div class="faq">
-              <details name="faq"><summary>악기를 얼마나 잘 다뤄야 하나요?</summary>
-                <p>한 파트를 끝까지 칠 수 있으면 됩니다. 마음에 들 때까지 다시 찍어도 아무도 안 기다립니다.</p></details>
-              <details name="faq"><summary>녹음 장비가 따로 있어야 하나요?</summary>
-                <p>휴대폰이면 됩니다. 오디오 인터페이스가 있으면 소리가 더 좋아지지만, 없다고 못 하는 건 아닙니다.</p></details>
-              <!-- 이 페이지에서 가장 큰 심리적 저항이다. '가져다 쓸 수 있습니다'만 있으면
-                   통제권이 없어 보인다 — 공개 범위 선택을 먼저 말한다 -->
-              <details name="faq"><summary>내 영상은 누가 보게 되나요?</summary>
-                <p>올릴 때 공개 범위를 직접 정합니다. 공개로 두면 다른 사람이 자기 합주에 가져다 쓸 수 있고, 비공개로 두면 나만 봅니다. 내 연주가 어떤 합주에 들어갔는지는 앱에서 확인할 수 있습니다.</p></details>
-              <details name="faq"><summary>몇 개까지 합칠 수 있나요?</summary>
-                <p>아홉 개까지입니다. 둘이서도 합주가 되고, 고른 수에 맞춰 화면이 알아서 나뉩니다.</p></details>
-              <details name="faq"><summary>언제 사용할 수 있나요?</summary>
-                <p>2026년 9월 중순 정식 출시를 목표로 개발 중입니다. 사전등록해 두시면 출시되는 날 이메일로 알려드립니다.</p></details>
-              <details name="faq"><summary>iOS와 Android 모두 지원하나요?</summary>
-                <p>두 플랫폼 모두 지원합니다.</p></details>
-            </div>
-            <p class="land__foot">© 2026 JamIT · <a href="mailto:@asm17th012@gmail.com">문의</a></p>
-            <details class="privacy">
-              <summary>개인정보 수집·이용 안내</summary>
-              <p>
-                수집 항목은 이메일 주소 하나입니다. 출시 알림을 한 번 보내는 데에만 쓰고, 보낸 뒤에는 바로 파기합니다.
-                동의하지 않아도 되며, 그 경우 출시 알림을 받지 못합니다.
-                그 전에라도 <a href="mailto:asm17th012@gmail.com">문의</a>로 요청하시면 즉시 지워 드립니다.
-              </p>
-            </details>
-          </div>
-        </div>
-      </article>
+        <p class="cta__meta">iOS · Android &nbsp;/&nbsp; 2026년 9월 출시 예정</p>
+      </div>
+      <details class="privacy">
+        <summary>개인정보 수집·이용 안내</summary>
+        <p>수집 항목은 이메일 주소 하나입니다. 출시 알림을 한 번 보내는 데에만 쓰고, 보낸 뒤에는 바로 파기합니다.
+           그 전에라도 <a href="mailto:asm17th012@gmail.com">문의</a>로 요청하시면 즉시 지워 드립니다.</p>
+      </details>
     </div>
+  </section>
 
-    <span class="hint">Scroll</span>
-  </div>
-</section>
+</main>
+
+  <footer class="wrap">
+    <div class="foot__a">
+      <span class="foot__id">JAMIT</span>
+      <span class="foot__t">각자의 연주가 하나의 합주가 되는 앱 · 2026년 9월 iOS · Android 출시 예정</span>
+    </div>
+    <nav class="foot__b">
+      <a href="#rail">어떻게</a><a href="#features">기능</a><a href="#faq">질문</a>
+      <a href="#signup">출시 알림</a><a href="mailto:asm17th012@gmail.com">문의</a>
+    </nav>
+    <span class="foot__c">© 2026 JAMIT · N° 001</span>
+  </footer>
 
 <script>
-// ══════════════════════════════════════════════════════════
-// 카메라: 스크롤 진행도 → 월드의 transform
-// ══════════════════════════════════════════════════════════
+const SPB = 60 / 92 / 2;         // 8분음표 하나 길이(초) — 92BPM. LED가 이 간격으로 흐른다
+
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 const rail   = document.getElementById("rail");
-const world  = document.getElementById("world");
-const panels = [...document.querySelectorAll(".panel")];
-const notes  = [...document.querySelectorAll(".staff-note")];
-const intro  = document.querySelector(".panel--intro");
-const TOPBAR = 64;
-const ticks  = [...document.querySelectorAll(".ticks button")];
-const STOPS  = panels.length;
+const stage  = document.getElementById("stage");
+const grid   = document.getElementById("grid");
+const tiles  = [...grid.querySelectorAll(".tile")];
+const cds    = [...document.querySelectorAll(".cd")];
+const leds   = [...document.querySelectorAll("#beat i")];
+const phTag  = document.getElementById("phTag");
+const phTxt  = document.getElementById("phTxt");
+const phFill = document.getElementById("phFill");
+const bignum = document.getElementById("bignum");
+const railFill = document.getElementById("railFill");
+const chaps  = [...document.querySelectorAll(".chap")];
+const scenes = [...document.querySelectorAll(".sc")];   // 업로드 · 선택 · 합치기+완성
+const flynum = document.getElementById("flynum");
 
-// 오선지 위 요소들의 원래 x. 모바일에서 간격을 좁혔다 되돌리려면 원본이 필요하다.
-const clefEl = document.querySelector(".clef");
-const bars   = [...document.querySelectorAll(".bar")];
-const BASE_X    = notes.map(n => parseFloat(n.style.getPropertyValue("--x")));
-const BASE_BAR  = bars.map(b => parseFloat(b.style.left));
-const BASE_CLEF = parseFloat(getComputedStyle(clefEl).left);
+const CH = 4;                    // 업로드 · 선택 · 합치기 · 완성
 
-// 카메라를 못 쓰는 환경이면 평범한 세로 문서로 되돌린다
-if (reduce) document.body.classList.add("fallback");
-
-// ── 착지 화면 자리 ──
-// 좁은 화면에서는 폼 + FAQ 6개가 한 화면에 안 들어가 카드 안에 스크롤이 생긴다.
-// 그 안에 들어가면 위로 되돌아 나오기가 어렵다. 레일 뒤 일반 문서로 옮겨 페이지 스크롤로 만든다.
-// 정거장 수(STOPS)는 그대로 7 — 마지막 정거장은 카드 없이 완성된 문장만 보여준다.
-const land      = document.querySelector(".panel--land");
-const panelsBox = document.querySelector(".panels");
-// 내부 스크롤은 만들지 않는다 — 다른 정거장 패널과 같은 규칙이다.
-// 한 화면에 안 들어가면 잘라내는 대신 레일 밖 일반 문서로 흘려보낸다.
-// 기준을 숫자로 박지 않고 실제로 재본다.
-function setFlow(on){
-  if (on === land.classList.contains("panel--flow")) return;
-  if (on){ rail.after(land); land.classList.add("panel--flow"); }
-  else   { panelsBox.append(land); land.classList.remove("panel--flow"); }
+// 박자 LED — 소리는 없지만 앱 화면이 돌아가고 있다는 표시는 남는다
+if (!reduce){
+  let i = 0;
+  setInterval(() => {
+    leds.forEach((el, k) => el.classList.toggle("on", k === i % 8));
+    i++;
+  }, SPB * 1000);
 }
-function placeLand(){
-  if (innerWidth <= 820){ setFlow(true); return; }   // 모바일은 무조건 문서로
-  setFlow(false);                                     // 일단 레일 안에 넣고 재본다
-  const need = land.scrollHeight + 130;               // 내용 + 문장이 앉을 자리
-  if (need > innerHeight - TOPBAR - 24) setFlow(true);
-}
-placeLand();
-addEventListener("resize", placeLand);
-
-// 각 정거장: 월드 좌표(x,y) + 배율 + 화면 어디에 앉힐지(0~1)
-function buildStops(){
-  const vw = innerWidth, vh = innerHeight;
-  const wide = vw > 820;
-
-  // 6000px 오선지를 390px에 통째로 넣으면 배율이 0.052가 되고 글자가 7.75px로 뭉갠다.
-  // 모바일은 오선지의 가로 간격 자체를 좁혀서 전경에서도 글자가 읽히게 한다.
-  // 마디선과 음자리표도 같은 비율로 옮기지 않으면 글자만 가운데 몰린 그림이 된다.
-  const SPREAD  = wide ? 1 : 0.3;
-  const squeeze = v => 3000 + (v - 3000) * SPREAD;
-  notes.forEach((n, i) => n.style.setProperty("--x", squeeze(BASE_X[i]) + "px"));
-  bars.forEach((b, i) => b.style.left = squeeze(BASE_BAR[i]) + "px");
-  clefEl.style.left = squeeze(BASE_CLEF) + "px";
-
-  // 전경 배율은 글자가 실제로 차지하는 폭에서 역산한다
-  const xs = BASE_X.map(squeeze);
-  const contentW = (Math.max(...xs) - Math.min(...xs)) + 760;   // 좌우 끝 글자 폭만큼 여유
-  const fit = wide
-    ? Math.min((vw - 80) / 6000, (vh - 200) / 900)
-    : Math.min((vw - 40) / contentW, (vh - 220) / 900);
-
-  // 전경 배치는 퍼센트로 찍지 않는다. 인트로 블록 높이를 실측해서
-  // [인트로 + 간격 + 오선지] 한 덩어리를 화면 정중앙에 놓는다.
-  const STAFF_WORLD_H = 242;                       // 오선 5줄이 차지하는 월드 높이
-  const staffH = STAFF_WORLD_H * fit;
-  const introH = intro.offsetHeight;
-  const gap    = Math.max(40, vh * 0.06);
-  const block  = introH + gap + staffH;
-  const top    = Math.max(TOPBAR + 16, (vh - block) / 2);
-  intro.style.top = (top + introH / 2) + "px";     // translate(-50%)와 합쳐져 중심 정렬
-  const staffAy = (top + introH + gap + staffH / 2) / vh;
-  const focus = wide ? 1 : 0.88;          // 모바일은 글자가 작아 화면이 비어 보였다
-  // 데스크톱은 패널이 오른쪽이라 음표를 왼쪽 35%에, 모바일은 위쪽에
-  const ax = wide ? 0.27 : 0.5, ay = wide ? 0.5 : 0.44;   // 세리프는 폭이 넓어 앵커를 더 왼쪽에 둔다
-  const P = [{x:3000, y:500, s:fit, ax:0.5, ay:staffAy}];   // 0 전경
-  // 모바일은 패널이 화면 아래를 통째로 쓰는데 높이가 정거장마다 다르다.
-  // 글자를 고정 비율(ay)에 두면 패널이 긴 정거장에서 글자가 통째로 가려진다.
-  // 그래서 정거장마다 [헤더 아래 ~ 패널 위] 남는 공간을 실측해 그 한가운데에 둔다.
-  const NOTE_H  = 150;                                  // 월드 기준 글자 높이
-  const freeTop = TOPBAR + 8;
-  const frees   = notes.map((n, i) =>
-    Math.max(60, (vh - panels[i + 1].offsetHeight - 16) - freeTop));
-  // 배율은 모든 정거장이 같아야 한다 — 정거장마다 줌이 달라지면 카메라가 튄다.
-  // 제일 긴 패널 기준으로 한 번만 줄인다. 보통 화면에서는 focus 그대로다.
-  const focusM = wide ? focus
-    : Math.max(0.4, Math.min(focus, (Math.min(...frees) - 16) / NOTE_H));
-
-  notes.forEach((n, i) => {
-    // 모바일은 글자 하나가 아니라 [글자 + 뒤따르는 철자] 덩어리를 중앙에 놓는다.
-    // 글자 기준으로 맞추면 철자가 오른쪽으로만 뻗어 화면 밖으로 나간다.
-    const em = n.querySelector("em");
-    const shift = wide || !em ? 0 : em.offsetWidth / 2;
-    P.push({
-      x: parseFloat(n.style.getPropertyValue("--x")) + shift,
-      y: parseFloat(n.style.getPropertyValue("--y")),
-      s: focusM,
-      ax,
-      ay: wide ? ay : (freeTop + frees[i] / 2) / vh,
-    });
-  });
-  // 6 착지 — 줌아웃해서 완성된 문장을 보여준다.
-  // 데스크톱은 카드가 위를 덮는다. 카드 높이는 화면마다 달라지니 0.88 같은 고정 비율로 두면
-  // 짧은 화면에서 문장이 카드 뒤로 들어간다. 정거장 1~5과 같은 방식으로 실측해서 배치한다.
-  let landS = fit, landAy = 0.5;
-  if (!land.classList.contains("panel--flow")){   // 레일 안에 카드가 있을 때만 자리를 비운다
-    // 내용이 화면 아래에 깔린다. 문장은 그 위 남는 공간 한가운데 — 첫 화면과 같은 순서다
-    const top  = TOPBAR + 8;
-    const free = Math.max(80, land.offsetTop - top - 22);   // bottom 배치라 실제 위치를 잰다
-    landS  = Math.min(fit, (free - 20) / STAFF_WORLD_H);
-    landAy = (top + free * 0.52) / vh;
-  }
-  P.push({x:3000, y:500, s:landS, ax:0.5, ay:landAy});
-  return P;
-}
-let S = buildStops();
-
-const lerp = (a, b, t) => a + (b - a) * t;
-const easeInOut = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
 
 // ══════════════════════════════════════════════════════════
-//  소리 — 오선 위 자리가 곧 음정이다
+//  스크롤이 장면을 넘긴다.
+//  랜딩페이지에서 사람들은 버튼을 누르지 않는다. 스크롤은 어차피 한다 —
+//  그래서 업로드 → 선택 → 합치기 → 완성을 전부 스크롤 위치에 묶었다.
 // ══════════════════════════════════════════════════════════
-// 글자의 --y를 실제 오선 좌표(.staff: top 380px, 2px 선 + 58px 간격)에 맞춰 읽는다.
-// 자리표를 그려놓고 다른 음을 내면 악기 하는 사람 눈에 바로 걸린다.
-// 줄뿐 아니라 칸(줄 사이 중점)도 음표 자리다 — 아래에서 위로 아홉 자리.
-const STAFF = [
-  [621, 329.63],  // 1선  미 E4
-  [591, 349.23],  // 1칸  파 F4
-  [561, 392.00],  // 2선  솔 G4
-  [531, 440.00],  // 2칸  라 A4
-  [501, 493.88],  // 3선  시 B4
-  [471, 523.25],  // 3칸  도 C5
-  [441, 587.33],  // 4선  레 D5
-  [411, 659.25],  // 4칸  미 E5
-  [381, 698.46],  // 5선  파 F5
-];
-// 다섯 글자는 라단조 5음음계(라도레미솔) 안에만 놓는다.
-// 5음음계에는 반음도 트라이톤도 없어서, 빨리 스크롤해 다섯 음이 한꺼번에 울려도
-// 불협이 생기지 않는다 — 겹치면 그대로 Am7 화음이 된다.
-const HZ = notes.map(n => {
-  const y = parseFloat(n.style.getPropertyValue("--y"));
-  return STAFF.reduce((b, s) => Math.abs(s[0] - y) < Math.abs(b[0] - y) ? s : b)[1];
-});
+const clamp01 = v => Math.max(0, Math.min(1, v));
+const mix = (a, b, t) => a + (b - a) * t;
+const ez  = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
 
-const bell = document.querySelector(".sound");
-// 소리는 켠 채로 시작한다. 다만 브라우저는 user activation(클릭·키·터치) 전까지
-// AudioContext를 재워둔다 — 스크롤과 휠은 activation으로 쳐주지 않는다.
-// 그래서 '켜짐'은 의도만 표시하고, 실제 발음은 첫 조작이 들어온 뒤부터다.
-let ac = null, master = null, sound = !reduce;
-
-function arm(){
-  if (ac) return;
-  ac = new (window.AudioContext || window.webkitAudioContext)();
-  // 빨리 스크롤하면 다섯 음이 겹쳐 진폭이 1을 넘고, 그 순간 지직거린다.
-  // 컴프레서 하나로 눌러둔다 — 겹칠수록 자연스럽게 줄어든다.
-  master = ac.createDynamicsCompressor();
-  master.threshold.value = -20;
-  master.knee.value = 24;        // 무릎을 넓게 — 눌리는 게 티나면 그것대로 거슬린다
-  master.ratio.value = 5;
-  master.release.value = .4;
-  master.connect(ac.destination);
-}
-
-function play(hz, delay = 0){
-  if (!ac) return;
-  const t = ac.currentTime + delay;
-  const env = ac.createGain();
-  env.connect(master);
-  env.gain.setValueAtTime(.0001, t);
-  env.gain.linearRampToValueAtTime(.18, t + .012);             // 어택은 짧게 — 튕기는 느낌
-  env.gain.exponentialRampToValueAtTime(.0001, t + 1.8);       // 디케이는 길게 — 종처럼 남는다
-  // 기음 + 배음 2개. 사인 하나만 쓰면 악기가 아니라 알림음으로 들린다.
-  [[1, 1], [2, .3], [3, .1]].forEach(([mul, amp]) => {
-    const o = ac.createOscillator(), g = ac.createGain();
-    o.type = "sine";
-    o.frequency.value = hz * mul;
-    g.gain.value = amp;
-    o.connect(g).connect(env);
-    o.start(t);
-    o.stop(t + 2.3);
+// 앞에서부터 n개를 화면에 넣는다. 고른 수에 맞춰 화면이 나뉜다 — 앱과 같은 규칙
+function setTiles(n){
+  let last = null;
+  tiles.forEach((el, idx) => {
+    const live = idx < n;
+    el.hidden = !live;
+    el.classList.remove("wide");
+    if (live) last = el;
   });
+  grid.dataset.n = n;
+  if (last && n > 2 && n % 2) last.classList.add("wide");
 }
 
-bell.classList.toggle("on", sound);
-bell.setAttribute("aria-pressed", String(sound));
-
-// 첫 조작에서 오디오를 깨운다.
-// 두 가지를 조심해야 한다:
-//  1) 사파리는 '끝난' 제스처만 인정한다. pointerdown/touchstart로는 안 풀린다.
-//  2) 그래서 한 번 시도하고 포기하면 안 된다. state가 running이 될 때까지 계속 노린다.
-//     (예전에는 once:true + ac가 있으면 return이라, 안 통하는 pointerdown이 기회를 태워버렸다)
-if (sound){
-  const GESTURES = ["pointerup", "touchend", "click", "keydown"];
-  const stopWatching = () => GESTURES.forEach(t => removeEventListener(t, wake));
-  function wake(){
-    if (!sound) return;
-    arm();
-    if (ac.state === "running"){ stopWatching(); return; }
-    ac.resume().then(() => {
-      if (ac.state !== "running") return;                            // 아직 안 풀렸으면 계속 기다린다
-      stopWatching();
-      if (active >= 1 && active <= HZ.length) play(HZ[active - 1]);  // 켜져 있다는 신호
-    }).catch(() => {});
-  }
-  GESTURES.forEach(t => addEventListener(t, wake, {passive: true}));
-}
-
-bell.addEventListener("click", () => {
-  arm();
-  const locked = ac.state !== "running";     // 아직 브라우저가 소리를 막고 있는 상태
-  const after  = locked ? ac.resume().catch(() => {}) : Promise.resolve();
-
-  if (reduce){                          // 폴백에는 정거장이 없으니 버튼이 곧 재생 버튼
-    bell.classList.add("on");
-    after.then(() => HZ.forEach((hz, k) => play(hz, k * .34)));
-    setTimeout(() => bell.classList.remove("on"), HZ.length * 340 + 500);
-    return;
-  }
-
-  // 잠겨 있던 상태에서의 첫 탭은 '끄기'가 아니라 '깨우기'다.
-  // 버튼이 켜짐인데 소리가 안 나던 상황에서 탭했더니 꺼지면, 사용자는 고장으로 읽는다.
-  // (아이폰에서 "탭해도 소리가 안 난다"의 정체가 이것이었다 — 첫 탭이 소리를 꺼버렸다)
-  if (!(locked && sound)) sound = !sound;
-
-  bell.classList.toggle("on", sound);
-  bell.setAttribute("aria-pressed", String(sound));
-  // resume은 비동기다. 풀리기 전에 play를 부르면 예약만 되고 안 들린다.
-  after.then(() => {
-    if (sound && active >= 1 && active <= HZ.length) play(HZ[active - 1]);
-  });
-});
-
-let active = -1;
-function render(){
+let lastN = -1, lastCh = -1;
+function railTick(){
   const vh = innerHeight;
-  const span = rail.offsetHeight - vh;               // 실제로 스크롤되는 거리
-  const raw  = (window.scrollY - rail.offsetTop) / span;
-  const p    = Math.max(0, Math.min(1, raw)) * (STOPS - 1);
+  const span = Math.max(1, rail.offsetHeight - vh);
+  const p = clamp01((scrollY - rail.offsetTop) / span);
+  const t = p * CH;
+  const ch = Math.min(CH - 1, Math.floor(t));
+  const k  = clamp01(t - ch);
+  const pct = v => Math.round(v * 100);
+  let n = 1, fill = 0, tag = "REC", txt = "";
 
-  const i = Math.min(STOPS - 2, Math.floor(p));
-  const t = easeInOut(Math.max(0, Math.min(1, p - i)));
-  const a = S[i], b = S[i + 1];
-
-  const s  = lerp(a.s, b.s, t);
-  const cx = lerp(a.x, b.x, t), cy = lerp(a.y, b.y, t);
-  const ax = lerp(a.ax, b.ax, t), ay = lerp(a.ay, b.ay, t);
-
-  world.style.transform =
-    `translate(${innerWidth * ax}px, ${vh * ay}px) scale(${s}) translate(${-cx}px, ${-cy}px)`;
-
-  const near = Math.round(p);
-  if (near !== active){
-    active = near;
-    // 정거장이 바뀌는 순간에만 울린다. 이 분기 바깥에 두면 rAF마다 발화한다.
-    if (sound && near >= 1 && near <= HZ.length) play(HZ[near - 1]);
-    panels.forEach((el, k) => el.classList.toggle("on", k === near));
-    notes.forEach((el, k) => el.classList.toggle("on", near === STOPS - 1 || k + 1 === near));
-    ticks.forEach((el, k) => el.classList.toggle("on", k === near));
+  if (ch === 0){                                   // 업로드 — 내 파트 하나
+    fill = k;
+    txt  = k < .92 ? `업로드 중 ${pct(k)}%` : "업로드 완료 · 내 파트 1개";
+  } else if (ch === 1){                            // 선택 — 이미 올라와 있는 연주들
+    const sel = Math.min(4, Math.floor(k * 4.6));
+    cds.forEach((el, idx) => el.classList.toggle("on", idx < sel));
+    n = 1 + sel; fill = sel / 4; tag = "PICK";
+    txt = sel ? `${sel}개 선택됨` : "올라온 연주 훑는 중";
+  } else if (ch === 2){                            // 합치기 — 앱이 섞는다
+    n = 1 + Math.min(4, Math.floor(k * 5));
+    fill = k; tag = "MIX";
+    txt = k < .92 ? `합치는 중 ${pct(k)}%` : "합치기 완료";
+  } else {                                          // 완성 — 결과물의 이름이 처음 등장하는 자리
+    n = 5; fill = 1; tag = "ITS";
+    txt = "잇츠 완성 · 다섯 명 · 00:38";
   }
-  if (p > .04) document.body.classList.add("moved");
+
+  // 첫 장면은 종이가 내려앉은 뒤에 올라온다. 종이 밑에 미리 깔려 있으면 비쳐 보인다
+  stage.style.setProperty("--enter", ch === 0 ? clamp01(k / .32).toFixed(3) : "1");
+  if (ch !== lastCh){
+    stage.dataset.ch = ch;
+    bignum.textContent = "0" + (ch + 1);
+    chaps.forEach((el, idx) => {
+      el.classList.toggle("on", idx === ch);
+      el.classList.toggle("past", idx < ch);     // 지나간 건 왼쪽으로, 올 건 오른쪽에서
+    });
+    const sc = ch < 2 ? ch : 2;                  // 합치기와 완성은 같은 화면을 쓴다
+    scenes.forEach((el, idx) => {
+      el.classList.toggle("on", idx === sc);
+      el.classList.toggle("past", idx < sc);
+    });
+    lastCh = ch;
+  }
+  railFill.style.width = (p * 100).toFixed(1) + "%";
+  if (ch >= 2 && n !== lastN){ setTiles(n); lastN = n; }
+  if (ch < 2 && lastN !== -1){ lastN = -1; }        // 되돌아가면 화면도 되돌린다
+  phFill.style.width = (fill * 100).toFixed(1) + "%";
+  phTag.textContent = tag;
+  phTxt.textContent = txt;
 }
 
-if (!reduce){
-  let queued = false;
-  const onScroll = () => {
-    if (queued) return;
-    queued = true;
-    requestAnimationFrame(() => { render(); queued = false; });
-  };
-  addEventListener("scroll", onScroll, {passive: true});
-  addEventListener("resize", () => { S = buildStops(); active = -1; render(); });
-  render();
+// ── 뜯긴 종이가 화면을 덮는다 ──
+// 종이는 늘어나지 않는다. 술과 같은 9:16을 유지한 채 균일하게 커져서 화면을 덮을 뿐이다.
+// 다 덮은 지점이 곧 레일의 시작이라, 종이가 그대로 무대가 된 것처럼 이어진다.
+const tear = document.getElementById("tear");
+const slip = document.getElementById("slip");
+const tailEl = flynum.querySelector("i");
+let tailRatio = 0;                                // 뒷자리 길이 ÷ 글자 크기 (문자열이 고정이라 상수다)
+function paper(){
+  if (reduce){ slip.hidden = true; bignum.style.opacity = "1"; return; }
+  const a = tear.getBoundingClientRect();
+  const vw = innerWidth, vh = innerHeight;
+  // 종이는 9:16 한 장이다. 화면이 가로로 길면 눕히고(-90°), 세로로 길면 세운 채로 덮는다.
+  // 눕히지 않으면 가로 화면에서 종이 높이가 화면의 세 배까지 튀어나가 낭비가 크다.
+  const land = vw / vh > 9 / 16;
+  // 딱 맞게 덮으면 종이를 좌우로 움직일 여유가 0이다. 14%만 더 크게 잡아
+  // 그 여유만큼 종이도 번호를 따라 왼쪽으로 붙는다
+  const cw   = (land ? Math.max(vh, vw * 9 / 16) : Math.max(vw, vh * 9 / 16)) * 1.14;
+  const chh  = cw * 16 / 9;                                  // 화면을 덮는 크기(비율 유지)
+  const rotEnd = land ? -90 : 0;
+  const wide = land ? chh : cw;                              // 눕히면 가로폭이 곧 높이 쪽 치수다
+  const bias = Math.min((wide - vw) / 2, vw * .07);           // 왼쪽으로 붙일 수 있는 만큼만
+  // 최소 한 번은 스크롤해야 뜯긴다 — 첫 화면에 이미 뜯겨 있으면 뜯긴 게 아니다.
+  // 전단지가 해결 선언 옆에 있으므로 늦게 잡는다: 술이 화면 위쪽(35%)에 올라온 뒤에야 뜯긴다.
+  // 일찍 잡으면 커지는 종이가 아직 읽는 중인 왼쪽 글을 덮는다
+  const from = Math.max(90, a.top + scrollY - vh * .45);
+  const to   = rail.offsetTop;                                // 레일이 붙는 순간 = 다 덮은 때
+  const p = clamp01((scrollY - from) / Math.max(240, to - from));
+
+  tear.classList.toggle("gone", p > .02);                     // 떼어낸 자리는 빈 칸으로 남는다
+  // 상태는 매 프레임 p로만 정한다 — 한 번 착지했다고 잠가 두면 되감을 때 종이가 돌아오지 않는다
+  slip.hidden = p <= 0 || p >= 1;
+  if (p <= 0 || p >= 1){ bignum.style.opacity = "1"; return; }
+  bignum.style.opacity = "0";                                 // 착지 전에는 무대의 번호가 없다. 지금 번호는 종이 위에 있다
+
+  // 뜯는 동작과 나는 동작을 나눈다.
+  // 처음 14%는 제자리에서 들리기만 하고(peel), 이동은 10% 지점부터 시작한다.
+  // 한 값으로 다 처리하면 종이가 붙어 있다 튀어나오는 것처럼 보인다.
+  const peel = clamp01(p / .14);
+  const t = ez(clamp01((p - .10) / .90));
+  const paperRot = mix(0, 20, peel) + mix(0, rotEnd - 20, t);  // 젖혔다가 → 돌아간다
+  const s = mix(tear.offsetWidth / cw, 1, t);                 // 균일 확대
+
+  // 회전축은 절취선(종이의 윗변 한가운데)이다. 중심을 축으로 돌리면
+  // 붙어 있어야 할 윗변이 통째로 내려가 '떨어진 종이'가 아니라 '내려간 종이'가 된다.
+  // 그래서 위치도 중심이 아니라 이 축의 좌표로 계산한다.
+  const endCX = vw / 2 - bias, endCY = vh / 2;                 // 다 덮었을 때 종이의 중심
+  const endPX = land ? endCX - chh / 2 : endCX;                // 그 중심을 만드는 축의 자리
+  const endPY = land ? endCY : endCY - chh / 2;
+  const px = mix(a.left + a.width/2, endPX, t);
+  const py = mix(a.top, endPY, t);                             // 처음엔 술이 붙어 있던 그 선
+
+  slip.style.width = cw + "px";
+  slip.style.height = chh + "px";
+  slip.style.setProperty("--t", t.toFixed(3));
+  slip.style.setProperty("--inv", (1 / s).toFixed(3));        // 테두리·글자 두께를 되돌린다
+  slip.style.setProperty("--sh", mix(.5, 6, peel).toFixed(1) + "px");   // 들리는 만큼 그림자가 벌어진다
+  slip.style.transform =
+    `translate(${px - cw/2}px,${py}px) rotate(${paperRot}deg) scale(${s})`;
+
+
+  // ── 종이에 찍힌 01 ──
+  // 종이의 자식이라 위치를 종이 안 좌표(px)로만 준다. 이동·회전·확대는 종이가 데려간다.
+  // 착지했을 때 이 점이 장면 번호 자리에 오도록 역산한다 —
+  // 눕는 경우 로컬(lx,ly)는 화면에서 (축X + ly, 축Y - (lx - cw/2))로 간다
+  const bn = bignum.getBoundingClientRect();
+  const railTop = rail.getBoundingClientRect().top;
+  const bx = bn.left + bn.width / 2, by = bn.top + bn.height / 2 - railTop;
+  // 처음엔 술에 찍혀 있던 그대로 종이 한가운데에 있다가, 오는 동안 조금씩 제자리로 밀려간다.
+  // 출발점과 도착점이 둘 다 종이 안이라 어떤 화면비에서도 종이 밖으로 나갈 수 없다
+  const lxEnd = land ? cw / 2 - (by - endPY) : cw / 2 + (bx - endPX);
+  const lyEnd = land ? (bx - endPX)          : by - endPY;
+  const settle = ez(clamp01((t - .35) / .65));
+  const lx = mix(cw / 2,  lxEnd, settle);
+  const ly = mix(chh / 2, lyEnd, settle);
+  flynum.classList.toggle("v", land);                             // 눕는 화면에서만 세로쓰기
+  // 뜯긴 순간의 글자는 술에 찍혀 있던 그 크기 그대로여야 한다.
+  // 로컬 크기에 종이 배율(s)이 곱해지므로, 화면에서 술과 같아 보이려면 시작값을 1/s로 되돌려 준다.
+  // 도착하면 s=1이라 로컬 크기가 곧 장면 번호의 크기가 된다
+  const fFrom = parseFloat(getComputedStyle(tear).fontSize) / s;
+  const fTo   = parseFloat(getComputedStyle(bignum).fontSize);
+  const fpx   = mix(fFrom, fTo, settle);
+  flynum.style.fontSize = fpx.toFixed(1) + "px";
+  // 뒷자리가 지워진다 — 지워지는 동안 '01'이 술에 있던 그 자리를 지켜야 한다.
+  // 좌표는 '01'의 중심인데 술에 찍혀 있던 건 "010-••••" 한 덩어리가 가운데 있는 모습이었으니,
+  // 뒷자리가 남아 있는 만큼 그 길이의 절반을 되물려 준다. 글자열이 고정이라 비율은 한 번만 재면 된다
+  const tailOn = 1 - clamp01((t - .08) / .32);
+  tailEl.style.opacity = tailOn.toFixed(2);
+  if (!tailRatio) tailRatio = (land ? tailEl.offsetHeight : tailEl.offsetWidth) / fpx;
+  const back = tailRatio * fpx / 2 * tailOn;
+  flynum.style.left = (lx - (land ? 0 : back)).toFixed(1) + "px";
+  flynum.style.top  = (ly - (land ? back : 0)).toFixed(1) + "px";
+  // 색은 마지막 20%에서만 옅어진다. 일찍 옅어지면 제일 커진 순간에 종이와 같은 색이 돼 사라진다
+  const col = [[75, 84, 104], [223, 225, 232]], ct = clamp01((t - .8) / .2);
+  flynum.style.color = `rgb(${col[0].map((v, n) => Math.round(mix(v, col[1][n], ct))).join(",")})`;
 }
 
-// ── 정거장 좌표 계산 + 바로가기 ──
-// sticky 안의 요소는 앵커(#signup) 점프가 통하지 않는다. 문서상 위치가 레일 최상단이라
-// 브라우저가 거기로 가버린다. 그래서 스크롤 위치를 직접 계산해서 이동시킨다.
-const stopY = (i) => rail.offsetTop + (rail.offsetHeight - innerHeight) * (i / (STOPS - 1));
+// ── 결과물 릴 ── 스크롤이 곧 넘김이다.
+// 한 장에 머무는 시간을 남겨야 "넘겼다"가 된다 — 구간의 가운데 60%에서만 실제로 밀린다.
+const reels     = document.getElementById("reels");
+const reelTrack = document.getElementById("reelTrack");
+const reelCap   = document.getElementById("reelCap");
+const reelDots  = [...document.querySelectorAll("#reelDots li")];
+const reelSlides= [...reelTrack.children];
+let reelOn = -1;
+function reelTick(){
+  if (reduce) return;
+  const r = reels.getBoundingClientRect();
+  const span = r.height - innerHeight;                 // 창이 붙어 있는 동안의 스크롤 길이
+  const last = reelSlides.length - 1;
+  const seg  = clamp01(-r.top / Math.max(1, span)) * last;
+  const i    = Math.min(Math.floor(seg), last - 1);
+  const k    = i + ez(clamp01((seg - i - .2) / .6));   // 앞뒤 20%는 머무는 시간
+  reelTrack.style.transform = `translateY(${(-k * 100).toFixed(2)}%)`;
 
-// 브라우저 기본 부드러운 스크롤은 거리와 상관없이 빠르다. 여섯 정거장을 0.5초에 지나가면
-// 다섯 음이 한꺼번에 터져서 뭉갠다. 거리에 비례한 시간으로 직접 굴려 아르페지오로 들리게 한다.
-let tweenId = 0;
-const smoothstep = t => t * t * (3 - 2 * t);   // 3차보다 완만 — 중간이 덜 빨라야 음 간격이 고르다
-function stopTween(){
-  cancelAnimationFrame(tweenId);
-  const st = document.documentElement.style;
-  st.scrollSnapType = ""; st.scrollBehavior = "";
-}
-function smoothTo(to){
-  stopTween();
-  const from = scrollY, dist = Math.abs(to - from);
-  if (reduce || dist < 4){ scrollTo({top: to, behavior: "instant"}); return; }
-  const span  = Math.max(1, rail.offsetHeight - innerHeight);
-  const moved = dist / span * (STOPS - 1);            // 몇 정거장을 지나가는지
-  const dur   = Math.min(1600, 200 + moved * 160);    // 정거장당 160ms — 더 내리면 음이 뭉친다
-  const st = document.documentElement.style;
-  st.scrollSnapType = "none";     // 굴리는 동안 스냅이 끼어들면 튄다
-  st.scrollBehavior = "auto";     // 매 프레임 smooth로 애니메이션되면 도착하지 못한다
-  const t0 = performance.now();
-  (function step(now){
-    const p = Math.min(1, (now - t0) / dur);
-    scrollTo({top: from + (to - from) * smoothstep(p), behavior: "instant"});
-    if (p < 1) tweenId = requestAnimationFrame(step);
-    else stopTween();
-  })(t0);
-}
-// 사용자가 손대면 즉시 양보한다
-["wheel", "touchstart", "keydown"].forEach(t => addEventListener(t, stopTween, {passive: true}));
-
-const goTo = (i) => smoothTo(stopY(i));
-
-// 착지 화면은 화면 크기에 따라 레일 안(마지막 정거장)에 있기도 하고 레일 뒤 일반 문서에 있기도 하다.
-// 어디 있든 폼 앞에 세워야 하니 클릭 시점에 다시 확인한다.
-function goSignup(){
-  if (land.classList.contains("panel--flow")) smoothTo(land.offsetTop - TOPBAR - 12);
-  else goTo(STOPS - 1);
+  const now = Math.round(k);
+  if (now === reelOn) return;
+  reelOn = now;
+  reelCap.textContent = reelSlides[now].dataset.cap;
+  reelDots.forEach((d, n) => d.classList.toggle("on", n === now));
 }
 
-if (!reduce){
-  ticks.forEach((b, i) => b.addEventListener("click", () => goTo(i)));
-  // 폴백(reduced-motion)에서는 #signup 앵커가 그대로 통해서 가로채지 않는다
-  document.querySelectorAll('a[href="#signup"]').forEach(a =>
-    a.addEventListener("click", (e) => { e.preventDefault(); goSignup(); }));
-  // 로고는 기본 앵커(#top)라 브라우저가 빠르게 튕겨 올린다 — 같은 속도로 통일한다
-  document.querySelectorAll('a[href="#top"]').forEach(a =>
-    a.addEventListener("click", (e) => { e.preventDefault(); smoothTo(0); }));
+let queued = false;
+function onScroll(){
+  if (queued) return;
+  queued = true;
+  requestAnimationFrame(() => { paper(); railTick(); reelTick(); queued = false; });
+}
+addEventListener("scroll", onScroll, {passive:true});
+addEventListener("resize", onScroll);
+paper(); railTick(); reelTick();
+
+// ── 진입 애니메이션: 화면에 들어오면 한 번 올라오고 그대로 머문다 ──
+if (matchMedia("(prefers-reduced-motion:no-preference)").matches){
+  const rise = [...document.querySelectorAll(
+    '.sec:not(#result) h2, .sec:not(#result) > .wrap > .sec__lede, .turn .sec__lede,' +
+    '.probs > div, .quote, .feat__k, .feat > div, .who > div, .need li, .faq details, .cta__box'
+  )];
+  rise.forEach(el => el.classList.add("rise"));
+  // 화면 밖으로 나가면 다시 내려간다 — 되돌아 올려도 같은 등장을 한 번 더 본다.
+  // 리셋은 화면 밖에서만 일어나므로 사라지는 장면은 보이지 않는다
+  const io = new IntersectionObserver((ents) => {
+    ents.forEach(e => e.target.classList.toggle("in", e.isIntersecting));
+  }, {rootMargin:"0px 0px -12% 0px"});
+  rise.forEach(el => io.observe(el));
 }
 
-// ── 상단 바 경계선 ──
-new IntersectionObserver(([e]) => {
-  document.body.classList.toggle("scrolled", !e.isIntersecting);
-}).observe(rail);
-
-// ── FAQ 배타 열림: name 속성 미지원 브라우저 폴백 ──
+// ── FAQ 배타 열림: details[name] 미지원 브라우저 폴백 ──
 if (!("name" in document.createElement("details"))){
   const faq = [...document.querySelectorAll('details[name="faq"]')];
   faq.forEach(d => d.addEventListener("toggle", () => {
@@ -1029,30 +1177,15 @@ if (!("name" in document.createElement("details"))){
   }));
 }
 
-// ── 착지 화면 재배치 ──
-// 답변 자리를 미리 확보하던 방식은 버렸다. 카드가 세로 중앙일 때는 그게 필요했지만
-// 지금은 내용이 화면 아래에 고정돼 있어서 답변이 열리면 위로만 자란다.
-// 대신 열고 닫을 때마다 문장 자리를 다시 계산한다 — 예약해두면 74px을 늘 낭비한다.
-// .faq가 아니라 .land__faq에 건다 — 개인정보 안내 details도 열리면 높이가 바뀐다
-const faqBox = document.querySelector(".land__faq");
-if (faqBox){
-  const relayout = () => { S = buildStops(); render(); };
-  relayout();
-  addEventListener("resize", relayout);
-  // toggle 이벤트는 버블링하지 않는다. 컨테이너에서 캡처로 받는다
-  faqBox.addEventListener("toggle", relayout, true);
-}
-
 // ── 사전등록 제출 ──
-document.querySelectorAll(".signup").forEach((form) => {
+document.querySelectorAll(".signup").forEach(form => {
   const msg = form.querySelector(".msg");
   const btn = form.querySelector("button");
-  form.addEventListener("submit", async (e) => {
+  form.addEventListener("submit", async e => {
     e.preventDefault();
-    // 방문자에게는 평범한 실패로 보이게 하고, 진짜 원인은 콘솔로만 알린다.
-    // 내부 지시사항("YOUR_FORM_ID를 교체하세요")을 화면에 띄우면 그대로 미완성 티가 난다.
+    // 미완성 티가 나는 내부 지시사항은 화면에 띄우지 않는다. 진짜 원인은 콘솔로만
     if (form.action.includes("YOUR_FORM_ID")){
-      console.warn("[JamIT] Formspree 폼 ID가 아직 index.html에 들어가지 않았습니다.");
+      console.warn("[JAMIT] Formspree 폼 ID가 아직 v3.html에 들어가지 않았습니다.");
       msg.dataset.state = "error";
       msg.textContent = "지금은 등록을 받을 수 없습니다. 잠시 후 다시 시도해 주십시오.";
       return;
