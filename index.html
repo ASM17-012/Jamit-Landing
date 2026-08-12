@@ -202,8 +202,11 @@ p{text-wrap:pretty}
    높이 = 장면 수 × 100vh, 그 안에서 무대(stage)가 붙어 있는다.
    ══════════════════════════════════════════════════════════ */
 .rail{--stops:4;height:calc(var(--stops) * var(--vh, 100vh));background:var(--cream);position:relative}
+/* 상단 바가 이 무대 위를 덮고 있다. 화면 전체를 기준으로 가운데를 잡으면
+   그 바 높이만큼 위가 잘리고 아래에만 여백이 남는다 — 바 높이만큼 안쪽 여백을 줘서
+   "바 아래 보이는 영역"의 한가운데에 오게 한다. box-sizing이 border-box라 높이는 그대로다 */
 .stage{position:sticky;top:0;height:100vh;height:var(--vh, 100dvh);overflow:hidden;background:var(--cream);
-  border-bottom:1px solid var(--ink);display:flex;align-items:center}
+  border-bottom:1px solid var(--ink);display:flex;align-items:center;padding-top:var(--top, 56px)}
 /* 장면 번호를 크게 깔아둔다 — 몇 번째 판인지 글자를 안 읽어도 보인다 */
 .bignum{position:absolute;left:calc(var(--edge) + 34px);top:50%;translate:0 -50%;z-index:0;
   font-family:var(--mono);font-weight:700;font-size:clamp(11rem,26vw,26rem);line-height:.8;
@@ -363,7 +366,8 @@ p{text-wrap:pretty}
 /* 릴 — 스크롤 길이가 곧 넘길 장수다. 세 장이 창 하나 안에 세로로 붙어 있고,
    스크롤이 트랙을 밀어 올린다. 창은 붙박이라 넘기는 동안 화면 밖으로 나가지 않는다 */
 .reels{height:calc(3 * var(--vh, 100vh))}
-.reels__stick{position:sticky;top:0;height:var(--vh, 100vh);display:grid;place-items:center}
+.reels__stick{position:sticky;top:0;height:var(--vh, 100vh);display:grid;place-items:center;
+  padding-top:var(--top, 56px)}   /* 무대와 같은 이유 — 상단 바에 가리지 않게 */
 .reel{width:min(340px,42vh)}
 .reel__win{aspect-ratio:9/16;overflow:hidden;border:1px solid var(--ink);box-shadow:9px 9px 0 var(--ink);background:var(--ink)}
 .reel__track{height:100%;display:grid;grid-auto-rows:100%;will-change:transform}
@@ -971,9 +975,12 @@ const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
    JS 계산도 같은 값을 써야 CSS와 어긋나지 않는다
    ══════════════════════════════════════════════════════════ */
 let VH = innerHeight, lastVW = innerWidth;
+const topbar = document.querySelector(".top");
 function lockVH(){
   VH = innerHeight;
-  document.documentElement.style.setProperty("--vh", VH + "px");
+  const st = document.documentElement.style;
+  st.setProperty("--vh", VH + "px");
+  st.setProperty("--top", topbar.offsetHeight + "px");   // 붙박이 구간이 이 바 아래에 자리잡는다
 }
 lockVH();
 
