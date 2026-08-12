@@ -26,6 +26,16 @@
    둥근 모서리 없음 · 블러 그림자 없음(잉크는 번지지 않는다) ·
    색은 종이 + 검정 + 스팟 잉크 몇 개 · 작은 글씨는 전부 모노.
    ══════════════════════════════════════════════════════════ */
+/* 영문 전용 고정폭. 설치된 것 중 먼저 찾는 것을 쓴다 — iOS·macOS는 Menlo가 항상 있고,
+   개발 도구가 깔린 기기는 SF Mono나 JetBrains Mono가 잡힌다.
+   범위에서 U+0020(공백)을 뺀 것이 핵심이다. 넣으면 한글 문장의 어절 사이가 벌어진다 */
+@font-face{
+  font-family:"MonoEn";
+  src:local("SF Mono"),local("SFMono-Regular"),local("JetBrains Mono"),
+      local("Menlo"),local("Consolas"),local("DejaVu Sans Mono");
+  unicode-range:U+0021-007E, U+00A1-024F, U+2000-206F, U+20A0-20BF, U+2190-21FF;
+  font-display:swap;
+}
 :root{
   /* 앱에 그대로 들고 갈 수 있는 색으로 잡았다.
      따뜻한 계열(갱지·주홍·노랑)은 화면에서 오래 보면 눈이 먼저 지친다 —
@@ -46,7 +56,10 @@
      앱은 영상이 깔린 어두운 화면이 기본이라, 밝은 면이 아니라 그쪽을 기준으로 잡았다 */
   --c1:#4c8df6; --c2:#17a29a; --c3:#8b7bf0; --c4:#d071a6; --c5:#d09a3f;
   --edge:clamp(18px,5vw,44px);
-  --sans:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  /* 영문·숫자는 mono(MonoEn), 한글은 산세리프. 아래 @font-face가 글자 범위를 가른다.
+     mono 계열을 그냥 앞에 세우기만 하면 한글은 글리프가 없어 알아서 넘어가지만
+     띄어쓰기(U+0020)는 mono 폭으로 잡혀 한글 단어 사이가 벌어진다 — 그래서 공백은 범위에서 뺐다 */
+  --sans:"MonoEn",-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
   --mono:ui-monospace,SFMono-Regular,"SF Mono","JetBrains Mono",Menlo,monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
