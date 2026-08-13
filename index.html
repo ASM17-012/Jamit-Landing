@@ -1141,16 +1141,18 @@ footer a:hover{color:var(--hot)}
       <h2>합주할 사람을 찾지 마세요</h2>
       <div class="cta__box">
         <p class="cta__lead">JAMIT에서 함께 하세요.</p>
-        <!-- TODO: action을 실제 Formspree 폼 ID로 교체 -->
-        <form class="signup" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-          <input type="hidden" name="source" value="v3-flyer">
-          <!-- Formspree가 이름으로 알아보는 칸 두 개.
-               _subject는 받는 메일함에 찍힐 제목이다. 안 주면 "New submission"으로 온다.
-               _gotcha는 봇 덫이다 — 사람에게는 안 보이는 칸이라 비어 있는 게 정상이고,
-               채워져서 오면 Formspree가 봇으로 보고 조용히 버린다. 공개된 정적 페이지에
-               폼 하나를 열어 두는 것이라 이건 있어야 한다 -->
-          <input type="hidden" name="_subject" value="JAMIT 출시 알림 신청">
-          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" hidden>
+        <!-- HubSpot 폼 API로 직접 보낸다. 임베드 스크립트(hs-scripts.js)는 쓰지 않는다 —
+             그쪽은 HubSpot이 자기 스타일의 폼을 그려 넣어 이 디자인을 덮고, 페이지를 열
+             때마다 외부 스크립트를 받는다. 이 페이지는 글꼴까지 같은 도메인에서 주는
+             원칙이라, 외부로 나가는 요청은 사용자가 버튼을 누른 그 한 번뿐이어야 한다.
+             TODO: 주소의 YOUR_PORTAL_ID / YOUR_FORM_GUID를 실제 값으로 교체 -->
+        <form class="signup" method="POST"
+              action="https://api.hsforms.com/submissions/v3/integration/submit/YOUR_PORTAL_ID/YOUR_FORM_GUID">
+          <!-- 봇 덫. 사람 눈에 안 보이는 칸이라 비어 있는 게 정상이고, 채워져 있으면
+               아래 스크립트가 보내지 않는다. HubSpot에는 Formspree의 _gotcha 같은
+               약속된 이름이 없어서 판정을 이쪽에서 한다.
+               tabindex=-1이라 키보드로도 닿지 않는다 — 이메일 칸 다음은 곧바로 버튼이다 -->
+          <input type="text" name="_trap" tabindex="-1" autocomplete="off" hidden>
           <div class="signup__row">
             <input type="email" name="email" required autocomplete="email" enterkeyhint="send"
                    placeholder="이메일 주소" aria-label="이메일 주소">
@@ -1503,27 +1505,57 @@ if (!("name" in document.createElement("details"))){
 }
 
 // ── 사전등록 제출 ──
+// HubSpot 폼 API는 form-data가 아니라 JSON을 받는다. 폼에 없는 이름을 하나라도
+// 끼워 보내면 400으로 돌려보내므로, 보내는 것은 이메일 하나뿐이다.
+// 어디서 들어왔는지는 필드 대신 context.pageUri·pageName으로 남긴다.
+const OK_MSG = "등록되었습니다. 출시하는 날 알려드리겠습니다.";
 document.querySelectorAll(".signup").forEach(form => {
-  const msg = form.querySelector(".msg");
-  const btn = form.querySelector("button");
+  const msg  = form.querySelector(".msg");
+  const btn  = form.querySelector("button");
+  const mail = form.querySelector("input[type=email]");
+  const trap = form.querySelector("[name=_trap]");
+
   form.addEventListener("submit", async e => {
     e.preventDefault();
+
+    // 봇 덫이 채워져 있으면 사람이 아니다. 막혔다고 알려주면 다음 시도에 그 칸을
+    // 피해 가므로, 성공한 척하고 아무 데도 보내지 않는다
+    if (trap && trap.value){ form.reset(); msg.dataset.state = ""; msg.textContent = OK_MSG; return; }
+
     // 미완성 티가 나는 내부 지시사항은 화면에 띄우지 않는다. 진짜 원인은 콘솔로만
-    if (form.action.includes("YOUR_FORM_ID")){
-      console.warn("[JAMIT] Formspree 폼 ID가 아직 index.html에 들어가지 않았습니다.");
+    if (form.action.includes("YOUR_PORTAL_ID") || form.action.includes("YOUR_FORM_GUID")){
+      console.warn("[JAMIT] HubSpot Portal ID / Form GUID가 아직 index.html에 들어가지 않았습니다.");
       msg.dataset.state = "error";
       msg.textContent = "지금은 등록을 받을 수 없습니다. 잠시 후 다시 시도해 주십시오.";
       return;
     }
+
     btn.disabled = true; msg.dataset.state = ""; msg.textContent = "등록 중…";
     try {
-      const res = await fetch(form.action, {method:"POST", body:new FormData(form), headers:{Accept:"application/json"}});
-      if (!res.ok) throw new Error(res.status);
+      const res = await fetch(form.action, {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({
+          // objectTypeId 0-1은 컨택트다. 같은 이메일로 또 넣어도 새 사람이 되지 않고
+          // 기존 컨택트에 합쳐지므로, 중복 제출을 이쪽에서 막을 필요가 없다
+          fields:  [{ objectTypeId:"0-1", name:"email", value: mail.value.trim() }],
+          context: { pageUri: location.href, pageName: document.title }
+        })
+      });
+      if (!res.ok){
+        // 400은 대개 이메일 형식이다. 그건 사용자가 고칠 수 있으니 따로 알려준다
+        const body = await res.json().catch(() => null);
+        const badMail = res.status === 400 &&
+          JSON.stringify(body || "").includes("INVALID_EMAIL");
+        throw Object.assign(new Error(res.status), {badMail});
+      }
       form.reset();
-      msg.textContent = "등록되었습니다. 출시하는 날 알려드리겠습니다.";
-    } catch {
+      msg.textContent = OK_MSG;
+    } catch (err) {
       msg.dataset.state = "error";
-      msg.textContent = "등록에 실패했습니다. 잠시 후 다시 시도해 주십시오.";
+      msg.textContent = err && err.badMail
+        ? "이메일 주소를 다시 확인해 주십시오."
+        : "등록에 실패했습니다. 잠시 후 다시 시도해 주십시오.";
     } finally { btn.disabled = false; }
   });
 });
