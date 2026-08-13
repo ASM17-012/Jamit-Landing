@@ -661,12 +661,17 @@ p{text-wrap:pretty}
   .feat > div > :not(svg){grid-column:1}
   /* .need만 이 규칙에서 빠진다. 표식을 글 위로 올리는 건 .feat처럼 제목 줄이 따로
      있는 항목에나 맞다. 여기는 문장이 두 줄로 접히는 목록이라, 점이 19px 위에 뜨면
-     어느 글의 표식인지 안 보이고 — 항목 사이가 14px인데 줄 사이가 12px이라
-     둘이 구분되지 않는다 — 접힌 줄까지 가운데로 흩어져 세 항목이 한 문단이 된다.
-     점은 글 앞에 두고 항목만 왼쪽으로 맞춘다. 접힌 둘째 줄이 첫 줄 글자에 맞춰
-     들어가서 항목 경계가 눈에 잡힌다. 목록 덩어리 자체는 가운데에 둔다 */
-  .need ul{justify-items:stretch;width:fit-content;max-width:100%;margin-inline:auto}
-  .need li{padding-left:20px;padding-top:0;text-align:left}
+     어느 글의 표식인지 안 보인다 — 항목 사이가 14px인데 줄 사이가 12px이라
+     둘이 구분되지도 않는다.
+
+     글은 이 구간의 나머지처럼 가운데로 두되, 점은 절대 배치를 풀어 글줄에 태운다.
+     가운데 정렬에 절대 배치를 섞으면 글만 가운데로 가고 점은 제자리에 남아 따로
+     논다 — 그게 원래 증상이었다. 인라인으로 흘리면 첫 줄 맨 앞에 붙어 같이 움직인다.
+     항목 간격은 26px로 벌린다. 14px이면 줄 사이(12px)와 구분이 안 돼,
+     두 줄로 접히는 항목들이 한 문단으로 뭉친다 */
+  .need ul{justify-items:stretch;gap:26px}
+  .need li{padding-left:0;padding-top:0;text-align:center}
+  .need li::before{position:static;display:inline-block;margin-right:8px;vertical-align:.09em}
 }
 
 footer{padding:30px 0 46px;border-top:1px solid var(--ink);display:grid;gap:16px}
@@ -1025,7 +1030,7 @@ footer a:hover{color:var(--hot)}
                   <div class="scr" data-n="4">
                     <div class="tile" style="--c:var(--c3)"><svg viewBox="0 0 40 40"><use href="#person"/></svg><video src="assets/reel/guitar-1.mp4" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video><span class="tile__tag"><i></i>기타</span></div>
                     <div class="tile" style="--c:var(--c1)"><svg viewBox="0 0 40 40"><use href="#person"/></svg><video src="assets/reel/keys-2.mp4" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video><span class="tile__tag"><i></i>키보드</span></div>
-                    <div class="tile" style="--c:var(--c2)"><svg viewBox="0 0 40 40"><use href="#person"/></svg><video src="assets/reel/guitar-2.mp4" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video><span class="tile__tag"><i></i>우쿨렐레</span></div>
+                    <div class="tile" style="--c:var(--c2)"><svg viewBox="0 0 40 40"><use href="#person"/></svg><video src="assets/reel/guitar-2.mp4" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video><span class="tile__tag"><i></i>베이스</span></div>
                     <div class="tile" style="--c:var(--c4)"><svg viewBox="0 0 40 40"><use href="#person"/></svg><video src="assets/reel/keys-1.mp4" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video><span class="tile__tag"><i></i>피아노</span></div>
                   </div>
                 </div>
