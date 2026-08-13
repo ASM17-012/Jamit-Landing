@@ -118,7 +118,7 @@
   --sans:"MonoEn","Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
   /* 모노 스택에도 한글은 없다. MonoAll은 글자 범위를 안 가르지만 JetBrains Mono에
      한글 글리프가 없어 그대로 넘어가는데, 그 다음이 브라우저 기본 폴백이라
-     "휴대폰 하나로 만드는 온라인 합주" 같은 라벨이 기기마다 다른 글꼴로 나왔다 */
+     "iOS · Android · 2026년 9월 출시 예정" 같은 라벨이 기기마다 다른 글꼴로 나왔다 */
   --mono:"MonoAll",ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,"Pretendard",monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -172,11 +172,14 @@ p{text-wrap:pretty}
 /* ════ 히어로 ════ */
 .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,4vw,56px);align-items:center;
   padding:clamp(34px,6vw,72px) 0 clamp(30px,5vw,64px)}
-.eye{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11.5px;
-  letter-spacing:.16em;text-transform:uppercase;color:var(--hot-2)}
-.eye::before{content:"";width:8px;height:8px;background:var(--hot);animation:blink 2.6s steps(1) infinite}
-@keyframes blink{0%,60%{opacity:1}61%,100%{opacity:.25}}
-.hero h1{margin-top:18px;font-size:clamp(2.9rem,7.4vw,5.6rem);line-height:.9;letter-spacing:-.045em;font-weight:800}
+@keyframes blink{0%,60%{opacity:1}61%,100%{opacity:.25}}   /* 앱 화면의 REC 점이 쓴다 */
+/* 행간 .9는 라틴 기준값이다. 한글은 글자가 네모칸을 꽉 채우고 받침이 아래로 더 내려가서,
+   이 글꼴(Pretendard 800)에서 한 줄의 실제 잉크 높이가 0.896em이다 — 행간 .9면 남는 틈이
+   0.004em, 사실상 0이다. 1440px에서 재보면 "나만의 연주가"의 받침과 "우리의"의 윗선이
+   한 덩어리로 붙어 두 줄이 하나의 잉크 띠로 이어진다.
+   1.04면 틈이 0.138em(1440px 기준 12.3px)으로 벌어진다. 더 늘리면 이 페이지의 밀도가
+   깨지므로, 두 줄이 떨어져 보이는 최소치 근처로 잡았다 */
+.hero h1{font-size:clamp(2.9rem,7.4vw,5.6rem);line-height:1.04;letter-spacing:-.045em;font-weight:800}
 .hero h1 em{font-style:normal;color:var(--hot)}
 .lede{margin-top:clamp(16px,2.2vw,22px);max-width:27em;font-size:clamp(1rem,1.4vw,1.16rem);color:var(--ink-2);line-height:1.6}
 .lede b{color:var(--ink);font-weight:800}
@@ -301,7 +304,10 @@ p{text-wrap:pretty}
 .chap.past{transform:translateX(-52px)}
 .chap.on{opacity:1;transform:none;pointer-events:auto}
 
-.chap h2{font-size:clamp(1.9rem,4.4vw,3.4rem);line-height:.98}
+/* 히어로 h1과 같은 이유로 올린다. .98이면 줄 사이 잉크 틈이 0.080em인데, 같은 급의
+   섹션 제목(.sec h2 · .turn h2, 행간 1.08)은 0.177em이라 레일만 눌려 보였다.
+   1.06이면 0.172em — 페이지의 다른 제목들과 같은 숨이다 */
+.chap h2{font-size:clamp(1.9rem,4.4vw,3.4rem);line-height:1.06}
 .chap p{margin-top:16px;max-width:30em;color:var(--ink-2);font-size:clamp(.98rem,1.4vw,1.14rem)}
 /* 이름을 붙이는 한 문장 — 설명 문단보다 진하게 두어 여기서 새 단어가 나온다는 걸 알린다 */
 .chap p.coin{margin-top:13px;color:var(--ink)}
@@ -392,12 +398,27 @@ p{text-wrap:pretty}
   /* 폰 크기는 남는 높이에서 역산한다. 고정 크기로 두면 작은 화면에서 무대 내용이
      화면보다 커지고, 그때 가운데 정렬은 넘친 만큼을 위아래로 반씩 밀어낸다 —
      위로 밀린 쪽이 상단 바 뒤로 들어가 잘린다(안쪽 여백으로는 막지 못한다).
-     빼는 값: 상단 바 + 글 칸 250 + 칸 사이 여백 18 + 폰에서 화면이 아닌 부분 79(실측: 안쪽 여백
-     18 + 머리 14 + 칸 사이 16 + 진행 막대 6 + 상태줄 14) + 여유 3.
+     빼는 값: 상단 바 + 글 칸 250 + 칸 사이 여백 18 + 폰에서 화면이 아닌 부분 79 + 여유 3.
+     아래에서 그 껍데기를 줄여 실측 67이 됐으므로 지금 79 자리에는 12px이 남는다.
+     상수를 그만큼 내리면 폰이 조금 더 커지지만, 이 식이 한 번 틀렸을 때 나는 증상이
+     "무대가 상단 바 뒤로 잘림"이라 여유로 두는 쪽을 택했다.
      남은 높이가 곧 화면(9:16)의 높이이므로 9/16을 곱해 폭으로 되돌린다 */
   .phone{order:1;max-width:min(216px, 50vw,
     calc((var(--vh, 100vh) - var(--top, 56px)
           - 250px - 100px) * 9 / 16 + 18px))}
+
+  /* 폰에서 이 목업은 300px에서 127~216px로 줄지만 껍데기(여백·머리·진행 막대·상태 줄)는
+     px로 박혀 있어 화면만 작아지고 테두리는 그대로다. 데스크톱에선 목업 높이의 14%였던
+     껍데기가 여기서는 26%까지 부푼다 — 특히 6px 진행 막대는 135px짜리 화면 밑에 놓이면
+     앱의 막대가 아니라 페이지에 그은 줄로 보인다.
+     크기 값은 히어로 목업(.hero__phone, 168~224px)이 이미 쓰고 있는 것을 그대로 가져왔다.
+     같은 폭대의 같은 앱 화면이니 두 목업이 다른 껍데기를 쓸 이유가 없다 */
+  .phone{padding:7px;gap:6px}
+  .phone .ph__head{font-size:9px}
+  .phone .ph__txt{font-size:9px}
+  /* 막대만 히어로에 짝이 없다(히어로 목업엔 진행 막대가 없다). 화면 폭이 준 비율만큼 낮춘다 */
+  .ph__bar{height:4px}
+
   .scrollhint{display:none}
 }
 
@@ -594,7 +615,11 @@ p{text-wrap:pretty}
   .last .privacy p{text-align:center}
 
   /* ② 가로로 늘어서는 줄들 */
-  .hero__cta,.signup__row,.foot__b,.ph__foot{justify-content:center}
+  .hero__cta,.signup__row,.foot__b{justify-content:center}
+  /* 앱 화면 안의 상태 줄(.ph__foot)은 여기서 뺀다 — 상단 바를 뺀 것과 같은 이유다.
+     저건 페이지의 글이 아니라 앱 화면의 일부다. 진행 막대 왼쪽 끝에 붙어 있어야
+     "막대가 여기까지 찼다"로 읽히는데, 가운데로 옮기면 막대와 끊겨서
+     폰 밑에 따로 달린 설명처럼 보인다 */
   .result .big + .btn{justify-self:center}
   .faq summary{justify-content:center;gap:10px}
   footer{justify-items:center}
@@ -645,9 +670,7 @@ footer a:hover{color:var(--hot)}
 
   /* ── 모노 라벨 ──
      자간을 벌리는 건 대문자 라틴을 위한 장치다. 한글에 그대로 걸면 낱글자가
-     흩어져서 단어로 안 읽힌다. "휴대폰 하나로 만드는 온라인 합주"가 그 상태였다.
-     라틴이 섞인 줄은 그쪽도 살려야 하니 중간값으로 둔다 */
-  .eye{letter-spacing:.04em}
+     흩어져서 단어로 안 읽힌다. 라틴이 섞인 줄은 그쪽도 살려야 하니 중간값으로 둔다 */
   .hero__note,.cta__meta,.reel__cap,.quote__k,.ph__txt,.flyer__k{letter-spacing:.07em}
   /* 상단 바·띠·전단지에도 같은 자가 적용돼 있다. 특히 헤더 버튼은 .btn이 아니라
      .top__nav a가 이겨서(명시도 0,1,1) 모노 11.5px에 .14em이 걸려 있었다 —
@@ -735,13 +758,11 @@ footer a:hover{color:var(--hot)}
   <!-- ══════════ 히어로 ══════════ -->
   <section class="wrap hero">
     <div>
-      <span class="eye">휴대폰 하나로 만드는 온라인 합주</span>
       <h1>나만의 연주가<br>우리의 <em>합주</em>로</h1>
       <!-- H1은 후킹, 이 문단은 설명 — 방문자가 3초 안에 '무엇인지'를 알아야 한다 -->
       <p class="lede">
         각자의 파트만 연주해서 올리면, <br>
-        JAMIT이 <b>하나의 합주 영상</b>으로 만듭니다. <br>
-        그렇게 최대 아홉 명까지.
+        JAMIT이 <b>하나의 합주 영상</b>으로 만듭니다.
       </p>
       <div class="hero__cta">
         <a class="btn" href="#signup">출시 알림 받기 <span aria-hidden="true">→</span></a>
