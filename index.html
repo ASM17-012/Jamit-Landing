@@ -632,7 +632,9 @@ p{text-wrap:pretty}
 
   /* ① 폭이 묶인 문단들 */
   .lede,.sec__lede,.chap p,.feat p,.who p,.quote p,.probs p,
-  .faq details p,.privacy p,.need li,.cta__box{margin-inline:auto}
+  .faq details p,.privacy p,.cta__box{margin-inline:auto}
+  /* .need li는 여기서 뺐다 — 아래 ③이 그 목록을 통째로 맡는다.
+     여기 auto 마진이 남아 있으면 항목이 다시 가운데로 오그라들어 ③이 무효가 된다 */
   .last .privacy p{text-align:center}
 
   /* ② 가로로 늘어서는 줄들 */
@@ -652,9 +654,14 @@ p{text-wrap:pretty}
   /* ③ 왼쪽 표식 → 글 위로 */
   .feat > div{grid-template-columns:1fr;justify-items:center;row-gap:10px}
   .feat > div > :not(svg){grid-column:1}
-  .need ul{justify-items:center}
-  .need li{padding-left:0;padding-top:19px}
-  .need li::before{left:50%;top:0;translate:-50% 0}
+  /* .need만 이 규칙에서 빠진다. 표식을 글 위로 올리는 건 .feat처럼 제목 줄이 따로
+     있는 항목에나 맞다. 여기는 문장이 두 줄로 접히는 목록이라, 점이 19px 위에 뜨면
+     어느 글의 표식인지 안 보이고 — 항목 사이가 14px인데 줄 사이가 12px이라
+     둘이 구분되지 않는다 — 접힌 줄까지 가운데로 흩어져 세 항목이 한 문단이 된다.
+     점은 글 앞에 두고 항목만 왼쪽으로 맞춘다. 접힌 둘째 줄이 첫 줄 글자에 맞춰
+     들어가서 항목 경계가 눈에 잡힌다. 목록 덩어리 자체는 가운데에 둔다 */
+  .need ul{justify-items:stretch;width:fit-content;max-width:100%;margin-inline:auto}
+  .need li{padding-left:20px;padding-top:0;text-align:left}
 }
 
 footer{padding:30px 0 46px;border-top:1px solid var(--ink);display:grid;gap:16px}
