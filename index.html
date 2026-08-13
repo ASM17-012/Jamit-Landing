@@ -389,12 +389,27 @@ p{text-wrap:pretty}
   /* 폰 크기는 남는 높이에서 역산한다. 고정 크기로 두면 작은 화면에서 무대 내용이
      화면보다 커지고, 그때 가운데 정렬은 넘친 만큼을 위아래로 반씩 밀어낸다 —
      위로 밀린 쪽이 상단 바 뒤로 들어가 잘린다(안쪽 여백으로는 막지 못한다).
-     빼는 값: 상단 바 + 글 칸 250 + 칸 사이 여백 18 + 폰에서 화면이 아닌 부분 79(실측: 안쪽 여백
-     18 + 머리 14 + 칸 사이 16 + 진행 막대 6 + 상태줄 14) + 여유 3.
+     빼는 값: 상단 바 + 글 칸 250 + 칸 사이 여백 18 + 폰에서 화면이 아닌 부분 79 + 여유 3.
+     아래에서 그 껍데기를 줄여 실측 67이 됐으므로 지금 79 자리에는 12px이 남는다.
+     상수를 그만큼 내리면 폰이 조금 더 커지지만, 이 식이 한 번 틀렸을 때 나는 증상이
+     "무대가 상단 바 뒤로 잘림"이라 여유로 두는 쪽을 택했다.
      남은 높이가 곧 화면(9:16)의 높이이므로 9/16을 곱해 폭으로 되돌린다 */
   .phone{order:1;max-width:min(216px, 50vw,
     calc((var(--vh, 100vh) - var(--top, 56px)
           - 250px - 100px) * 9 / 16 + 18px))}
+
+  /* 폰에서 이 목업은 300px에서 127~216px로 줄지만 껍데기(여백·머리·진행 막대·상태 줄)는
+     px로 박혀 있어 화면만 작아지고 테두리는 그대로다. 데스크톱에선 목업 높이의 14%였던
+     껍데기가 여기서는 26%까지 부푼다 — 특히 6px 진행 막대는 135px짜리 화면 밑에 놓이면
+     앱의 막대가 아니라 페이지에 그은 줄로 보인다.
+     크기 값은 히어로 목업(.hero__phone, 168~224px)이 이미 쓰고 있는 것을 그대로 가져왔다.
+     같은 폭대의 같은 앱 화면이니 두 목업이 다른 껍데기를 쓸 이유가 없다 */
+  .phone{padding:7px;gap:6px}
+  .phone .ph__head{font-size:9px}
+  .phone .ph__txt{font-size:9px}
+  /* 막대만 히어로에 짝이 없다(히어로 목업엔 진행 막대가 없다). 화면 폭이 준 비율만큼 낮춘다 */
+  .ph__bar{height:4px}
+
   .scrollhint{display:none}
 }
 
@@ -591,7 +606,11 @@ p{text-wrap:pretty}
   .last .privacy p{text-align:center}
 
   /* ② 가로로 늘어서는 줄들 */
-  .hero__cta,.signup__row,.foot__b,.ph__foot{justify-content:center}
+  .hero__cta,.signup__row,.foot__b{justify-content:center}
+  /* 앱 화면 안의 상태 줄(.ph__foot)은 여기서 뺀다 — 상단 바를 뺀 것과 같은 이유다.
+     저건 페이지의 글이 아니라 앱 화면의 일부다. 진행 막대 왼쪽 끝에 붙어 있어야
+     "막대가 여기까지 찼다"로 읽히는데, 가운데로 옮기면 막대와 끊겨서
+     폰 밑에 따로 달린 설명처럼 보인다 */
   .result .big + .btn{justify-self:center}
   .faq summary{justify-content:center;gap:10px}
   footer{justify-items:center}
