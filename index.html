@@ -173,7 +173,13 @@ p{text-wrap:pretty}
 .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,4vw,56px);align-items:center;
   padding:clamp(34px,6vw,72px) 0 clamp(30px,5vw,64px)}
 @keyframes blink{0%,60%{opacity:1}61%,100%{opacity:.25}}   /* 앱 화면의 REC 점이 쓴다 */
-.hero h1{font-size:clamp(2.9rem,7.4vw,5.6rem);line-height:.9;letter-spacing:-.045em;font-weight:800}
+/* 행간 .9는 라틴 기준값이다. 한글은 글자가 네모칸을 꽉 채우고 받침이 아래로 더 내려가서,
+   이 글꼴(Pretendard 800)에서 한 줄의 실제 잉크 높이가 0.896em이다 — 행간 .9면 남는 틈이
+   0.004em, 사실상 0이다. 1440px에서 재보면 "나만의 연주가"의 받침과 "우리의"의 윗선이
+   한 덩어리로 붙어 두 줄이 하나의 잉크 띠로 이어진다.
+   1.04면 틈이 0.138em(1440px 기준 12.3px)으로 벌어진다. 더 늘리면 이 페이지의 밀도가
+   깨지므로, 두 줄이 떨어져 보이는 최소치 근처로 잡았다 */
+.hero h1{font-size:clamp(2.9rem,7.4vw,5.6rem);line-height:1.04;letter-spacing:-.045em;font-weight:800}
 .hero h1 em{font-style:normal;color:var(--hot)}
 .lede{margin-top:clamp(16px,2.2vw,22px);max-width:27em;font-size:clamp(1rem,1.4vw,1.16rem);color:var(--ink-2);line-height:1.6}
 .lede b{color:var(--ink);font-weight:800}
