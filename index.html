@@ -234,17 +234,24 @@ p{text-wrap:pretty}
 .hero__note{margin-top:13px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;line-height:1.9;color:var(--mute)}
 .hero__note b{color:var(--ink-2);font-weight:400}
 
-/* 히어로 오른쪽은 앱 화면. 데스크톱은 두 장을 가로로, 폰은 첫 장만 남긴다.
+/* 히어로 오른쪽은 앱 화면. 데스크톱은 두 장을 어긋나게, 폰은 첫 장만 남긴다.
    문제(전단지)는 다음 섹션이 맡는다 */
-.hero__proof{display:flex;justify-content:center;align-items:center;gap:clamp(14px,1.8vw,24px)}
+.hero__proof{display:flex;justify-content:center;align-items:flex-start;gap:clamp(14px,1.8vw,24px)}
 /* 실제 앱 화면. 액자를 두르지 않는다 — 이 이미지가 기기 테두리를 이미 달고
    왔고 바깥은 투명이라(반투명은 가장자리 안티에일리어싱 5천 픽셀뿐, 흐린 그림자 없음)
    이 페이지의 납작한 액자를 한 겹 더 씌우면 테두리가 두 겹이 된다.
 
-   폭: 두 장이 오른쪽 칸에 나란히 들어가야 한다. 그 칸은 히어로 그리드의 .85fr이라
-   1440px에서 약 551px, 1000px에서 약 387px이다 — 후자가 한계선이라 최솟값을 140px로
-   잡았다(140×2 + 여백 20 = 300 < 387). 폰에서는 한 장뿐이라 아래에서 다시 키운다 */
-.hero__phone{width:clamp(140px,12vw,176px)}
+   폭: 두 장이 오른쪽 칸에 들어가야 한다. 그 칸은 히어로 그리드의 .85fr인데 .wrap이
+   1180px에서 멈추므로 넓은 화면에서는 478px로 고정된다(실측: 1280px→480, 1000px→371,
+   브레이크포인트 바로 위 861px→315). 그래서 최댓값은 vw가 아니라 212px 고정이다 —
+   화면이 더 넓어져도 칸은 안 넓어지니 vw로 두면 넘친다.
+   최솟값 142px은 제일 좁은 861px 칸에서 나왔다(142×2 + 여백 15 = 299 < 315).
+   폰에서는 한 장뿐이라 아래에서 다시 키운다 */
+.hero__phone{width:clamp(142px,15.5vw,212px)}
+/* 둘째 장만 내린다. 나란히 두면 같은 크기가 같은 높이에 두 번 반복돼 한 덩어리로
+   보인다. 겹치지는 않는다 — 뒷장을 가리면 두 화면이 서로 달라졌을 때 한쪽을
+   절반밖에 못 보여준다 */
+.hero__phone--2{margin-top:clamp(24px,3.4vw,52px)}
 /* 세로비는 이미지가 들고 온다(540×1078). 액자에 9/16을 박아 두면 눌린다 */
 .hero__phone img{display:block;width:100%;height:auto}
 /* 폰에서는 두 장을 나란히 놓을 폭이 없다. 세로로 쌓으면 첫 화면이 그만큼 길어져
