@@ -236,12 +236,12 @@ p{text-wrap:pretty}
 
 /* 히어로 오른쪽은 '이 앱이 만들어주는 것' 하나만 크게. 문제(전단지)는 다음 섹션이 맡는다 */
 .hero__proof{display:flex;justify-content:center;align-items:center}
-.hero__phone{width:clamp(168px,20vw,224px);
-  background:var(--cream);border:1px solid var(--ink);box-shadow:9px 9px 0 var(--ink);padding:7px;
-  display:flex;flex-direction:column;gap:6px}
-.hero__phone .ph__head{font-size:9px}
-.hero__phone .ph__body{aspect-ratio:9/16;background:var(--ink);overflow:hidden}
-.hero__phone .ph__txt{font-size:9px}
+/* 실제 앱 화면 한 장. 액자를 두르지 않는다 — 이 이미지가 기기 테두리를 이미 달고
+   왔고 바깥은 투명이라(반투명은 가장자리 안티에일리어싱 5천 픽셀뿐, 흐린 그림자 없음)
+   이 페이지의 납작한 액자를 한 겹 더 씌우면 테두리가 두 겹이 된다 */
+.hero__phone{width:clamp(168px,20vw,224px)}
+/* 세로비는 이미지가 들고 온다(540×1078). 액자에 9/16을 박아 두면 눌린다 */
+.hero__phone img{display:block;width:100%;height:auto}
 @media(max-width:860px){.hero__phone{width:min(186px,52%)}}
 
 /* 세로가 짧은 화면(노트북 가로 모드 등)에서도 첫 화면 안에 가치 제안과 CTA가 들어와야 한다 */
@@ -773,21 +773,11 @@ footer a:hover{color:var(--hot)}
 
     <!-- 히어로 오른쪽은 결과물 하나만. 문제(전단지)는 바로 다음 섹션이 맡는다 -->
     <div class="hero__proof">
-      <!-- 이 앱이 만들어주는 것 -->
-      <div class="hero__phone" aria-label="완성된 합주 영상 예시">
-        <div class="ph__head"><span class="ph__dot" aria-hidden="true"></span><span class="ph__tag">On Air</span></div>
-        <div class="ph__body">
-          <div class="screen__grid" data-n="4" style="height:100%">
-            <div class="tile" style="--c:var(--c3)"><svg viewBox="0 0 40 40"><use href="#person"/></svg>
-              <span class="tile__tag"><i></i>기타</span></div>
-            <div class="tile" style="--c:var(--c1)"><svg viewBox="0 0 40 40"><use href="#person"/></svg>
-              <span class="tile__tag"><i></i>드럼</span></div>
-            <div class="tile" style="--c:var(--c2)"><svg viewBox="0 0 40 40"><use href="#person"/></svg>
-              <span class="tile__tag"><i></i>베이스</span></div>
-            <div class="tile" style="--c:var(--c4)"><svg viewBox="0 0 40 40"><use href="#person"/></svg>
-              <span class="tile__tag"><i></i>보컬</span></div>
-          </div>
-        </div>
+      <!-- 이 앱이 실제로 어떻게 생겼는지. 여기만 그린 목업이 아니라 진짜 화면이다.
+           첫 화면에서 제일 큰 그림이라 fetchpriority로 먼저 받는다 -->
+      <div class="hero__phone">
+        <img src="assets/app-home.webp" width="540" height="1078" fetchpriority="high" decoding="async"
+             alt="JAMIT 앱 홈 화면. 완성된 합주 영상(잇츠) 목록과 합주 모집 글이 보인다.">
       </div>
     </div>
   </section>
@@ -809,19 +799,19 @@ footer a:hover{color:var(--hot)}
              "혼자 연주해도, 합주가 됩니다"다. 둘이 짝이라 순서를 바꾸면 안 된다.
              리드의 세 줄은 아래 세 항목과 같은 순서로 하나씩 대응한다 -->
         <h2>합주는 혼자<br>정할 수 없습니다</h2>
-        <p class="sec__lede">치고 싶은 곡도, 오늘 칠지 말지도 혼자 정하지 못합니다. <br>그 곡을 아는 사람, 내 실력을 기다려 줄 사람, <br>같은 날 비어 있는 사람이 동시에 있어야 합니다.</p>
+        <p class="sec__lede">치고 싶은 곡, 그 곡을 아는 사람, 내 실력을 기다려 줄 사람, <br>같은 날 칠 수 있는 사람이 동시에 있어야 합니다.</p>
         <div class="probs">
-          <div><b>곡이 맞는 사람이 없다</b><p>치고 싶은 곡은 정했는데, 그 곡을 칠 사람은 주변에 없습니다.</p></div>
-          <div><b>실력이 발목을 잡는다</b><p>나 하나 때문에 곡이 멈추는 자리에는 애초에 가지 않게 됩니다.</p></div>
+          <div><b>곡을 칠 사람이 없다</b><p>치고 싶은 곡은 정했는데, 그 곡을 칠 사람은 주변에 없습니다.</p></div>
+          <div><b>실력이 발목을 잡는다</b><p>나 하나 때문에 곡이 멈추는 자리에는 가지 않게 됩니다.</p></div>
           <!-- 라벨 칸이 minmax(0,10em)이다. "시간과 장소가 묶여 있다"는 그 폭을 넘겨
                두 줄이 되는데, 위 두 줄만 한 줄이라 이 행만 어긋나 보인다 -->
-          <div><b>시간과 장소에 묶인다</b><p>같은 날 같은 방에 다 모여야 한 번입니다. 한 명만 빠지면 그날은 없습니다.</p></div>
+          <div><b>시간과 장소에 묶인다</b><p>같은 날 같은 방에 다 모여야 가능합니다. 한 명만 빠지면 합주는 없습니다.</p></div>
         </div>
         <div class="quotes">
           <div class="quote">
             <span class="quote__k">단톡방 · 3월</span>
-            <b>&ldquo;그 곡 칠 줄 아는 사람 없어?&rdquo;</b>
-            <p>기타도 베이스도 드럼도 다 모였습니다. <br>그런데 그 곡을 아는 사람이 없어서, 결국 늘 치던 곡으로 돌아갑니다.</p>
+            <b>&ldquo;이 곡 같이 할 사람?&rdquo;</b>
+            <p>기타도 베이스도 드럼도 다 모였습니다. <br>그런데 이 곡을 연주할 사람이 없어서, 결국 늘 치던 곡으로 돌아갑니다.</p>
           </div>
           <div class="quote">
             <span class="quote__k">합주실 · 첫 곡</span>
