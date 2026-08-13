@@ -643,14 +643,14 @@ p{text-wrap:pretty}
   .last .privacy p{text-align:center}
 
   /* ② 가로로 늘어서는 줄들 */
-  .hero__cta,.signup__row,.foot__b{justify-content:center}
+  .hero__cta,.signup__row{justify-content:center}
+  /* .foot__b는 여기서 뺐다 — 푸터는 폭에 상관없이 가운데라 기본 규칙이 이미 잡는다 */
   /* 앱 화면 안의 상태 줄(.ph__foot)은 여기서 뺀다 — 상단 바를 뺀 것과 같은 이유다.
      저건 페이지의 글이 아니라 앱 화면의 일부다. 진행 막대 왼쪽 끝에 붙어 있어야
      "막대가 여기까지 찼다"로 읽히는데, 가운데로 옮기면 막대와 끊겨서
      폰 밑에 따로 달린 설명처럼 보인다 */
   .result .big + .btn{justify-self:center}
   .faq summary{justify-content:center;gap:10px}
-  footer{justify-items:center}
 
   /* 레일 장면은 flex 세로단이라 교차축을 따로 가운데로 */
   .chap{align-items:center}
@@ -674,10 +674,13 @@ p{text-wrap:pretty}
   .need li::before{position:static;display:inline-block;margin-right:8px;vertical-align:.09em}
 }
 
-footer{padding:30px 0 46px;border-top:1px solid var(--ink);display:grid;gap:16px}
+/* 폭에 상관없이 가운데다. 바로 위 마지막 CTA(.last)가 데스크톱에서도 가운데 정렬이라,
+   푸터만 왼쪽으로 붙으면 페이지가 닫히다 말고 축이 한 번 더 꺾인다 */
+footer{padding:30px 0 46px;border-top:1px solid var(--ink);display:grid;gap:16px;
+  justify-items:center;text-align:center}
 .foot__id{font-size:18px;font-weight:800;letter-spacing:-.03em;color:var(--ink)}
 .foot__t{display:block;margin-top:5px;font-size:12.5px;color:var(--ink-2)}
-.foot__b{display:flex;flex-wrap:wrap;gap:6px 22px}
+.foot__b{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 22px}
 .foot__b a{font-size:13px;font-weight:700;color:var(--ink-2)}
 .foot__b a:hover{color:var(--hot)}
 .foot__c{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--mute)}
