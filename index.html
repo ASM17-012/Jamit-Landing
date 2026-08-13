@@ -21,7 +21,28 @@
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/jetbrains-mono-latin.woff2" crossorigin>
 <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23ecedf1"/><rect x="3" y="3" width="26" height="26" fill="none" stroke="%231a1f2b" stroke-width="2"/><rect x="9" y="13" width="3" height="6" fill="%231a1f2b"/><rect x="15" y="8" width="3" height="16" fill="%234c8df6"/><rect x="21" y="11" width="3" height="10" fill="%231a1f2b"/></svg>'>
 
+<!-- 첫 화면 제목에 바로 걸리는 폰트다. 늦게 오면 시스템 폰트로 한 번 그렸다가 바뀌는데,
+     이 페이지는 레일·릴의 높이를 --vh와 실측값으로 잡고 있어서 그 순간 계산이 흔들린다.
+     crossorigin은 같은 도메인이어도 빼면 안 된다 — 폰트는 CORS 모드로만 받는다 -->
+<link rel="preload" href="assets/fonts/pretendard-subset.woff2" as="font" type="font/woff2" crossorigin>
+
 <style>
+/* ── 한글 폰트 ──
+   기기 기본 폰트에 맡기면 결과가 셋으로 갈린다. iOS는 Apple SD Gothic Neo,
+   안드로이드는 Roboto(라틴) + Noto Sans KR(한글)이 한 줄에서 섞여 베이스라인이 어긋난다.
+   무엇보다 두 폰트 다 700까지밖에 없어서, 이 페이지가 제목에 쓰는 800이 전부
+   합성 볼드로 그려진다 — 브라우저가 획을 강제로 부풀린 그 글자가 뭉개져 보이는 원인이다.
+   그래서 폰트를 직접 들고 온다. 같은 도메인에 두어 외부 요청 0은 그대로다.
+   KS X 1001 상용 2350자로 줄인 가변 폰트 하나(300KB) */
+@font-face{
+  font-family:"Pretendard";
+  src:url("assets/fonts/pretendard-subset.woff2") format("woff2");
+  /* 축이 400~800이라 그 사이 굵기는 폰트가 직접 그린다. 합성 볼드가 낄 자리가 없다 */
+  font-weight:400 800;
+  font-style:normal;
+  /* 폰트를 기다리며 글자를 감추지 않는다. 시스템 폰트로 먼저 읽히는 편이 낫다 */
+  font-display:swap;
+}
 /* ══════════════════════════════════════════════════════════
    합주실 벽에 붙은 전단지. 인쇄물 규칙으로 짠다:
    둥근 모서리 없음 · 블러 그림자 없음(잉크는 번지지 않는다) ·
@@ -90,9 +111,15 @@
   --edge:clamp(18px,5vw,44px);
   /* 영문·숫자는 mono(MonoEn), 한글은 산세리프. 아래 @font-face가 글자 범위를 가른다.
      mono 계열을 그냥 앞에 세우기만 하면 한글은 글리프가 없어 알아서 넘어가지만
-     띄어쓰기(U+0020)는 mono 폭으로 잡혀 한글 단어 사이가 벌어진다 — 그래서 공백은 범위에서 뺐다 */
-  --sans:"MonoEn",-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
-  --mono:"MonoAll",ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,monospace;
+     띄어쓰기(U+0020)는 mono 폭으로 잡혀 한글 단어 사이가 벌어진다 — 그래서 공백은 범위에서 뺐다.
+     MonoEn이 영문·숫자를 가져가고 남는 자리(한글)를 Pretendard가 받는다.
+     -apple-system보다 앞이어야 한다 — BlinkMacSystemFont는 안드로이드 크롬에서도
+     매칭돼서, 뒤에 두면 한글이 기기 기본 폰트로 떨어지고 800이 다시 합성 볼드가 된다 */
+  --sans:"MonoEn","Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  /* 모노 스택에도 한글은 없다. MonoAll은 글자 범위를 안 가르지만 JetBrains Mono에
+     한글 글리프가 없어 그대로 넘어가는데, 그 다음이 브라우저 기본 폴백이라
+     "휴대폰 하나로 만드는 온라인 합주" 같은 라벨이 기기마다 다른 글꼴로 나왔다 */
+  --mono:"MonoAll",ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,"Pretendard",monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 [hidden]{display:none!important}
@@ -592,6 +619,74 @@ footer{padding:30px 0 46px;border-top:1px solid var(--ink);display:grid;gap:16px
 .foot__b a:hover{color:var(--hot)}
 .foot__c{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--mute)}
 footer a:hover{color:var(--hot)}
+
+/* ══════════════════════════════════════════════════════════
+   폰에서의 타이포 — 위 규칙들보다 뒤에 와야 이긴다(명시도가 같다)
+   ══════════════════════════════════════════════════════════
+   이 페이지의 크기·자간·행간은 데스크톱의 큰 판에서 정해졌다. 거기서는 제목이
+   한 줄에 들어가서 좁은 행간이 인쇄물다운 밀도로 읽힌다. 그런데 폭이 좁아지면
+   같은 제목이 두 줄이 되고, 그때 행간이 글자보다 작다는 사실이 그대로 드러난다.
+   폰에서 잰 값이다 — 히어로 h1은 46.4px인데 한 줄 높이가 41.8px,
+   장면 제목은 24px인데 23.5px이었다. 받침이 아랫줄 글자에 닿는다.
+   한글은 라틴과 달리 글자마다 네모를 꽉 채우고 받침이 아래로 내려온다.
+   라틴 기준의 타이트한 값을 그대로 쓰면 '따닥따닥'해지는 자리다 */
+@media(max-width:860px){
+  /* ── 제목 행간: 이 페이지에서 제일 급한 자리 ── */
+  h1,h2,h3{line-height:1.2;letter-spacing:-.015em}
+  /* 히어로만 자간을 남겨둔다. 46.4px × 7자가 이미 가용 폭을 거의 다 쓰고 있어서,
+     자간을 풀면 "나만의 연주가"가 한 줄에 못 들어가고 제목이 통째로 깨진다 */
+  .hero h1{line-height:1.14}
+  .chap h2{line-height:1.26;letter-spacing:-.012em}
+  .sec h2,.turn h2{line-height:1.2;letter-spacing:-.018em}
+  .flyer h3{line-height:1.2}
+  /* 굵고 짧은 강조 줄들 — 제목만큼 조이면 같은 문제가 작은 크기로 반복된다 */
+  .quote b,.probs b,.feat b,.who b,.cta__lead{letter-spacing:-.012em}
+  .feat b{line-height:1.4}
+
+  /* ── 모노 라벨 ──
+     자간을 벌리는 건 대문자 라틴을 위한 장치다. 한글에 그대로 걸면 낱글자가
+     흩어져서 단어로 안 읽힌다. "휴대폰 하나로 만드는 온라인 합주"가 그 상태였다.
+     라틴이 섞인 줄은 그쪽도 살려야 하니 중간값으로 둔다 */
+  .eye{letter-spacing:.04em}
+  .hero__note,.cta__meta,.reel__cap,.quote__k,.ph__txt,.flyer__k{letter-spacing:.07em}
+  /* 상단 바·띠·전단지에도 같은 자가 적용돼 있다. 특히 헤더 버튼은 .btn이 아니라
+     .top__nav a가 이겨서(명시도 0,1,1) 모노 11.5px에 .14em이 걸려 있었다 —
+     페이지에서 제일 자주 보이는 글자가 "출 시  알 림  받 기"로 흩어지던 자리다.
+     띠는 전부 한글이라(기타 · 베이스 · 드럼…) 벌릴 이유가 없다 */
+  .top__nav a,.band span,.scrollhint,.flyer__stamp{letter-spacing:.07em}
+
+  /* ── 본문 ──
+     clamp의 vw 항이 폭이 좁아지면 최솟값 아래로 깔린다. 결국 폰은
+     '데스크톱의 제일 작은 상태'를 그대로 받는다. 한 줄 길이는 오히려 길어졌는데
+     행간은 좁은 칸 시절 값 그대로라 글이 더 빽빽해 보인다 */
+  .lede{font-size:1.05rem;line-height:1.75}
+  .sec__lede,.chap p,.need li{font-size:1rem;line-height:1.75}
+  .feat p,.who p,.quote p,.probs p,.faq details p{font-size:.97rem;line-height:1.75}
+  .steps4 span{font-size:.85rem;line-height:1.5}
+  .faq summary{letter-spacing:-.008em}
+
+  /* 작은 글씨일수록 행간이 더 필요하다. 11px에 좁은 행간이면 한 덩어리로 뭉친다 */
+  .note{font-size:12px;line-height:1.85;letter-spacing:.02em}
+  .privacy{font-size:11.5px}
+  .privacy p{font-size:13px;line-height:1.85}
+  /* 푸터도 페이지의 일부다. 여기까지 내려온 사람이 읽는 마지막 줄들 */
+  .privacy summary,.foot__t{font-size:12.5px;line-height:1.75}
+  .foot__b a{font-size:13.5px}
+  .flyer p{line-height:1.7}
+
+  /* 글 칸이 커진 만큼 폰 크기 역산식의 상수도 같이 올린다.
+     저 식은 글 칸을 250px로 가정하는데(위 .phone 규칙의 "빼는 값" 참고) 실제 칸 높이는
+     JS가 장면마다 실측해 덮어쓴다. 행간을 풀면 칸이 282px가 되므로, 갱신하지 않으면
+     그 차이만큼 무대가 화면을 넘고 넘친 절반이 상단 바 뒤로 들어가 잘린다.
+
+     높이 미디어쿼리로 작은 기기만 골라내는 방법은 쓰지 않는다. 폰의 실제 뷰포트 높이는
+     주소창·툴바가 접히고 펴지면서 계속 변해서, max-height:700px 같은 조건은 최신 폰에도
+     걸렸다 풀렸다 한다 — 스크롤 한 번에 글자 간격이 바뀌어 보인다.
+     대신 상수 하나만 올려 모든 폰이 같은 타이포를 쓰게 한다.
+     넉넉한 화면은 50vw가 먼저 걸려 폰 크기가 그대로고, 세로가 짧은 기기에서만 줄어든다 */
+  .phone{max-width:min(216px, 50vw,
+    calc((var(--vh, 100vh) - var(--top, 56px) - 286px - 100px) * 9 / 16 + 18px))}
+}
 
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
