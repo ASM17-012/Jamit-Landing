@@ -304,7 +304,10 @@ p{text-wrap:pretty}
 .chap.past{transform:translateX(-52px)}
 .chap.on{opacity:1;transform:none;pointer-events:auto}
 
-.chap h2{font-size:clamp(1.9rem,4.4vw,3.4rem);line-height:.98}
+/* 히어로 h1과 같은 이유로 올린다. .98이면 줄 사이 잉크 틈이 0.080em인데, 같은 급의
+   섹션 제목(.sec h2 · .turn h2, 행간 1.08)은 0.177em이라 레일만 눌려 보였다.
+   1.06이면 0.172em — 페이지의 다른 제목들과 같은 숨이다 */
+.chap h2{font-size:clamp(1.9rem,4.4vw,3.4rem);line-height:1.06}
 .chap p{margin-top:16px;max-width:30em;color:var(--ink-2);font-size:clamp(.98rem,1.4vw,1.14rem)}
 /* 이름을 붙이는 한 문장 — 설명 문단보다 진하게 두어 여기서 새 단어가 나온다는 걸 알린다 */
 .chap p.coin{margin-top:13px;color:var(--ink)}
