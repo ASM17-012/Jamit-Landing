@@ -5,16 +5,14 @@
 <title>JamIT — 중간발표 피치덱</title>
 <!--
   ─────────────────────────────────────────────────────────────
-  JamIT 중간발표 피치덱 (20분 발표 + 20분 Q&A) · 41장
+  JamIT 중간발표 피치덱 (20분 발표 + 20분 Q&A) · 42장
   · 슬라이드 1280×720px(16:9). @page를 같은 크기로 물려 Chrome 인쇄에서 1:1로 떨어진다.
   · PDF 저장: ⌘P → 여백 '없음' · 배경 그래픽 '체크' · 배율 '기본'.
-  · 바탕은 41장 전부 흰색이다. 장마다 배경이 바뀌면 빔프로젝터에서 눈이 계속 조리개를
+  · 바탕은 42장 전부 흰색이다. 장마다 배경이 바뀌면 빔프로젝터에서 눈이 계속 조리개를
     다시 맞춘다 — 위계는 글자 크기 · 선 · 인디고 하나로만 만든다.
   · 문장은 개조식이다. 슬라이드는 읽는 곳이 아니라 보는 곳이라 명사형으로 끊는 것이 기본이고,
     서술이 반드시 필요한 문장만 '~습니다'로 둔다 — 청중 앞에서 읽히는 자료라 '~다'체는 쓰지 않는다.
     나머지 설명은 발표자가 말로 채운다.
-  · 아직 못 채운 값은 .tbd(점선+인디고), 통째로 비어 있는 장은 .s--todo로 표시했다.
-    "TODO"로 검색하면 채울 자리가 전부 잡힌다.
   ─────────────────────────────────────────────────────────────
 -->
 <style>
@@ -75,6 +73,14 @@ b,strong{font-weight:800}
 .kick i{font-style:normal;color:var(--mute)}
 .s h2{font-size:var(--t-h2);font-weight:800;letter-spacing:-.04em;line-height:1.08;margin-top:12px}
 .s h2 em{font-style:normal;color:var(--hot)}
+/* 03장은 기능 ①②③과 기술 ①②③이 번갈아 나온다. '기능'과 '기술'은 한 글자만 달라
+   빔프로젝터로 쏘면 지금 어느 줄기인지 구분이 안 된다. 앞머리를 칩으로 떼어
+   기능은 채운 먹 면, 기술은 파란 테두리 선으로 갈라 놓는다 — 글자 모양(FEATURE/TECH)과
+   면·선 두 가지가 동시에 다르므로 뒷자리에서도 한눈에 갈린다 */
+.tag{display:inline-block;vertical-align:.3em;margin-right:16px;font-family:var(--mono);
+  font-size:21px;font-weight:800;letter-spacing:.06em;line-height:1;padding:7px 13px}
+.tag--f{background:var(--ink);color:var(--paper)}
+.tag--t{border:2px solid var(--hot);color:var(--hot);padding:5px 11px}
 .mark{background:linear-gradient(var(--mark),var(--mark)) 0 74%/100% 44% no-repeat}
 .sub{margin-top:13px;font-size:19px;color:var(--ink-2);line-height:1.45;max-width:64ch}
 .sub b{color:var(--ink)}
@@ -125,11 +131,20 @@ b,strong{font-weight:800}
 /* 한 줄 결론 */
 .punch{font-size:56px;font-weight:800;letter-spacing:-.045em;line-height:1.2}
 .punch em{font-style:normal;color:var(--hot)}
-.concl{display:grid;gap:20px;margin-top:34px}
-.concl>div{display:grid;grid-template-columns:48px 1fr;gap:16px;align-items:baseline}
-.concl b{font-family:var(--mono);font-size:30px;font-weight:800;color:var(--hot);line-height:1}
-.concl p{font-size:25px;font-weight:800;letter-spacing:-.03em;line-height:1.3}
-.concl p span{display:block;margin-top:7px;font-size:var(--t-body);font-weight:400;color:var(--mute);letter-spacing:0}
+
+/* 네 장벽은 더하기가 아니라 곱하기다 — 하나만 0이면 곱 전체가 0.
+   05장의 응답 수를 각 칸에 다시 달아 결론이 근거 위에 서 있게 한다 */
+.eq{display:flex;align-items:stretch;gap:13px;margin-top:40px}
+.eq__b{flex:1;border:1px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:15px 6px;text-align:center}
+.eq__b span{display:block;font-size:21px;font-weight:800;letter-spacing:-.03em;line-height:1.2}
+.eq__b small{display:block;margin-top:8px;font-family:var(--mono);font-size:11.5px;font-weight:700;
+  letter-spacing:.04em;color:var(--mute)}
+.eq__o{align-self:center;font-family:var(--mono);font-size:26px;font-weight:800;color:var(--mute);line-height:1}
+/* 결과칸만 숫자 없이 글자로 — 앞 네 칸은 근거(응답 수)를 달고, 여기는 결론이라 크기로 답한다.
+   숫자가 빠져 높이가 모자라니 세로 가운데로 세운다 */
+.eq__r{flex:1.3;border:1px solid var(--ink);box-shadow:5px 5px 0 var(--hot);padding:15px 6px;text-align:center;
+  display:flex;align-items:center;justify-content:center}
+.eq__r span{font-size:30px;font-weight:800;letter-spacing:-.04em;line-height:1.15;color:var(--hot)}
 
 /* ══════════ 격자 ══════════ */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);grid-auto-rows:1fr}
@@ -137,6 +152,30 @@ b,strong{font-weight:800}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;grid-auto-rows:1fr}
 .g-wide{display:grid;grid-template-columns:1.15fr .85fr;gap:36px}
 .col{display:flex;flex-direction:column;justify-content:flex-start}
+
+/* 기능 장 전용 — 설명 카드를 왼쪽에 두고 실제 앱 화면을 오른쪽에 세운다.
+   행을 minmax(0,1fr)로 못박아야 사진의 height:100%가 풀린다. auto 행이면 원본 비율 크기로
+   나와서 sub가 있는 장(23쪽)에서 발단을 덮는다 */
+.feat{flex:1;min-height:0;display:grid;grid-template-columns:1fr auto;grid-template-rows:minmax(0,1fr);gap:40px}
+/* HTML은 사진이 먼저다(각 장의 주인공). 자리만 order로 오른쪽에 보낸다 */
+.feat>.duo{order:2}
+/* 사진과 카드 덩어리의 위·아래 선을 맞춘다 — 카드만 가운데 뜨면 위아래로 빈 띠가 생겨
+   화면은 꽉 찼는데 답답해 보인다 */
+.feat__c{min-height:0;display:flex;flex-direction:column;justify-content:center;gap:var(--gap)}
+/* 장마다 화면이 둘이다. 나란히 세우면 사진 칸이 두 배로 넓어져 카드 글줄이 접히므로
+   앞뒤로 겹쳐 세운다 — 폭은 한 대 반만 쓴다.
+   자식이 전부 absolute라 auto 폭이 0이 된다. 폭을 직접 준다 */
+.duo{position:relative;height:100%;width:320px}
+.duo img{position:absolute;height:86%;width:auto}
+/* 앞 기기를 안쪽(왼쪽 아래)에 두어 덩어리가 카드 쪽으로 기울게 한다 */
+.duo img:first-child{right:0;top:0}
+.duo img:last-child{left:0;bottom:0;filter:drop-shadow(10px 0 14px rgba(26,31,43,.22))}
+
+.feat__c>.g2{grid-template-columns:1fr}
+.feat__c>.g2,.feat__c>.g3{flex:1;min-height:0}
+/* 카드가 길어졌으니 글을 세로 가운데로. .src(STATUS)가 있는 카드는 margin-top:auto가
+   빈 공간을 먹으므로 그대로 아래에 붙는다 */
+.feat__c .card{justify-content:center}
 
 /* ══════════ 카드 ══════════
    바탕과 같은 흰색이다. 면을 칠해 구분하는 대신 1px 잉크 테두리와 블러 없는 그림자로 세운다 —
@@ -238,8 +277,6 @@ b,strong{font-weight:800}
   text-transform:uppercase;border:1px solid var(--ink);padding:4px 10px;color:var(--ink)}
 .pill--hot{border-color:var(--hot);color:var(--hot)}
 .pill--fill{background:var(--ink);color:#fff;border-color:var(--ink)}
-.tbd{display:inline-block;border:1.5px dashed var(--hot);color:var(--hot);padding:0 8px;
-  font-family:var(--mono);font-weight:700;background:rgba(58,95,209,.05)}
 
 /* ══════════ 간트차트 ══════════ */
 .gantt{position:relative;border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);--gt-cols:186px repeat(6,1fr)}
@@ -322,21 +359,51 @@ b,strong{font-weight:800}
 .vs h4{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--mute)}
 .vs>div:last-child h4{color:var(--hot)}
 .vs p{margin-top:11px;font-size:var(--t-body);line-height:1.5}
+/* ── 음량 도식 ──
+   "정규화"는 말로는 안 그려진다. 파트별 막대가 들쭉날쭉한 그림과 목표선에 가지런히 붙은
+   그림을 나란히 두면 한 번에 전달된다. 전(회색)·후(인디고)로 색만 갈라 놓는다 */
+.lv{width:100%;height:auto;display:block;margin:14px 0 4px}
+.lv__ax{stroke:var(--ink);stroke-width:1}
+.lv__t{stroke:var(--hot);stroke-width:1.5;stroke-dasharray:5 4}
+.lv__c{stroke:var(--ink);stroke-width:1;stroke-dasharray:2 3;opacity:.5}
+.lv__b{fill:var(--mute);opacity:.45}
+.lv__b--ok{fill:var(--hot);opacity:1}
+.lv__b--over{fill:var(--mute);opacity:.75}
+.lv__l{font-family:var(--mono);font-size:9px;fill:var(--mute);letter-spacing:.04em}
+.lv__k{font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.06em}
+.lv__g{font-family:var(--mono);font-size:9px;font-weight:800;fill:var(--hot);letter-spacing:.02em}
+/* ── 지연 도식 ──
+   "지연을 재서 뺀다"는 시간축 없이는 안 그려진다. 같은 시작점을 세로 점선으로 세우고
+   녹음 트랙이 d만큼 오른쪽으로 밀린 그림 → 당겨 맞춘 그림, 세 줄로 보여준다 */
+.tl{width:100%;height:auto;display:block}
+.tl__ref{fill:var(--ink)}
+.tl__raw{fill:var(--mute);opacity:.5}
+.tl__fix{fill:var(--hot)}
+.tl__g{stroke:var(--hot);stroke-width:1.5;stroke-dasharray:5 4}
+.tl__d{stroke:var(--ink);stroke-width:1.5}
+.tl__n{font-family:var(--mono);font-size:13px;font-weight:700;fill:var(--ink);letter-spacing:.02em}
+.tl__s{font-family:var(--mono);font-size:11px;fill:var(--mute);letter-spacing:.02em}
+.tl__k{font-family:var(--mono);font-size:13px;font-weight:800;fill:var(--hot);letter-spacing:.04em}
+/* ── 밸런스 도식 ──
+   표의 −18/−19/−17은 대소가 즉시 안 읽힌다. 막대 길이로 바꾸면 "장르가 바뀌면
+   드럼이 앞뒤로 움직인다"가 한 번에 보인다. 움직이는 파트(드럼)만 인디고로 둔다 */
+.bl{width:100%;height:auto;display:block;margin-top:6px}
+.bl__h{font-family:var(--mono);font-size:10.5px;font-weight:700;fill:var(--ink-2);letter-spacing:.12em}
+.bl__p{font-family:var(--mono);font-size:11px;font-weight:700;fill:var(--ink);letter-spacing:.02em}
+.bl__b{fill:var(--ink);opacity:.28}
+.bl__b--hot{fill:var(--hot);opacity:1}
+.bl__v{font-family:var(--mono);font-size:10px;fill:var(--mute)}
 
 .phone img{width:100%;height:auto}
 
 /* 목차 */
 .toc{display:grid;border-top:1px solid var(--ink)}
-.toc>div{display:grid;grid-template-columns:82px 1fr 230px;gap:20px;align-items:baseline;padding:19px 4px;
+.toc>div{display:grid;grid-template-columns:82px 1fr 230px 92px;gap:20px;align-items:baseline;padding:19px 4px;
   border-bottom:1px solid var(--line-soft)}
 .toc b{font-family:var(--mono);font-size:26px;font-weight:800;color:var(--hot)}
 .toc h4{font-size:27px;font-weight:800;letter-spacing:-.03em}
 .toc p{font-size:var(--t-body);color:var(--ink-2);text-align:right}
-
-.quote{border-left:4px solid var(--hot);padding:4px 0 4px 18px;font-size:var(--t-body);line-height:1.5}
-.quote+.quote{margin-top:24px}
-.quote cite{display:block;margin-top:9px;font-style:normal;font-family:var(--mono);font-size:11.5px;
-  letter-spacing:.1em;color:var(--mute)}
+.toc__pg{font-family:var(--mono);font-size:14px;font-weight:700;letter-spacing:.04em;color:var(--mute);text-align:right}
 
 /* 부록 Q&A
    질문과 답 사이(14px)보다 질문끼리(30px+선)를 확실히 더 벌린다.
@@ -355,25 +422,31 @@ b,strong{font-weight:800}
 .raw{display:grid;grid-template-columns:1fr 1fr;column-gap:40px;row-gap:24px}
 .raw p{margin-top:11px}
 
-/* 팀 */
-.mem{text-align:center}
-.mem__ph{aspect-ratio:1/1;background:var(--tint);border:1px solid var(--ink);display:grid;place-items:center;
-  font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--mute)}
-.mem h4{margin-top:16px;font-size:26px;font-weight:800;letter-spacing:-.03em}
-.mem p{margin-top:7px;font-size:var(--t-sm);color:var(--ink-2)}
+/* 팀 — 다른 장의 카드와 같은 문법(1px 잉크 테두리 + 블러 없는 그림자)으로 세운다.
+   사진 없는 회색 사각형 셋만 놓으면 빈 칸으로 읽히므로, 이름 첫 글자를 크게 넣어
+   자리 표시가 아니라 아바타로 보이게 한다. 사진이 오면 이 블록만 교체하면 된다 */
+.mem{text-align:center;border:1px solid var(--ink);box-shadow:6px 6px 0 var(--ink);
+  padding:18px 18px 20px;background:var(--paper)}
+.mem__ph{aspect-ratio:1/1;background:var(--tint);border:1px solid var(--line-soft);display:grid;place-items:center;
+  overflow:hidden}
+.mem__ph img{width:100%;height:100%;object-fit:cover}
+.mem__ini{font-size:82px;font-weight:800;color:var(--mute);opacity:.38;letter-spacing:-.05em;line-height:1}
+.mem h4{margin-top:15px;font-size:27px;font-weight:800;letter-spacing:-.03em}
+.mem p{margin-top:8px;font-size:var(--t-sm);color:var(--ink-2);line-height:1.45}
+/* 영상 자리 — 점선(미완성 표시)이 아니라 실선 액자로 둔다. 파일을 걸기 전에도,
+   발표 중 다른 창에서 재생하더라도 화면이 깨져 보이지 않는다.
+   이 장의 주인공이므로 그림자만 인디고로 — 시선이 먼저 여기로 온다 */
+.vid{position:relative;border:1px solid var(--ink);box-shadow:8px 8px 0 var(--hot);background:var(--tint);
+  display:grid;place-items:center;align-content:center;gap:15px;text-align:center;overflow:hidden}
+.vid__p{width:66px;height:66px;border-radius:50%;background:var(--ink);color:var(--paper);
+  display:grid;place-items:center;font-size:23px;line-height:1;padding-left:5px}
+.vid__t{font-size:20px;font-weight:800;letter-spacing:-.03em;color:var(--ink)}
+.vid__s{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;color:var(--mute);line-height:1.6}
+.vid__cap{position:absolute;left:0;right:0;bottom:0;border-top:1px solid var(--line-soft);background:var(--paper);
+  padding:9px 8px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;
+  color:var(--ink-2);text-transform:uppercase}
 
-/* ══════════ 아직 자료가 없는 장 ══════════
-   바탕은 다른 장과 똑같은 흰색이다. 대신 상단 인디고 띠와 점선 상자로 표시한다 —
-   배경을 바꾸지 않고도 "여기는 비어 있다"가 즉시 보인다 */
-.s--todo::before{content:"";position:absolute;left:0;right:0;top:0;height:8px;background:var(--hot)}
-.s--todo .kick{color:var(--hot)}
-.drop{border:2px dashed var(--hot);background:rgba(58,95,209,.04);padding:20px 22px;display:flex;
-  flex-direction:column;justify-content:center}
-.drop h4{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--hot);
-  text-transform:uppercase;margin-bottom:11px}
-.drop ul{list-style:none;display:grid;gap:9px}
-.drop li{position:relative;padding-left:24px;font-size:var(--t-body);line-height:1.45;color:var(--ink)}
-.drop li::before{content:"☐";position:absolute;left:0;top:-.05em;color:var(--hot);font-weight:700}
+
 /* ── 아키텍처 도식 ──
    세로로 긴 그림(1.18:1)이라 16:9 판에서는 좌우로 갈라 왼쪽에 세운다.
    높이를 px로 못 박아야 본문 영역을 넘지 않는다 */
@@ -385,14 +458,13 @@ b,strong{font-weight:800}
 .reasons li{position:relative;padding-left:18px;font-size:var(--t-body);color:var(--ink-2);line-height:1.5}
 .reasons li::before{content:"";position:absolute;left:0;top:1.05em;width:8px;height:1.5px;background:var(--hot)}
 .reasons b{display:block;color:var(--ink);font-size:19px;margin-bottom:5px;letter-spacing:-.02em}
-.slot{border:2px dashed var(--mute);background:var(--tint);display:grid;place-items:center;
-  font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--mute);text-align:center;line-height:1.9;padding:16px}
 /* 실제 캡처가 들어간 칸. 글자가 읽히는 크기가 아니다 — 잘려도 좋으니 꽉 채워
    밀도만 보이게 cover로 자른다 (이 장의 메시지가 밀도 자체다) */
 .shot{border:1px solid var(--ink);background:var(--paper);overflow:hidden;display:flex;flex-direction:column;min-width:0}
 .shot img{flex:1;min-height:0;width:100%;object-fit:cover;object-position:top center}
 .shot figcaption{flex:none;border-top:1px solid var(--line-soft);padding:6px 8px;text-align:center;
   font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-2)}
+
 
 /* ══════════ 아이콘 ══════════
    외부 아이콘 폰트·CDN을 쓰지 않는다. 이 파일 하나로 오프라인에서 열리고 인쇄까지 되어야 해서,
@@ -471,6 +543,38 @@ b,strong{font-weight:800}
   <img class="cover__shot" src="assets/cover-app.webp" alt="JAMIT 앱 홈 화면 — 잇츠 피드와 합주 모집">
   <div class="ft"><span>JAMIT</span><span><b>00</b></span></div>
 </section>
+<!-- ══════════ 01 · 오프닝 — 시연 + 팀 ══════════ -->
+<section class="s">
+  <span class="kick">Opening <i>· 시연 · 팀</i></span>
+  <h2>팀 소개</h2>
+  <div class="hr"></div>
+  <div class="body">
+    <!-- 결과물은 숏폼(세로)이다. 액자를 9:16으로 세우면 폭이 남고, 그 폭을 팀 카드가 쓴다 -->
+    <div style="flex:1;min-height:0;display:grid;grid-template-columns:auto 1fr;gap:52px;align-items:center;justify-items:stretch">
+      <div class="vid" style="aspect-ratio:9/16;height:100%">
+        <div class="vid__p">▶</div>
+        <div class="vid__t">합주 결과물</div>
+        <div class="vid__s">일렉기타 · 건반 · 보컬<br>서로 다른 시간에 녹음</div>
+        <div class="vid__cap">30 ~ 60초 · 소리 켜고 재생</div>
+      </div>
+      <div class="g3" style="gap:30px;align-items:center">
+        <div class="mem">
+          <div class="mem__ph"><span class="mem__ini">김</span></div>
+          <h4>김민재</h4><p><b style="color:var(--ink)">앱 · 백엔드</b><br><span style="color:var(--mute)">인프라</span></p>
+        </div>
+        <div class="mem">
+          <div class="mem__ph"><span class="mem__ini">윤</span></div>
+          <h4>윤강훈</h4><p><b style="color:var(--ink)">앱 · 백엔드</b><br><span style="color:var(--mute)">디자인</span></p>
+        </div>
+        <div class="mem">
+          <div class="mem__ph"><span class="mem__ini">최</span></div>
+          <h4>최재훈</h4><p><b style="color:var(--ink)">팀장</b><br><span style="color:var(--mute)">음향 · AI</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ft"><span>JAMIT · Opening</span><span><b>01</b></span></div>
+</section>
 
 <!-- ══════════ 01 · 팀 소개 ══════════ -->
 <section class="s">
@@ -494,11 +598,11 @@ b,strong{font-weight:800}
   <div class="hr"></div>
   <div class="body">
     <div class="toc">
-      <div><b>01</b><h4>문제 선정</h4><p>합주가 아직 어려운 이유</p></div>
-      <div><b>02</b><h4>해결 방법</h4><p>우리가 깨는 전제 하나</p></div>
-      <div><b>03</b><h4>제품 소개</h4><p>앱 플로우와 기술</p></div>
-      <div><b>04</b><h4>팀 소개</h4><p>3인 협업 방식</p></div>
-      <div><b>05</b><h4>검증과 계획</h4><p>시장 반응 · 로드맵 · 수익 구조</p></div>
+      <div><b>01</b><h4>문제 선정</h4><p>합주가 아직 어려운 이유</p><span class="toc__pg">03—08</span></div>
+      <div><b>02</b><h4>해결 방법</h4><p>JAMIT이 깨는 전제 하나</p><span class="toc__pg">09—12</span></div>
+      <div><b>03</b><h4>제품 소개</h4><p>앱 플로우와 기술</p><span class="toc__pg">13—24</span></div>
+      <div><b>04</b><h4>협업 방식</h4><p>3인이 일하는 방법과 기록</p><span class="toc__pg">25—27</span></div>
+      <div><b>05</b><h4>검증과 계획</h4><p>시장 반응 · 로드맵 · 수익 구조</p><span class="toc__pg">28—34</span></div>
     </div>
   </div>
   <div class="ft"><span>JAMIT · Agenda</span><span><b>02</b></span></div>
@@ -525,7 +629,7 @@ b,strong{font-weight:800}
 
 <!-- ══════════ 03 · 시장 규모 ══════════ -->
 <section class="s">
-  <span class="kick">01 문제 <i>· 시장</i></span>
+  <span class="kick">01 문제 <i>· 시장 조사</i></span>
   <h2>늘어나는 <em>연주 인구</em>와 <em>크리에이터</em> </h2>
   <div class="hr"></div>
   <div class="body">
@@ -568,8 +672,8 @@ b,strong{font-weight:800}
 
 <!-- ══════════ 04 · 합주 수요 ══════════ -->
 <section class="s">
-  <span class="kick">01 문제 <i>· 수요</i></span>
-  <h2>그들이 원하는 것은 <em>‘함께’</em></h2>
+  <span class="kick">01 문제 <i>· 시장 조사</i></span>
+  <h2>원하는 것은 <em>‘함께‘</em> 하기</h2>
   <div class="hr"></div>
   <div class="body">
     <div class="g2">
@@ -582,7 +686,6 @@ b,strong{font-weight:800}
           <path class="g-fg" d="M12 110 A98 98 0 0 1 208 110" stroke-dasharray="141.6 307.9"/>
           <text class="g-t" x="110" y="102" text-anchor="middle">함께 하고 싶다</text>
         </svg>
-        <p class="shot__c">기타를 새로 시작한 사람 중 <b>46%</b>의 답</p>
         <div class="src">
           <span>PR Newswire, 「Guitar Isn't Dead: Research Shows Learning</span>
           <span>To Play Helps Us Live Better Lives」, 2018.10.16.</span>
@@ -637,7 +740,7 @@ b,strong{font-weight:800}
 
 <!-- ══════════ 06 · 경쟁사 ══════════ -->
 <section class="s">
-  <span class="kick">01 문제 <i>· 경쟁 환경</i></span>
+  <span class="kick">01 문제 <i>· 경쟁사 분석</i></span>
   <h2>기존 서비스가 <em>못 푼 문제</em></h2>
   <div class="hr"></div>
   <div class="body">
@@ -656,15 +759,21 @@ b,strong{font-weight:800}
           <th>YAMAHA<br>SYNCROOM</th>
           <td>온라인 <b>실시간</b></td>
           <td>중 · 숙련자</td>
-          <td>같은 시각 동시 접속 필수 → <span class="hi">시간 장벽 그대로</span></td>
-          <td>PC ·<br>오디오 인터페이스</td>
+          <td>
+            같은 시각 동시 접속 필수 → <span class="hi">시간 장벽 그대로</span><br>
+            주로 즉흥 JAM이 가능한 사람 → <span class="hi">실력 차 부담감 존재</span>
+          </td>
+          <td>PC/스마트폰 ·<br>오디오 인터페이스</td>
         </tr>
         <tr>
           <th>BANDHUG</th>
           <td>영상 기반 협업</td>
           <td>숙련자</td>
-          <td>입문자에게 부담스러운 UI·UX → <span class="hi">실력 장벽 그대로</span></td>
-          <td>스마트폰</td>
+          <td>
+            입문자에게 부담스러운 UI·UX → <span class="hi">실력 장벽 그대로</span><br>
+            PC로만 사용 가능 → <span class="hi">낮은 접근성</span>
+          </td>
+          <td>PC</td>
         </tr>
         <tr>
           <th>단톡방 ·<br>커뮤니티 구인글</th>
@@ -690,13 +799,24 @@ b,strong{font-weight:800}
 <!-- ══════════ 07 · 문제 결론 ══════════ -->
 <section class="s s--lead">
   <span class="kick">01 문제 <i>· 결론</i></span>
-  <p class="punch" style="margin-top:26px">
-    합주를 막는 건 <em>한 가지</em> 이유가 아닙니다.<br>‘같은 시간, 장소, 실력’이라는 <em>전제</em>입니다
+  <p class="punch" style="margin-top:24px;font-size:50px">
+    합주는 <em>더하기</em>가 아니라 <em>곱하기</em>입니다.
   </p>
-  <div class="concl">
-    <div><b>1.</b><p>이미 충분히 큰 수요<span>연주 인구 33% · 크리에이터 3년 만에 2배 · 뮬 구인글 15.5만 건</span></p></div>
-    <div><b>2.</b><p>막는 것은 네 장벽, 그것도 고르게<span>시간 78 · 사람 74 · 실력 71 · 비용 67 (169명 복수응답)</span></p></div>
+  <div class="eq">
+    <div class="eq__b"><span>같은 시간</span><small>78명</small></div>
+    <div class="eq__o">×</div>
+    <div class="eq__b"><span>같이 할 사람</span><small>74명</small></div>
+    <div class="eq__o">×</div>
+    <div class="eq__b"><span>맞는 실력</span><small>71명</small></div>
+    <div class="eq__o">×</div>
+    <div class="eq__b"><span>장소 · 비용</span><small>67명</small></div>
+    <div class="eq__o">=</div>
+    <div class="eq__r"><span>합주 성사</span></div>
   </div>
+  <p class="sub" style="margin-top:30px;font-size:21px;max-width:none">
+    네 조건이 <b>동시에</b> 맞아야 합주가 시작됩니다. <b>하나만 0이면 곱은 0</b> —
+    그래서 장벽을 하나씩 낮추는 방식으로는 풀리지 않습니다.
+  </p>
   <div class="ft"><span>JAMIT · Problem — Conclusion</span><span><b>08</b></span></div>
 </section>
 
@@ -706,7 +826,7 @@ b,strong{font-weight:800}
     <div>
       <span class="divi__n">02</span>
       <h2>해결 방법</h2>
-      <p class="divi__l">전제 하나를 빼면 네 장벽이 한꺼번에 무너집니다.</p>
+      <p class="divi__l">‘같은 시간’이라는 전제 하나를 빼면, 네 장벽이 한꺼번에 무너집니다.</p>
     </div>
     <ol class="divi__toc">
       <li><b>10</b>제품 정의 — 비실시간 온라인 합주</li>
@@ -724,12 +844,14 @@ b,strong{font-weight:800}
   <p class="sub">언제, 어디서든, 어떤 곡의 어떤 파트든 — <b>휴대폰으로 내 파트만 찍어 올리면 참여 완료</b></p>
   <div class="hr"></div>
   <div class="body">
-    <div class="g4">
-      <div class="card"><svg class="ic ic--lg"><use href="#i-clock"/></svg><h3><small>장벽 01</small>시간 조율</h3><p>각자 편한 시간에 녹화<br><b>약속 조율 불필요</b></p></div>
-      <div class="card"><svg class="ic ic--lg"><use href="#i-users"/></svg><h3><small>장벽 02</small>인원 매칭</h3><p>누구나 파트 추가<br><b>정원 없음</b></p></div>
-      <div class="card"><svg class="ic ic--lg"><use href="#i-target"/></svg><h3><small>장벽 03</small>실력 차이</h3><p>마음에 들 때까지 재촬영<br><b>현장에서 틀릴 일 없음</b></p></div>
-      <div class="card"><svg class="ic ic--lg"><use href="#i-wallet"/></svg><h3><small>장벽 04</small>장소 · 비용</h3><p>준비물은 휴대폰 하나<br><b>대관료 0원</b></p></div>
+    <!-- 08쪽 네 조건과 1:1로 대응하는 칸이다. 순서를 08쪽과 같게 유지한다 -->
+    <div class="g4" style="flex:1;min-height:0;margin-bottom:20px">
+      <div class="card" style="justify-content:center"><svg class="ic ic--lg"><use href="#i-clock"/></svg><h3><small>장벽 01</small>시간 조율</h3><p>각자 편한 시간에 녹화<br><b>약속 조율 불필요</b></p></div>
+      <div class="card" style="justify-content:center"><svg class="ic ic--lg"><use href="#i-users"/></svg><h3><small>장벽 02</small>인원 매칭</h3><p>누구나 파트 추가<br><b>정원 없음</b></p></div>
+      <div class="card" style="justify-content:center"><svg class="ic ic--lg"><use href="#i-target"/></svg><h3><small>장벽 03</small>실력 차이</h3><p>마음에 들 때까지 재촬영<br><b>현장에서 틀릴 일 없음</b></p></div>
+      <div class="card" style="justify-content:center"><svg class="ic ic--lg"><use href="#i-wallet"/></svg><h3><small>장벽 04</small>장소 · 비용</h3><p>준비물은 휴대폰 하나<br><b>대관료 0원</b></p></div>
     </div>
+    <p class="out">네 칸이 8쪽 결론의 네 조건과 <b>1:1로 대응</b>합니다 — <b>곱의 어느 항도 0이 되지 않습니다</b></p>
   </div>
   <div class="ft"><span>JAMIT · Solution</span><span><b>10</b></span></div>
 </section>
@@ -744,10 +866,10 @@ b,strong{font-weight:800}
       <div>
         <span class="flow__n">①</span>
         <h4><small>Jam Apart</small>따로 연주하기</h4>
-        <p>기준 영상을 보며 내 파트만 녹화·업로드.<br>박자와 구간은 모집자가 미리 지정.</p>
+        <p>박자와 구간은 모집자가 미리 지정.<br>기준 영상을 보며 내 파트만 녹화·업로드.</p>
         <ul>
           <li>각자 편한 시간에 촬영 — <b>약속 조율 없음</b></li>
-          <li>마음에 들 때까지 재촬영</li>
+          <li>마음에 들 때까지 <b>재촬영</b></li>
           <li>준비물은 <b>휴대폰 하나</b></li>
         </ul>
         <p class="tail">참여의 문턱</p>
@@ -759,18 +881,18 @@ b,strong{font-weight:800}
         <ul>
           <li>파트별로 분리 보관된 트랙</li>
           <li>같은 모집글에서 <b>사람마다 다른 합주</b></li>
-          <li>바로 SNS에 올릴 수 있는 형태</li>
+          <li><b>숏폼 형식</b> 영상으로 SNS에 게시 가능한 형태</li>
         </ul>
         <p class="tail">결과물의 만족도</p>
       </div>
       <div>
         <span class="flow__n">③</span>
         <h4><small>Together</small>계속 모이기</h4>
-        <p>좋아요·댓글·구간 이모티콘으로 반응.<br>활동에 따라 악기 레벨과 업적 누적.</p>
+        <p>좋아요·이모티콘으로 반응.<br>활동에 따라 악기 레벨과 업적 누적.</p>
         <ul>
-          <li>영상의 <b>그 지점</b>에 붙는 반응</li>
+          <li>영상에 붙는 반응</li>
           <li>반응이 다음 연주의 동기</li>
-          <li>수집 요소가 인앱 재화로 연결</li>
+          <li>레벨이 오르며 성취감 제공</li>
         </ul>
         <p class="tail">다시 돌아올 이유</p>
       </div>
@@ -782,7 +904,7 @@ b,strong{font-weight:800}
 <!-- ══════════ 11 · 기획심의 피드백 ══════════ -->
 <section class="s">
   <span class="kick">02 해결 방법 <i>· 기획심의 피드백</i></span>
-  <h2>지적 <em>4건</em>, 반영 결과</h2>
+  <h2>피드백 반영</h2>
   <div class="hr"></div>
   <div class="body">
     <table class="tbl">
@@ -804,7 +926,7 @@ b,strong{font-weight:800}
           <th>오디오 양자화 우려</th>
           <td>박자에 대한 과한 개입이 연주자의 자유를 해침</td>
           <td class="num hi">전략 변경</td>
-          <td>양자화 <b>미진행 결정</b><br>연주의 흔들림도 그 사람의 연주</td>
+          <td>양자화 <b>미진행 결정</b><br>연주자의 의도를 해칠 가능성 배제</td>
         </tr>
         <tr>
           <th>구독 가격 재검토</th>
@@ -814,7 +936,6 @@ b,strong{font-weight:800}
         </tr>
       </tbody>
     </table>
-    <p class="out">3건은 구현으로, 1건은 <b>기능을 빼는 결정</b>으로 답했습니다</p>
   </div>
   <div class="ft"><span>JAMIT · Solution — Feedback</span><span><b>12</b></span></div>
 </section>
@@ -828,12 +949,12 @@ b,strong{font-weight:800}
       <p class="divi__l">기획서가 아니라, 지금 손에서 동작하는 MVP.</p>
     </div>
     <ol class="divi__toc">
-      <li><b>14</b>MVP 시연</li>
-      <li><b>15—16</b>기능 ① 합주 참여 · 처리 파이프라인</li>
-      <li><b>17—18</b>기술 ① 음량 정규화 — 개념 · 구현</li>
-      <li><b>19—20</b>기술 ② 타이밍 보정 — 개념 · 구현</li>
-      <li><b>21—22</b>기능 ② 트랙 조합 · 기술 ③ 원클릭 믹싱</li>
-      <li><b>23—24</b>기능 ③ 커뮤니티 · 시스템 아키텍처</li>
+      <li><b>14</b>지금 동작하는 MVP</li>
+      <li><b>15—16</b>FEATURE 01 합주 참여 · 처리 파이프라인</li>
+      <li><b>17—18</b>TECH 01 음량 정규화 — 개념 · 구현</li>
+      <li><b>19—20</b>TECH 02 타이밍 보정 — 개념 · 구현</li>
+      <li><b>21—22</b>FEATURE 02 트랙 조합 · TECH 03 원클릭 믹싱</li>
+      <li><b>23—24</b>FEATURE 03 커뮤니티 · 시스템 아키텍처</li>
     </ol>
   </div>
   <div class="ft"><span>JAMIT · Product</span><span><b>13</b></span></div>
@@ -847,32 +968,21 @@ b,strong{font-weight:800}
   <div class="body">
     <!-- 시연이 주인공인 장이다. 결과물 영상을 가운데 가장 크게 두고,
          왼쪽에 흐름, 오른쪽에 실제 화면 한 장을 세운다 -->
-    <div style="display:grid;grid-template-columns:1fr 430px 190px;gap:30px;align-items:center">
+    <!-- 사진은 폭이 아니라 높이로 맞춘다 — 폭을 고정하면 장 밖으로 넘친다(.feat과 같은 이유) -->
+    <div style="flex:1;min-height:0;display:grid;grid-template-columns:1fr auto;grid-template-rows:minmax(0,1fr);gap:44px;align-items:center">
       <div class="col">
         <div><span class="pill pill--fill">MVP · 2026.08</span></div>
-        <h3 style="font-size:26px;font-weight:800;letter-spacing:-.03em;margin-top:14px;line-height:1.25">
+        <h3 style="font-size:34px;font-weight:800;letter-spacing:-.035em;margin-top:16px;line-height:1.22">
           모집 → 참여 → 조합 → 내보내기<br>전 구간 연결 완료
         </h3>
         <ul style="margin-top:16px;list-style:none;display:grid;gap:9px">
-          <li style="position:relative;padding-left:18px;font-size:var(--t-sm);color:var(--ink-2)"><span style="position:absolute;left:0;top:.55em;width:8px;height:2px;background:var(--hot)"></span>기준 영상 + 합주 구간 → <b style="color:var(--ink)">모집 게시글 작성</b></li>
-          <li style="position:relative;padding-left:18px;font-size:var(--t-sm);color:var(--ink-2)"><span style="position:absolute;left:0;top:.55em;width:8px;height:2px;background:var(--hot)"></span>기준 영상 보며 <b style="color:var(--ink)">내 파트만 녹음·촬영</b></li>
-          <li style="position:relative;padding-left:18px;font-size:var(--t-sm);color:var(--ink-2)"><span style="position:absolute;left:0;top:.55em;width:8px;height:2px;background:var(--hot)"></span>업로드 시점 <b style="color:var(--ink)">음량·타이밍 자동 보정</b></li>
-          <li style="position:relative;padding-left:18px;font-size:var(--t-sm);color:var(--ink-2)"><span style="position:absolute;left:0;top:.55em;width:8px;height:2px;background:var(--hot)"></span>트랙 선택 → <b style="color:var(--ink)">합주 숏폼 내보내기</b></li>
+          <li style="position:relative;padding-left:18px;font-size:var(--t-body);color:var(--ink-2)"><span style="position:absolute;left:0;top:.6em;width:9px;height:2px;background:var(--hot)"></span>기준 영상 + 합주 구간 → <b style="color:var(--ink)">모집 게시글 작성</b></li>
+          <li style="position:relative;padding-left:18px;font-size:var(--t-body);color:var(--ink-2)"><span style="position:absolute;left:0;top:.6em;width:9px;height:2px;background:var(--hot)"></span>기준 영상 보며 <b style="color:var(--ink)">내 파트만 녹음·촬영</b></li>
+          <li style="position:relative;padding-left:18px;font-size:var(--t-body);color:var(--ink-2)"><span style="position:absolute;left:0;top:.6em;width:9px;height:2px;background:var(--hot)"></span>업로드 시점 <b style="color:var(--ink)">음량·타이밍 자동 보정</b></li>
+          <li style="position:relative;padding-left:18px;font-size:var(--t-body);color:var(--ink-2)"><span style="position:absolute;left:0;top:.6em;width:9px;height:2px;background:var(--hot)"></span>트랙 선택 → <b style="color:var(--ink)">합주 숏폼 내보내기</b></li>
         </ul>
       </div>
-      <div class="col">
-        <!-- TODO — 완성 합주 숏폼 영상 파일을 이 자리에 건다 -->
-        <div class="slot" style="aspect-ratio:16/9">[ 합주 결과물 영상 ]<br>30 ~ 60초 · 소리 켜고 재생</div>
-        <div class="drop" style="margin-top:14px;padding:14px 16px">
-          <h4>시연 영상 구성</h4>
-          <ul style="gap:6px">
-            <li style="font-size:var(--t-sm)">파트 3종 — <b>일렉기타 · 건반 · 보컬</b></li>
-            <li style="font-size:var(--t-sm)">선곡 — <b>90~2000년대 국내곡</b> (아는 곡이라야 합이 들린다)</li>
-            <li style="font-size:var(--t-sm)">앱 조작 화면이 아니라 <b>완성된 결과물</b>부터</li>
-          </ul>
-        </div>
-      </div>
-      <div class="phone"><img src="assets/app-home.webp" alt="JamIT 홈 화면"></div>
+      <div class="phone" style="height:100%"><img src="assets/app-home.webp" style="height:100%;width:auto" alt="JamIT 홈 화면 — 잇츠 피드와 합주 모집"></div>
     </div>
   </div>
   <div class="ft"><span>JAMIT · Product — Demo</span><span><b>14</b></span></div>
@@ -881,9 +991,15 @@ b,strong{font-weight:800}
 <!-- ══════════ 13 · 기능 ① ══════════ -->
 <section class="s">
   <span class="kick">03 제품 설명 <i>· 기능 ① JAM APART</i></span>
-  <h2>기능 ① <em>합주 참여</em></h2>
+  <h2><span class="tag tag--f">FEATURE 01</span><em>합주 참여</em></h2>
   <div class="hr"></div>
   <div class="body">
+    <div class="feat">
+    <div class="duo">
+      <img src="assets/feature-1.webp" alt="합주 모집 게시글 화면 — 기준 영상, 합주 구간 선택 바, 참여 트랙 4개 목록과 ‘내 트랙 업로드’ 버튼">
+      <img src="assets/feature-1b.webp" alt="파트 촬영 화면 — 참여 트랙 목록을 위에 두고 카메라로 내 파트를 녹화하는 모습">
+    </div>
+    <div class="feat__c">
     <div class="g2">
       <div class="card">
         <svg class="ic ic--lg"><use href="#i-upload"/></svg>
@@ -901,6 +1017,8 @@ b,strong{font-weight:800}
           <li>마음에 들 때까지 재촬영 — <b>실수 노출 없음</b></li>
         </ul>
       </div>
+    </div>
+    </div>
     </div>
   </div>
   <div class="ft"><span>JAMIT · Product — Feature ①</span><span><b>15</b></span></div>
@@ -944,8 +1062,8 @@ b,strong{font-weight:800}
 <!-- ══════════ 16 · 음량 정규화 ══════════ -->
 <section class="s">
   <span class="kick">03 제품 설명 <i>· 기술 1/3 — 파이프라인 03</i></span>
-  <h2>기술 ① <em>음량 정규화</em></h2>
-  <p class="sub">쉽게 말하면 — <b>참여자 전원의 소리 크기를 같은 기준으로 맞추는 장치</b></p>
+  <h2><span class="tag tag--t">TECH 01</span><em>음량 정규화</em></h2>
+  <p class="sub">쉽게 말하면 — <b>파트마다 정해진 목표 크기로 자동으로 맞춰 주는 장치</b></p>
   <div class="hr"></div>
   <div class="body">
     <div class="g-wide">
@@ -953,11 +1071,51 @@ b,strong{font-weight:800}
         <div class="vs">
           <div>
             <h4>Before</h4>
-            <p>제각각인 휴대폰 · 마이크 · 방 크기. 기타는 귀가 아프고 보컬은 안 들림. 참여자가 늘수록 악화.</p>
+        <svg class="lv" viewBox="0 0 244 122" role="img" aria-label="보정 전 — 파트마다 정해진 목표선을 크게 빗나가고 기타는 한계치를 넘는다">
+          <line class="lv__c" x1="14" y1="18" x2="240" y2="18"/>
+          <text class="lv__k" x="240" y="14" text-anchor="end" fill="var(--ink-2)">−1 dBTP 한계</text>
+          <text class="lv__k" x="14" y="14" fill="var(--hot)">┈ 파트별 목표 LUFS</text>
+          <line class="lv__t" x1="15" y1="42" x2="55" y2="42"/>
+          <rect class="lv__b" x="18" y="78" width="34" height="22" rx="1"/>
+          <text class="lv__l" x="35" y="113" text-anchor="middle">보컬</text>
+          <line class="lv__t" x1="71" y1="52" x2="111" y2="52"/>
+          <rect class="lv__b--over" x="74" y="10" width="34" height="90" rx="1"/>
+          <text class="lv__l" x="91" y="113" text-anchor="middle">기타</text>
+          <line class="lv__t" x1="127" y1="57" x2="167" y2="57"/>
+          <rect class="lv__b" x="130" y="38" width="34" height="62" rx="1"/>
+          <text class="lv__l" x="147" y="113" text-anchor="middle">드럼</text>
+          <line class="lv__t" x1="183" y1="62" x2="223" y2="62"/>
+          <rect class="lv__b" x="186" y="70" width="34" height="30" rx="1"/>
+          <text class="lv__l" x="203" y="113" text-anchor="middle">건반</text>
+          <line class="lv__ax" x1="14" y1="100.5" x2="240" y2="100.5"/>
+        </svg>
+            <p>제각각인 휴대폰 · 마이크 · 방 크기. 기타는 귀가 아프고 보컬은 안 들림.</p>
           </div>
           <div>
             <h4>After · JamIT</h4>
-            <p>업로드 즉시 파이프라인이 자동 조정. 참여자가 할 일 없음.</p>
+        <svg class="lv" viewBox="0 0 244 122" role="img" aria-label="보정 후 — 각 파트가 자기 목표선에 맞춰진다. 목표값은 파트마다 다르다">
+          <line class="lv__c" x1="14" y1="18" x2="240" y2="18"/>
+          <text class="lv__k" x="240" y="14" text-anchor="end" fill="var(--ink-2)">−1 dBTP 한계</text>
+          <text class="lv__k" x="14" y="14" fill="var(--hot)">┈ 파트별 목표 LUFS</text>
+          <line class="lv__t" x1="15" y1="42" x2="55" y2="42"/>
+          <rect class="lv__b--ok" x="18" y="42" width="34" height="58" rx="1"/>
+          <text class="lv__g" x="35" y="38" text-anchor="middle">-18</text>
+          <text class="lv__l" x="35" y="113" text-anchor="middle">보컬</text>
+          <line class="lv__t" x1="71" y1="52" x2="111" y2="52"/>
+          <rect class="lv__b--ok" x="74" y="52" width="34" height="48" rx="1"/>
+          <text class="lv__g" x="91" y="48" text-anchor="middle">-20</text>
+          <text class="lv__l" x="91" y="113" text-anchor="middle">기타</text>
+          <line class="lv__t" x1="127" y1="57" x2="167" y2="57"/>
+          <rect class="lv__b--ok" x="130" y="57" width="34" height="43" rx="1"/>
+          <text class="lv__g" x="147" y="53" text-anchor="middle">-21</text>
+          <text class="lv__l" x="147" y="113" text-anchor="middle">드럼</text>
+          <line class="lv__t" x1="183" y1="62" x2="223" y2="62"/>
+          <rect class="lv__b--ok" x="186" y="62" width="34" height="38" rx="1"/>
+          <text class="lv__g" x="203" y="58" text-anchor="middle">-22</text>
+          <text class="lv__l" x="203" y="113" text-anchor="middle">건반</text>
+          <line class="lv__ax" x1="14" y1="100.5" x2="240" y2="100.5"/>
+        </svg>
+            <p>업로드 즉시 자동 조정. 모두 같은 크기가 아니라 <b>악기마다 다른 목표값</b>으로 맞춥니다.</p>
           </div>
         </div>
         <p class="out">합주에서 밸런스는 <b>듣기 좋은가</b>가 아니라 <b>들리는가</b>의 문제<br>자기 연주가 묻히면 다시 올리지 않습니다</p>
@@ -972,7 +1130,6 @@ b,strong{font-weight:800}
         <div class="src">
           <span>LUFS = 사람 귀가 느끼는 음량 단위</span>
           <span>dBTP = 파형이 찌그러지기 직전의 한계치</span>
-          <span>→ 실제 처리 다섯 단계는 18쪽</span>
         </div>
       </div>
     </div>
@@ -1012,7 +1169,6 @@ b,strong{font-weight:800}
         <p class="note">세션명 → 역할 → 목표값 2단 매핑 · 미등록 세션은 중립값 −22</p>
       </div>
       <div class="col" style="justify-content:center">
-        <div><span class="pill pill--hot">게인을 구하는 한 줄기</span></div>
         <ul class="reasons" style="margin-top:13px;gap:9px">
           <li><b>목표 조회</b><span style="font-family:var(--mono);font-size:var(--t-sm)">target = ROLE_TARGETS[ SESSION_ROLES[세션] ]</span></li>
           <li><b>측정</b><span style="font-family:var(--mono);font-size:var(--t-sm)">loudnorm → input_i, input_tp</span> — 소리를 건드리지 않는 측정 전용 호출</li>
@@ -1022,7 +1178,7 @@ b,strong{font-weight:800}
         </ul>
       </div>
     </div>
-    <p class="out">측정값은 앱에 <b>보여주지 않습니다</b> — 숫자를 봐도 판단할 근거가 없고, 손댈 수단도 주지 않는 설계</p>
+    <p class="out">사용자는 <b>세션 하나만</b> 고릅니다 — 나머지 네 단계는 서버가 처리합니다</p>
   </div>
   <div class="ft"><span>JAMIT · Product — Loudness</span><span><b>18</b></span></div>
 </section>
@@ -1030,11 +1186,11 @@ b,strong{font-weight:800}
 <!-- ══════════ 17 · 타이밍 보정 ══════════ -->
 <section class="s">
   <span class="kick">03 제품 설명 <i>· 기술 2/3 — 파이프라인 02</i></span>
-  <h2>기술 ② <em>타이밍 보정</em></h2>
+  <h2><span class="tag tag--t">TECH 02</span><em>타이밍 보정</em></h2>
   <p class="sub">쉽게 말하면 — <b>기기마다 다른 ‘소리가 늦게 도착하는 시간’을 미리 재서 빼는 장치</b></p>
   <div class="hr"></div>
   <div class="body">
-    <div class="g2">
+    <div class="g2" style="margin-bottom:28px">
       <div class="card">
         <h3><small>문제</small>기기마다 다른 지연</h3>
         <ul>
@@ -1053,7 +1209,31 @@ b,strong{font-weight:800}
         </ul>
       </div>
     </div>
-    <p class="out">이 보정을 실제로 어떻게 돌리는지 — <b>다음 장에서 일곱 단계로</b></p>
+    <!-- 세 줄 시간축. d는 20쪽 4단계의 실측값(실측 지연 40ms)과 같은 값을 쓴다 -->
+    <svg class="tl" viewBox="0 0 1136 162" role="img"
+         aria-label="기준 영상과 내 녹음이 d만큼 어긋난 상태를, 시작점을 d만큼 당겨 맞추는 그림">
+      <text class="tl__k" x="286" y="11" text-anchor="middle">같은 시작점</text>
+      <line class="tl__g" x1="286" y1="18" x2="286" y2="156"/>
+
+      <text class="tl__n" x="266" y="42" text-anchor="end">기준 영상</text>
+      <rect class="tl__ref" x="286" y="28" width="800" height="20" rx="2"/>
+      <text class="tl__s" x="298" y="42" fill="var(--paper)">이어폰으로 듣는 원곡</text>
+
+      <line class="tl__d" x1="286" y1="64" x2="352" y2="64"/>
+      <line class="tl__d" x1="286" y1="58" x2="286" y2="70"/>
+      <line class="tl__d" x1="352" y1="58" x2="352" y2="70"/>
+      <text class="tl__k" x="364" y="68">d = 40ms — 이 기기의 지연</text>
+
+      <text class="tl__n" x="266" y="98" text-anchor="end">내 녹음 · 보정 전</text>
+      <rect class="tl__raw" x="352" y="84" width="800" height="20" rx="2"/>
+      <text class="tl__s" x="364" y="98">마이크에 담긴 내 연주 — d만큼 늦게 도착</text>
+
+      <path class="tl__d" d="M352 118 L296 118 M304 113 L296 118 L304 123" fill="none"/>
+
+      <text class="tl__n" x="266" y="146" text-anchor="end">보정 후</text>
+      <rect class="tl__fix" x="286" y="132" width="800" height="20" rx="2"/>
+      <text class="tl__s" x="298" y="146" fill="var(--paper)">시작점을 d만큼 앞으로 당겨 정렬</text>
+    </svg>
   </div>
   <div class="ft"><span>JAMIT · Product — Latency</span><span><b>19</b></span></div>
 </section>
@@ -1085,7 +1265,6 @@ b,strong{font-weight:800}
         </tbody>
       </table>
       <div class="col" style="justify-content:center">
-        <div><span class="pill pill--hot">어긋남을 구하는 한 줄기</span></div>
         <ul class="reasons" style="margin-top:16px;gap:14px">
           <li><b>L = 이 기기의 지연</b><span style="font-family:var(--mono);font-size:var(--t-sm)">median(L₁, L₂, L₃)</span> — 3회 재서 가운뎃값. 한 번 튄 값에 흔들리지 않음</li>
           <li><b>d₀ = 이번 촬영의 어긋남</b><span style="font-family:var(--mono);font-size:var(--t-sm)">(landed − START)×1000 − (tYt − tRec)</span> — 반주가 실제 착지한 지점과 영상이 시작된 지점의 차</li>
@@ -1102,28 +1281,36 @@ b,strong{font-weight:800}
 <!-- ══════════ 18 · 기능 ② ══════════ -->
 <section class="s">
   <span class="kick">03 제품 설명 <i>· 기능 ② MIX IT</i></span>
-  <h2>기능 ② <em>트랙 조합</em>과 숏폼 제작</h2>
+  <h2><span class="tag tag--f">FEATURE 02</span><em>트랙 조합</em>과 숏폼 제작</h2>
   <div class="hr"></div>
   <div class="body">
+    <div class="feat">
+    <div class="duo">
+      <img src="assets/feature-2.webp" alt="트랙 조합 화면 — 참여 연주 영상들을 그리드로 배치하고 하단에서 앙상블을 재생하는 화면">
+      <img src="assets/feature-2b.webp" alt="완성 화면 — 2×2 그리드로 합쳐진 숏폼과 공개 · 외부 공유 · 다운로드 버튼">
+    </div>
+    <div class="feat__c">
     <div class="g3">
       <div class="card">
         <h3><small>Manage</small>파트별 트랙 관리</h3>
-        <p>업로드된 연주를 <b>파트별로 분리 관리</b>. <br>같은 파트에 여러 사람이 참여 가능.</p>
+        <p>업로드된 연주를<br><b>파트별로 분리 관리</b>.<br>같은 파트에 여러 사람이 참여 가능.</p>
       </div>
       <div class="card card--hot">
         <h3><small>Combine</small>사용자 선택형 조합</h3>
-        <p>모인 트랙 중 <b>원하는 연주만 선택</b>. <br>같은 모집글에서 사람마다 다른 합주 생성.</p>
+        <p>모인 트랙 중<br><b>원하는 연주만 선택</b>.<br>같은 모집글에서 사람마다 다른 합주 생성.</p>
       </div>
       <div class="card">
         <h3><small>Export</small>숏폼 생성 · 내보내기</h3>
-        <p>영상 그리드 선택 + <b>원클릭 믹싱</b>. <br>바로 SNS에 올릴 수 있는 형태로 출력.</p>
+        <p>영상 그리드 선택 +<br><b>원클릭 믹싱</b>.<br>바로 SNS에 올릴 수 있는 형태로 출력.</p>
       </div>
     </div>
-    <div class="card card--plain" style="margin-top:var(--gap)">
+    <div class="card card--plain">
       <p style="margin:0;font-size:19px;color:var(--ink);line-height:1.5">
-        자기 연주가 들어간 결과물을 SNS에 올리고, 그 영상이 다음 참여자를 데려오는 자연스러운 홍보 구조 확립<br>
-        <span style="color:var(--ink-2)">(설문에서도 “결과물을 SNS에 올리기 위함”이 32명으로 상위 응답.)</span>
+        자기 연주가 들어간 결과물을 SNS에 올리고,<br>그 영상이 다음 참여자를 데려오는 자연스러운 홍보 구조 확립<br>
+        <span style="color:var(--ink-2)"> → 1인 음악 컨텐츠 크리에이터들의 자유로운 협업 창구</span>
       </p>
+    </div>
+    </div>
     </div>
   </div>
   <div class="ft"><span>JAMIT · Product — Feature ②</span><span><b>21</b></span></div>
@@ -1132,44 +1319,55 @@ b,strong{font-weight:800}
 <!-- ══════════ 18 · 원클릭 믹싱 ══════════ -->
 <section class="s">
   <span class="kick">03 제품 설명 <i>· 기술 3/3 — 파이프라인 06</i></span>
-  <h2>기술 ③ <em>원클릭 믹싱</em></h2>
+  <h2><span class="tag tag--t">TECH 03</span><em>원클릭 믹싱</em></h2>
   <p class="sub">쉽게 말하면 — <b>엔지니어가 하던 밸런스 조절을 장르 버튼 하나로</b></p>
   <div class="hr"></div>
   <div class="body">
-    <div class="g-wide">
-      <div class="col">
-        <p class="p">
-          여러 파트를 어울리게 섞으려면 악기별 소리 크기와 공간감을 하나하나 맞춰야 합니다. <br>
-          <b>아마추어가 접근하기 어려운 전문 영역</b>입니다. <br>
-          조합해 놓고도 결과가 만족스럽지 않아 포기하게 되는 지점입니다.
-        </p>
-        <p class="p">
-          JAMIT은 <b>장르별 LUFS 밸런스 프리셋</b> + <b>FFmpeg <span style="font-family:var(--mono)">afir</span> 공간감 프리셋</b>을 묶어 두었습니다.
-          사용자는 <span class="mark"><b>장르를 고르기만</b></span> 하면 전문가 수준의 믹스 밸런스가 재현됩니다.
-        </p>
-        <p class="note">
-          afir : 입력 신호를 시간차를 두고 지연시킨 뒤<br>
-          각각 가중치를 곱해 더함으로써 울림(공간감)을 만드는<br>
-          FFmpeg 컨볼루션 필터
-        </p>
-      </div>
-      <div class="col">
-        <div><span class="pill">장르별 목표 LUFS 프리셋 (일부)</span></div>
-        <table class="tbl tbl--sm" style="margin-top:13px">
-          <thead><tr><th>파트</th><th>Default</th><th>Hard Rock</th><th>Acoustic</th></tr></thead>
-          <tbody>
-            <tr><th>Vocal</th><td class="num">−18</td><td class="num hi">−19</td><td class="num hi">−17</td></tr>
-            <tr><th>Chord</th><td class="num">−22</td><td class="num hi">−19</td><td class="num hi">−19</td></tr>
-            <tr><th>Drums</th><td class="num">−21</td><td class="num hi">−18</td><td class="num hi">−26</td></tr>
-            <tr><th style="color:var(--mute)">…</th><td colspan="3" style="color:var(--mute);font-family:var(--mono);text-align:center">파트 · 장르별 확장 중</td></tr>
-          </tbody>
-        </table>
-        <p class="note">
-          단위 LUFS · 장르가 바뀌면 파트 간 상대 크기도 변화<br>
-          Hard Rock은 드럼이 앞으로, Acoustic은 뒤로
-        </p>
-      </div>
+    <div class="g-wide" style="margin-bottom:22px">
+      <p class="p" style="margin:0">
+        여러 파트를 어울리게 섞으려면 악기별 소리 크기와 공간감을 하나하나 맞춰야 합니다.
+        <b>아마추어가 접근하기 어려운 전문 영역</b>이고, 조합해 놓고도 결과가 만족스럽지 않아 포기하게 되는 지점입니다.
+      </p>
+      <p class="p" style="margin:0">
+        JAMIT은 <b>장르별 LUFS 밸런스 프리셋</b> + <b>FFmpeg <span style="font-family:var(--mono)">afir</span> 공간감 프리셋</b>을 묶어 두었습니다.
+        사용자는 <span class="mark"><b>장르를 고르기만</b></span> 하면 됩니다.
+      </p>
     </div>
+    <div><span class="pill">장르별 목표 LUFS 프리셋 <i style="font-style:normal;color:var(--mute)">· 일부</i></span></div>
+    <!-- 표로 −18/−19/−17을 늘어놓으면 대소가 즉시 안 읽힌다. 막대 길이로 바꾸면
+         "장르가 바뀌면 드럼이 앞뒤로 움직인다"가 한 번에 보인다 — 움직이는 파트만 인디고 -->
+    <svg class="bl" viewBox="0 0 1136 178" role="img"
+         aria-label="장르가 바뀌면 파트 간 상대 음량이 변한다 — Hard Rock은 드럼이 앞으로, Acoustic은 크게 뒤로 간다">
+      <text class="bl__h" x="140" y="24">DEFAULT</text>
+      <text class="bl__h" x="480" y="24">HARD ROCK</text>
+      <text class="bl__h" x="820" y="24">ACOUSTIC</text>
+      <text class="bl__p" x="132" y="59" text-anchor="end">Vocal</text>
+      <rect class="bl__b" x="140" y="42" width="228" height="22" rx="2"/>
+      <text class="bl__v" x="377" y="59">-18</text>
+      <rect class="bl__b" x="480" y="42" width="209" height="22" rx="2"/>
+      <text class="bl__v" x="698" y="59">-19</text>
+      <rect class="bl__b" x="820" y="42" width="247" height="22" rx="2"/>
+      <text class="bl__v" x="1076" y="59">-17</text>
+      <text class="bl__p" x="132" y="103" text-anchor="end">Chord</text>
+      <rect class="bl__b" x="140" y="86" width="152" height="22" rx="2"/>
+      <text class="bl__v" x="301" y="103">-22</text>
+      <rect class="bl__b" x="480" y="86" width="209" height="22" rx="2"/>
+      <text class="bl__v" x="698" y="103">-19</text>
+      <rect class="bl__b" x="820" y="86" width="209" height="22" rx="2"/>
+      <text class="bl__v" x="1038" y="103">-19</text>
+      <text class="bl__p" x="132" y="147" text-anchor="end">Drums</text>
+      <rect class="bl__b bl__b--hot" x="140" y="130" width="171" height="22" rx="2"/>
+      <text class="bl__v" x="320" y="147">-21</text>
+      <rect class="bl__b bl__b--hot" x="480" y="130" width="228" height="22" rx="2"/>
+      <text class="bl__v" x="717" y="147">-18</text>
+      <rect class="bl__b bl__b--hot" x="820" y="130" width="76" height="22" rx="2"/>
+      <text class="bl__v" x="905" y="147">-26</text>
+      <text class="bl__v" x="140" y="174">막대가 길수록 앞으로 나온다 · 단위 LUFS · 파트 · 장르별 프리셋 확장 중</text>
+    </svg>
+    <p class="note" style="margin-top:14px">
+      Hard Rock은 드럼이 앞으로, Acoustic은 뒤로 — 같은 트랙도 장르에 따라 다른 합주로 들립니다<br>
+      afir : 입력 신호를 시간차를 두고 지연시킨 뒤 각각 가중치를 곱해 더함으로써 울림(공간감)을 만드는 FFmpeg 컨볼루션 필터
+    </p>
   </div>
   <div class="ft"><span>JAMIT · Product — Mixing</span><span><b>22</b></span></div>
 </section>
@@ -1177,10 +1375,21 @@ b,strong{font-weight:800}
 <!-- ══════════ 19 · 기능 ③ ══════════ -->
 <section class="s">
   <span class="kick">03 제품 설명 <i>· 기능 ③ TOGETHER</i></span>
-  <h2>기능 ③ <em>커뮤니티</em>와 성장</h2>
-  <p class="sub">한 번 참여하고 떠나면 플랫폼이 아닙니다 — <b>다시 돌아올 이유</b>를 설계했습니다</p>
+  <h2><span class="tag tag--f">FEATURE 03</span><em>커뮤니티</em>와 성장</h2>
+  <!-- STATUS는 두 카드에 공통이라 카드마다 달면 같은 문장이 두 번 읽힌다.
+       아래에 한 줄로 빼면 카드가 밀려 밑변과 겹치므로, 비어 있는 sub 줄 오른쪽에 태운다 -->
+  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:24px">
+    <p class="sub">한 번 참여하고 떠나면 플랫폼이 아닙니다 — <b>다시 돌아올 이유</b>를 설계했습니다</p>
+    <span class="src" style="margin:0;padding:0;white-space:nowrap">STATUS · 기획 완료 · 개발 완료 목표 8 ~ 9월 (34쪽 로드맵)</span>
+  </div>
   <div class="hr"></div>
   <div class="body">
+    <div class="feat">
+    <div class="duo">
+      <img src="assets/feature-3.webp" alt="완성된 합주 숏폼 피드 화면 — 구간별 이모티콘 반응이 오른쪽에 쌓이는 모습">
+      <img src="assets/feature-3b.webp" alt="프로필 화면 — 획득한 업적 배지와 악기별 레벨 막대">
+    </div>
+    <div class="feat__c">
     <div class="g2">
       <div class="card">
         <h3><small>Interaction</small>소통과 반응</h3>
@@ -1189,7 +1398,6 @@ b,strong{font-weight:800}
           <li>숏폼의 <b>특정 구간에 이모티콘 반응</b> — 좋게 느껴지는 부분을 정확히 표시</li>
           <li>연주에 대한 리액션 = 다음 연주의 동기</li>
         </ul>
-        <div class="src"><span>STATUS · 기획 완료 · 9월 개발 완료 목표</span></div>
       </div>
       <div class="card card--hot">
         <h3><small>Growth</small>활동 기반 성장 · 보상</h3>
@@ -1198,8 +1406,9 @@ b,strong{font-weight:800}
           <li><b>업적 · 프로필 꾸미기</b> 등 수집 요소로 지속 참여 유도</li>
           <li>이 보상 구조가 그대로 <b>인앱 재화 수익 모델</b>로 연결(32쪽)</li>
         </ul>
-        <div class="src"><span>STATUS · 기획 완료 · 9월 개발 완료 목표</span></div>
       </div>
+    </div>
+    </div>
     </div>
   </div>
   <div class="ft"><span>JAMIT · Product — Feature ③</span><span><b>23</b></span></div>
@@ -1234,25 +1443,26 @@ b,strong{font-weight:800}
   <div class="divi__g">
     <div>
       <span class="divi__n">04</span>
-      <h2>팀</h2>
-      <p class="divi__l">저희 팀 012는요</p>
+      <h2>협업 방식</h2>
+      <p class="divi__l">세 명이 어떻게 일했는가 — 방식과 기록.</p>
     </div>
     <ol class="divi__toc">
       <li><b>26</b>일하는 방식</li>
-      <li><b>27</b>말이 아니라 기록으로</li>
+      <li><b>27</b>진행을 기록으로</li>
     </ol>
   </div>
   <div class="ft"><span>JAMIT · Team</span><span><b>25</b></span></div>
 </section>
 
+<!-- ══════════ 23 · 팀 소개 ══════════ -->
+
 <!-- ══════════ 24 · 일하는 방식 ══════════ -->
 <section class="s">
-  <span class="kick">04 팀 <i>· Workflow</i></span>
+  <span class="kick">04 협업 플로우 <i>· Workflow</i></span>
   <h2>일하는 <em>방식</em></h2>
   <!-- 리소스 배분 전략을 별도 장으로 세우지 않고 이 장의 머리말로 붙인다.
        "무엇을 했나"보다 "3명이라 무엇을 덜어냈나"가 이 팀의 전략이다 -->
-  <p class="sub">3명이 쓸 수 있는 시간은 정해져 있습니다 — <b>핵심 경로에만 사람</b>, 나머지는 도구로.<br>
-    덜어낸 것도 근거를 남기고 덜어냈습니다 <span style="color:var(--mute)">(오디오 양자화 · AI 잡음 보정 — 12쪽 · 부록 2)</span></p>
+  <p class="sub">3명이 쓸 수 있는 시간은 정해져 있습니다 — <b>핵심 경로에만 사람이 검증</b></p>
   <div class="hr"></div>
   <div class="body">
     <div class="g4">
@@ -1260,7 +1470,6 @@ b,strong{font-weight:800}
         <svg class="ic ic--lg"><use href="#i-spark"/></svg><h3><small>01</small>AI 페어 프로그래밍</h3>
         <ul>
           <li>Claude Opus 5 ·<br>Sonnet 5로<br>코드 생성·리뷰 가속</li>
-          <li>누적 <b>151M 토큰</b> 사용</li>
         </ul>
       </div>
       <div class="card card--hot">
@@ -1290,20 +1499,20 @@ b,strong{font-weight:800}
   <div class="ft"><span>JAMIT · Team — Workflow</span><span><b>26</b></span></div>
 </section>
 
-<!-- ══════════ 25 · [TODO] 프로젝트 관리 증거 ══════════ -->
-<section class="s s--todo">
-  <span class="kick">04 팀 <i>· 프로젝트 관리</i></span>
-  <h2>말이 아니라 <em>기록으로</em></h2>
+<!-- ══════════ 27 · 프로젝트 관리 증거 ══════════ -->
+<section class="s">
+  <span class="kick">04 협업 플로우 <i>· 프로젝트 관리</i></span>
+  <h2>진행을 <em>기록으로</em></h2>
   <div class="hr"></div>
   <div class="body">
-    <div class="g4" style="margin-bottom:20px;grid-auto-rows:172px">
+    <div class="g4" style="margin-bottom:16px;grid-auto-rows:264px">
       <figure class="shot"><img src="assets/rec-erd.webp" alt="JAMIT 데이터베이스 ERD"><figcaption>ERD</figcaption></figure>
-      <div class="slot">[ 스프린트 보드 ]<br>Jira 백로그</div>
+      <figure class="shot"><img src="assets/rec-board.webp" alt="스프린트 보드 — 해야 할 일 16 · 진행 중 5 · 막힘 3 열에 이슈 카드가 채워진 화면"><figcaption>스프린트 보드 · Jira</figcaption></figure>
       <figure class="shot"><img src="assets/rec-api.webp" alt="Swagger API 명세 — 도메인별 엔드포인트 목록"><figcaption>API 명세 · Swagger</figcaption></figure>
       <figure class="shot"><img src="assets/rec-pr.webp" alt="GitHub PR 리뷰 화면 — 코드 리뷰 코멘트"><figcaption>Issue &amp; PR · GitHub</figcaption></figure>
     </div>
-    <!-- 캡처는 아직이지만 숫자는 지금 셀 수 있다 — 레포 4곳에서 실제로 센 값 -->
-    <div class="g4" style="margin-bottom:20px">
+    <!-- 레포 4곳에서 실제로 센 값 -->
+    <div class="g4" style="margin-bottom:16px">
       <div class="card" style="padding:15px 18px">
         <div class="stat__n" style="font-size:40px">821</div>
         <p style="margin-top:6px;font-size:var(--t-sm);color:var(--ink)">누적 커밋<br><span style="color:var(--mute)">앱 · 백엔드 · AI · 인프라 4개 레포</span></p>
@@ -1320,13 +1529,6 @@ b,strong{font-weight:800}
         <div class="stat__n" style="font-size:40px">795</div>
         <p style="margin-top:6px;font-size:var(--t-sm);color:var(--ink)">자동화 실행<br><span style="color:var(--mute)">코드 리뷰 · 테스트 · 문서</span></p>
       </div>
-    </div>
-    <div class="drop" style="padding:14px 18px">
-      <h4>넣을 것</h4>
-      <ul style="gap:7px">
-        <li>남은 한 칸 — <b>스프린트 보드(Jira 백로그)</b> 캡처. 글자가 안 읽혀도 된다, 밀도 자체가 메시지</li>
-        <li>캡션에 숫자 한 줄 더 — “스프린트 <span class="tbd">N</span>회 · 누적 이슈 <span class="tbd">N</span>건”</li>
-      </ul>
     </div>
   </div>
   <div class="ft"><span>JAMIT · Team — Records</span><span><b>27</b></span></div>
@@ -1361,9 +1563,8 @@ b,strong{font-weight:800}
   <div class="body">
     <div class="g-wide">
       <div class="col" style="gap:13px;display:grid;align-content:center">
-        <!-- 숫자가 확정된 칸은 인디고, 아직 못 채운 칸은 .tbd로 둔다.
-             막대 그래프로 그리지 않는 이유 — SAM·SOM이 미정인 상태에서 폭을 그리면
-             그 폭 자체가 근거 없는 주장이 된다 -->
+        <!-- 막대 그래프로 그리지 않는 이유 — TAM·SAM·SOM은 자릿수가 세 단계나 달라
+             폭으로 그리면 아래 둘이 선으로 보인다. 숫자 그대로 세운다 -->
         <div class="card" style="padding:15px 20px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:18px">
           <div>
             <h3 style="font-size:20px"><small>TAM · 전체 시장</small>전 세계 음악 크리에이터</h3>
@@ -1410,29 +1611,34 @@ b,strong{font-weight:800}
     <div class="g-wide">
       <div class="g2">
         <div class="card">
-          <div class="stat__n"><span class="tbd">N</span><small>%</small></div>
-          <p class="stat__l">인터뷰한 현역 음악가 중<br><b>사용 희망</b> 비율</p>
-          <div class="src"><span>MVP 기준 인터뷰 · 총 <span class="tbd">N</span>명 중 <span class="tbd">N</span>명 긍정</span></div>
+          <div class="stat__n">79.9<small>%</small></div>
+          <p class="stat__l">설문 응답자의 <b>사용 의향</b><br>‘꼭 써보고 싶다’ + ‘흥미 있다’</p>
+          <div class="src">
+            <span>자체 설문 · 169명 · 2026.05.14 ~ 05.25</span>
+            <span>취미 음악가 · 전공자 · 현업 연주자 · 6쪽</span>
+          </div>
         </div>
         <div class="card card--hot">
-          <div class="stat__n"><span class="tbd">N</span><small>%</small></div>
-          <p class="stat__l">사전예약 <b>랜딩페이지 전환율</b></p>
-          <div class="src"><span>jamit.kr · 총 <span class="tbd">N</span>명 예약</span></div>
+          <div class="stat__n">12<small>%</small></div>
+          <p class="stat__l">합주 경험자의 <b>사전예약 전환율</b><br>접촉 100명 중 12명</p>
+          <div class="src">
+            <span>자체 집계 · 지인 · 밴드 동아리 경로</span>
+            <span>→ 처음 본 사람 6% · CPL은 31쪽</span>
+          </div>
         </div>
       </div>
       <div class="col">
-        <div><span class="pill">현장의 목소리</span></div>
-        <div class="quote" style="margin-top:15px">
-          <span class="tbd">TODO — 인터뷰 인용문 1</span>
-          <cite>— <span class="tbd">이름</span> · <span class="tbd">직함 / 팔로워</span></cite>
+        <div><span class="pill">사용 의향 분해 <i style="font-style:normal;color:var(--mute)">· 169명</i></span></div>
+        <!-- 79.9%를 한 덩어리로 두면 '흥미 있다'까지 확신처럼 읽힌다. 갈라서 보여주는 편이
+             방어에도 유리하다 — 강한 의향과 약한 의향은 다른 값이다 -->
+        <div class="bars" style="margin-top:17px">
+          <div><div class="bar__t"><span>흥미 있다</span><b>56.2%</b></div><div class="bar__tr"><div class="bar__f" style="width:100%"></div></div></div>
+          <div><div class="bar__t"><span>꼭 써보고 싶다</span><b>23.7%</b></div><div class="bar__tr"><div class="bar__f" style="width:42.2%"></div></div></div>
+          <div><div class="bar__t"><span>그 외</span><b>20.1%</b></div><div class="bar__tr"><div class="bar__f" style="width:35.8%"></div></div></div>
         </div>
-        <div class="quote">
-          <span class="tbd">TODO — 인터뷰 인용문 2</span>
-          <cite>— <span class="tbd">이름</span> · <span class="tbd">직함</span></cite>
-        </div>
-        <!-- 인용문(개인의 말)과 설문(집계)은 성격이 다르다 — 인용문끼리보다 더 벌린다 -->
-        <p class="out" style="font-size:var(--t-body);margin-top:30px">
-          설문 응답자의 <b>79.9%</b>가 사용 의향<br>꼭 써보고 싶다 23.7% · 흥미 있다 56.2%
+        <p class="out" style="font-size:var(--t-body);margin-top:26px">
+          <b>다섯 중 넷</b>이 써보겠다고 답했고, 그중 <b>넷 중 하나</b>는 강한 의향입니다 —
+          남은 과제는 관심이 아니라 <b>설치와 잔존</b>(31쪽)
         </p>
       </div>
     </div>
@@ -1440,22 +1646,43 @@ b,strong{font-weight:800}
   <div class="ft"><span>JAMIT · Traction</span><span><b>30</b></span></div>
 </section>
 
-<!-- ══════════ 28 · [TODO] 마케팅 PoC ══════════ -->
-<section class="s s--todo">
+<!-- ══════════ 31 · 획득 단가 ══════════ -->
+<section class="s">
   <span class="kick">05 검증 <i>· 획득 단가</i></span>
   <h2>획득 단가(CPL)로 본 <em>진입 가능성</em></h2>
   <div class="hr"></div>
   <div class="body">
-    <div class="drop">
-      <h4>넣을 것 — 소액이라도 집행해 숫자 확보</h4>
-      <ul>
-        <li><b>광고 집행 결과</b> — 기간 · 비용 · 노출 수 · 사전예약자 수</li>
-        <li><b>CPL(예약자 1명당 비용)</b> — 목표 기준 3,979원 / 1명</li>
-        <li><b>A/B 테스트</b> — 후킹 문구 2안 비교 (“혼자 연주해도 합주가 된다” vs “단톡방 없이 합주하기”)</li>
-        <li><b>전환자 분포</b> — 연령대 · 악기 · 전환 시간대 → 타깃 확정 근거</li>
-        <li>랜딩페이지 <b>Clarity 세션 리플레이 · 퍼널</b> 화면 — 이미 붙어 있으니 캡처만</li>
-      </ul>
+    <!-- 실제로 잰 값. 사전예약 전환율이지 설치 전환율이 아니다 — 그 경계를 카드 밖 한 줄로 못박는다 -->
+    <!-- 점선 '넣을 것' 상자를 뺐다. 남은 검증은 아래 한 줄로 말하면 되고,
+         빈 상자는 발표 화면에서 미완성으로 읽힌다. 비워진 높이는 카드가 먹는다 -->
+    <div class="g3" style="flex:1;min-height:0;margin-bottom:22px">
+      <div class="card">
+        <div class="stat__n" style="font-size:64px">6<small style="font-size:30px">%</small></div>
+        <p class="stat__l"><b>콜드 트래픽</b> — 처음 본 사람<br>랜딩 방문 50명 중 <b>3명</b> 예약</p>
+        <div class="src">
+          <span>자체 집계 · 표본 50 · jamit.kr</span>
+          <span>설명 없이 랜딩만 보고 결정한 값</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="stat__n" style="font-size:64px">12<small style="font-size:30px">%</small></div>
+        <p class="stat__l"><b>지인 · 밴드 동아리</b> — 합주 경험자<br>접촉 100명 중 <b>12명</b> 예약</p>
+        <div class="src">
+          <span>자체 집계 · 표본 100 · 지인 경로</span>
+          <span>합주의 불편을 겪어본 집단</span>
+        </div>
+      </div>
+      <div class="card card--hot">
+        <div class="stat__n" style="font-size:64px">5,000<small style="font-size:26px">원</small></div>
+        <p class="stat__l"><b>CPL</b> — 예약 1명당 비용<br>광고비 15,000원 ÷ <b>3명</b></p>
+        <div class="src">
+          <span>목표 3,979원 대비 1.26배</span>
+          <span>표본 3명 — 자릿수 확인까지가 한계</span>
+        </div>
+      </div>
     </div>
+    <p class="out">목표 단가와 <b>같은 자릿수</b>임을 확인 — 광고로 사람을 데려오는 것이 불가능한 단가는 아닙니다.
+      다만 <b>사전예약은 설치가 아니고</b>, 2,000명을 전부 광고로 사면 1,000만원입니다 — 유입의 축은 <b>숏폼 확산</b>(21쪽)입니다</p>
   </div>
   <div class="ft"><span>JAMIT · Growth PoC</span><span><b>31</b></span></div>
 </section>
@@ -1485,7 +1712,7 @@ b,strong{font-weight:800}
       </div>
       <div class="card">
         <svg class="ic ic--lg"><use href="#i-mega"/></svg><h3><small>BM 03</small>광고</h3>
-        <p>영상 서비스 특성을 살린 <b>보상형 광고</b>.<br>재화 획득과 연결해 거부감 완화.</p>
+        <p>합주 생성에는 <b>서버 처리 시간</b>이 걸립니다(16쪽 06~07). 그 대기 화면에 <b>5초 광고</b>.</p>
         <div class="src" style="font-family:var(--sans);font-size:var(--t-body);color:var(--ink)">
           <span><b>월 30%가 광고 20회 시청 시 12만원</b></span>
           <span style="font-family:var(--mono);font-size:10.5px;color:var(--mute)">MAU 2,000명 가정</span>
@@ -1567,12 +1794,12 @@ b,strong{font-weight:800}
         <div class="gt__b done" style="grid-column:4/6">MVP 개발 완료</div>
       </div>
       <div class="gt">
-        <div class="gt__l">커뮤니티<small>FEATURE 03</small></div>
+        <div class="gt__l">커뮤니티<small>F03 · INTERACTION</small></div>
         <div class="gt__b doing" style="grid-column:4/5">기획 · 개발</div>
         <div class="gt__b todo" style="grid-column:5/6;margin-left:calc(29% + 6px)">완성</div>
       </div>
       <div class="gt">
-        <div class="gt__l">성장 · 수집<small>FEATURE 03</small></div>
+        <div class="gt__l">성장 · 보상<small>F03 · GROWTH</small></div>
         <div class="gt__b doing" style="grid-column:4/6">기획 · 개발</div>
         <div class="gt__b todo" style="grid-column:6/7">완성 예정</div>
       </div>
@@ -1614,20 +1841,31 @@ b,strong{font-weight:800}
     <div><b>Service</b>jamit.kr</div>
     <div><b>Launch</b>2026년 9월</div>
   </div>
+  <img class="cover__shot" src="assets/cover-app.webp" alt="JamIT 앱 홈 화면">
   <div class="ft"><span>JAMIT</span><span><b>35</b></span></div>
 </section>
 
 <!-- ══════════ 33 · Q&A ══════════ -->
 <section class="s s--lead divi" style="justify-content:center">
-  <h2 style="font-size:112px;margin-top:0">Q &amp; A</h2>
-  <p class="divi__l" style="margin-top:22px">자주 나올 질문의 답은 부록에 정리.</p>
+  <!-- 질의응답 내내 화면에 남는 장이다. 부록 색인을 걸어 "몇 쪽 보세요"가 가능하게 한다 -->
+  <div class="divi__g">
+    <div>
+      <h2 style="font-size:104px;margin-top:0">Q &amp; A</h2>
+      <p class="divi__l" style="margin-top:20px">자주 나올 질문의 답은 부록에 정리했습니다.</p>
+    </div>
+    <ol class="divi__toc">
+      <li><b>37—39</b>FAQ — 저작권 · AI 사용 범위 · 비실시간의 정당성 · 숫자 근거 · 콜드스타트</li>
+      <li><b>40</b>AI 오디오 PoC — 잡음 보정을 뺀 근거</li>
+      <li><b>41</b>자체 설문 원자료 — 169명 · 문항별 응답</li>
+    </ol>
+  </div>
   <div class="ft"><span>JAMIT · Q&amp;A</span><span><b>36</b></span></div>
 </section>
 
 <!-- ══════════ 34 · 부록 1-1 ══════════ -->
 <section class="s">
   <span class="kick">Appendix 1 <i>· FAQ</i></span>
-  <h2>FAQ <em>1/2</em></h2>
+  <h2>FAQ <em>1/3</em></h2>
   <div class="hr"></div>
   <!-- 문답이 넷뿐이라 세로 가운데 정렬이면 위가 뜬다 — 선 바로 아래에서 시작한다 -->
   <div class="body" style="justify-content:flex-start;padding-top:34px">
@@ -1656,7 +1894,7 @@ b,strong{font-weight:800}
 <!-- ══════════ 35 · 부록 1-2 ══════════ -->
 <section class="s">
   <span class="kick">Appendix 1 <i>· FAQ</i></span>
-  <h2>FAQ <em>2/2</em></h2>
+  <h2>FAQ <em>2/3</em></h2>
   <div class="hr"></div>
   <!-- 문답이 넷뿐이라 세로 가운데 정렬이면 위가 뜬다 — 선 바로 아래에서 시작한다 -->
   <div class="body" style="justify-content:flex-start;padding-top:34px">
@@ -1680,6 +1918,37 @@ b,strong{font-weight:800}
     </div>
   </div>
   <div class="ft"><span>JAMIT · Appendix 1</span><span><b>38</b></span></div>
+</section>
+
+<!-- ══════════ 부록 1-3 ══════════ -->
+<section class="s">
+  <span class="kick">Appendix 1 <i>· FAQ</i></span>
+  <h2>FAQ <em>3/3</em></h2>
+  <div class="hr"></div>
+  <div class="body" style="justify-content:flex-start;padding-top:34px">
+    <div class="qa">
+      <!-- 29 · 31 · 33쪽 숫자는 반드시 질문이 들어온다. 어디까지가 출처이고 어디부터가
+           가정인지 미리 갈라 두면, 그 질문이 공격이 아니라 확인이 된다 -->
+      <div>
+        <h4><b>Q5.</b> 시장 규모와 손익분기 숫자의 근거는 무엇인가요?</h4>
+        <ul>
+          <li><b>SAM 1,400만 명</b> — 국내 성인 4,300만 × 한국갤럽 연주 가능 33%. <b>외부 출처</b></li>
+          <li><b>SOM 2,000명</b> — SAM × 침투율 0.014%. 침투율은 <b>근거가 아니라 가정</b>이며, 31쪽 CPL을 실집행으로 재측정한 뒤 재산정합니다</li>
+          <li><b>손익분기 MAU 2,000명 · 구독 4%</b> — 월 유지비 약 60만원에 대응하는 매출 약 61만원 시점입니다 (33쪽)</li>
+        </ul>
+      </div>
+      <!-- 참여형 플랫폼에 반드시 들어오는 질문이다. 덱 안의 사실로만 답한다 -->
+      <div>
+        <h4><b>Q6.</b> 참여자가 없으면 합주가 성립하지 않는데, 초기 콜드스타트는 어떻게 넘습니까?</h4>
+        <ul>
+          <li><b>모집글은 참여자 0명이어도 성립합니다</b> — 기준 영상이 YouTube 임베드라 모집자는 구간만 지정하면 게시 완료(16쪽)</li>
+          <li>참여는 <b>파트 단위 · 정원 없음</b>이고, 모인 트랙 중 원하는 것만 골라 조합하므로 <b>인원이 다 차지 않아도 결과물이 나옵니다</b>(21쪽)</li>
+          <li>초기 유입은 <b>합주 경험자 경로부터</b> — 지인 · 밴드 동아리 사전예약 전환 12%로 콜드 트래픽 6%의 두 배(31쪽)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="ft"><span>JAMIT · Appendix 1</span><span><b>39</b></span></div>
 </section>
 
 <!-- ══════════ 36 · 부록 2 ══════════ -->
@@ -1706,7 +1975,7 @@ b,strong{font-weight:800}
       기획 단계에서 제기된 DeepFilterNet 포함 3가지 방법을 모두 테스트한 결과.
     </p>
   </div>
-  <div class="ft"><span>JAMIT · Appendix 2</span><span><b>39</b></span></div>
+  <div class="ft"><span>JAMIT · Appendix 2</span><span><b>40</b></span></div>
 </section>
 
 <!-- ══════════ 37 · 부록 3 ══════════ -->
@@ -1744,7 +2013,7 @@ b,strong{font-weight:800}
       </div>
     </div>
   </div>
-  <div class="ft"><span>JAMIT · Appendix 3</span><span><b>40</b></span></div>
+  <div class="ft"><span>JAMIT · Appendix 3</span><span><b>41</b></span></div>
 </section>
 
 
