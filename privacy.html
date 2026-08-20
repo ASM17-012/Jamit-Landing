@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>개인정보 처리방침 — JamIT</title>
+<meta name="description" content="JamIT 모바일 애플리케이션 서비스 개인정보 처리방침. 법률 검토 전 초안입니다.">
+<!-- 시행 전 초안이다. 실수로 올라가도 검색에 잡히지 않게 막는다.
+     법률 검토가 끝나고 [TBD]가 모두 확정된 정식 버전을 게시할 때 이 줄을 지운다. -->
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0a0c1c">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="%230d0f24"/><rect x="8" y="13" width="3" height="6" rx="1.5" fill="%2398cff6"/><rect x="14" y="8" width="3" height="16" rx="1.5" fill="%23baadf5"/><rect x="20" y="11" width="3" height="10" rx="1.5" fill="%23dd8bf4"/></svg>'>
+
+<style>
+/* ══════════════════════════════════════════════════════════
+   법적 고지 문서 — index.html과 같은 색·글꼴·여백 언어를 쓴다.
+   외부 요청 0. 폰트도 색도 전부 이 파일 안에 있다.
+   ══════════════════════════════════════════════════════════ */
+:root{
+  --bg:#0a0c1c;
+  --bg-2:#141634;
+  --ink:#eef0fa;              /* 배경 대비 17:1 */
+  --copy:#a8b0cc;             /* 9.0:1 — 본문 */
+  --muted:#8f98b5;            /* 6.8:1 — 작은 글씨도 AA */
+  --line:rgba(255,255,255,.12);
+  --c-cyan:#98cff6;
+  --c-violet:#dd8bf4;
+  --accent:#b9a3f7;
+  /* 문서마다 색 하나를 가져간다 — 약관은 첫 글자 J의 청록, 처리방침은 마지막 T의 보라.
+     같은 팔레트 안에서 두 문서가 서로 구분된다 */
+  --doc:#dd8bf4;
+  --doc-soft:rgba(221,139,244,.5);
+  /* 미확정 표식 — index의 voice--b(호박색)와 같은 계열.
+     "아직 안 끝났다"는 신호는 이 페이지에서 한 가지 색으로만 말한다 */
+  --warn:#fcd34d;
+  --warn-soft:rgba(245,158,11,.13);
+  --warn-line:rgba(245,158,11,.34);
+  --mark:#fde047;
+  --r:16px; --r-lg:24px;
+  --topbar:64px;
+  --strip:34px;               /* 초안 띠 — 스크롤해도 사라지지 않는다 */
+  --edge:max(clamp(20px,5vw,40px),env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));
+  --sans:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:var(--bg);-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);color:var(--ink);line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  word-break:keep-all;               /* 한글은 단어 중간에서 끊지 않는다 */
+  -webkit-tap-highlight-color:transparent;
+}
+/* 문서가 길다. 배경 그라데이션을 문서 높이에 걸면 수천 픽셀에 퍼져 사실상 안 보인다.
+   화면에 고정된 판을 뒤에 깔아 index와 같은 깊이를 유지한다 */
+body::before{content:"";position:fixed;inset:0;z-index:-1;
+  background:linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 100%)}
+::selection{background:var(--c-violet);color:#0a0c1c}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+h1,h2,h3{letter-spacing:-.02em;font-weight:750;line-height:1.15;text-wrap:balance}
+p{text-wrap:pretty}
+.wrap{width:min(1080px,calc(100% - var(--edge)*2));margin-inline:auto}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+/* 고정 머리(상단바 + 초안 띠) 아래로 제목이 숨지 않게 한다 */
+[id]{scroll-margin-top:calc(var(--topbar) + var(--strip) + 14px)}
+
+/* ════ 상단 바 ════ */
+.top{position:fixed;top:0;left:0;right:0;z-index:60;
+  background:rgba(10,12,28,.82);backdrop-filter:blur(18px) saturate(180%)}
+.top::after{content:"";position:absolute;left:0;right:0;top:100%;height:22px;pointer-events:none;
+  background:linear-gradient(rgba(10,12,28,.5),rgba(10,12,28,0));
+  opacity:0;transition:opacity .3s}
+body.scrolled .top::after{opacity:1}
+.top__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0;min-height:var(--topbar)}
+.top__id{display:flex;align-items:center;gap:9px;min-height:44px;cursor:pointer;
+  font-weight:750;font-size:17px;letter-spacing:-.02em;transition:opacity .18s}
+.top__nav{display:flex;align-items:center;gap:2px}
+.top__nav a{padding:0 12px;line-height:44px;border-radius:999px;font-size:13.5px;font-weight:600;
+  color:var(--muted);white-space:nowrap;transition:color .18s,background .18s}
+.top__nav a[aria-current="page"]{color:var(--ink);background:rgba(255,255,255,.07)}
+@media(max-width:560px){
+  .top__nav a{padding:0 9px;font-size:12.5px}
+  .top__id{font-size:15.5px;gap:7px}
+  .long{display:none}          /* 좁으면 "개인정보 처리방침" → "개인정보" */
+}
+
+/* ── 초안 띠 — 상단바에 붙어 항상 따라다닌다.
+      배너는 스크롤하면 사라지지만, 이 줄은 어느 조문을 보고 있어도 초안임을 말한다 ── */
+.strip{height:var(--strip);display:flex;align-items:center;justify-content:center;gap:9px;
+  padding-inline:var(--edge);text-align:center;
+  background:rgba(245,158,11,.16);border-top:1px solid var(--warn-line);border-bottom:1px solid var(--warn-line);
+  color:var(--warn);font-size:11.5px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
+.strip b{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;font-weight:700;
+  padding:3px 7px;border-radius:5px;background:var(--warn);color:#3b2600}
+
+/* ════ 문서 ════ */
+main{padding-top:calc(var(--topbar) + var(--strip))}
+.doc{padding-block:clamp(30px,5vw,58px) clamp(48px,7vw,88px)}
+.doc__head{max-width:74ch}
+.doc h1{margin-top:12px;font-size:clamp(2rem,4.6vw,2.85rem);font-weight:800;letter-spacing:-.035em;line-height:1.08}
+.doc__lede{margin-top:14px;color:var(--copy);font-size:clamp(.98rem,1.3vw,1.1rem);max-width:52em}
+
+/* 초안 배너 — 문서 첫 화면에서 제목 다음으로 눈에 들어와야 한다 */
+.banner{display:flex;gap:14px;align-items:flex-start;margin-top:26px;padding:18px 20px;
+  border:1px solid var(--warn-line);border-radius:var(--r);background:var(--warn-soft)}
+.banner svg{flex:none;margin-top:2px}
+.banner b{display:block;color:var(--warn);font-size:1rem;letter-spacing:-.02em}
+.banner p{margin-top:7px;color:var(--copy);font-size:.93rem;line-height:1.65}
+
+.meta{margin-top:24px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px 20px;
+  font-size:.9rem;align-items:baseline}
+.meta dt{color:var(--muted);font-weight:600}
+.meta dd{color:var(--copy)}
+
+/* ── 목차 + 본문 ── */
+.layout{margin-top:clamp(34px,5vw,54px)}
+@media(min-width:900px){
+  .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:clamp(32px,4.5vw,64px);align-items:start}
+}
+.toc{margin-bottom:30px;border:1px solid var(--line);border-radius:var(--r);background:rgba(20,22,52,.5)}
+.toc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:0 18px;min-height:52px;font-size:.95rem;font-weight:650}
+.toc>summary::-webkit-details-marker{display:none}
+.toc>summary::after{content:"+";font-family:var(--mono);font-size:1.35rem;font-weight:300;color:var(--muted);
+  transition:transform .25s var(--ease),color .25s}
+.toc[open]>summary::after{transform:rotate(45deg);color:var(--doc)}
+.toc__list{padding:2px 10px 14px}
+.toc ol{list-style:none}
+.toc a{display:block;padding:11px 10px;border-radius:8px;font-size:.88rem;line-height:1.45;
+  color:var(--muted);border-left:2px solid transparent;
+  transition:color .18s,background .18s,border-color .18s}
+.toc a .n{font-family:var(--mono);font-size:.82em;color:rgba(255,255,255,.34);margin-right:8px}
+.toc a.on{color:var(--ink);background:rgba(255,255,255,.05);border-left-color:var(--doc)}
+.toc a.on .n{color:var(--doc)}
+@media(min-width:900px){
+  /* 데스크톱에서는 접는 장치가 아니라 그냥 옆에 서 있는 목차다.
+     summary를 지우면 details는 열린 채로 고정된다 */
+  .toc{position:sticky;top:calc(var(--topbar) + var(--strip) + 24px);
+    margin-bottom:0;border:0;background:none}
+  .toc>summary{display:none}
+  .toc__list{position:relative;padding:0 6px 0 0;
+    max-height:calc(100vh - var(--topbar) - var(--strip) - 60px);overflow-y:auto;
+    scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.18) transparent}
+  .toc a{padding:6px 10px}
+}
+
+/* ── 조문 ── */
+.prose{max-width:68ch;color:var(--copy);font-size:clamp(.95rem,.35vw + .87rem,1.03rem);line-height:1.8}
+.prose strong{color:var(--ink);font-weight:700}
+.prose p{margin-top:14px}
+.prose .intro{margin-top:0;padding-bottom:clamp(10px,2vw,18px)}
+.art{margin-top:clamp(30px,3.6vw,42px);color:var(--ink);
+  font-size:clamp(1.06rem,1.4vw,1.2rem);letter-spacing:-.022em;line-height:1.35}
+.art__no{display:block;margin-bottom:7px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:var(--doc);font-weight:600}
+/* 조문 하나를 가리켜 링크로 보낼 수 있어야 한다 — "제3조 제3항 봐" 가 되는 문서다 */
+.art__link{margin-left:8px;font-family:var(--mono);font-weight:400;font-size:.78em;
+  color:rgba(255,255,255,.24);opacity:0;transition:opacity .18s,color .18s}
+section:hover .art__link,.art__link:focus-visible{opacity:1}
+@media(hover:none){.art__link{opacity:.4}}
+
+/* 항(項)과 호(號) — 번호는 본문보다 한 칸 물러난 자리에 둔다 */
+.clauses{list-style:none;counter-reset:clause;margin-top:14px}
+.clauses>li{counter-increment:clause;position:relative;padding-left:2.1em;margin-top:13px}
+.clauses>li::before{content:counter(clause) ".";position:absolute;left:0;top:0;
+  font-family:var(--mono);font-size:.9em;font-weight:600;color:var(--doc)}
+.sub{list-style:none;counter-reset:sub;margin-top:10px;padding-left:16px;border-left:1px solid var(--line)}
+.sub>li{counter-increment:sub;position:relative;padding-left:1.9em;margin-top:9px}
+.sub>li::before{content:counter(sub) ".";position:absolute;left:0;top:0;
+  font-family:var(--mono);font-size:.88em;color:var(--muted)}
+/* 외부 처리방침처럼 번호가 필요 없는 목록 */
+.plain{list-style:none;margin-top:10px;padding-left:16px;border-left:1px solid var(--line)}
+.plain>li{margin-top:7px}
+.clauses p,.sub p{margin-top:8px}
+
+/* 문서 안팎을 가리키는 참조 — 눌러서 갈 수 있다는 것만 조용히 알린다 */
+.ref{color:var(--doc);border-bottom:1px dotted var(--doc-soft);transition:border-color .18s,color .18s}
+.x{color:var(--doc);text-decoration:underline;text-underline-offset:3px;
+  text-decoration-color:var(--doc-soft);transition:text-decoration-color .18s}
+.ext::after{content:"\2197";margin-left:3px;font-size:.85em;vertical-align:.05em;opacity:.75}
+
+/* ── 미확정 항목 ──
+   지우지 않는다. 형광펜으로 칠해 둔다. 확정 전에 이 페이지가 올라가면
+   무엇이 안 끝났는지가 문장보다 먼저 보여야 한다 */
+.tbd{display:inline;padding:.14em .45em;border-radius:5px;
+  background:var(--mark);color:#1b1405;
+  font-family:var(--mono);font-size:.85em;font-weight:600;letter-spacing:-.01em;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone}
+.note-line{margin-top:14px}
+
+/* ── 표 ── */
+.tw{margin-top:18px;border:1px solid var(--line);border-radius:var(--r);
+  background:rgba(255,255,255,.03);overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.18) transparent}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.9rem;line-height:1.6}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+thead th{background:rgba(255,255,255,.05);color:var(--ink);font-weight:650;font-size:.86rem;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+td:first-child{color:var(--ink);font-weight:600}
+.tw--narrow table{min-width:420px}
+.tw--wide table{min-width:900px}
+/* 넘겨 볼 수 있다는 안내는 실제로 넘칠 때만 띄운다.
+   화면 폭으로 판단하면 여섯 칸짜리 표가 데스크톱에서 잘려도 아무 말을 못 한다 —
+   .over는 JS가 표의 실제 폭을 재서 붙인다 */
+.tw__hint{display:none;margin-top:8px;font-size:12px;color:var(--muted)}
+.tw.over+.tw__hint{display:block}
+
+/* ── 문서 끝: 옆 문서로 건너가는 자리 ── */
+.also{margin-top:clamp(44px,6vw,64px);padding-top:26px;border-top:1px solid var(--line)}
+.also__list{display:grid;gap:12px;margin-top:14px}
+@media(min-width:640px){.also__list{grid-template-columns:1fr 1fr}}
+.also a{display:block;padding:16px 18px;border:1px solid var(--line);border-radius:var(--r);
+  background:rgba(20,22,52,.5);transition:border-color .18s,background .18s,transform .18s}
+.also b{display:block;font-size:.98rem;letter-spacing:-.02em}
+.also span{display:block;margin-top:5px;font-size:.86rem;color:var(--muted)}
+
+footer{padding:30px 0 calc(48px + env(safe-area-inset-bottom,0px));
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
+footer nav{display:flex;flex-wrap:wrap;gap:4px}
+footer nav a{line-height:44px;padding-inline:12px;transition:color .18s}
+
+/* ══ 누르는 느낌 ══ index와 같은 규칙: hover는 커서가 있는 기기에서만 ══ */
+@media(hover:hover){
+  .top__id:hover{opacity:.72}
+  .top__nav a:hover,footer nav a:hover{color:var(--ink)}
+  .toc a:hover{color:var(--ink);background:rgba(255,255,255,.05)}
+  .art__link:hover{color:var(--doc)}
+  .ref:hover{border-bottom-color:var(--doc)}
+  .x:hover{text-decoration-color:var(--doc)}
+  .also a:hover{border-color:rgba(255,255,255,.24);background:rgba(28,32,68,.7);transform:translateY(-1px)}
+}
+.top__id:active{opacity:.6}
+.also a:active{transform:scale(.99)}
+.toc a:active,.top__nav a:active,footer nav a:active{color:var(--doc)}
+
+@media(prefers-reduced-transparency:reduce){
+  .top{backdrop-filter:none;background:rgba(10,12,28,.97)}
+  .toc,.also a{background:rgba(18,20,46,.98)}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important}
+}
+
+/* ── 인쇄 ── 법적 고지는 종이로도 나간다.
+   색이 빠져도 초안 표시와 [TBD]는 반드시 남아야 한다 ── */
+@media print{
+  body{background:#fff;color:#000}
+  body::before{display:none}
+  .top,.toc,.also,footer nav,.art__link,.tw__hint{display:none}
+  main{padding-top:0}
+  .layout{display:block}
+  .prose,.doc__head{max-width:none}
+  .prose,.doc__lede,.meta dd,.banner p{color:#1a1a1a}
+  .prose strong,.art,.doc h1{color:#000}
+  .art__no,.eyebrow{color:#444}
+  .banner{border:2px solid #b45309;background:#fffbeb}
+  .banner b{color:#7c2d12}
+  .tbd{background:#fff;color:#000;border:1.5px solid #000;font-weight:700}
+  .tw,table,th,td{border-color:#bbb}
+  thead th{background:#f1f1f1;color:#000}
+  td:first-child{color:#000}
+  .ref,.x{color:#000;border:0;text-decoration:underline}
+  .art{break-after:avoid}
+  tr{break-inside:avoid}
+}
+</style>
+</head>
+<body id="top">
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="top__id" href="index.html">
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="7" fill="#0d0f24"/>
+        <rect x="8" y="13" width="3" height="6" rx="1.5" fill="#98cff6"/>
+        <rect x="14" y="8" width="3" height="16" rx="1.5" fill="#baadf5"/>
+        <rect x="20" y="11" width="3" height="10" rx="1.5" fill="#dd8bf4"/>
+      </svg>
+      JamIT
+    </a>
+    <nav class="top__nav" aria-label="법적 고지">
+      <a href="terms.html">이용약관</a>
+      <a href="privacy.html" aria-current="page">개인정보<span class="long"> 처리방침</span></a>
+    </nav>
+  </div>
+  <div class="strip"><b>DRAFT</b><span>시행 전 초안 · 법률 검토 미완료 · 효력 없음</span></div>
+</header>
+
+<main>
+  <div class="wrap doc">
+
+    <div class="doc__head">
+      <p class="eyebrow">JamIT Legal</p>
+      <h1>개인정보 처리방침</h1>
+      <p class="doc__lede">
+        JamIT이 어떤 개인정보를 어떤 목적으로 수집해 얼마나 보유하고, 이용자가 그에 대해 어떤 권리를 행사할 수 있는지를
+        정리한 문서입니다.
+      </p>
+
+      <aside class="banner" role="note" aria-label="문서 상태 안내">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3.6 22 20.4H2L12 3.6Z" stroke="#fcd34d" stroke-width="1.7" stroke-linejoin="round"/>
+          <path d="M12 9.6v4.6" stroke="#fcd34d" stroke-width="1.9" stroke-linecap="round"/>
+          <circle cx="12" cy="17.2" r="1.15" fill="#fcd34d"/>
+        </svg>
+        <div>
+          <b>시행 전 초안입니다.</b>
+          <p>
+            이 문서는 법률 전문가의 검토를 거치지 않은 작업 초안이며, 아직 시행되지 않았습니다.
+            본문에서 <span class="tbd">[TBD]</span> 로 표시된 항목은 확정되지 않은 부분입니다.
+            모든 미확정 항목이 확정되고 법률 검토를 마친 뒤에야 정식으로 시행·게시됩니다.
+            그 전까지 이 문서는 효력이 없습니다.
+          </p>
+        </div>
+      </aside>
+
+      <dl class="meta">
+        <dt>문서 상태</dt><dd>초안 (법률 검토 전)</dd>
+        <dt>시행일</dt><dd><span class="tbd">[TBD: 시행일 — FEV-366 게시일과 연동]</span></dd>
+        <dt>최종 수정</dt><dd><time datetime="2026-08-20">2026년 8월 20일</time></dd>
+        <dt>관련 문서</dt><dd><a class="x" href="terms.html">JamIT 이용약관</a></dd>
+      </dl>
+    </div>
+
+    <div class="layout">
+
+      <!-- 목차 — 데스크톱에서는 옆에 붙어 따라오고, 좁은 화면에서는 접힌다 -->
+      <details class="toc" id="toc" open>
+        <summary>조문 목차<span class="sr-only"> 열기</span></summary>
+        <nav class="toc__list" aria-label="조문 목차">
+          <ol>
+            <li><a href="#art-1"><span class="n">제1조</span>개인정보의 처리 목적</a></li>
+            <li><a href="#art-2"><span class="n">제2조</span>수집하는 개인정보의 항목 및 수집 방법</a></li>
+            <li><a href="#art-3"><span class="n">제3조</span>개인정보의 처리 및 보유 기간</a></li>
+            <li><a href="#art-4"><span class="n">제4조</span>개인정보의 제3자 제공</a></li>
+            <li><a href="#art-5"><span class="n">제5조</span>개인정보 처리의 위탁</a></li>
+            <li><a href="#art-6"><span class="n">제6조</span>개인정보의 국외 이전</a></li>
+            <li><a href="#art-7"><span class="n">제7조</span>개인정보의 파기 절차 및 방법</a></li>
+            <li><a href="#art-8"><span class="n">제8조</span>정보주체와 법정대리인의 권리·의무 및 행사 방법</a></li>
+            <li><a href="#art-9"><span class="n">제9조</span>개인정보의 안전성 확보조치</a></li>
+            <li><a href="#art-10"><span class="n">제10조</span>개인정보 자동 수집 장치의 설치·운영 및 거부</a></li>
+            <li><a href="#art-11"><span class="n">제11조</span>앱 접근 권한</a></li>
+            <li><a href="#art-12"><span class="n">제12조</span>개인정보 보호책임자</a></li>
+            <li><a href="#art-13"><span class="n">제13조</span>권익침해 구제 방법</a></li>
+            <li><a href="#art-14"><span class="n">제14조</span>개인정보 처리방침의 변경</a></li>
+            <li><a href="#addendum"><span class="n">부칙</span>시행일</a></li>
+          </ol>
+        </nav>
+      </details>
+
+      <article class="prose">
+
+        <p class="intro">
+          <span class="tbd">[사업자 정보 TBD: 상호 또는 성명(김민재)]</span>(이하 &ldquo;운영자&rdquo;)는 모바일 애플리케이션 서비스
+          &ldquo;JamIT&rdquo;(이하 &ldquo;서비스&rdquo;)를 제공하면서 「개인정보 보호법」 등 관련 법령을 준수하며, 정보주체의 개인정보를
+          보호하고 관련 고충을 신속하게 처리하기 위하여 「개인정보 보호법」 제30조에 따라 이 개인정보 처리방침을
+          수립·공개합니다.
+        </p>
+
+        <section id="art-1">
+          <h2 class="art"><span class="art__no">제1조</span>개인정보의 처리 목적 <a class="art__link" href="#art-1" aria-label="제1조 링크">#</a></h2>
+          <p>
+            운영자는 다음의 목적을 위하여 개인정보를 처리합니다. 처리한 개인정보는 다음 목적 이외의 용도로는 이용하지
+            않으며, 이용 목적이 변경되는 경우에는 「개인정보 보호법」 제18조에 따라 별도의 동의를 받는 등 필요한 조치를
+            이행합니다.
+          </p>
+          <ol class="clauses">
+            <li><strong>회원 가입 및 관리</strong>: 소셜 로그인(카카오·구글·Apple)을 통한 회원 식별·인증, 회원 자격
+              유지·관리, 만 14세 미만 여부 확인, 각종 고지·통지, 탈퇴 처리</li>
+            <li><strong>서비스 제공</strong>: 합주 게시글·트랙·숏폼의 게시와 재생, 트랙 자동 싱크 보정 및 숏폼 합성,
+              숏폼의 기기 저장·외부 공유 기능 제공, 프로필 표시</li>
+            <li><strong>알림 발송</strong>: 합주 참여·숏폼 게시 등 서비스 이용 관련 푸시 알림 발송</li>
+            <li><strong>이용자 보호 및 서비스 운영</strong>: 신고 접수·처리, 부적절 콘텐츠·부정 이용 방지 및 제재,
+              차단 기능 제공, 분쟁 대응, 서비스 오류 확인 및 품질 개선</li>
+          </ol>
+        </section>
+
+        <section id="art-2">
+          <h2 class="art"><span class="art__no">제2조</span>수집하는 개인정보의 항목 및 수집 방법 <a class="art__link" href="#art-2" aria-label="제2조 링크">#</a></h2>
+          <ol class="clauses">
+            <li>운영자는 다음의 개인정보를 수집합니다.
+              <div class="tw">
+                <table>
+                  <caption class="sr-only">수집 시점별 개인정보 수집 항목과 필수·선택 구분</caption>
+                  <thead>
+                    <tr><th scope="col">구분</th><th scope="col">수집 시점</th><th scope="col">수집 항목</th><th scope="col">필수/선택</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>회원 가입</td><td>카카오 로그인</td><td>소셜 계정 고유 식별자, 닉네임, 프로필 사진, 이메일</td><td>필수</td></tr>
+                    <tr><td>회원 가입</td><td>구글 로그인</td><td>소셜 계정 고유 식별자, 이름, 프로필 사진, 이메일</td><td>필수</td></tr>
+                    <tr><td>회원 가입</td><td>Apple 로그인</td><td>소셜 계정 고유 식별자, 이름, 이메일(비공개 릴레이 주소일 수 있음)</td><td>필수</td></tr>
+                    <tr><td>프로필 설정</td><td>온보딩·마이페이지</td><td>닉네임, 프로필 사진, 연주 세션(악기) 정보</td><td>필수(닉네임)/선택</td></tr>
+                    <tr><td>콘텐츠 업로드</td><td>트랙 촬영·업로드, 숏폼 제작</td><td><strong>영상 및 음성</strong>(이용자의 얼굴·신체·목소리·연주 실연이 포함될 수 있음)</td><td>필수(해당 기능 이용 시)</td></tr>
+                    <tr><td>알림</td><td>앱 실행·로그인</td><td><strong>기기 푸시 토큰(FCM 토큰)</strong></td><td>필수(알림 수신 시)</td></tr>
+                    <tr><td>자동 수집</td><td>서비스 이용 과정</td><td>서비스 이용 기록, 접속 로그, 기기 정보(모델명·OS 버전·앱 버전), 오류 로그</td><td>자동 수집</td></tr>
+                    <tr><td>신고·문의</td><td>신고 접수, 고객 문의</td><td>신고·문의 내용에 포함된 정보</td><td>해당 시</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="tw__hint">표는 좌우로 넘겨 볼 수 있습니다.</p>
+              <p class="note-line"><span class="tbd">[TBD: 자동 수집 항목은 실제 서버 로그·분석 도구 구성 확정 후 대조할 것]</span></p>
+            </li>
+            <li>수집 방법: 소셜 로그인 시 해당 플랫폼(카카오·구글·Apple)으로부터 제공받거나, 이용자가 서비스 이용 과정에서
+              직접 입력·업로드하거나, 서비스 이용 과정에서 자동으로 생성·수집됩니다.</li>
+            <li>소셜 로그인 과정에서의 개인정보 처리에는 각 플랫폼의 개인정보 처리방침이 함께 적용됩니다.
+              <ul class="plain">
+                <li>카카오: <a class="x ext" href="https://policy.kakao.com/kr/privacy" target="_blank" rel="noopener noreferrer">policy.kakao.com/kr/privacy</a></li>
+                <li>구글: <a class="x ext" href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">policies.google.com/privacy</a></li>
+                <li>Apple: <a class="x ext" href="https://www.apple.com/legal/privacy/kr/" target="_blank" rel="noopener noreferrer">apple.com/legal/privacy/kr</a></li>
+              </ul>
+            </li>
+            <li>운영자는 주민등록번호, 민감정보(사상·신념, 건강 등)를 수집하지 않습니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-3">
+          <h2 class="art"><span class="art__no">제3조</span>개인정보의 처리 및 보유 기간 <a class="art__link" href="#art-3" aria-label="제3조 링크">#</a></h2>
+          <ol class="clauses">
+            <li>운영자는 법령에 따른 보유 기간 또는 정보주체로부터 동의받은 보유 기간 내에서 개인정보를 처리·보유합니다.</li>
+            <li>개인정보는 <strong>회원 탈퇴 시까지</strong> 보유하며, 탈퇴 시 지체 없이 파기합니다. 다만 다음의 경우
+              해당 기간 동안 보존합니다.
+              <div class="tw tw--narrow">
+                <table>
+                  <caption class="sr-only">탈퇴 후에도 보존하는 항목과 그 근거·기간</caption>
+                  <thead>
+                    <tr><th scope="col">보존 항목</th><th scope="col">보존 근거</th><th scope="col">보존 기간</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>서비스 접속 기록(로그)</td><td>「통신비밀보호법」 제15조의2</td><td>3개월</td></tr>
+                    <tr><td>부정 이용·제재(이용정지 등) 기록</td><td>부정 이용 재발 및 재가입 악용 방지(운영자 정당한 이익)</td><td><span class="tbd">[TBD: 보존 기간·항목 — 재가입 제한 정책과 함께 확정]</span></td></tr>
+                    <tr><td>신고 접수·처리 기록</td><td>분쟁 대응, Apple 심사 Guideline 1.2 대응 운영 기록</td><td><span class="tbd">[TBD]</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="tw__hint">표는 좌우로 넘겨 볼 수 있습니다.</p>
+            </li>
+            <li><strong>탈퇴 회원의 콘텐츠(트랙·게시글·숏폼)에 포함된 영상·음성 정보는 다음과 같이 처리합니다</strong>
+              (2026-08-20 확정).
+              <ol class="sub">
+                <li>회원이 업로드한 트랙과 회원이 제작한 숏폼은 탈퇴 시 지체 없이 삭제합니다.</li>
+                <li>다른 회원이 제작한 숏폼은 <a class="x" href="terms.html#art-14">이용약관 제14조 제4항</a>의 동의에
+                  근거하여 유지됩니다. 탈퇴 회원은 개인정보 보호법 제37조에 따라 해당 숏폼에 대한 처리정지·삭제를 요구할
+                  수 있으며, 운영자는 정당한 요구에 지체 없이 조치합니다.</li>
+                <li>회원이 작성한 게시글은 다른 회원의 콘텐츠가 남아 있는 경우 작성자 표시를 익명화하여 유지하고,
+                  그렇지 않은 경우 삭제합니다.</li>
+              </ol>
+            </li>
+            <li>결제 기능이 없는 무료 서비스이므로 「전자상거래 등에서의 소비자보호에 관한 법률」에 따른 거래 기록 보존
+              의무는 해당사항이 없습니다. <span class="tbd">[유료화 시 재검토]</span></li>
+          </ol>
+        </section>
+
+        <section id="art-4">
+          <h2 class="art"><span class="art__no">제4조</span>개인정보의 제3자 제공 <a class="art__link" href="#art-4" aria-label="제4조 링크">#</a></h2>
+          <ol class="clauses">
+            <li>운영자는 정보주체의 개인정보를 제1조의 목적 범위에서만 처리하며, 정보주체의 동의 또는 법률의 특별한 규정 등
+              「개인정보 보호법」 제17조·제18조에 해당하는 경우에만 제3자에게 제공합니다.</li>
+            <li>현재 운영자가 개인정보를 제3자에게 제공하는 경우는 없습니다. 제3자 제공이 필요해지는 경우 제공받는 자,
+              제공 목적, 제공 항목, 보유 기간을 고지하고 별도 동의를 받습니다.</li>
+            <li>다만 수사기관 등이 법령에 정해진 절차와 방법에 따라 요구하는 경우에는 제공될 수 있습니다.</li>
+            <li><strong>서비스 특성 안내</strong>: 이용자가 게시한 프로필(닉네임·프로필 사진)과 콘텐츠(트랙·숏폼 등)는
+              서비스 내 다른 이용자에게 공개되며, 합주에 참여한 트랙은 서비스의 기능에 따라 다른 참여자의 숏폼에
+              조합되어 기기 저장·외부 공유될 수 있습니다. 이에 관한 상세한 조건은
+              <a class="x" href="terms.html#art-13">이용약관 제13조</a>·<a class="x" href="terms.html#art-14">제14조</a>에
+              따릅니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-5">
+          <h2 class="art"><span class="art__no">제5조</span>개인정보 처리의 위탁 <a class="art__link" href="#art-5" aria-label="제5조 링크">#</a></h2>
+          <ol class="clauses">
+            <li>운영자는 원활한 서비스 제공을 위하여 다음과 같이 개인정보 처리 업무를 위탁하고 있습니다.
+              <div class="tw tw--narrow">
+                <table>
+                  <caption class="sr-only">개인정보 처리 수탁자와 위탁 업무</caption>
+                  <thead>
+                    <tr><th scope="col">수탁자</th><th scope="col">위탁 업무</th><th scope="col">비고</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Amazon Web Services, Inc. (AWS)</td>
+                      <td>서비스 인프라 운영, 데이터(콘텐츠 포함) 보관</td>
+                      <td>리전 <span class="tbd">[TBD: 서울 리전 여부 확인]</span></td>
+                    </tr>
+                    <tr>
+                      <td>Google LLC (Firebase)</td>
+                      <td>푸시 알림 발송(FCM) <span class="tbd">[TBD: Analytics·Crashlytics 등 추가 사용 여부]</span></td>
+                      <td><a class="ref" href="#art-6">제6조</a> 국외 이전 참조</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="tw__hint">표는 좌우로 넘겨 볼 수 있습니다.</p>
+            </li>
+            <li>운영자는 위탁계약 체결 시 「개인정보 보호법」 제26조에 따라 위탁 업무 수행 목적 외 개인정보 처리 금지,
+              기술적·관리적 보호조치, 재위탁 제한 등을 계약 문서(각 사 데이터 처리 약정 포함)에 명시하고, 수탁자가
+              개인정보를 안전하게 처리하는지를 감독합니다.</li>
+            <li>위탁 업무의 내용이나 수탁자가 변경되는 경우 지체 없이 이 개인정보 처리방침을 통하여 공개합니다.</li>
+            <li>소셜 로그인 제공자(카카오·구글·Apple)는 이용자와 각 사 간의 별도 계약에 따라 인증을 처리하는 독립적인
+              개인정보처리자이며, 운영자는 인증 결과로 <a class="ref" href="#art-2">제2조 제1항</a>의 항목을 제공받습니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-6">
+          <h2 class="art"><span class="art__no">제6조</span>개인정보의 국외 이전 <a class="art__link" href="#art-6" aria-label="제6조 링크">#</a></h2>
+          <p>
+            운영자는 서비스 인프라 이용을 위하여 다음과 같이 개인정보를 국외로 이전(위탁·보관)합니다. 정보주체는 국외
+            이전을 거부할 수 있으나, 이 경우 서비스의 전부 또는 일부(푸시 알림 등)의 이용이 제한될 수 있습니다.
+          </p>
+          <div class="tw tw--wide">
+            <table>
+              <caption class="sr-only">국외로 이전되는 개인정보의 이전받는 자, 국가, 항목, 방법, 목적, 보유 기간</caption>
+              <thead>
+                <tr>
+                  <th scope="col">이전받는 자</th><th scope="col">이전 국가</th><th scope="col">이전 항목</th>
+                  <th scope="col">이전 일시 및 방법</th><th scope="col">이용 목적</th><th scope="col">보유 기간</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Google LLC (Firebase)</td>
+                  <td>미국</td>
+                  <td>기기 푸시 토큰(FCM) <span class="tbd">[TBD: Analytics 사용 시 이용 기록 추가]</span></td>
+                  <td>서비스 이용 시 네트워크를 통한 전송</td>
+                  <td>푸시 알림 발송</td>
+                  <td>탈퇴 또는 토큰 무효화 시까지</td>
+                </tr>
+                <tr>
+                  <td><span class="tbd">[TBD: AWS 리전이 국외인 경우]</span> Amazon Web Services, Inc.</td>
+                  <td><span class="tbd">[TBD]</span></td>
+                  <td><a class="ref" href="#art-2">제2조</a>의 수집 항목 일체</td>
+                  <td>서비스 이용 시 네트워크를 통한 전송·보관</td>
+                  <td>인프라 운영·데이터 보관</td>
+                  <td><a class="ref" href="#art-3">제3조</a>의 보유 기간</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="tw__hint">표는 좌우로 넘겨 볼 수 있습니다.</p>
+          <p class="note-line"><span class="tbd">[TBD: AWS 서울 리전 사용이 확인되면 AWS 행을 삭제하고 제5조 위탁 표에만 유지]</span></p>
+        </section>
+
+        <section id="art-7">
+          <h2 class="art"><span class="art__no">제7조</span>개인정보의 파기 절차 및 방법 <a class="art__link" href="#art-7" aria-label="제7조 링크">#</a></h2>
+          <ol class="clauses">
+            <li>운영자는 개인정보 보유 기간의 경과, 처리 목적 달성 등 개인정보가 불필요하게 되었을 때에는 지체 없이 해당
+              개인정보를 파기합니다.</li>
+            <li>법령에 따라 보존해야 하는 정보는 별도의 데이터베이스(DB) 또는 보관 장소로 옮겨 분리 보관하며, 보존 기간
+              경과 후 지체 없이 파기합니다.</li>
+            <li>파기 방법: 전자적 파일 형태의 정보는 복구·재생할 수 없는 기술적 방법으로 삭제하며, 종이 문서는 분쇄하거나
+              소각합니다.</li>
+            <li>탈퇴 시 소셜 로그인 연동 정보는 각 플랫폼에 대한 연결 해제(카카오 unlink, 구글 revoke, Apple 토큰 revoke)
+              처리와 함께 파기됩니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-8">
+          <h2 class="art"><span class="art__no">제8조</span>정보주체와 법정대리인의 권리·의무 및 행사 방법 <a class="art__link" href="#art-8" aria-label="제8조 링크">#</a></h2>
+          <ol class="clauses">
+            <li>정보주체는 운영자에 대하여 언제든지 개인정보의 열람, 정정·삭제, 처리정지, 동의 철회를 요구할 수 있습니다.</li>
+            <li>권리 행사는 다음의 방법으로 할 수 있으며, 운영자는 지체 없이(법정 기한 내에) 조치합니다.
+              <ol class="sub">
+                <li>앱 내 기능: 프로필 수정(정정), 콘텐츠 삭제, 알림 수신 거부, 회원 탈퇴(동의 철회·삭제)</li>
+                <li>이메일: <span class="tbd">[TBD: 문의 이메일]</span></li>
+              </ol>
+            </li>
+            <li>권리 행사는 정보주체의 법정대리인이나 위임을 받은 자를 통하여 할 수도 있습니다. 이 경우 「개인정보 보호법
+              시행규칙」 별지 서식에 따른 위임장을 제출하여야 합니다.</li>
+            <li>열람·처리정지 요구는 「개인정보 보호법」 제35조·제37조에 따라 제한될 수 있으며, 다른 법령에서 수집 대상으로
+              명시된 개인정보의 삭제는 요구할 수 없습니다.</li>
+            <li>서비스는 만 14세 미만 아동의 가입을 받지 않으며, 만 14세 미만 아동의 개인정보가 수집된 사실이 확인되면
+              지체 없이 해당 계정과 개인정보를 파기합니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-9">
+          <h2 class="art"><span class="art__no">제9조</span>개인정보의 안전성 확보조치 <a class="art__link" href="#art-9" aria-label="제9조 링크">#</a></h2>
+          <p>운영자는 「개인정보 보호법」 제29조에 따라 다음의 조치를 취하고 있습니다.</p>
+          <ol class="clauses">
+            <li><strong>관리적 조치</strong>: 개인정보 취급 인원의 최소화(개인 운영), 내부 처리 절차 수립·점검</li>
+            <li><strong>기술적 조치</strong>: 전송 구간 암호화(HTTPS/TLS), 소셜 로그인 사용으로 비밀번호 미수집·미보관,
+              접근 권한의 최소 부여 및 인증 토큰 관리, 클라우드 접근 통제(IAM), 접속 기록 보관</li>
+            <li><strong>물리적 조치</strong>: 클라우드 사업자(AWS)의 물리적 접근 통제 환경 이용</li>
+          </ol>
+          <p class="note-line"><span class="tbd">[TBD: JamIT-Infra 실제 구성(암호화 저장 여부, 접근 통제)과 대조하여 확정]</span></p>
+        </section>
+
+        <section id="art-10">
+          <h2 class="art"><span class="art__no">제10조</span>개인정보 자동 수집 장치의 설치·운영 및 거부 <a class="art__link" href="#art-10" aria-label="제10조 링크">#</a></h2>
+          <ol class="clauses">
+            <li>서비스는 모바일 애플리케이션으로 제공되며, 웹 브라우저의 쿠키(cookie)를 사용하지 않습니다.</li>
+            <li>운영자는 맞춤형 광고를 위한 광고 식별자를 수집하지 않습니다.
+              <span class="tbd">[TBD: 분석 도구 도입 시 갱신]</span></li>
+          </ol>
+        </section>
+
+        <section id="art-11">
+          <h2 class="art"><span class="art__no">제11조</span>앱 접근 권한 <a class="art__link" href="#art-11" aria-label="제11조 링크">#</a></h2>
+          <p>
+            서비스는 다음의 스마트폰 접근 권한을 이용합니다. 선택적 접근 권한은 허용하지 않아도 해당 기능 외의 서비스
+            이용이 가능하며, 기기 설정에서 언제든지 변경할 수 있습니다.
+          </p>
+          <div class="tw tw--narrow">
+            <table>
+              <caption class="sr-only">앱이 이용하는 접근 권한과 그 목적</caption>
+              <thead>
+                <tr><th scope="col">권한</th><th scope="col">필수/선택</th><th scope="col">이용 목적</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>카메라</td><td>선택</td><td>트랙(연주 영상) 촬영</td></tr>
+                <tr><td>마이크</td><td>선택</td><td>트랙 촬영 시 음성·연주 녹음</td></tr>
+                <tr><td>사진/미디어(저장)</td><td>선택</td><td>완성된 숏폼의 기기 저장, 프로필 사진 등록</td></tr>
+                <tr><td>알림</td><td>선택</td><td>푸시 알림 수신</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="tw__hint">표는 좌우로 넘겨 볼 수 있습니다.</p>
+        </section>
+
+        <section id="art-12">
+          <h2 class="art"><span class="art__no">제12조</span>개인정보 보호책임자 <a class="art__link" href="#art-12" aria-label="제12조 링크">#</a></h2>
+          <ol class="clauses">
+            <li>운영자는 개인정보 처리에 관한 업무를 총괄해서 책임지고, 개인정보 처리와 관련한 정보주체의 불만 처리 및
+              피해 구제 등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.
+              <div class="tw tw--narrow">
+                <table>
+                  <caption class="sr-only">개인정보 보호책임자와 연락처</caption>
+                  <thead>
+                    <tr><th scope="col">구분</th><th scope="col">내용</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>개인정보 보호책임자</td><td><span class="tbd">[TBD: 성명 — 개인 운영자(김민재) 예정]</span></td></tr>
+                    <tr><td>연락처(이메일)</td><td><span class="tbd">[TBD: 문의 이메일]</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="tw__hint">표는 좌우로 넘겨 볼 수 있습니다.</p>
+            </li>
+            <li>정보주체는 서비스 이용 중 발생한 모든 개인정보 보호 관련 문의, 불만 처리, 피해 구제 등에 관한 사항을
+              개인정보 보호책임자에게 문의할 수 있으며, 운영자는 지체 없이 답변·처리합니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-13">
+          <h2 class="art"><span class="art__no">제13조</span>권익침해 구제 방법 <a class="art__link" href="#art-13" aria-label="제13조 링크">#</a></h2>
+          <p>
+            정보주체는 개인정보 침해로 인한 구제를 받기 위하여 다음 기관에 분쟁 해결이나 상담 등을 신청할 수 있습니다.
+          </p>
+          <ol class="clauses">
+            <li>개인정보분쟁조정위원회: (국번 없이) 1833-6972 /
+              <a class="x ext" href="https://www.kopico.go.kr" target="_blank" rel="noopener noreferrer">www.kopico.go.kr</a></li>
+            <li>개인정보침해신고센터(한국인터넷진흥원): (국번 없이) 118 /
+              <a class="x ext" href="https://privacy.kisa.or.kr" target="_blank" rel="noopener noreferrer">privacy.kisa.or.kr</a></li>
+            <li>대검찰청: (국번 없이) 1301 /
+              <a class="x ext" href="https://www.spo.go.kr" target="_blank" rel="noopener noreferrer">www.spo.go.kr</a></li>
+            <li>경찰청: (국번 없이) 182 /
+              <a class="x ext" href="https://ecrm.cyber.go.kr" target="_blank" rel="noopener noreferrer">ecrm.cyber.go.kr</a></li>
+          </ol>
+        </section>
+
+        <section id="art-14">
+          <h2 class="art"><span class="art__no">제14조</span>개인정보 처리방침의 변경 <a class="art__link" href="#art-14" aria-label="제14조 링크">#</a></h2>
+          <ol class="clauses">
+            <li>이 개인정보 처리방침은 시행일로부터 적용되며, 법령·정책 또는 서비스 변경에 따라 내용이 추가·삭제·수정되는
+              경우 변경 시행 7일 전부터(수집 항목·목적 등 중요한 변경은 30일 전부터) 서비스 내 공지사항 또는 안내
+              페이지를 통하여 고지합니다.</li>
+            <li>이전 버전의 개인정보 처리방침은 안내 페이지에서 확인할 수 있습니다.</li>
+          </ol>
+        </section>
+
+        <section id="addendum">
+          <h2 class="art"><span class="art__no">부칙</span>시행일 <a class="art__link" href="#addendum" aria-label="부칙 링크">#</a></h2>
+          <ol class="clauses">
+            <li>이 개인정보 처리방침은 <span class="tbd">[TBD: 시행일 — FEV-366 게시일과 연동]</span>부터 시행합니다.</li>
+          </ol>
+        </section>
+
+        <nav class="also" aria-label="함께 보기">
+          <p class="eyebrow">함께 보기</p>
+          <div class="also__list">
+            <a href="terms.html">
+              <b>이용약관</b>
+              <span>이용계약, 콘텐츠 권리, 합주 참여 동의, 신고와 이용제한</span>
+            </a>
+            <a href="index.html">
+              <b>JamIT 소개로 돌아가기</b>
+              <span>혼자 찍어 올리면 합주가 완성됩니다</span>
+            </a>
+          </div>
+        </nav>
+
+      </article>
+    </div>
+
+    <footer>
+      <p>&copy; 2026 JamIT</p>
+      <nav aria-label="바닥글">
+        <a href="index.html">홈</a>
+        <a href="terms.html">이용약관</a>
+        <a href="privacy.html" aria-current="page">개인정보 처리방침</a>
+        <a href="#top">맨 위로</a>
+      </nav>
+    </footer>
+
+  </div>
+</main>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// 목차 — 지금 읽고 있는 조문을 따라간다
+// ══════════════════════════════════════════════════════════
+(() => {
+  const toc = document.getElementById("toc");
+  const cs  = getComputedStyle(document.documentElement);
+  // 고정 머리 높이는 CSS가 진실이다. 여기서 숫자를 다시 적으면 둘이 어긋난다
+  const off = parseFloat(cs.getPropertyValue("--topbar")) + parseFloat(cs.getPropertyValue("--strip"));
+
+  // 좁은 화면에서는 목차가 접혀 있어야 한다. JS가 없으면 펼쳐진 채로 두는 편이 안전해서
+  // 마크업은 open으로 두고, 접는 일만 여기서 한다
+  const wide = matchMedia("(min-width:900px)");
+  const sync = () => { toc.open = wide.matches; };
+  sync();
+  wide.addEventListener("change", sync);
+  toc.querySelectorAll("a").forEach((a) => {
+    a.addEventListener("click", () => { if (!wide.matches) toc.open = false; });
+  });
+
+  const heads = [...document.querySelectorAll(".prose section[id]")];
+  const links = new Map();
+  toc.querySelectorAll("a[href^='#']").forEach((a) => links.set(a.getAttribute("href").slice(1), a));
+  const panel = toc.querySelector(".toc__list");
+
+  let cur = null, ticking = false;
+  function spy(){
+    ticking = false;
+    document.body.classList.toggle("scrolled", scrollY > 8);
+
+    let hit = null;
+    for (const h of heads){
+      if (h.getBoundingClientRect().top <= off + 24) hit = h; else break;
+    }
+    // 맨 아래에 닿으면 마지막 조문을 가리킨다 — 짧은 조문은 위 기준을 못 넘긴다
+    if (scrollY + innerHeight >= document.documentElement.scrollHeight - 4) hit = heads[heads.length - 1];
+    if (hit === cur) return;
+    cur = hit;
+
+    links.forEach((a) => a.classList.remove("on"));
+    const a = hit && links.get(hit.id);
+    if (!a) return;
+    a.classList.add("on");
+    // 목차가 스스로 스크롤되는 경우에만 따라 움직인다. 페이지는 건드리지 않는다
+    if (wide.matches && panel.scrollHeight > panel.clientHeight + 4){
+      const y = a.offsetTop - panel.clientHeight / 2 + a.offsetHeight / 2;
+      panel.scrollTop = Math.max(0, y);
+    }
+  }
+  addEventListener("scroll", () => { if (!ticking){ ticking = true; requestAnimationFrame(spy); } }, {passive:true});
+  addEventListener("resize", spy, {passive:true});
+  spy();
+
+  // 표가 자기 자리보다 넓을 때만 "넘겨 보세요"를 띄운다
+  const tables = document.querySelectorAll(".tw");
+  const gauge = () => tables.forEach((el) => el.classList.toggle("over", el.scrollWidth > el.clientWidth + 2));
+  addEventListener("resize", gauge, {passive:true});
+  gauge();
+})();
+</script>
+</body>
+</html>

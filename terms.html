@@ -1,0 +1,793 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>이용약관 — JamIT</title>
+<meta name="description" content="JamIT 모바일 애플리케이션 서비스 이용약관. 법률 검토 전 초안입니다.">
+<!-- 시행 전 초안이다. 실수로 올라가도 검색에 잡히지 않게 막는다.
+     법률 검토가 끝나고 [TBD]가 모두 확정된 정식 버전을 게시할 때 이 줄을 지운다. -->
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0a0c1c">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="%230d0f24"/><rect x="8" y="13" width="3" height="6" rx="1.5" fill="%2398cff6"/><rect x="14" y="8" width="3" height="16" rx="1.5" fill="%23baadf5"/><rect x="20" y="11" width="3" height="10" rx="1.5" fill="%23dd8bf4"/></svg>'>
+
+<style>
+/* ══════════════════════════════════════════════════════════
+   법적 고지 문서 — index.html과 같은 색·글꼴·여백 언어를 쓴다.
+   외부 요청 0. 폰트도 색도 전부 이 파일 안에 있다.
+   ══════════════════════════════════════════════════════════ */
+:root{
+  --bg:#0a0c1c;
+  --bg-2:#141634;
+  --ink:#eef0fa;              /* 배경 대비 17:1 */
+  --copy:#a8b0cc;             /* 9.0:1 — 본문 */
+  --muted:#8f98b5;            /* 6.8:1 — 작은 글씨도 AA */
+  --line:rgba(255,255,255,.12);
+  --c-cyan:#98cff6;
+  --c-violet:#dd8bf4;
+  --accent:#b9a3f7;
+  /* 문서마다 색 하나를 가져간다 — 약관은 첫 글자 J의 청록, 처리방침은 마지막 T의 보라.
+     같은 팔레트 안에서 두 문서가 서로 구분된다 */
+  --doc:#98cff6;
+  --doc-soft:rgba(152,207,246,.5);
+  /* 미확정 표식 — index의 voice--b(호박색)와 같은 계열.
+     "아직 안 끝났다"는 신호는 이 페이지에서 한 가지 색으로만 말한다 */
+  --warn:#fcd34d;
+  --warn-soft:rgba(245,158,11,.13);
+  --warn-line:rgba(245,158,11,.34);
+  --mark:#fde047;
+  --r:16px; --r-lg:24px;
+  --topbar:64px;
+  --strip:34px;               /* 초안 띠 — 스크롤해도 사라지지 않는다 */
+  --edge:max(clamp(20px,5vw,40px),env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));
+  --sans:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:var(--bg);-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);color:var(--ink);line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  word-break:keep-all;               /* 한글은 단어 중간에서 끊지 않는다 */
+  -webkit-tap-highlight-color:transparent;
+}
+/* 문서가 길다. 배경 그라데이션을 문서 높이에 걸면 수천 픽셀에 퍼져 사실상 안 보인다.
+   화면에 고정된 판을 뒤에 깔아 index와 같은 깊이를 유지한다 */
+body::before{content:"";position:fixed;inset:0;z-index:-1;
+  background:linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 100%)}
+::selection{background:var(--c-violet);color:#0a0c1c}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+h1,h2,h3{letter-spacing:-.02em;font-weight:750;line-height:1.15;text-wrap:balance}
+p{text-wrap:pretty}
+.wrap{width:min(1080px,calc(100% - var(--edge)*2));margin-inline:auto}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+/* 고정 머리(상단바 + 초안 띠) 아래로 제목이 숨지 않게 한다 */
+[id]{scroll-margin-top:calc(var(--topbar) + var(--strip) + 14px)}
+
+/* ════ 상단 바 ════ */
+.top{position:fixed;top:0;left:0;right:0;z-index:60;
+  background:rgba(10,12,28,.82);backdrop-filter:blur(18px) saturate(180%)}
+.top::after{content:"";position:absolute;left:0;right:0;top:100%;height:22px;pointer-events:none;
+  background:linear-gradient(rgba(10,12,28,.5),rgba(10,12,28,0));
+  opacity:0;transition:opacity .3s}
+body.scrolled .top::after{opacity:1}
+.top__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0;min-height:var(--topbar)}
+.top__id{display:flex;align-items:center;gap:9px;min-height:44px;cursor:pointer;
+  font-weight:750;font-size:17px;letter-spacing:-.02em;transition:opacity .18s}
+.top__nav{display:flex;align-items:center;gap:2px}
+.top__nav a{padding:0 12px;line-height:44px;border-radius:999px;font-size:13.5px;font-weight:600;
+  color:var(--muted);white-space:nowrap;transition:color .18s,background .18s}
+.top__nav a[aria-current="page"]{color:var(--ink);background:rgba(255,255,255,.07)}
+@media(max-width:560px){
+  .top__nav a{padding:0 9px;font-size:12.5px}
+  .top__id{font-size:15.5px;gap:7px}
+  .long{display:none}          /* 좁으면 "개인정보 처리방침" → "개인정보" */
+}
+
+/* ── 초안 띠 — 상단바에 붙어 항상 따라다닌다.
+      배너는 스크롤하면 사라지지만, 이 줄은 어느 조문을 보고 있어도 초안임을 말한다 ── */
+.strip{height:var(--strip);display:flex;align-items:center;justify-content:center;gap:9px;
+  padding-inline:var(--edge);text-align:center;
+  background:rgba(245,158,11,.16);border-top:1px solid var(--warn-line);border-bottom:1px solid var(--warn-line);
+  color:var(--warn);font-size:11.5px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
+.strip b{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;font-weight:700;
+  padding:3px 7px;border-radius:5px;background:var(--warn);color:#3b2600}
+
+/* ════ 문서 ════ */
+main{padding-top:calc(var(--topbar) + var(--strip))}
+.doc{padding-block:clamp(30px,5vw,58px) clamp(48px,7vw,88px)}
+.doc__head{max-width:74ch}
+.doc h1{margin-top:12px;font-size:clamp(2rem,4.6vw,2.85rem);font-weight:800;letter-spacing:-.035em;line-height:1.08}
+.doc__lede{margin-top:14px;color:var(--copy);font-size:clamp(.98rem,1.3vw,1.1rem);max-width:52em}
+
+/* 초안 배너 — 문서 첫 화면에서 제목 다음으로 눈에 들어와야 한다 */
+.banner{display:flex;gap:14px;align-items:flex-start;margin-top:26px;padding:18px 20px;
+  border:1px solid var(--warn-line);border-radius:var(--r);background:var(--warn-soft)}
+.banner svg{flex:none;margin-top:2px}
+.banner b{display:block;color:var(--warn);font-size:1rem;letter-spacing:-.02em}
+.banner p{margin-top:7px;color:var(--copy);font-size:.93rem;line-height:1.65}
+
+.meta{margin-top:24px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px 20px;
+  font-size:.9rem;align-items:baseline}
+.meta dt{color:var(--muted);font-weight:600}
+.meta dd{color:var(--copy)}
+
+/* ── 목차 + 본문 ── */
+.layout{margin-top:clamp(34px,5vw,54px)}
+@media(min-width:900px){
+  .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:clamp(32px,4.5vw,64px);align-items:start}
+}
+.toc{margin-bottom:30px;border:1px solid var(--line);border-radius:var(--r);background:rgba(20,22,52,.5)}
+.toc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:0 18px;min-height:52px;font-size:.95rem;font-weight:650}
+.toc>summary::-webkit-details-marker{display:none}
+.toc>summary::after{content:"+";font-family:var(--mono);font-size:1.35rem;font-weight:300;color:var(--muted);
+  transition:transform .25s var(--ease),color .25s}
+.toc[open]>summary::after{transform:rotate(45deg);color:var(--doc)}
+.toc__list{padding:2px 10px 14px}
+.toc ol{list-style:none}
+.toc a{display:block;padding:11px 10px;border-radius:8px;font-size:.88rem;line-height:1.45;
+  color:var(--muted);border-left:2px solid transparent;
+  transition:color .18s,background .18s,border-color .18s}
+.toc a .n{font-family:var(--mono);font-size:.82em;color:rgba(255,255,255,.34);margin-right:8px}
+.toc a.on{color:var(--ink);background:rgba(255,255,255,.05);border-left-color:var(--doc)}
+.toc a.on .n{color:var(--doc)}
+.toc__chap>a{color:var(--copy);font-weight:700;font-size:.87rem;margin-top:8px}
+.toc__chap:first-child>a{margin-top:0}
+@media(min-width:900px){
+  /* 데스크톱에서는 접는 장치가 아니라 그냥 옆에 서 있는 목차다.
+     summary를 지우면 details는 열린 채로 고정된다 */
+  .toc{position:sticky;top:calc(var(--topbar) + var(--strip) + 24px);
+    margin-bottom:0;border:0;background:none}
+  .toc>summary{display:none}
+  .toc__list{position:relative;padding:0 6px 0 0;
+    max-height:calc(100vh - var(--topbar) - var(--strip) - 60px);overflow-y:auto;
+    scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.18) transparent}
+  .toc a{padding:6px 10px}
+  .toc__chap>a{margin-top:12px}
+}
+
+/* ── 조문 ── */
+.prose{max-width:68ch;color:var(--copy);font-size:clamp(.95rem,.35vw + .87rem,1.03rem);line-height:1.8}
+.prose strong{color:var(--ink);font-weight:700}
+.prose p{margin-top:14px}
+.chap{margin-top:clamp(46px,6vw,70px);padding-top:24px;border-top:1px solid var(--line);
+  color:var(--ink);font-size:clamp(1.12rem,1.8vw,1.35rem);
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.chap:first-child{margin-top:0;padding-top:0;border-top:0}
+.chap .n{font-family:var(--mono);font-size:.68em;letter-spacing:.12em;color:var(--doc);font-weight:600}
+.art{margin-top:clamp(30px,3.6vw,42px);color:var(--ink);
+  font-size:clamp(1.06rem,1.4vw,1.2rem);letter-spacing:-.022em;line-height:1.35}
+.chap+section .art{margin-top:22px}
+.art__no{display:block;margin-bottom:7px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:var(--doc);font-weight:600}
+/* 조문 하나를 가리켜 링크로 보낼 수 있어야 한다 — "제14조 제4항 봐" 가 되는 문서다 */
+.art__link{margin-left:8px;font-family:var(--mono);font-weight:400;font-size:.78em;
+  color:rgba(255,255,255,.24);opacity:0;transition:opacity .18s,color .18s}
+section:hover .art__link,.art__link:focus-visible{opacity:1}
+@media(hover:none){.art__link{opacity:.4}}
+
+/* 항(項)과 호(號) — 번호는 본문보다 한 칸 물러난 자리에 둔다 */
+.clauses{list-style:none;counter-reset:clause;margin-top:14px}
+.clauses>li{counter-increment:clause;position:relative;padding-left:2.1em;margin-top:13px}
+.clauses>li::before{content:counter(clause) ".";position:absolute;left:0;top:0;
+  font-family:var(--mono);font-size:.9em;font-weight:600;color:var(--doc)}
+.sub{list-style:none;counter-reset:sub;margin-top:10px;padding-left:16px;border-left:1px solid var(--line)}
+.sub>li{counter-increment:sub;position:relative;padding-left:1.9em;margin-top:9px}
+.sub>li::before{content:counter(sub) ".";position:absolute;left:0;top:0;
+  font-family:var(--mono);font-size:.88em;color:var(--muted)}
+.clauses p,.sub p{margin-top:8px}
+
+/* 문서 안팎을 가리키는 참조 — 눌러서 갈 수 있다는 것만 조용히 알린다 */
+.ref{color:var(--doc);border-bottom:1px dotted var(--doc-soft);transition:border-color .18s,color .18s}
+.x{color:var(--doc);text-decoration:underline;text-underline-offset:3px;
+  text-decoration-color:var(--doc-soft);transition:text-decoration-color .18s}
+
+/* ── 미확정 항목 ──
+   지우지 않는다. 형광펜으로 칠해 둔다. 확정 전에 이 페이지가 올라가면
+   무엇이 안 끝났는지가 문장보다 먼저 보여야 한다 */
+.tbd{display:inline;padding:.14em .45em;border-radius:5px;
+  background:var(--mark);color:#1b1405;
+  font-family:var(--mono);font-size:.85em;font-weight:600;letter-spacing:-.01em;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone}
+
+/* 표는 이 문서에 없다. 개인정보 처리방침에만 있고, 표 스타일도 그쪽 파일에 있다 */
+
+/* ── 문서 끝: 옆 문서로 건너가는 자리 ── */
+.also{margin-top:clamp(44px,6vw,64px);padding-top:26px;border-top:1px solid var(--line)}
+.also__list{display:grid;gap:12px;margin-top:14px}
+@media(min-width:640px){.also__list{grid-template-columns:1fr 1fr}}
+.also a{display:block;padding:16px 18px;border:1px solid var(--line);border-radius:var(--r);
+  background:rgba(20,22,52,.5);transition:border-color .18s,background .18s,transform .18s}
+.also b{display:block;font-size:.98rem;letter-spacing:-.02em}
+.also span{display:block;margin-top:5px;font-size:.86rem;color:var(--muted)}
+
+footer{padding:30px 0 calc(48px + env(safe-area-inset-bottom,0px));
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
+footer nav{display:flex;flex-wrap:wrap;gap:4px}
+footer nav a{line-height:44px;padding-inline:12px;transition:color .18s}
+
+/* ══ 누르는 느낌 ══ index와 같은 규칙: hover는 커서가 있는 기기에서만 ══ */
+@media(hover:hover){
+  .top__id:hover{opacity:.72}
+  .top__nav a:hover,footer nav a:hover{color:var(--ink)}
+  .toc a:hover{color:var(--ink);background:rgba(255,255,255,.05)}
+  .art__link:hover{color:var(--doc)}
+  .ref:hover{border-bottom-color:var(--doc)}
+  .x:hover{text-decoration-color:var(--doc)}
+  .also a:hover{border-color:rgba(255,255,255,.24);background:rgba(28,32,68,.7);transform:translateY(-1px)}
+}
+.top__id:active{opacity:.6}
+.also a:active{transform:scale(.99)}
+.toc a:active,.top__nav a:active,footer nav a:active{color:var(--doc)}
+
+@media(prefers-reduced-transparency:reduce){
+  .top{backdrop-filter:none;background:rgba(10,12,28,.97)}
+  .toc,.also a{background:rgba(18,20,46,.98)}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important}
+}
+
+/* ── 인쇄 ── 법적 고지는 종이로도 나간다.
+   색이 빠져도 초안 표시와 [TBD]는 반드시 남아야 한다 ── */
+@media print{
+  body{background:#fff;color:#000}
+  body::before{display:none}
+  .top,.toc,.also,footer nav,.art__link{display:none}
+  main{padding-top:0}
+  .layout{display:block}
+  .prose,.doc__head{max-width:none}
+  .prose,.doc__lede,.meta dd,.banner p{color:#1a1a1a}
+  .prose strong,.chap,.art,.doc h1{color:#000}
+  .art__no,.chap .n,.eyebrow{color:#444}
+  .banner{border:2px solid #b45309;background:#fffbeb}
+  .banner b{color:#7c2d12}
+  .tbd{background:#fff;color:#000;border:1.5px solid #000;font-weight:700}
+  .ref,.x{color:#000;border:0;text-decoration:underline}
+  .art{break-after:avoid}
+}
+</style>
+</head>
+<body id="top">
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="top__id" href="index.html">
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="7" fill="#0d0f24"/>
+        <rect x="8" y="13" width="3" height="6" rx="1.5" fill="#98cff6"/>
+        <rect x="14" y="8" width="3" height="16" rx="1.5" fill="#baadf5"/>
+        <rect x="20" y="11" width="3" height="10" rx="1.5" fill="#dd8bf4"/>
+      </svg>
+      JamIT
+    </a>
+    <nav class="top__nav" aria-label="법적 고지">
+      <a href="terms.html" aria-current="page">이용약관</a>
+      <a href="privacy.html">개인정보<span class="long"> 처리방침</span></a>
+    </nav>
+  </div>
+  <div class="strip"><b>DRAFT</b><span>시행 전 초안 · 법률 검토 미완료 · 효력 없음</span></div>
+</header>
+
+<main>
+  <div class="wrap doc">
+
+    <div class="doc__head">
+      <p class="eyebrow">JamIT Legal</p>
+      <h1>이용약관</h1>
+      <p class="doc__lede">
+        JamIT 모바일 애플리케이션 서비스의 이용 조건과 절차, 운영자와 회원의 권리·의무를 정한 문서입니다.
+      </p>
+
+      <aside class="banner" role="note" aria-label="문서 상태 안내">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3.6 22 20.4H2L12 3.6Z" stroke="#fcd34d" stroke-width="1.7" stroke-linejoin="round"/>
+          <path d="M12 9.6v4.6" stroke="#fcd34d" stroke-width="1.9" stroke-linecap="round"/>
+          <circle cx="12" cy="17.2" r="1.15" fill="#fcd34d"/>
+        </svg>
+        <div>
+          <b>시행 전 초안입니다.</b>
+          <p>
+            이 문서는 법률 전문가의 검토를 거치지 않은 작업 초안이며, 아직 시행되지 않았습니다.
+            본문에서 <span class="tbd">[TBD]</span> 로 표시된 항목은 확정되지 않은 부분입니다.
+            모든 미확정 항목이 확정되고 법률 검토를 마친 뒤에야 정식으로 시행·게시됩니다.
+            그 전까지 이 문서는 효력이 없습니다.
+          </p>
+        </div>
+      </aside>
+
+      <dl class="meta">
+        <dt>문서 상태</dt><dd>초안 (법률 검토 전)</dd>
+        <dt>시행일</dt><dd><span class="tbd">[TBD: 시행일 — FEV-366 게시일과 연동]</span></dd>
+        <dt>최종 수정</dt><dd><time datetime="2026-08-20">2026년 8월 20일</time></dd>
+        <dt>관련 문서</dt><dd><a class="x" href="privacy.html">JamIT 개인정보 처리방침</a></dd>
+      </dl>
+    </div>
+
+    <div class="layout">
+
+      <!-- 목차 — 데스크톱에서는 옆에 붙어 따라오고, 좁은 화면에서는 접힌다 -->
+      <details class="toc" id="toc" open>
+        <summary>조문 목차<span class="sr-only"> 열기</span></summary>
+        <nav class="toc__list" aria-label="조문 목차">
+          <ol>
+            <li class="toc__chap"><a href="#ch-1"><span class="n">제1장</span>총칙</a>
+              <ol>
+                <li><a href="#art-1"><span class="n">제1조</span>목적</a></li>
+                <li><a href="#art-2"><span class="n">제2조</span>정의</a></li>
+                <li><a href="#art-3"><span class="n">제3조</span>약관의 게시와 개정</a></li>
+                <li><a href="#art-4"><span class="n">제4조</span>약관 외 준칙</a></li>
+              </ol>
+            </li>
+            <li class="toc__chap"><a href="#ch-2"><span class="n">제2장</span>이용계약과 계정</a>
+              <ol>
+                <li><a href="#art-5"><span class="n">제5조</span>이용계약의 체결</a></li>
+                <li><a href="#art-6"><span class="n">제6조</span>계정 및 회원정보의 관리</a></li>
+                <li><a href="#art-7"><span class="n">제7조</span>회원 탈퇴</a></li>
+              </ol>
+            </li>
+            <li class="toc__chap"><a href="#ch-3"><span class="n">제3장</span>서비스의 이용</a>
+              <ol>
+                <li><a href="#art-8"><span class="n">제8조</span>서비스의 내용</a></li>
+                <li><a href="#art-9"><span class="n">제9조</span>원곡의 재생과 YouTube 서비스</a></li>
+                <li><a href="#art-10"><span class="n">제10조</span>알림</a></li>
+                <li><a href="#art-11"><span class="n">제11조</span>서비스의 변경 및 중단</a></li>
+              </ol>
+            </li>
+            <li class="toc__chap"><a href="#ch-4"><span class="n">제4장</span>콘텐츠</a>
+              <ol>
+                <li><a href="#art-12"><span class="n">제12조</span>콘텐츠에 대한 권리와 책임</a></li>
+                <li><a href="#art-13"><span class="n">제13조</span>콘텐츠의 이용허락</a></li>
+                <li><a href="#art-14"><span class="n">제14조</span>합주 참여와 초상·음성·실연에 대한 동의</a></li>
+                <li><a href="#art-15"><span class="n">제15조</span>회원의 의무 및 금지행위</a></li>
+                <li><a href="#art-16"><span class="n">제16조</span>부적절한 콘텐츠와 학대적 이용자에 대한 불관용 원칙</a></li>
+                <li><a href="#art-17"><span class="n">제17조</span>권리침해 신고 및 게시중단</a></li>
+                <li><a href="#art-18"><span class="n">제18조</span>이용자 차단 기능</a></li>
+                <li><a href="#art-19"><span class="n">제19조</span>이용제한</a></li>
+              </ol>
+            </li>
+            <li class="toc__chap"><a href="#ch-5"><span class="n">제5장</span>의무와 책임</a>
+              <ol>
+                <li><a href="#art-20"><span class="n">제20조</span>운영자의 의무</a></li>
+                <li><a href="#art-21"><span class="n">제21조</span>면책</a></li>
+                <li><a href="#art-22"><span class="n">제22조</span>손해배상</a></li>
+              </ol>
+            </li>
+            <li class="toc__chap"><a href="#ch-6"><span class="n">제6장</span>기타</a>
+              <ol>
+                <li><a href="#art-23"><span class="n">제23조</span>준거법 및 재판관할</a></li>
+              </ol>
+            </li>
+            <li class="toc__chap"><a href="#addendum"><span class="n">부칙</span>시행일</a></li>
+          </ol>
+        </nav>
+      </details>
+
+      <article class="prose">
+
+        <h2 class="chap" id="ch-1"><span class="n">제1장</span>총칙</h2>
+
+        <section id="art-1">
+          <h3 class="art"><span class="art__no">제1조</span>목적 <a class="art__link" href="#art-1" aria-label="제1조 링크">#</a></h3>
+          <p>
+            이 약관은 <span class="tbd">[사업자 정보 TBD: 상호 또는 성명(김민재), 소재지, 연락처]</span>(이하 &ldquo;운영자&rdquo;)가
+            제공하는 모바일 애플리케이션 서비스 &ldquo;JamIT&rdquo;(이하 &ldquo;서비스&rdquo;)의 이용과 관련하여 운영자와 회원 간의
+            권리, 의무 및 책임사항, 서비스 이용 조건과 절차, 기타 필요한 사항을 규정함을 목적으로 합니다.
+          </p>
+        </section>
+
+        <section id="art-2">
+          <h3 class="art"><span class="art__no">제2조</span>정의 <a class="art__link" href="#art-2" aria-label="제2조 링크">#</a></h3>
+          <p>이 약관에서 사용하는 용어의 뜻은 다음과 같습니다.</p>
+          <ol class="clauses">
+            <li><strong>&ldquo;서비스&rdquo;</strong>란 YouTube에 게시된 원곡의 특정 구간을 기준으로 회원들이 세션(악기·보컬 등)별
+              연주 영상을 업로드하여 합주를 완성하고, 참여 트랙을 조합한 숏폼 영상을 제작·저장·공유할 수 있도록
+              운영자가 제공하는 JamIT 모바일 애플리케이션 및 관련 제반 서비스를 말합니다.</li>
+            <li><strong>&ldquo;회원&rdquo;</strong>이란 이 약관에 동의하고 소셜 로그인을 통해 이용계약을 체결하여 서비스를 이용하는 자를 말합니다.</li>
+            <li><strong>&ldquo;원곡&rdquo;</strong>이란 합주의 기준이 되는, YouTube에 게시된 음악 영상 콘텐츠를 말합니다.
+              원곡은 서비스가 저장·배포하지 않으며 YouTube를 통해 재생됩니다.</li>
+            <li><strong>&ldquo;게시글&rdquo;</strong>(또는 &ldquo;잼&rdquo;)이란 회원이 원곡의 특정 구간과 모집할 세션을 지정하여
+              합주 참여자를 모집하는 게시물을 말합니다.</li>
+            <li><strong>&ldquo;트랙&rdquo;</strong>이란 회원이 게시글에 참여하기 위해 촬영·업로드하는 세션별 연주 영상(영상 및 음성 포함)을 말합니다.</li>
+            <li><strong>&ldquo;숏폼&rdquo;</strong>이란 한 게시글에 모인 트랙들을 조합하여 그리드 형태 등으로 합성한 짧은 영상을 말하며,
+              제작자는 이를 기기에 저장하거나 서비스 외부로 공유할 수 있습니다.</li>
+            <li><strong>&ldquo;콘텐츠&rdquo;</strong>란 회원이 서비스에 게시·업로드한 게시글, 트랙, 숏폼, 프로필, 텍스트 등 일체의 자료를 말합니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-3">
+          <h3 class="art"><span class="art__no">제3조</span>약관의 게시와 개정 <a class="art__link" href="#art-3" aria-label="제3조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>운영자는 이 약관의 내용을 회원이 쉽게 확인할 수 있도록 서비스 내 화면 및 안내 페이지에 게시합니다.</li>
+            <li>운영자는 「약관의 규제에 관한 법률」, 「정보통신망 이용촉진 및 정보보호 등에 관한 법률」 등 관련 법령을
+              위배하지 않는 범위에서 이 약관을 개정할 수 있습니다.</li>
+            <li>약관을 개정하는 경우 적용일자와 개정 사유를 명시하여 적용일 7일 전부터(회원에게 불리하거나 중대한 변경의
+              경우 30일 전부터) 서비스 내 공지 또는 푸시 알림 등으로 알립니다.</li>
+            <li>회원이 개정 약관의 적용일 이후에도 서비스를 계속 이용하는 경우 개정 약관에 동의한 것으로 봅니다.
+              개정 약관에 동의하지 않는 회원은 <a class="ref" href="#art-7">제7조</a>에 따라 탈퇴할 수 있습니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-4">
+          <h3 class="art"><span class="art__no">제4조</span>약관 외 준칙 <a class="art__link" href="#art-4" aria-label="제4조 링크">#</a></h3>
+          <p>
+            이 약관에서 정하지 아니한 사항과 이 약관의 해석에 관하여는 관련 법령 및 일반 상관례에 따릅니다.
+            개인정보의 처리에 관한 사항은 별도의 <a class="x" href="privacy.html">「JamIT 개인정보 처리방침」</a>에 따릅니다.
+          </p>
+        </section>
+
+        <h2 class="chap" id="ch-2"><span class="n">제2장</span>이용계약과 계정</h2>
+
+        <section id="art-5">
+          <h3 class="art"><span class="art__no">제5조</span>이용계약의 체결 <a class="art__link" href="#art-5" aria-label="제5조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>이용계약은 서비스를 이용하려는 자가 이 약관과 개인정보 처리방침에 각각 동의하고 카카오, 구글, Apple
+              계정을 통한 소셜 로그인으로 가입을 신청하면, 운영자가 이를 승낙함으로써 체결됩니다.
+              <strong>이 약관에 대한 동의 없이는 서비스에 가입할 수 없습니다.</strong></li>
+            <li>서비스는 만 14세 이상인 자만 가입할 수 있습니다. 만 14세 미만임이 확인된 계정에 대해 운영자는
+              이용계약을 해지할 수 있습니다.</li>
+            <li>이 약관에 동의하는 것에는 <a class="ref" href="#art-16">제16조</a>의
+              <strong>부적절한 콘텐츠 및 학대적 이용자에 대한 불관용(zero-tolerance) 원칙</strong>에 대한 동의가 포함됩니다.</li>
+            <li>운영자는 다음 각 호에 해당하는 신청에 대하여 승낙을 거절하거나 사후에 이용계약을 해지할 수 있습니다.
+              <ol class="sub">
+                <li>이전에 <a class="ref" href="#art-16">제16조</a> 또는 <a class="ref" href="#art-19">제19조</a>에 따라
+                  서비스에서 배제된 자가 다시 가입을 신청하는 경우</li>
+                <li>타인의 소셜 계정을 도용한 경우</li>
+                <li>부정한 목적이나 방법으로 신청한 경우</li>
+              </ol>
+            </li>
+          </ol>
+        </section>
+
+        <section id="art-6">
+          <h3 class="art"><span class="art__no">제6조</span>계정 및 회원정보의 관리 <a class="art__link" href="#art-6" aria-label="제6조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>계정은 회원 본인만 이용할 수 있으며, 타인에게 양도·대여할 수 없습니다.</li>
+            <li>회원은 자신의 소셜 계정 및 기기의 관리에 책임이 있으며, 제3자의 무단 사용을 인지한 경우 즉시 운영자에게
+              알려야 합니다. 회원의 관리 소홀로 발생한 불이익에 대하여 운영자는 고의 또는 과실이 없는 한 책임지지 않습니다.</li>
+            <li>회원은 프로필 등 회원정보가 변경된 경우 서비스 내에서 이를 수정하여야 합니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-7">
+          <h3 class="art"><span class="art__no">제7조</span>회원 탈퇴 <a class="art__link" href="#art-7" aria-label="제7조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>회원은 언제든지 앱 내 탈퇴 기능을 통해 이용계약을 해지(탈퇴)할 수 있습니다.</li>
+            <li>탈퇴 시 운영자는 해당 회원의 소셜 로그인 연동(카카오·구글·Apple)을 해제하고, 로그인 세션과 푸시 토큰을
+              무효화합니다.</li>
+            <li>탈퇴한 회원의 개인정보는 <a class="x" href="privacy.html">「JamIT 개인정보 처리방침」</a>에서 정한 바에 따라 파기됩니다.</li>
+            <li><strong>탈퇴한 회원이 업로드한 콘텐츠(트랙·게시글·숏폼)의 처리는 다음과 같습니다.</strong>
+              <ol class="sub">
+                <li>회원이 업로드한 트랙(원본·보정본·썸네일)은 탈퇴와 함께 삭제됩니다.</li>
+                <li>회원이 제작한 숏폼은 게시 여부와 관계없이 삭제됩니다. 다른 회원이 제작한 숏폼은 회원의 트랙이
+                  포함되어 있더라도 유지됩니다(<a class="ref" href="#art-14">제14조 제4항</a>).</li>
+                <li>회원이 작성한 게시글은 다른 회원의 트랙 또는 숏폼이 남아 있는 경우 작성자가 &ldquo;알 수 없음&rdquo;으로
+                  표시된 채 유지되고, 그렇지 않은 경우 삭제됩니다.</li>
+              </ol>
+            </li>
+            <li>서비스 외부(SNS 등)로 이미 공유·저장된 숏폼은 운영자의 관리 범위를 벗어나므로, 운영자는 그 회수·삭제를
+              보장할 수 없습니다.</li>
+          </ol>
+        </section>
+
+        <h2 class="chap" id="ch-3"><span class="n">제3장</span>서비스의 이용</h2>
+
+        <section id="art-8">
+          <h3 class="art"><span class="art__no">제8조</span>서비스의 내용 <a class="art__link" href="#art-8" aria-label="제8조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>운영자는 다음의 서비스를 제공합니다.
+              <ol class="sub">
+                <li>원곡 구간 기반 합주 게시글의 작성·탐색·참여</li>
+                <li>세션별 트랙 영상의 촬영·업로드(기기의 카메라·마이크 이용) 및 자동 싱크 보정</li>
+                <li>참여 트랙을 조합한 숏폼 영상의 합성·재생·기기 저장·외부 공유</li>
+                <li>프로필, 알림, 신고·차단 등 부가 기능</li>
+              </ol>
+            </li>
+            <li>서비스는 무료로 제공됩니다. 유료 서비스를 도입하는 경우 별도 고지하고 동의를 받습니다.</li>
+            <li>서비스는 연중무휴 제공을 원칙으로 하나, 점검 등 운영상 필요에 따라 일시 중단될 수 있습니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-9">
+          <h3 class="art"><span class="art__no">제9조</span>원곡의 재생과 YouTube 서비스 <a class="art__link" href="#art-9" aria-label="제9조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>원곡은 YouTube가 제공하는 플레이어를 통해 재생되며, 그 이용에는 YouTube 서비스 약관이 적용됩니다.</li>
+            <li>운영자는 원곡의 권리자가 아니며, 원곡이 삭제·비공개 처리되거나 임베드가 제한되는 등 YouTube 측 사정으로
+              관련 게시글·기능의 이용이 제한될 수 있습니다. 이 경우 운영자는 고의 또는 과실이 없는 한 책임지지 않습니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-10">
+          <h3 class="art"><span class="art__no">제10조</span>알림 <a class="art__link" href="#art-10" aria-label="제10조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>운영자는 합주 참여, 숏폼 게시 등 서비스 이용에 필요한 알림을 앱 푸시로 발송할 수 있습니다.</li>
+            <li>회원은 기기 설정 또는 서비스 내 설정을 통해 푸시 알림 수신을 거부할 수 있습니다. 다만 서비스 운영에 관한
+              중요한 고지는 푸시 외의 방법으로도 안내될 수 있습니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-11">
+          <h3 class="art"><span class="art__no">제11조</span>서비스의 변경 및 중단 <a class="art__link" href="#art-11" aria-label="제11조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>운영자는 운영상·기술상 필요에 따라 서비스의 전부 또는 일부를 변경할 수 있으며, 중요한 변경은 사전에
+              서비스 내에 공지합니다.</li>
+            <li>운영자는 다음의 경우 서비스 제공을 일시 중단할 수 있습니다.
+              <ol class="sub">
+                <li>시스템 점검·보수·교체</li>
+                <li>정전, 설비 장애, 이용 폭주, 기간통신사업자 또는 클라우드 사업자의 서비스 중단</li>
+                <li>천재지변, 국가비상사태 등 불가항력</li>
+              </ol>
+            </li>
+            <li>운영자가 서비스 제공을 종국적으로 중단(서비스 종료)하려는 경우, 종료일 30일 전까지 서비스 내 공지 등으로
+              알립니다. 이 경우 회원은 종료일 전까지 자신의 숏폼을 기기에 저장하는 방법 등으로 콘텐츠를 백업할 수 있습니다.</li>
+            <li>무료로 제공되는 서비스의 변경·중단으로 발생한 손해에 대하여 운영자는 고의 또는 중대한 과실이 없는 한
+              책임지지 않습니다.</li>
+          </ol>
+        </section>
+
+        <h2 class="chap" id="ch-4"><span class="n">제4장</span>콘텐츠</h2>
+
+        <section id="art-12">
+          <h3 class="art"><span class="art__no">제12조</span>콘텐츠에 대한 권리와 책임 <a class="art__link" href="#art-12" aria-label="제12조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>회원이 서비스에 게시한 콘텐츠에 대한 저작권 등 지식재산권은 해당 회원 또는 정당한 권리자에게 귀속됩니다.</li>
+            <li><strong>커버 연주·커버 보컬 등 타인의 저작물(원곡 포함)을 이용한 콘텐츠를 업로드하는 경우, 그에 필요한
+              저작권·저작인접권 등 권리의 확인과 처리에 대한 책임은 해당 콘텐츠를 업로드한 회원에게 있습니다.</strong>
+              회원은 자신이 업로드하는 콘텐츠가 타인의 저작권, 상표권, 초상권, 명예 등 권리를 침해하지 않음을 보증합니다.</li>
+            <li>회원의 콘텐츠로 인하여 권리자와 분쟁이 발생하거나 운영자가 손해(손해배상, 분쟁 대응 비용 등)를 입은 경우,
+              그 책임은 해당 콘텐츠를 업로드한 회원이 부담합니다.</li>
+            <li>운영자는 회원의 콘텐츠가 <a class="ref" href="#art-15">제15조</a>의 금지행위에 해당하거나 관련 법령을
+              위반한다고 판단되는 경우 사전 통지 없이 삭제·숨김 등 조치를 할 수 있습니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-13">
+          <h3 class="art"><span class="art__no">제13조</span>콘텐츠의 이용허락 <a class="art__link" href="#art-13" aria-label="제13조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>회원은 자신이 게시한 콘텐츠에 대하여, 운영자에게 서비스의 제공·운영·개선을 위해 필요한 범위에서 이를
+              저장·복제·인코딩·합성(트랙의 싱크 보정 및 숏폼 그리드 합성을 포함)·전시·전송할 수 있는 비독점적 이용권을
+              부여합니다.</li>
+            <li>운영자가 회원의 콘텐츠를 서비스 홍보 목적으로 이용하려는 경우 사전에 해당 회원의 동의를 받습니다.
+              <span class="tbd">[TBD: 홍보 목적 이용허락을 기본 포함할지 별도 동의로 할지 정책 확정]</span></li>
+            <li>제1항의 이용권은 회원이 해당 콘텐츠를 삭제하거나 탈퇴하면 종료됩니다. 다만
+              <a class="ref" href="#art-7">제7조 제4항</a>의 탈퇴 시 콘텐츠 처리 정책 및 이미 합성된 숏폼에 대해서는
+              해당 조항이 우선합니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-14">
+          <h3 class="art"><span class="art__no">제14조</span>합주 참여와 초상·음성·실연에 대한 동의 <a class="art__link" href="#art-14" aria-label="제14조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>트랙에는 회원의 얼굴·신체·음성 및 연주 실연이 포함될 수 있습니다.</li>
+            <li><strong>회원이 게시글에 트랙을 업로드하여 합주에 참여하는 것은 다음 각 호에 대하여 동의하는 것으로 봅니다.</strong>
+              <ol class="sub">
+                <li>해당 트랙이 서비스 내에서 다른 이용자에게 노출·재생되는 것</li>
+                <li>같은 게시글에 참여한 다른 회원이 숏폼을 제작할 때 <strong>회원의 트랙(회원의 초상·음성·실연 포함)을
+                  조합에 포함</strong>하는 것</li>
+                <li>그렇게 제작된 숏폼을 제작자가 자신의 기기에 저장하거나 서비스 외부(SNS 등)로 공유하는 것</li>
+              </ol>
+            </li>
+            <li>숏폼 제작자는 <strong>자신이 업로드한 트랙을 최소 1개 포함</strong>해야 하며, 타인의 트랙만으로는 숏폼을
+              제작할 수 없습니다.</li>
+            <li>회원은 트랙을 삭제함으로써 장래의 숏폼 제작에 대한 동의를 철회할 수 있습니다. 다만 삭제 이전에 이미
+              제작되어 기기에 저장되었거나 서비스 외부로 공유된 숏폼에는 미치지 않을 수 있습니다.
+              <strong>회원이 탈퇴하더라도 다른 회원이 제작한 숏폼에 포함된 회원의 트랙은 해당 숏폼과 함께 유지되며,
+              회원은 합주 참여 시 이에 동의합니다.</strong> 회원 본인이 제작한 숏폼은
+              <a class="ref" href="#art-7">제7조 제4항 제2호</a>에 따라 삭제됩니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-15">
+          <h3 class="art"><span class="art__no">제15조</span>회원의 의무 및 금지행위 <a class="art__link" href="#art-15" aria-label="제15조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>회원은 관련 법령, 이 약관, 서비스 내 안내 사항을 준수하여야 합니다.</li>
+            <li>회원은 다음 각 호의 행위를 해서는 안 됩니다.
+              <ol class="sub">
+                <li>음란물, 성적 대상화 콘텐츠, 아동·청소년을 대상으로 한 일체의 성적 콘텐츠의 게시</li>
+                <li>폭력적·잔혹한 콘텐츠, 자해·자살을 조장하는 콘텐츠의 게시</li>
+                <li>특정 개인·집단에 대한 혐오, 차별, 비하, 괴롭힘, 협박, 스토킹 행위</li>
+                <li>타인의 저작권·초상권·개인정보 등 권리를 침해하는 콘텐츠의 게시(동의 없는 타인 촬영물 포함)</li>
+                <li>타인 사칭, 허위 사실 유포</li>
+                <li>광고·스팸, 반복 게시, 서비스 목적과 무관한 콘텐츠의 대량 게시</li>
+                <li>서비스의 소스코드·서버·API에 대한 무단 접근, 리버스 엔지니어링, 자동화 수단을 이용한 부정 이용</li>
+                <li>신고 기능의 악용(허위·반복 신고)</li>
+                <li>기타 관련 법령에 위반되거나 선량한 풍속에 반하는 행위</li>
+              </ol>
+            </li>
+          </ol>
+        </section>
+
+        <section id="art-16">
+          <h3 class="art"><span class="art__no">제16조</span>부적절한 콘텐츠와 학대적 이용자에 대한 불관용 원칙 <a class="art__link" href="#art-16" aria-label="제16조 링크">#</a></h3>
+          <ol class="clauses">
+            <li><strong>운영자는 부적절한 콘텐츠(objectionable content)와 학대적(abusive) 이용자에 대하여
+              불관용(zero-tolerance) 원칙을 적용합니다.</strong></li>
+            <li>회원은 서비스 내 신고 기능을 통해 게시글, 트랙, 숏폼 또는 이용자를 신고할 수 있습니다.</li>
+            <li><strong>운영자는 신고를 접수한 때부터 24시간 이내에 해당 콘텐츠를 확인하고, 부적절한 콘텐츠로 확인된 경우
+              이를 삭제 또는 숨김 처리하며, 해당 콘텐츠를 게시한 이용자를 서비스에서 배제(이용정지 또는 영구 이용정지)합니다.</strong></li>
+            <li>운영자는 부적절한 콘텐츠가 게시되는 것을 방지하기 위한 사전·사후 필터링 조치를 운영할 수 있습니다.</li>
+            <li>본 조에 따른 조치에 이의가 있는 회원은 <span class="tbd">[TBD: 이의제기 창구 — 문의 이메일]</span>를 통해
+              이의를 제기할 수 있으며, 운영자는 확인 후 정당한 사유가 있는 경우 조치를 해제합니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-17">
+          <h3 class="art"><span class="art__no">제17조</span>권리침해 신고 및 게시중단 <a class="art__link" href="#art-17" aria-label="제17조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>자신의 저작권, 초상권 등 권리가 회원의 콘텐츠로 인해 침해된다고 주장하는 자(이하 &ldquo;권리주장자&rdquo;)는
+              그 사실을 소명하여 운영자에게 해당 콘텐츠의 삭제 또는 게시중단을 요청할 수 있습니다.</li>
+            <li>운영자는 제1항의 요청을 받으면 「저작권법」 제103조 등 관련 법령이 정한 절차에 따라 <strong>지체 없이 해당
+              콘텐츠를 삭제하거나 접근을 차단</strong>하고, 이를 콘텐츠 게시자와 권리주장자에게 통지합니다.</li>
+            <li>콘텐츠 게시자는 자신에게 정당한 권리가 있음을 소명하여 게시 재개를 요청할 수 있으며, 운영자는 관련 법령이
+              정한 절차에 따라 처리합니다.</li>
+            <li>권리침해 신고 창구: <span class="tbd">[TBD: 문의 이메일 / 서비스 내 신고 기능]</span></li>
+          </ol>
+        </section>
+
+        <section id="art-18">
+          <h3 class="art"><span class="art__no">제18조</span>이용자 차단 기능 <a class="art__link" href="#art-18" aria-label="제18조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>회원은 다른 이용자를 차단할 수 있으며, 차단한 이용자의 콘텐츠는 회원의 피드, 검색, 알림 등에서 노출되지
+              않습니다.</li>
+            <li>차단은 상대방에게 별도로 통지되지 않으며, 회원은 언제든지 차단을 해제할 수 있습니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-19">
+          <h3 class="art"><span class="art__no">제19조</span>이용제한 <a class="art__link" href="#art-19" aria-label="제19조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>운영자는 회원이 이 약관을 위반하거나 서비스의 정상적인 운영을 방해한 경우, 위반의 정도에 따라 경고,
+              콘텐츠 삭제, 기능 제한, 일시 이용정지, 영구 이용정지 등의 조치를 단계적 또는 즉시 취할 수 있습니다.
+              <a class="ref" href="#art-16">제16조</a>에 해당하는 위반은 단계를 거치지 않고 즉시 영구 이용정지할 수 있습니다.</li>
+            <li>운영자는 이용제한 조치를 하는 경우 그 사유와 내용을 회원에게 통지합니다. 다만 긴급한 조치가 필요한 경우
+              조치 후 통지할 수 있습니다.</li>
+            <li>회원은 이용제한 조치에 대하여 이의를 제기할 수 있으며, 이의가 정당하다고 인정되는 경우 운영자는 즉시
+              조치를 해제합니다.</li>
+          </ol>
+        </section>
+
+        <h2 class="chap" id="ch-5"><span class="n">제5장</span>의무와 책임</h2>
+
+        <section id="art-20">
+          <h3 class="art"><span class="art__no">제20조</span>운영자의 의무 <a class="art__link" href="#art-20" aria-label="제20조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>운영자는 관련 법령과 이 약관이 금지하는 행위를 하지 않으며, 지속적이고 안정적인 서비스 제공을 위해
+              노력합니다.</li>
+            <li>운영자는 개인정보 보호를 위해 <a class="x" href="privacy.html">「JamIT 개인정보 처리방침」</a>을
+              수립·공개하고 이를 준수합니다.</li>
+            <li>운영자는 회원의 의견이나 불만이 정당하다고 인정되는 경우 이를 처리하고 그 경과를 회원에게 안내합니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-21">
+          <h3 class="art"><span class="art__no">제21조</span>면책 <a class="art__link" href="#art-21" aria-label="제21조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>운영자는 천재지변, 불가항력, 회원의 귀책사유로 인한 서비스 이용 장애에 대하여 책임지지 않습니다.</li>
+            <li>운영자는 회원이 게시한 콘텐츠의 신뢰성·정확성·적법성에 대하여 보증하지 않으며, 회원 상호 간 또는 회원과
+              제3자 간에 콘텐츠를 매개로 발생한 분쟁에 개입할 의무가 없습니다. 다만
+              <a class="ref" href="#art-16">제16조</a>·<a class="ref" href="#art-17">제17조</a>에 따른 조치 의무는
+              이와 무관하게 이행합니다.</li>
+            <li>운영자는 무료로 제공되는 서비스와 관련하여 회원에게 발생한 손해에 대하여 고의 또는 중대한 과실이 없는 한
+              책임지지 않습니다.</li>
+          </ol>
+        </section>
+
+        <section id="art-22">
+          <h3 class="art"><span class="art__no">제22조</span>손해배상 <a class="art__link" href="#art-22" aria-label="제22조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>운영자 또는 회원이 이 약관을 위반하여 상대방에게 손해를 입힌 경우 그 손해를 배상할 책임이 있습니다.</li>
+            <li>회원이 이 약관을 위반하여 제3자가 운영자를 상대로 이의 또는 소송을 제기한 경우, 해당 회원은 자신의 비용과
+              책임으로 운영자를 면책시켜야 하며, 운영자에게 발생한 손해를 배상하여야 합니다.</li>
+          </ol>
+        </section>
+
+        <h2 class="chap" id="ch-6"><span class="n">제6장</span>기타</h2>
+
+        <section id="art-23">
+          <h3 class="art"><span class="art__no">제23조</span>준거법 및 재판관할 <a class="art__link" href="#art-23" aria-label="제23조 링크">#</a></h3>
+          <ol class="clauses">
+            <li>이 약관과 서비스 이용에 관한 사항은 대한민국 법령에 따라 해석·적용됩니다.</li>
+            <li>서비스 이용과 관련하여 운영자와 회원 사이에 분쟁이 발생한 경우 상호 협의하여 해결하도록 노력하며,
+              협의가 이루어지지 않는 경우 「민사소송법」에 따른 관할법원에 소를 제기할 수 있습니다.</li>
+          </ol>
+        </section>
+
+        <section id="addendum">
+          <h3 class="art"><span class="art__no">부칙</span>시행일 <a class="art__link" href="#addendum" aria-label="부칙 링크">#</a></h3>
+          <ol class="clauses">
+            <li>이 약관은 <span class="tbd">[TBD: 시행일 — FEV-366 게시일과 연동]</span>부터 시행합니다.</li>
+          </ol>
+        </section>
+
+        <nav class="also" aria-label="함께 보기">
+          <p class="eyebrow">함께 보기</p>
+          <div class="also__list">
+            <a href="privacy.html">
+              <b>개인정보 처리방침</b>
+              <span>수집 항목, 보유 기간, 위탁과 국외 이전, 권리 행사 방법</span>
+            </a>
+            <a href="index.html">
+              <b>JamIT 소개로 돌아가기</b>
+              <span>혼자 찍어 올리면 합주가 완성됩니다</span>
+            </a>
+          </div>
+        </nav>
+
+      </article>
+    </div>
+
+    <footer>
+      <p>&copy; 2026 JamIT</p>
+      <nav aria-label="바닥글">
+        <a href="index.html">홈</a>
+        <a href="terms.html" aria-current="page">이용약관</a>
+        <a href="privacy.html">개인정보 처리방침</a>
+        <a href="#top">맨 위로</a>
+      </nav>
+    </footer>
+
+  </div>
+</main>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// 목차 — 지금 읽고 있는 조문을 따라간다
+// ══════════════════════════════════════════════════════════
+(() => {
+  const toc = document.getElementById("toc");
+  const cs  = getComputedStyle(document.documentElement);
+  // 고정 머리 높이는 CSS가 진실이다. 여기서 숫자를 다시 적으면 둘이 어긋난다
+  const off = parseFloat(cs.getPropertyValue("--topbar")) + parseFloat(cs.getPropertyValue("--strip"));
+
+  // 좁은 화면에서는 목차가 접혀 있어야 한다. JS가 없으면 펼쳐진 채로 두는 편이 안전해서
+  // 마크업은 open으로 두고, 접는 일만 여기서 한다
+  const wide = matchMedia("(min-width:900px)");
+  const sync = () => { toc.open = wide.matches; };
+  sync();
+  wide.addEventListener("change", sync);
+  toc.querySelectorAll("a").forEach((a) => {
+    a.addEventListener("click", () => { if (!wide.matches) toc.open = false; });
+  });
+
+  const heads = [...document.querySelectorAll(".prose h2.chap[id], .prose section[id]")];
+  const links = new Map();
+  toc.querySelectorAll("a[href^='#']").forEach((a) => links.set(a.getAttribute("href").slice(1), a));
+  const panel = toc.querySelector(".toc__list");
+
+  let cur = null, ticking = false;
+  function spy(){
+    ticking = false;
+    document.body.classList.toggle("scrolled", scrollY > 8);
+
+    let hit = null;
+    for (const h of heads){
+      if (h.getBoundingClientRect().top <= off + 24) hit = h; else break;
+    }
+    // 맨 아래에 닿으면 마지막 조문을 가리킨다 — 짧은 조문은 위 기준을 못 넘긴다
+    if (scrollY + innerHeight >= document.documentElement.scrollHeight - 4) hit = heads[heads.length - 1];
+    if (hit === cur) return;
+    cur = hit;
+
+    links.forEach((a) => a.classList.remove("on"));
+    const a = hit && links.get(hit.id);
+    if (!a) return;
+    a.classList.add("on");
+    // 목차가 스스로 스크롤되는 경우에만 따라 움직인다. 페이지는 건드리지 않는다
+    if (wide.matches && panel.scrollHeight > panel.clientHeight + 4){
+      const y = a.offsetTop - panel.clientHeight / 2 + a.offsetHeight / 2;
+      panel.scrollTop = Math.max(0, y);
+    }
+  }
+  addEventListener("scroll", () => { if (!ticking){ ticking = true; requestAnimationFrame(spy); } }, {passive:true});
+  addEventListener("resize", spy, {passive:true});
+  spy();
+})();
+</script>
+</body>
+</html>
