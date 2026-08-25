@@ -4,10 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>개인정보 처리방침 — JamIT</title>
-<meta name="description" content="JamIT 모바일 애플리케이션 서비스 개인정보 처리방침. 법률 검토 전 초안입니다.">
-<!-- 시행 전 초안이다. 실수로 올라가도 검색에 잡히지 않게 막는다.
-     법률 검토가 끝나고 [TBD]가 모두 확정된 정식 버전을 게시할 때 이 줄을 지운다. -->
-<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="JamIT 앱과 웹사이트의 개인정보 처리방침 — 수집 항목, 처리 목적, 보유 기간, 이용자의 권리.">
 <meta name="theme-color" content="#0a0c1c">
 <!-- 앱 안 시트(FEV-389)는 이 문서를 `?embed=1`로 연다. class 는 **첫 그리기 전에** 붙어야 상단바가
      한 프레임 번쩍이고 사라지는 일이 없으므로 <style> 보다 앞, head 안에서 돈다. JS 가 없으면
@@ -60,7 +57,8 @@
   --mark:#fde047;
   --r:16px; --r-lg:24px;
   --topbar:64px;
-  --strip:34px;               /* 초안 띠 — 스크롤해도 사라지지 않는다 */
+  --strip:0px;                /* 초안 띠가 있던 자리 — 정식 시행(2026-08-25)과 함께 걷어냈다.
+                                 변수는 남긴다: main 여백과 앵커 스크롤 위치가 이 값을 쓴다 */
   --edge:max(clamp(20px,5vw,40px),env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));
   --sans:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
   --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
@@ -344,7 +342,6 @@ html.embed [id]{scroll-margin-top:14px}
       <a href="privacy.html" aria-current="page">개인정보<span class="long"> 처리방침</span></a>
     </nav>
   </div>
-  <div class="strip"><b>DRAFT</b><span>시행 전 초안 · 법률 검토 미완료 · 효력 없음</span></div>
 </header>
 
 <main>
@@ -358,27 +355,10 @@ html.embed [id]{scroll-margin-top:14px}
         정리한 문서입니다.
       </p>
 
-      <aside class="banner" role="note" aria-label="문서 상태 안내">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 3.6 22 20.4H2L12 3.6Z" stroke="#fcd34d" stroke-width="1.7" stroke-linejoin="round"/>
-          <path d="M12 9.6v4.6" stroke="#fcd34d" stroke-width="1.9" stroke-linecap="round"/>
-          <circle cx="12" cy="17.2" r="1.15" fill="#fcd34d"/>
-        </svg>
-        <div>
-          <b>시행 전 초안입니다.</b>
-          <p>
-            이 문서는 법률 전문가의 검토를 거치지 않은 작업 초안이며, 아직 시행되지 않았습니다.
-            본문에서 <span class="tbd">[TBD]</span> 로 표시된 항목은 확정되지 않은 부분입니다.
-            모든 미확정 항목이 확정되고 법률 검토를 마친 뒤에야 정식으로 시행·게시됩니다.
-            그 전까지 이 문서는 효력이 없습니다.
-          </p>
-        </div>
-      </aside>
-
       <dl class="meta">
-        <dt>문서 상태</dt><dd>초안 (법률 검토 전)</dd>
-        <dt>시행일</dt><dd><span class="tbd">[TBD: 시행일 — FEV-366 게시일과 연동]</span></dd>
-        <dt>최종 수정</dt><dd><time datetime="2026-08-24">2026년 8월 24일</time></dd>
+        <dt>문서 상태</dt><dd>시행 중</dd>
+        <dt>시행일</dt><dd><time datetime="2026-08-25">2026년 8월 25일</time></dd>
+        <dt>최종 수정</dt><dd><time datetime="2026-08-25">2026년 8월 25일</time></dd>
         <!-- 본문을 고치면 이 날짜도 같이 올린다 — 독자가 「바뀌었는가」를 판단하는 유일한 표지다. -->
         <dt>관련 문서</dt><dd><a class="x" href="terms.html">JamIT 이용약관</a></dd>
       </dl>
@@ -413,7 +393,7 @@ html.embed [id]{scroll-margin-top:14px}
       <article class="prose">
 
         <p class="intro">
-          <span class="tbd">[사업자 정보 TBD: 상호 또는 성명(김민재)]</span>(이하 &ldquo;운영자&rdquo;)는 모바일 애플리케이션
+          김민재(이하 &ldquo;운영자&rdquo;)는 모바일 애플리케이션
           &ldquo;JamIT&rdquo;과 웹사이트(jamit.kr)(이하 통칭하여 &ldquo;서비스&rdquo;)를 제공하면서 「개인정보 보호법」 등 관련 법령을 준수하며, 정보주체의 개인정보를
           보호하고 관련 고충을 신속하게 처리하기 위하여 「개인정보 보호법」 제30조에 따라 이 개인정보 처리방침을
           수립·공개합니다.
@@ -535,7 +515,8 @@ html.embed [id]{scroll-margin-top:14px}
               연락처로 요청하시면 즉시 파기합니다. 웹사이트 이용 분석 정보는
               <a class="ref" href="#art-10">제10조</a>에 따라 수집되며 수집일로부터 1년간 보관됩니다.</li>
             <li>결제 기능이 없는 무료 서비스이므로 「전자상거래 등에서의 소비자보호에 관한 법률」에 따른 거래 기록 보존
-              의무는 해당사항이 없습니다. <span class="tbd">[유료화 시 재검토]</span></li>
+              의무는 해당사항이 없습니다.
+              <!-- 유료화하는 날 이 항과 약관 제1조(소재지 생략 근거)를 함께 고칠 것. --></li>
           </ol>
         </section>
 
@@ -752,7 +733,7 @@ html.embed [id]{scroll-margin-top:14px}
                     <tr><th scope="col">구분</th><th scope="col">내용</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td>개인정보 보호책임자</td><td><span class="tbd">[TBD: 성명 — 개인 운영자(김민재) 예정]</span></td></tr>
+                    <tr><td>개인정보 보호책임자</td><td>김민재 (개인 운영자)</td></tr>
                     <tr><td>연락처(이메일)</td><td><a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a></td></tr>
                   </tbody>
                 </table>
@@ -794,7 +775,7 @@ html.embed [id]{scroll-margin-top:14px}
         <section id="addendum">
           <h2 class="art"><span class="art__no">부칙</span>시행일 <a class="art__link" href="#addendum" aria-label="부칙 링크">#</a></h2>
           <ol class="clauses">
-            <li>이 개인정보 처리방침은 <span class="tbd">[TBD: 시행일 — FEV-366 게시일과 연동]</span>부터 시행합니다.</li>
+            <li>이 개인정보 처리방침은 2026년 8월 25일부터 시행합니다.</li>
           </ol>
         </section>
 
