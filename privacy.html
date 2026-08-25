@@ -298,7 +298,7 @@ footer nav a{line-height:44px;padding-inline:12px;transition:color .18s}
    보이는 순간 '링크를 연' 느낌이 되돌아온다. 인쇄 규칙과 같은 발상이라 숨기는 목록도 비슷하다. ── */
 html.embed{scroll-behavior:auto;--bg:#131313;--bg-2:#131313;--line:rgba(255,255,255,.1)}
 html.embed body::before{background:var(--bg)}
-html.embed .top,html.embed .toc,html.embed .also,html.embed footer,
+html.embed .top,html.embed .also,html.embed footer,
 html.embed .eyebrow,html.embed .art__link{display:none}
 html.embed main{padding-top:0}
 html.embed .doc{padding-block:18px calc(40px + env(safe-area-inset-bottom,0px))}
@@ -307,6 +307,29 @@ html.embed .doc__lede{font-size:.95rem}
 html.embed .layout{display:block;margin-top:22px}
 html.embed .prose,html.embed .doc__head{max-width:none}
 html.embed [id]{scroll-margin-top:14px}
+
+/* ── embed 목차 ── 앱 시트에서도 조문으로 건너뛸 수 있어야 한다(FEV-366 후속).
+   처음 embed를 만들 때 `.toc`를 크롬으로 보고 함께 껐는데, 목차는 크롬이 아니라 **본문 탐색**이다.
+   처리방침 14조·약관 23조를 목차 없이 세로로만 훑게 두면 원하는 조항에 닿을 방법이 없다.
+   개인정보 처리방침 작성지침(개인정보보호위원회, 2025.4)도 「목차 + 하이퍼링크로 조항 이동」을
+   권장하고, 국내 주요 서비스 대부분이 앵커 목차를 둔다. ── */
+html.embed .toc{position:static;margin-bottom:22px;background:rgba(127,127,127,.06)}
+/* **시트에서는 항상 접힌 채로 시작한다.** 아래 JS의 넓은 화면 판정(900px)은 iPad 시트에서 참이
+   될 수 있는데, 그러면 목차가 펼쳐진 채로 본문 위를 덮는다 — 그쪽은 sticky 사이드바를 전제한
+   레이아웃이고 시트에는 그 가로 폭이 없다. */
+html.embed .toc>summary{display:flex}
+
+/* ── 조문 경계 ── 「한 줄로 쭉 나열돼 보인다」의 절반은 스크롤 길이가 아니라 **경계가 안 보이는**
+   것이다. 작성지침은 「중요 사항·제목은 본문보다 최소 20% 이상 크게」라는 드문 정량 기준을 주는데,
+   390pt 폰에서 본문 0.955rem 대비 조문 제목이 1.06rem — **+11%로 그 선 아래였다.**
+   `.art__no`(제N조)는 아예 본문보다 작았다. 넓은 화면은 vw 항이 커져 이미 기준을 넘으므로
+   embed에서만 올린다. ── */
+html.embed .art{font-size:1.16rem}          /* 본문 0.955rem 대비 +21% */
+html.embed .art__no{font-size:12.5px}
+/* 구분선 하나가 목차만큼 체감이 크다 — 지침의 「굵기·색상으로 구분」 대안에도 맞는다.
+   첫 조문에는 걸지 않는다(전문 바로 아래라 이미 경계가 있다). */
+html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px solid var(--line)}
+
 /* 라이트 — 앱이 라이트면 WKWebView 도 라이트를 알린다. 어두운 바탕용 색을 전부 뒤집는다 */
 @media(prefers-color-scheme:light){
   html.embed{--bg:#fff;--bg-2:#fff;--ink:#171717;--copy:#3d3d3d;--muted:#5a5a5a;--line:rgba(0,0,0,.1);
@@ -822,12 +845,31 @@ html.embed [id]{scroll-margin-top:14px}
   // 좁은 화면에서는 목차가 접혀 있어야 한다. JS가 없으면 펼쳐진 채로 두는 편이 안전해서
   // 마크업은 open으로 두고, 접는 일만 여기서 한다
   const wide = matchMedia("(min-width:900px)");
-  const sync = () => { toc.open = wide.matches; };
+  // embed(앱 시트)는 폭이 넓어도 사이드바 레이아웃이 아니다 — 늘 접어 둔다.
+  const inSheet = document.documentElement.classList.contains("embed");
+  const sync = () => { toc.open = wide.matches && !inSheet; };
   sync();
   wide.addEventListener("change", sync);
   toc.querySelectorAll("a").forEach((a) => {
     a.addEventListener("click", () => { if (!wide.matches) toc.open = false; });
   });
+
+  // **시트에서는 목차 점프가 히스토리를 늘리면 안 된다.** 앵커 링크는 WKWebView의 back-forward
+  // list에 항목을 쌓는데, 시트는 뒤로 스와이프와 「뒤로」 버튼이 `canGoBack`을 읽는다 — 목차를
+  // 몇 번 누르면 그 둘이 **문서가 아니라 스크롤 위치**로 되돌아가고, 사용자에게는 「뒤로가 안
+  // 먹는」 화면이 된다. `replaceState`라 주소는 남고 히스토리는 그대로다.
+  // 웹(비-embed)은 손대지 않는다 — 브라우저 뒤로가기가 앵커를 되짚는 건 정상 동작이다.
+  if (document.documentElement.classList.contains("embed")) {
+    toc.addEventListener("click", (e) => {
+      const a = e.target.closest("a[href^='#']");
+      if (!a) return;
+      e.preventDefault();
+      const href = a.getAttribute("href");
+      document.getElementById(href.slice(1))?.scrollIntoView({ block: "start" });
+      history.replaceState(null, "", href);
+      toc.open = false;
+    });
+  }
 
   const heads = [...document.querySelectorAll(".prose section[id]")];
   const links = new Map();
