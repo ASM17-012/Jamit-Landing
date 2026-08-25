@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<!-- viewport-fit=cover는 index.html에 없고 privacy.html·terms.html이 쓴다. 이 페이지는 그쪽을 따른다 —
+     초대 링크는 거의 전부 노치 기기의 인앱 브라우저에서 열린다.
+     인과는 이 순서다: cover가 없으면 브라우저가 레이아웃 뷰포트를 안전영역 안쪽으로 잡아 주고
+     env(safe-area-inset-*)는 0이 된다(그게 정상이자 안전한 상태다). cover를 켜서 뷰포트를
+     노치 아래까지 넓혔기 때문에 --edge가 env()로 그만큼을 되돌려 주는 것이다.
+     그 env() 항을 지우면 가로 모드에서 상단 바 좌우 끝 요소(로고·nav)가 노치에 물린다 —
+     가운데 선 카드는 폭 520px이라 거기까지 가지 않는다 -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>스페이스 초대 — JAMIT</title>
+<meta name="description" content="JAMIT 스페이스 초대 링크입니다. 초대 코드로 앱에서 들어가면 그 스페이스의 합주만 따로 볼 수 있습니다.">
+<!-- 색인은 막는다. 이 주소는 1:1로 전달되는 초대장이라 검색 결과에서 만날 일이 없고,
+     코드 없이 열리는 /s/ 는 안내 문구뿐이라 색인돼 봐야 정본(jamit.kr)의 순위만 나눠 먹는다.
+     canonical은 코드를 뗀 주소로 둔다 — ?code= 는 utm_ 과 같은 꼬리다 -->
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://jamit.kr/s/">
+<meta name="theme-color" content="#ecedf1">
+
+<!-- OG는 스페이스마다 다르게 만들 수 없다. 정적 호스팅이라 서버가 코드를 읽고 태그를
+     갈아 끼울 수 없고, 카카오·인스타 크롤러는 JS를 실행하지 않는다 —
+     JS로 태그를 바꿔 봐야 크롤러가 보는 건 원본 HTML 그대로다.
+     그래서 문구 한 벌만 두고, 코드는 사람이 눌러 들어온 뒤에 보여 준다.
+     이미지는 메인과 같은 카드를 쓴다. 절대 주소여야 한다 — 카드를 읽는 쪽은 남의 서버다 -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="JAMIT">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://jamit.kr/s/">
+<meta property="og:title" content="JAMIT 스페이스에 초대받았습니다">
+<meta property="og:description" content="초대 코드로 들어가면 이 스페이스의 합주만 따로 볼 수 있습니다. 링크를 눌러 앱에서 참여하세요.">
+<meta property="og:image" content="https://jamit.kr/assets/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="JAMIT — 나만의 연주가 우리의 합주로. 앱 홈 화면과 녹화 화면.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" as="font" type="font/woff2" href="../assets/fonts/jetbrains-mono-latin.woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/pretendard-subset.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23ecedf1"/><rect x="3" y="3" width="26" height="26" fill="none" stroke="%231a1f2b" stroke-width="2"/><rect x="9" y="13" width="3" height="6" fill="%231a1f2b"/><rect x="15" y="8" width="3" height="16" fill="%234c8df6"/><rect x="21" y="11" width="3" height="10" fill="%231a1f2b"/></svg>'>
+
+<!-- ══════════════════════════════════════════════════════════
+     초대 코드 판정 — <style>보다 앞, head 안에서 돈다.
+     privacy.html의 ?embed=1 처리와 같은 이유다: 상태를 나타내는 class가 첫 그리기 전에
+     붙어야 "초대 코드를 읽지 못했습니다"가 한 프레임 번쩍였다 사라지는 일이 없다.
+     여기서는 DOM을 만지지 않는다(아직 없다) — 판정만 하고 글자 채우기는 아래에서 한다.
+     ══════════════════════════════════════════════════════════ -->
+<script>
+(() => {
+  /* ════ 앱 설치 주소 — 바꿀 곳은 여기 한 줄뿐이다 ════
+     App Store 출시 전이라 TestFlight 자리표시자다. 출시하면 App Store 주소로 교체할 것.
+     ⚠️ 지금 이 주소는 실제로 열리지 않는다 */
+  const INSTALL_URL = "https://testflight.apple.com/join/XXXXXXXX";
+
+  /* 코드는 쿼리스트링으로 받는다. /s/A3K9XM2P 같은 경로 세그먼트는 GitHub Pages가 못 준다 —
+     rewrite가 없어서 그 주소는 그냥 404다. 해시도 함께 받는다: 링크를 손으로 고쳐 보내는
+     사람이 있고, 해시는 서버·리퍼러에 남지 않아 받아 두면 손해가 없다.
+     ??가 아니라 ||인 이유: get은 키가 없으면 null, "?code=" 처럼 비어 있으면 ""를 주는데
+     ??는 그 ""를 값으로 인정해 해시까지 못 간다 */
+  const raw = new URLSearchParams(location.search).get("code") || location.hash.slice(1);
+  /* 단톡에서 손으로 옮겨 적으면 소문자·앞뒤 공백이 섞인다. 그건 사람 실수지 틀린 코드가 아니다 */
+  const code = (raw || "").trim().toUpperCase();
+  /* 서버가 쓰는 문자 집합은 혼동 문자(I O L 0 1)를 뺀 31자지만, 여기서는 대문자+숫자 8자까지만 본다.
+     집합을 그대로 베껴 두면 나중에 서버가 집합을 넓혔을 때 멀쩡한 초대가 이 페이지에서만
+     "잘못된 링크"가 된다. 형식 검사는 오타를 거르는 자리고, 진짜 판정은 앱이 서버에 물어본다 */
+  const ok = /^[A-Z0-9]{8}$/.test(code);
+  if (ok) document.documentElement.classList.add("has-code");
+
+  addEventListener("DOMContentLoaded", () => {
+    /* 설치 버튼은 코드와 무관하게 늘 채운다. 코드가 틀렸을 때 버튼째 감추는 건 화면의 결정이고,
+       그때도 href가 비어 있으면 안 된다 */
+    document.getElementById("install").href = INSTALL_URL;
+    if (!ok) return;
+    document.getElementById("code").textContent = code;
+    /* 자동으로 앱을 열지 않는다. 카카오 인앱 브라우저는 사용자가 누르지 않은 스킴 이동을
+       막거나 "페이지를 열 수 없습니다" 경고를 띄우고, 그 화면에서 사람은 뒤로 가 버린다 */
+    document.getElementById("open").href = "jamit://space/join?code=" + code;
+  });
+})();
+</script>
+
+<!-- Microsoft Clarity를 이 페이지에는 넣지 않는다(index.html에는 있다. 태그가 든 파일은 거기 하나뿐이다).
+     초대 코드는 이 스페이스의 유일한 자격증명이다 — POST /spaces/join은 승인 절차 없이 멱등이라
+     여덟 자를 아는 사람은 그 순간 멤버가 되고 격리해 둔 글·트랙·숏폼을 전부 본다.
+     그런데 코드는 URL 쿼리스트링과 화면 양쪽에 그대로 있고, Clarity는 페이지를 URL로 집계하고
+     화면을 리플레이로 남긴다. 마스킹이나 replaceState로는 못 막는다 — 태그가 async라
+     첫 비콘이 원래 URL을 싣고 먼저 나갈 수 있다. 확실한 방법은 태그를 안 넣는 것뿐이다.
+     privacy.html이 「약관을 읽는 행위까지 기록할 이유가 없다」며 문서 페이지를 뺀 것과 같은 판단이다.
+     넣지 않으므로 쿠키도 생기지 않는다 — 푸터에 쿠키 각주가 없는 이유다 -->
+
+<style>
+/* 폰트 다섯 벌은 index.html에서 그대로 가져왔다. 경로만 한 단계 올라간다(../assets/…) —
+   이 파일은 /s/ 안에 있다. 상대 경로인 이유는 file://로 이 파일을 바로 열어 볼 때다:
+   절대 경로(/assets/…)는 file:///assets/… 로 풀려 폰트가 전부 404가 된다.
+   (헤더·푸터의 내부 링크만 "/"다 — 그쪽은 루트 배포된 프로덕션 기준이고, 프리뷰에서
+    눌러 볼 일이 없어 그대로 뒀다. 자산과 규칙이 갈리는 건 알고 두는 것이다) */
+@font-face{
+  font-family:"Pretendard";
+  src:url("../assets/fonts/pretendard-subset.woff2") format("woff2");
+  font-weight:400 800;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"MonoEn";
+  font-weight:100 500;
+  src:local("SFMono-Regular"),local("SF Mono Regular"),local("Menlo-Regular"),
+      url("../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-display:swap;
+  unicode-range:U+0030-0039, U+0041-005A, U+0061-007A;
+}
+@font-face{
+  font-family:"MonoEn";
+  font-weight:600 900;
+  src:local("SFMono-Bold"),local("SF Mono Bold"),local("Menlo-Bold"),
+      url("../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-display:swap;
+  unicode-range:U+0030-0039, U+0041-005A, U+0061-007A;
+}
+@font-face{
+  font-family:"MonoAll";
+  font-weight:100 500;
+  src:local("SFMono-Regular"),local("SF Mono Regular"),local("Menlo-Regular"),
+      url("../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-display:swap;
+}
+@font-face{
+  font-family:"MonoAll";
+  font-weight:600 900;
+  src:local("SFMono-Bold"),local("SF Mono Bold"),local("Menlo-Bold"),
+      url("../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-display:swap;
+}
+:root{
+  --paper:#ecedf1;
+  --paper-2:#dfe1e8;
+  --cream:#f7f8fb;
+  --ink:#1a1f2b;              /* 종이 대비 14.1:1 */
+  --ink-2:#4b5468;            /* 6.5:1 */
+  --mute:#5f6779;             /* 4.7:1 — 모노 라벨의 하한 */
+  --hot:#3a5fd1;              /* 4.8:1 (종이) */
+  --hot-2:#304a95;            /* 작은 글자용 7.1:1 */
+  --mark:#bfd6ff;
+  --line-soft:rgba(26,31,43,.16);
+  /* clamp 부분은 메인과 같은 값(18/5vw/44)을 유지한다 — 좌우 여백이 메인과 어긋나면
+     같은 사이트로 안 보인다. 노치 기기 가로 모드에서만 safe-area가 이겨서 더 벌어진다 */
+  --edge:max(clamp(18px,5vw,44px),env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));
+  --sans:"MonoEn","Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  --mono:"MonoAll",ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,"Pretendard",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--paper)}
+body{
+  font-family:var(--sans);color:var(--ink);line-height:1.6;word-break:keep-all;
+  background:var(--paper);-webkit-font-smoothing:antialiased;overflow-x:clip;
+  /* 카드 하나짜리 페이지라 세로로 가운데 놓는다. min-height는 dvh가 아니라 100vh다 —
+     dvh는 인앱 브라우저 툴바가 접힐 때마다 값이 변해 카드가 위아래로 흔들린다 */
+  min-height:100vh;display:flex;flex-direction:column;
+}
+/* 종이 결. 이게 없으면 같은 색을 써도 다른 사이트로 보인다 */
+body::before{
+  content:"";position:fixed;inset:0;z-index:99;pointer-events:none;opacity:.5;mix-blend-mode:multiply;
+  background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3"/></filter><rect width="120" height="120" filter="url(%23n)" opacity="0.28"/></svg>');
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--hot);outline-offset:2px}
+img,svg{display:block}
+::selection{background:var(--mark);color:var(--ink)}
+.wrap{width:min(1180px,calc(100% - var(--edge)*2));margin-inline:auto}
+h1{font-weight:800;letter-spacing:-.035em;line-height:.94;text-wrap:balance}
+p{text-wrap:pretty}
+
+/* ════ 상단 바 ════ */
+/* 메인과 달리 sticky가 아니다. 화면 하나로 끝나는 페이지라 따라다닐 스크롤이 없고,
+   인앱 브라우저에서는 sticky 바가 툴바와 겹쳐 두 겹으로 보인다 */
+.top{background:var(--paper);border-bottom:1px solid var(--ink)}
+.top__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 0}
+.top__id{display:flex;align-items:center;gap:9px;font-weight:800;font-size:18px;letter-spacing:-.03em}
+.top__nav a{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
+.top__nav a:hover{color:var(--hot)}
+
+/* ════ 버튼 ════ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 22px;
+  font:inherit;font-size:15px;font-weight:800;letter-spacing:-.01em;
+  background:var(--ink);color:var(--cream);border:1px solid var(--ink);cursor:pointer;
+  box-shadow:6px 6px 0 var(--hot);transition:transform .12s,box-shadow .12s;
+}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--hot)}
+/* 초대 링크는 거의 전부 터치라 실제로 보이는 상태는 :hover가 아니라 이쪽이다 */
+.btn:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--hot)}
+/* 두 번째 버튼. 같은 무게로 두 개를 세우면 어느 쪽이 본 동작인지 사라진다 —
+   판을 비우고 그림자를 먹으로 돌려 한 단계 내린다(색은 그대로, 규칙도 그대로) */
+.btn--ghost{background:var(--cream);color:var(--ink);box-shadow:6px 6px 0 var(--ink)}
+.btn--ghost:hover{box-shadow:8px 8px 0 var(--ink)}
+.btn--ghost:active{box-shadow:2px 2px 0 var(--ink)}
+
+/* ══════════════════════════════════════════════════════════
+   초대장 — 합주실 벽에 붙은 전단지(.flyer)의 같은 규칙으로 짠다.
+   1px 먹 테두리 + 크림 바탕 + 블러 없는 오프셋 그림자.
+   기울이지는 않았다: 전단지는 그림이지만 이건 눌러야 하는 물건이라 기울면 잘못 눌린다
+   ══════════════════════════════════════════════════════════ */
+main{flex:1;display:grid;place-items:center;padding:clamp(38px,9vw,80px) 0}
+.inv{position:relative;width:min(520px,100%);margin-inline:auto;text-align:center;
+  background:var(--cream);border:1px solid var(--ink);box-shadow:10px 10px 0 var(--hot);
+  padding:clamp(28px,6vw,44px) clamp(20px,5vw,44px)}
+/* 압정. 이 페이지에서 둥근 건 이것 하나다 — 원은 "둥근 모서리"가 아니라 물건 모양이라 규칙을 안 깬다 */
+.inv__pin{position:absolute;top:-11px;left:50%;translate:-50% 0;width:22px;height:22px;border-radius:50%;
+  background:var(--hot);border:1px solid var(--ink);box-shadow:2px 3px 0 rgba(0,0,0,.35)}
+.inv__stamp{position:absolute;right:-14px;top:26px;rotate:12deg;padding:5px 10px;
+  border:2px solid var(--hot);color:var(--hot);background:var(--cream);
+  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em}
+.inv__k{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--mute)}
+.inv h1{margin-top:10px;font-size:clamp(1.7rem,6vw,2.5rem);line-height:1.06}
+.inv__lede{margin-top:14px;color:var(--ink-2);font-size:clamp(.95rem,1.3vw,1.05rem);line-height:1.65}
+
+/* 코드 — 이 페이지가 존재하는 이유. 8자가 320px 폭에서도 한 줄에 들어가야 한다.
+   모노 8자는 자간 포함 글자당 약 0.68em이라 11vw(320px에서 35px)면 폭 236px 안에 남는다.
+   user-select:all은 장식이 아니다 — 딥링크가 막히는 브라우저에서 사람이 코드를 손으로
+   옮겨 적어야 하는데, 길게 눌러 여덟 자를 정확히 집는 건 실패하기 쉽다 */
+.inv__code{display:block;margin-top:22px;padding:18px 10px;
+  border:1px solid var(--ink);background:var(--paper);
+  font-family:var(--mono);font-size:clamp(2rem,11vw,3.4rem);font-weight:700;
+  letter-spacing:.08em;line-height:1.1;user-select:all;-webkit-user-select:all}
+.inv__cta{margin-top:26px;display:grid;gap:14px}
+.inv__note{margin-top:18px;padding-top:14px;border-top:1px solid var(--line-soft);
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;line-height:1.9;color:var(--mute)}
+
+/* 상태 전환. 기본값이 "안내"인 것이 중요하다 — JS가 죽으면 코드도 못 읽은 것이므로
+   빈 카드가 아니라 안내가 남아야 한다. 성공했을 때만 JS가 has-code로 뒤집는다 */
+.inv__ok{display:none}
+.has-code .inv__ok{display:block}
+.has-code .inv__bad{display:none}
+
+/* ════ 푸터 ════ */
+footer{padding:26px 0 calc(40px + env(safe-area-inset-bottom,0px));
+  border-top:1px solid var(--ink);display:grid;gap:14px;justify-items:center;text-align:center}
+.foot__id{font-size:18px;font-weight:800;letter-spacing:-.03em;color:var(--ink)}
+.foot__t{display:block;margin-top:5px;font-size:12.5px;color:var(--ink-2)}
+.foot__b{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 22px}
+.foot__b a{font-size:13px;font-weight:700;color:var(--ink-2)}
+.foot__c{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--mute)}
+footer a:hover{color:var(--hot)}
+
+/* ══════════════════════════════════════════════════════════
+   폰에서의 타이포 — 위 규칙들보다 뒤에 와야 이긴다(명시도가 같다).
+   ① 제목 행간을 푼다: 한글은 받침이 아래로 내려와, 데스크톱에서 정한 1.06으로 두 줄이 되면
+      윗줄 받침이 아랫줄 글자에 닿는다.
+   ② 모노 라벨의 자간을 내린다: .14~.2em은 대문자 라틴을 위한 값이라 한글에 그대로 걸면
+      "비 공 개"처럼 낱글자로 흩어진다. 라틴이 섞인 줄도 있어 중간값(.07em)이다.
+      코드(.inv__code)는 예외다 — 순수 라틴·숫자라 자간이 넓어야 한 글자씩 읽힌다.
+      .inv__note도 이 목록에 없다 — 라벨이 아니라 읽는 문장이라 아래에서 따로 .02em을 준다.
+      (index.html의 .note도 같은 처리다. 양쪽 목록에 다 넣으면 뒤엣것에 덮여 죽은 선언이 된다)
+   ③ 본문은 clamp 최솟값보다 한 단계 키우고 행간을 벌린다
+   ══════════════════════════════════════════════════════════ */
+@media(max-width:860px){
+  h1{line-height:1.2;letter-spacing:-.015em}
+  .inv h1{line-height:1.2}
+  .inv__k,.inv__stamp,.top__nav a,.foot__c{letter-spacing:.07em}
+  .inv__lede{font-size:1rem;line-height:1.75}
+  .inv__note{font-size:12px;line-height:1.85;letter-spacing:.02em}
+  .foot__t{font-size:12.5px;line-height:1.75}
+  .foot__b a{font-size:13.5px}
+}
+/* 이 페이지는 처음부터 카드 하나를 가운데 세운 구조라 720px 이하의 전면 가운데 정렬
+   규칙(메인의 body{text-align:center})이 따로 필요 없다 — 이미 전부 가운데다 */
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="top__id" href="/">
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" fill="#1a1f2b"/>
+        <rect x="9" y="13" width="3" height="6" fill="#f7f8fb"/>
+        <rect x="15" y="8" width="3" height="16" fill="#4c8df6"/>
+        <rect x="21" y="11" width="3" height="10" fill="#f7f8fb"/>
+      </svg>
+      JAMIT
+    </a>
+    <nav class="top__nav"><a href="/">소개</a></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- ══════════ 초대장 ══════════ 코드가 읽혔을 때와 아닐 때, 두 벌이 한 카드 안에 있다 -->
+  <div class="inv">
+    <span class="inv__pin" aria-hidden="true"></span>
+    <span class="inv__stamp" aria-hidden="true">비공개</span>
+
+    <div class="inv__ok">
+      <p class="inv__k">스페이스 초대</p>
+      <h1>합주방에<br>초대받았습니다</h1>
+      <p class="inv__lede">이 스페이스의 모집 글과 합주는 멤버에게만 보입니다.<br>아래 코드로 들어가세요.</p>
+      <!-- 코드는 JS가 채운다. 정적 호스팅이라 서버가 넣어 줄 수 없다 -->
+      <strong class="inv__code" id="code">········</strong>
+      <div class="inv__cta">
+        <!-- href도 JS가 채운다. 코드가 없으면 이 블록 자체가 안 보이므로 빈 링크가 남지 않는다 -->
+        <a class="btn" id="open" href="#">앱에서 열기 <span aria-hidden="true">→</span></a>
+        <a class="btn btn--ghost" id="install" href="#">앱 설치하기</a>
+      </div>
+      <!-- 두 줄인 이유: 첫 줄은 iOS용 회복 경로다(다른 브라우저로 옮기면 스킴이 열린다).
+           둘째 줄은 안드로이드용이다 — 옮겨도 안 열린다. jamit:// 를 받는 앱이 아직 없고
+           설치 버튼도 TestFlight(iOS 전용)라 두 버튼이 다 죽는다. 이 페이지는 거의 전부
+           단톡에서 열리고 그중 절반은 안드로이드인데 지금까지 그 사실을 어디에도 안 적었다.
+           남는 경로는 코드를 손으로 옮겨 적는 것뿐이라(.inv__code의 user-select:all) 그리로 안내한다.
+           UA로 갈라 버튼을 감추지는 않는다 — 계약서 §5가 버튼 둘을 못박았고, 인앱 브라우저의
+           UA는 믿을 게 못 된다. 안드로이드가 출시되면 둘째 줄만 지우면 된다 -->
+      <p class="inv__note">앱이 열리지 않으면 카카오톡 오른쪽 위 ⋯ → 다른 브라우저로 열기<br>안드로이드는 아직 앱이 없어요 — 코드를 적어 두고 조금만 기다려 주세요</p>
+    </div>
+
+    <div class="inv__bad">
+      <p class="inv__k">스페이스 초대</p>
+      <h1>초대 코드를<br>읽지 못했습니다</h1>
+      <p class="inv__lede">받은 링크를 그대로 다시 눌러 주세요. 링크를 옮겨 적는 과정에서 주소 뒷부분이 잘리면 코드가 사라집니다.<br>앱을 이미 쓰고 있다면 스페이스 탭에서 초대 코드 여덟 자를 직접 넣어도 됩니다.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="wrap">
+  <div>
+    <span class="foot__id">JAMIT</span>
+    <span class="foot__t">각자의 연주가 하나의 합주가 되는 앱 · 2026년 9월 iOS · Android 출시 예정</span>
+  </div>
+  <nav class="foot__b">
+    <a href="/">소개</a><a href="/#faq">질문</a><a href="mailto:support@jamit.kr">문의</a>
+  </nav>
+  <span class="foot__c">© 2026 JAMIT · N° 001</span>
+</footer>
+
+</body>
+</html>
