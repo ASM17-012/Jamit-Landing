@@ -183,6 +183,9 @@ p{text-wrap:pretty}
 .top{position:sticky;top:0;z-index:60;background:var(--paper);border-bottom:1px solid var(--ink)}
 .top__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 0}
 .top__id{display:flex;align-items:center;gap:9px;font-weight:800;font-size:18px;letter-spacing:-.03em}
+/* 상단 마크는 **iOS 앱 아이콘 원본**이다(Assets.xcassets/AppIcon). 원본이 각진 사각형이라
+   둥근 모서리를 여기서 씌운다 — 22.5%가 애플의 스퀘어클에 가장 가깝다. */
+.top__mark{display:block;border-radius:22.5%}
 .top__nav{display:flex;align-items:center;gap:clamp(14px,2.4vw,28px)}
 .top__nav a{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
 .top__nav a:hover{color:var(--hot)}
@@ -805,12 +808,7 @@ footer a:hover{color:var(--hot)}
 <header class="top">
   <div class="wrap top__in">
     <a class="top__id" href="#top">
-      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
-        <rect width="32" height="32" fill="#1a1f2b"/>
-        <rect x="9" y="13" width="3" height="6" fill="#f7f8fb"/>
-        <rect x="15" y="8" width="3" height="16" fill="#4c8df6"/>
-        <rect x="21" y="11" width="3" height="10" fill="#f7f8fb"/>
-      </svg>
+      <img class="top__mark" src="assets/app-icon.png" width="28" height="28" alt="" decoding="async">
       JAMIT
     </a>
     <nav class="top__nav">

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>이용약관 — JamIT</title>
 <meta name="description" content="JamIT 이용약관 — 이용계약, 콘텐츠 권리, 합주 참여 동의, 신고와 이용제한.">
-<meta name="theme-color" content="#0a0c1c">
+<meta name="theme-color" content="#ecedf1">
 <!-- 앱 안 시트(FEV-389)는 이 문서를 `?embed=1`로 연다. class 는 **첫 그리기 전에** 붙어야 상단바가
      한 프레임 번쩍이고 사라지는 일이 없으므로 <style> 보다 앞, head 안에서 돈다. JS 가 없으면
      그냥 보통 페이지다 — 크롬만 다르고 본문은 한 벌이다. -->
@@ -36,29 +36,30 @@
    외부 요청 0. 폰트도 색도 전부 이 파일 안에 있다.
    ══════════════════════════════════════════════════════════ */
 :root{
-  --bg:#0a0c1c;
-  --bg-2:#141634;
-  --ink:#eef0fa;              /* 배경 대비 17:1 */
-  --copy:#a8b0cc;             /* 9.0:1 — 본문 */
-  --muted:#8f98b5;            /* 6.8:1 — 작은 글씨도 AA */
-  --line:rgba(255,255,255,.12);
-  --c-cyan:#98cff6;
-  --c-violet:#dd8bf4;
-  --accent:#b9a3f7;
-  /* 문서마다 색 하나를 가져간다 — 약관은 첫 글자 J의 청록, 처리방침은 마지막 T의 보라.
-     같은 팔레트 안에서 두 문서가 서로 구분된다 */
-  --doc:#98cff6;
-  --doc-soft:rgba(152,207,246,.5);
-  /* 미확정 표식 — index의 voice--b(호박색)와 같은 계열.
-     "아직 안 끝났다"는 신호는 이 페이지에서 한 가지 색으로만 말한다 */
-  --warn:#fcd34d;
-  --warn-soft:rgba(245,158,11,.13);
-  --warn-line:rgba(245,158,11,.34);
-  --mark:#fde047;
+  /* 색·서체는 랜딩 본문(index.html)의 언어를 그대로 따른다 — 법적 문서만 세대가 달라
+     보이던 것을 맞춘 것이다. 순백·순검정은 쓰지 않는다(눈부심·대비 피로). */
+  --bg:#ecedf1;               /* 차가운 회색 종이 */
+  --bg-rgb:236,237,241;       /* 반투명 상단바·스크림이 쓰는 채널 */
+  --bg-2:#f7f8fb;
+  --ink:#1a1f2b;              /* 남빛 먹. 종이 대비 14.1:1 */
+  --copy:#4b5468;             /* 6.5:1 — 본문 */
+  --muted:#5f6779;            /* 4.7:1 — 작은 글씨도 AA */
+  /* 면 위에 얹는 옅은 색조. **채널을 토큰으로 둔 이유**는 다크로 뒤집을 때
+     이 한 줄만 바꾸면 rgba(...)를 쓰는 자리가 전부 따라오기 때문이다. */
+  --tint:26,31,43;
+  --line:rgba(var(--tint),.16);
+  /* 강조는 인디고 하나다. 예전에는 문서마다 색을 달리 가져갔는데(약관 청록·처리방침 보라)
+     랜딩이 "강조는 하나로만"으로 정리되면서 여기도 맞춘다. */
+  --accent:#3a5fd1;
+  --doc:#3a5fd1;
+  --doc-soft:rgba(58,95,209,.45);
+  --warn:#8a6100;
+  --warn-soft:rgba(245,158,11,.10);
+  --warn-line:rgba(180,83,9,.34);
+  --mark:#bfd6ff;             /* 형광펜 */
   --r:16px; --r-lg:24px;
   --topbar:64px;
-  --strip:0px;                /* 초안 띠가 있던 자리 — 정식 시행(2026-08-25)과 함께 걷어냈다.
-                                 변수는 남긴다: main 여백과 앵커 스크롤 위치가 이 값을 쓴다 */
+  --strip:0px;                /* 초안 띠가 있던 자리 — 변수는 남긴다: main 여백과 앵커 스크롤이 쓴다 */
   --edge:max(clamp(20px,5vw,40px),env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));
   --sans:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
   --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
@@ -76,7 +77,7 @@ body{
    화면에 고정된 판을 뒤에 깔아 index와 같은 깊이를 유지한다 */
 body::before{content:"";position:fixed;inset:0;z-index:-1;
   background:linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 100%)}
-::selection{background:var(--c-violet);color:#0a0c1c}
+::selection{background:var(--mark);color:var(--ink)}
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
 h1,h2,h3{letter-spacing:-.02em;font-weight:750;line-height:1.15;text-wrap:balance}
@@ -89,18 +90,21 @@ p{text-wrap:pretty}
 
 /* ════ 상단 바 ════ */
 .top{position:fixed;top:0;left:0;right:0;z-index:60;
-  background:rgba(10,12,28,.82);backdrop-filter:blur(18px) saturate(180%)}
+  background:rgba(var(--bg-rgb),.82);backdrop-filter:blur(18px) saturate(180%)}
 .top::after{content:"";position:absolute;left:0;right:0;top:100%;height:22px;pointer-events:none;
-  background:linear-gradient(rgba(10,12,28,.5),rgba(10,12,28,0));
+  background:linear-gradient(rgba(var(--bg-rgb),.5),rgba(var(--bg-rgb),0));
   opacity:0;transition:opacity .3s}
 body.scrolled .top::after{opacity:1}
 .top__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0;min-height:var(--topbar)}
 .top__id{display:flex;align-items:center;gap:9px;min-height:44px;cursor:pointer;
   font-weight:750;font-size:17px;letter-spacing:-.02em;transition:opacity .18s}
+/* 상단 마크는 **iOS 앱 아이콘 원본**이다(Assets.xcassets/AppIcon). 원본이 각진 사각형이라
+   둥근 모서리를 여기서 씌운다 — 22.5%가 애플의 스퀘어클에 가장 가깝다. */
+.top__mark{display:block;border-radius:22.5%}
 .top__nav{display:flex;align-items:center;gap:2px}
 .top__nav a{padding:0 12px;line-height:44px;border-radius:999px;font-size:13.5px;font-weight:600;
   color:var(--muted);white-space:nowrap;transition:color .18s,background .18s}
-.top__nav a[aria-current="page"]{color:var(--ink);background:rgba(255,255,255,.07)}
+.top__nav a[aria-current="page"]{color:var(--ink);background:rgba(var(--tint),.07)}
 @media(max-width:560px){
   .top__nav a{padding:0 9px;font-size:12.5px}
   .top__id{font-size:15.5px;gap:7px}
@@ -114,7 +118,7 @@ body.scrolled .top::after{opacity:1}
   background:rgba(245,158,11,.16);border-top:1px solid var(--warn-line);border-bottom:1px solid var(--warn-line);
   color:var(--warn);font-size:11.5px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
 .strip b{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;font-weight:700;
-  padding:3px 7px;border-radius:5px;background:var(--warn);color:#3b2600}
+  padding:3px 7px;border-radius:5px;background:var(--warn);color:var(--bg-2)}
 
 /* ════ 문서 ════ */
 main{padding-top:calc(var(--topbar) + var(--strip))}
@@ -140,7 +144,7 @@ main{padding-top:calc(var(--topbar) + var(--strip))}
 @media(min-width:900px){
   .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:clamp(32px,4.5vw,64px);align-items:start}
 }
-.toc{margin-bottom:30px;border:1px solid var(--line);border-radius:var(--r);background:rgba(20,22,52,.5)}
+.toc{margin-bottom:30px;border:1px solid var(--line);border-radius:var(--r);background:rgba(var(--tint),.04)}
 .toc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;
   gap:16px;padding:0 18px;min-height:52px;font-size:.95rem;font-weight:650}
 .toc>summary::-webkit-details-marker{display:none}
@@ -152,8 +156,8 @@ main{padding-top:calc(var(--topbar) + var(--strip))}
 .toc a{display:block;padding:11px 10px;border-radius:8px;font-size:.88rem;line-height:1.45;
   color:var(--muted);border-left:2px solid transparent;
   transition:color .18s,background .18s,border-color .18s}
-.toc a .n{font-family:var(--mono);font-size:.82em;color:rgba(255,255,255,.34);margin-right:8px}
-.toc a.on{color:var(--ink);background:rgba(255,255,255,.05);border-left-color:var(--doc)}
+.toc a .n{font-family:var(--mono);font-size:.82em;color:rgba(var(--tint),.34);margin-right:8px}
+.toc a.on{color:var(--ink);background:rgba(var(--tint),.05);border-left-color:var(--doc)}
 .toc a.on .n{color:var(--doc)}
 .toc__chap>a{color:var(--copy);font-weight:700;font-size:.87rem;margin-top:8px}
 .toc__chap:first-child>a{margin-top:0}
@@ -165,7 +169,7 @@ main{padding-top:calc(var(--topbar) + var(--strip))}
   .toc>summary{display:none}
   .toc__list{position:relative;padding:0 6px 0 0;
     max-height:calc(100vh - var(--topbar) - var(--strip) - 60px);overflow-y:auto;
-    scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.18) transparent}
+    scrollbar-width:thin;scrollbar-color:rgba(var(--tint),.18) transparent}
   .toc a{padding:6px 10px}
   .toc__chap>a{margin-top:12px}
 }
@@ -186,7 +190,7 @@ main{padding-top:calc(var(--topbar) + var(--strip))}
   font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:var(--doc);font-weight:600}
 /* 조문 하나를 가리켜 링크로 보낼 수 있어야 한다 — "제14조 제4항 봐" 가 되는 문서다 */
 .art__link{margin-left:8px;font-family:var(--mono);font-weight:400;font-size:.78em;
-  color:rgba(255,255,255,.24);opacity:0;transition:opacity .18s,color .18s}
+  color:rgba(var(--tint),.24);opacity:0;transition:opacity .18s,color .18s}
 section:hover .art__link,.art__link:focus-visible{opacity:1}
 @media(hover:none){.art__link{opacity:.4}}
 
@@ -221,7 +225,7 @@ section:hover .art__link,.art__link:focus-visible{opacity:1}
 .also__list{display:grid;gap:12px;margin-top:14px}
 @media(min-width:640px){.also__list{grid-template-columns:1fr 1fr}}
 .also a{display:block;padding:16px 18px;border:1px solid var(--line);border-radius:var(--r);
-  background:rgba(20,22,52,.5);transition:border-color .18s,background .18s,transform .18s}
+  background:rgba(var(--tint),.04);transition:border-color .18s,background .18s,transform .18s}
 .also b{display:block;font-size:.98rem;letter-spacing:-.02em}
 .also span{display:block;margin-top:5px;font-size:.86rem;color:var(--muted)}
 
@@ -235,18 +239,18 @@ footer nav a{line-height:44px;padding-inline:12px;transition:color .18s}
 @media(hover:hover){
   .top__id:hover{opacity:.72}
   .top__nav a:hover,footer nav a:hover{color:var(--ink)}
-  .toc a:hover{color:var(--ink);background:rgba(255,255,255,.05)}
+  .toc a:hover{color:var(--ink);background:rgba(var(--tint),.05)}
   .art__link:hover{color:var(--doc)}
   .ref:hover{border-bottom-color:var(--doc)}
   .x:hover{text-decoration-color:var(--doc)}
-  .also a:hover{border-color:rgba(255,255,255,.24);background:rgba(28,32,68,.7);transform:translateY(-1px)}
+  .also a:hover{border-color:rgba(var(--tint),.24);background:var(--bg-2);transform:translateY(-1px)}
 }
 .top__id:active{opacity:.6}
 .also a:active{transform:scale(.99)}
 .toc a:active,.top__nav a:active,footer nav a:active{color:var(--doc)}
 
 @media(prefers-reduced-transparency:reduce){
-  .top{backdrop-filter:none;background:rgba(10,12,28,.97)}
+  .top{backdrop-filter:none;background:rgba(var(--bg-rgb),.97)}
   .toc,.also a{background:rgba(18,20,46,.98)}
 }
 @media(prefers-reduced-motion:reduce){
@@ -277,7 +281,8 @@ footer nav a{line-height:44px;padding-inline:12px;transition:color .18s}
    시트에는 이미 앱 헤더(문서 제목·닫기)가 있으니 이 페이지의 상단바·목차·바닥글은 **두 번째 크롬**이다.
    색은 앱 표면(AppColor.bg — 라이트 #fff / 다크 #131313)에 맞춘다: 시트 안에서 페이지가 '다른 곳'으로
    보이는 순간 '링크를 연' 느낌이 되돌아온다. 인쇄 규칙과 같은 발상이라 숨기는 목록도 비슷하다. ── */
-html.embed{scroll-behavior:auto;--bg:#131313;--bg-2:#131313;--line:rgba(255,255,255,.1)}
+/* 페이지 기본이 종이라 시트도 그대로 라이트다 — 뒤집는 것은 아래 다크 분기다. */
+html.embed{scroll-behavior:auto}
 html.embed body::before{background:var(--bg)}
 html.embed .top,html.embed .also,html.embed footer,
 html.embed .eyebrow,html.embed .art__link{display:none}
@@ -311,20 +316,18 @@ html.embed .art__no{font-size:12.5px}
    첫 조문에는 걸지 않는다(전문 바로 아래라 이미 경계가 있다). */
 html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px solid var(--line)}
 
-/* 라이트 — 앱이 라이트면 WKWebView 도 라이트를 알린다. 어두운 바탕용 색을 전부 뒤집는다 */
-@media(prefers-color-scheme:light){
-  html.embed{--bg:#fff;--bg-2:#fff;--ink:#171717;--copy:#3d3d3d;--muted:#5a5a5a;--line:rgba(0,0,0,.1);
-    --accent:#6d28d9;--doc:#0369a1;--doc-soft:rgba(3,105,161,.45);
-    --warn:#b45309;--warn-soft:#fffbeb;--warn-line:rgba(217,119,6,.45);--mark:#fde047}
-  html.embed ::selection{background:#ddd6fe;color:#171717}
-  html.embed .tw{background:rgba(0,0,0,.02)}
-  html.embed thead th{background:rgba(0,0,0,.04)}
-  html.embed .banner b{color:#92400e}
-  /* 배너 경고 아이콘은 SVG 속성에 어두운 바탕용 노랑이 박혀 있다 — 흰 바탕에선 안 보인다 */
-  html.embed .banner svg path{stroke:#b45309}
-  html.embed .banner svg circle{fill:#b45309}
-  /* 표 가로 스크롤바 썸도 흰-반투명이라 흰 바탕에 묻힌다 */
-  html.embed .tw{scrollbar-color:rgba(0,0,0,.25) transparent}
+/* ── 앱 시트의 다크 ── 페이지 기본이 종이(라이트)라, **뒤집는 쪽이 다크다.**
+   예전에는 반대였다(기본 다크 + 라이트 분기) — 랜딩이 종이 바탕으로 가면서 방향이 바뀌었다.
+   값은 앱 표면을 따른다(`AppColor.bg` 다크 #131313). */
+@media(prefers-color-scheme:dark){
+  html.embed{--bg:#131313;--bg-rgb:19,19,19;--bg-2:#1d1d1d;--ink:#f5f5f5;--copy:#afafaf;--muted:#7e7e7e;
+    --tint:255,255,255;--line:rgba(255,255,255,.1);
+    /* 인디고 원색은 어두운 면에서 3.4:1로 모자라다 — 랜딩이 어두운 면용으로 잡아 둔 파랑을 쓴다 */
+    --accent:#4c8df6;--doc:#4c8df6;--doc-soft:rgba(76,141,246,.5);
+    --warn:#da9e2f;--warn-soft:rgba(245,158,11,.13);--warn-line:rgba(245,158,11,.34);--mark:#fde047}
+  html.embed ::selection{background:#4c8df6;color:#131313}
+  html.embed .banner svg path{stroke:#da9e2f}
+  html.embed .banner svg circle{fill:#da9e2f}
 }
 </style>
 </head>
@@ -333,13 +336,8 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
 <header class="top">
   <div class="wrap top__in">
     <a class="top__id" href="index.html">
-      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
-        <rect width="32" height="32" rx="7" fill="#0d0f24"/>
-        <rect x="8" y="13" width="3" height="6" rx="1.5" fill="#98cff6"/>
-        <rect x="14" y="8" width="3" height="16" rx="1.5" fill="#baadf5"/>
-        <rect x="20" y="11" width="3" height="10" rx="1.5" fill="#dd8bf4"/>
-      </svg>
-      JamIT
+      <img class="top__mark" src="assets/app-icon.png" width="28" height="28" alt="" decoding="async">
+      JAMIT
     </a>
     <nav class="top__nav" aria-label="법적 고지">
       <a href="terms.html" aria-current="page">이용약관</a>
