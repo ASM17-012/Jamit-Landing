@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<!-- viewport-fit=cover — /s/index.html과 같은 이유다: 공유 링크는 거의 전부 노치 기기의
+     인앱 브라우저에서 열린다. 인과는 그쪽 주석이 정본이다 -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>잇츠 공유 — JAMIT</title>
+<meta name="description" content="JAMIT 잇츠 공유 링크입니다. 링크를 눌러 앱에서 이 합주 영상을 볼 수 있습니다.">
+<!-- 색인은 막는다 — /s/와 같은 판단: 1:1로 전달되는 링크라 검색에서 만날 일이 없고,
+     id 없이 열리는 /v/ 는 안내 문구뿐이다. canonical은 쿼리를 뗀 주소다 -->
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://jamit.kr/v/">
+<meta name="theme-color" content="#ecedf1">
+
+<!-- OG는 잇츠마다 다르게 만들 수 없다 — /s/와 같은 제약(정적 호스팅 + 크롤러는 JS를 안 돌린다).
+     문구 한 벌만 두고, 썸네일은 사람이 눌러 들어온 뒤에 API로 받아 그린다 -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="JAMIT">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://jamit.kr/v/">
+<meta property="og:title" content="JAMIT 잇츠를 공유받았습니다">
+<meta property="og:description" content="여러 사람의 연주가 하나로 합쳐진 합주 영상이에요. 링크를 눌러 앱에서 보세요.">
+<meta property="og:image" content="https://jamit.kr/assets/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="JAMIT — 나만의 연주가 우리의 합주로. 앱 홈 화면과 녹화 화면.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" as="font" type="font/woff2" href="../assets/fonts/jetbrains-mono-latin.woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/pretendard-subset.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23ecedf1"/><rect x="3" y="3" width="26" height="26" fill="none" stroke="%231a1f2b" stroke-width="2"/><rect x="9" y="13" width="3" height="6" fill="%231a1f2b"/><rect x="15" y="8" width="3" height="16" fill="%234c8df6"/><rect x="21" y="11" width="3" height="10" fill="%231a1f2b"/></svg>'>
+
+<!-- ══════════════════════════════════════════════════════════
+     링크 판정 — <style>보다 앞, head 안에서 돈다. /s/와 같은 이유다:
+     상태 class가 첫 그리기 전에 붙어야 오류 문구가 번쩍이지 않는다.
+     여기서는 판정만 하고 DOM은 아래 DOMContentLoaded에서 만진다.
+     ══════════════════════════════════════════════════════════ -->
+<script>
+(() => {
+  /* ════ 바꿀 곳은 이 세 줄뿐이다 ════
+     INSTALL_URL — App Store 출시 전이라 TestFlight 자리표시자다(/s/와 같은 상태).
+                   ⚠️ 지금 이 주소는 실제로 열리지 않는다.
+     API_BASE    — 썸네일을 주는 백엔드. 앱(TestFlight)이 스테이징을 보는 동안은 여기도
+                   스테이징이어야 한다 — 링크의 id는 앱이 보는 DB의 것이라, 운영을 물으면
+                   맞는 id가 전부 404로 떨어진다. 앱이 운영으로 넘어가는 날 함께 바꾼다.
+     SCHEME_BASE — 앱이 받는 딥링크. iOS ShortformShareRoute가 이 모양을 파싱한다 —
+                   바꾸려면 그쪽과 함께 바꿔야 한다(주소의 정본은 앱 쪽 주석 참조) */
+  const INSTALL_URL = "https://testflight.apple.com/join/XXXXXXXX";
+  const API_BASE = "https://api-stg.jamit.kr";
+  const SCHEME_BASE = "jamit://shortform/watch?id=";
+
+  /* id는 쿼리스트링으로 받는다 — /v/123 경로 세그먼트는 GitHub Pages가 못 준다(/s/ 주석).
+     숫자만 통과시킨다: DB 순번 id라 형식이 이것뿐이고, 여기서 거르면 아래에서 URL에 그대로
+     이어 붙여도 안전하다. 상한 18자리는 Long 범위 안이면서 손상된 링크를 거르는 값이다 */
+  const raw = (new URLSearchParams(location.search).get("id") || "").trim();
+  const ok = /^\d{1,18}$/.test(raw);
+  const id = ok ? raw : null;
+
+  /* 공유자 이름 — 서버는 공유자가 누군지 모르므로(무인증 미리보기의 응답은 썸네일뿐)
+     앱이 링크에 실어 보낸다. 화면에 textContent로만 넣으므로 값이 무엇이든 스크립트가 되지
+     않지만, 길이만은 여기서 자른다 — 손으로 고친 링크가 문장 하나를 통째로 실어 올 수 있다.
+     자르기는 글자 단위다(스프레드) — 코드유닛으로 자르면 이모지 한가운데가 잘려 끝이 �가 된다 */
+  const from = [...(new URLSearchParams(location.search).get("from") || "").trim()]
+    .slice(0, 20).join("");
+
+  /* 스페이스 잇츠 표식 — 이것도 앱이 링크에 싣는다. 서버에 물어봐도 알 수 없다:
+     비공개는 미리보기 API가 존재조차 갈라 말하지 않는 404라, 「비공개 스페이스의 잇츠」와
+     「없는 잇츠」가 응답으로 구분되지 않는다. 표식이 있으면 썸네일 요청을 아예 보내지 않는다 */
+  const inSpace = new URLSearchParams(location.search).get("s") === "1";
+
+  if (ok) document.documentElement.classList.add("has-its");
+  if (inSpace) document.documentElement.classList.add("in-space");
+  /* 문구 두 벌(이름 있음/없음)을 가르는 클래스도 첫 그리기 전에 — has-its와 같은 이유다:
+     늦게 붙이면 익명 문구가 한 프레임 보였다 바뀐다. 글자 채우기만 아래(DOM 생긴 뒤)에 남는다 */
+  if (ok && from) document.documentElement.classList.add("has-from");
+
+  addEventListener("DOMContentLoaded", () => {
+    /* 설치 버튼은 id와 무관하게 늘 채운다 — /s/와 같은 이유(href가 비면 안 된다).
+       안내 화면의 것까지 여기서 채우므로 주소를 바꿀 곳은 위 한 줄뿐이다 */
+    document.getElementById("install").href = INSTALL_URL;
+    document.getElementById("install2").href = INSTALL_URL;
+    if (!ok) return;
+
+    const deepLink = SCHEME_BASE + id;
+    document.getElementById("open").href = deepLink;
+
+    if (from) {
+      /* textContent다 — innerHTML로 바꾸면 이 줄이 XSS 주입구가 된다(값이 링크에서 온다) */
+      document.getElementById("from-name").textContent = from;
+    }
+
+    /* ── 자동으로 앱을 연다 — /s/가 일부러 안 하는 것을 여기는 한다 ──
+       /s/의 근거(카카오 인앱이 사용자가 누르지 않은 스킴 이동을 막거나 경고를 띄운다)는
+       사실이고 그대로다. 갈린 것은 손익 계산이다: 초대 코드는 어차피 앱 안에서 손으로도
+       넣을 수 있어 자동 이동이 아껴 주는 것이 탭 한 번인데, 잇츠는 「누르면 바로 영상」이
+       기대라 그 한 번이 경험의 전부다. 앱이 있는 사람은 찰나에 넘어가고(인스타 공유 링크의
+       그 동작), 없는 사람이 보는 경고는 닫으면 이 페이지 그대로라 잃는 것이 버튼 UI뿐이다.
+       그래서 버튼을 지우지 않는다 — 자동 이동이 막히는 환경의 회복 경로가 이 버튼이다.
+
+       모바일에서만 시도한다: 데스크톱은 jamit:// 을 받는 앱이 있을 수 없어 경고만 남는다.
+       iPadOS 13+ 사파리는 데스크톱 UA(Macintosh)를 내서 이 검사에 안 걸린다 — 알고 둔다:
+       아이패드는 자동 이동 없이 버튼으로 열면 되고, 맥을 아이패드로 오인해 경고를 세우는
+       것보다 그쪽이 싸다. 카카오·인스타 인앱도 UA로 갈라 빼지 않는다 — 인앱 브라우저의
+       UA는 믿을 게 못 되고(/s/ 주석), 막히는 환경에서는 위 계산대로 잃는 것이 없다 */
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      location.href = deepLink;
+    }
+
+    /* ── 썸네일 — 없어도 페이지는 완성이다 ──
+       기본 화면(재생 글리프 + 로고 바)이 폴백이 아니라 원판이고, 썸네일은 도착하면 그 위를
+       덮는 장식이다. 그래서 실패를 사용자에게 알리지 않는다: 404(내려간 잇츠)·CORS 미개방·
+       서명 실패(thumbnailUrl 없음) 전부 같은 무signal이고, 어느 쪽이든 「앱에서 열기」라는
+       이 페이지의 일은 그대로 성립한다.
+       스페이스 잇츠는 요청 자체를 보내지 않는다 — 미리보기 API는 공개본만 열므로(위 주석)
+       확정된 404를 물으러 갈 이유가 없다 */
+    if (!inSpace) {
+      fetch(API_BASE + "/api/v1/shortforms/" + id + "/share-preview")
+        .then((r) => (r.ok ? r.json() : null))
+        .then((body) => {
+          const url = body && body.data && body.data.thumbnailUrl;
+          if (!url) return;
+          const img = document.getElementById("thumb");
+          /* onload 뒤에만 보인다 — src만 넣고 바로 보이면 로딩 중 깨진 그림 아이콘이 선다 */
+          img.addEventListener("load", () => img.classList.add("thumb--on"));
+          img.src = url;
+        })
+        .catch(() => {});
+    }
+  });
+})();
+</script>
+
+<!-- Clarity를 넣지 않는 것은 /s/와 결이 같지만 근거는 다르다 — 여기는 자격증명이 실리지
+     않아 /s/만큼 위험하지 않다. 그래도 빼는 이유: 태그가 든 파일은 index.html 하나라는
+     규칙이 이미 서 있고, 이 페이지가 그 규칙을 깰 만큼 계측이 급하지 않다 -->
+
+<style>
+/* 폰트 다섯 벌과 토큰은 /s/index.html에서 그대로 가져왔다 — 경로 사정(../assets/…)도 같다.
+   두 페이지가 갈라 보이면 같은 사이트로 안 보인다 */
+@font-face{
+  font-family:"Pretendard";
+  src:url("../assets/fonts/pretendard-subset.woff2") format("woff2");
+  font-weight:400 800;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"MonoEn";
+  font-weight:100 500;
+  src:local("SFMono-Regular"),local("SF Mono Regular"),local("Menlo-Regular"),
+      url("../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-display:swap;
+  unicode-range:U+0030-0039, U+0041-005A, U+0061-007A;
+}
+@font-face{
+  font-family:"MonoEn";
+  font-weight:600 900;
+  src:local("SFMono-Bold"),local("SF Mono Bold"),local("Menlo-Bold"),
+      url("../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-display:swap;
+  unicode-range:U+0030-0039, U+0041-005A, U+0061-007A;
+}
+@font-face{
+  font-family:"MonoAll";
+  font-weight:100 500;
+  src:local("SFMono-Regular"),local("SF Mono Regular"),local("Menlo-Regular"),
+      url("../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-display:swap;
+}
+@font-face{
+  font-family:"MonoAll";
+  font-weight:600 900;
+  src:local("SFMono-Bold"),local("SF Mono Bold"),local("Menlo-Bold"),
+      url("../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-display:swap;
+}
+:root{
+  --paper:#ecedf1;
+  --paper-2:#dfe1e8;
+  --cream:#f7f8fb;
+  --ink:#1a1f2b;
+  --ink-2:#4b5468;
+  --mute:#5f6779;
+  --hot:#3a5fd1;
+  --hot-2:#304a95;
+  --mark:#bfd6ff;
+  --line-soft:rgba(26,31,43,.16);
+  --edge:max(clamp(18px,5vw,44px),env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));
+  --sans:"MonoEn","Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  --mono:"MonoAll",ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,"Pretendard",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--paper)}
+body{
+  font-family:var(--sans);color:var(--ink);line-height:1.6;word-break:keep-all;
+  background:var(--paper);-webkit-font-smoothing:antialiased;overflow-x:clip;
+  min-height:100vh;display:flex;flex-direction:column;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:99;pointer-events:none;opacity:.5;mix-blend-mode:multiply;
+  background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3"/></filter><rect width="120" height="120" filter="url(%23n)" opacity="0.28"/></svg>');
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--hot);outline-offset:2px}
+img,svg{display:block}
+::selection{background:var(--mark);color:var(--ink)}
+.wrap{width:min(1180px,calc(100% - var(--edge)*2));margin-inline:auto}
+h1{font-weight:800;letter-spacing:-.035em;line-height:.94;text-wrap:balance}
+p{text-wrap:pretty}
+
+/* ════ 상단 바 — /s/와 동일 ════ */
+.top{background:var(--paper);border-bottom:1px solid var(--ink)}
+.top__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 0}
+.top__id{display:flex;align-items:center;gap:9px;font-weight:800;font-size:18px;letter-spacing:-.03em}
+.top__nav a{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
+.top__nav a:hover{color:var(--hot)}
+
+/* ════ 버튼 — /s/와 동일 ════ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 22px;
+  font:inherit;font-size:15px;font-weight:800;letter-spacing:-.01em;
+  background:var(--ink);color:var(--cream);border:1px solid var(--ink);cursor:pointer;
+  box-shadow:6px 6px 0 var(--hot);transition:transform .12s,box-shadow .12s;
+}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--hot)}
+.btn:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--hot)}
+.btn--ghost{background:var(--cream);color:var(--ink);box-shadow:6px 6px 0 var(--ink)}
+.btn--ghost:hover{box-shadow:8px 8px 0 var(--ink)}
+.btn--ghost:active{box-shadow:2px 2px 0 var(--ink)}
+
+/* ══════════════════════════════════════════════════════════
+   공유 카드 — /s/의 초대장(.inv)과 같은 규칙(1px 먹 + 크림 + 오프셋 그림자 + 압정).
+   코드 대신 썸네일 액자가 서고, 스탬프는 없다 — 초대장의 「비공개」 스탬프는 코드가
+   자격증명이라는 경고였는데 이 링크에는 지킬 비밀이 없다
+   ══════════════════════════════════════════════════════════ */
+main{flex:1;display:grid;place-items:center;padding:clamp(30px,7vw,64px) 0}
+.card{position:relative;width:min(520px,100%);margin-inline:auto;text-align:center;
+  background:var(--cream);border:1px solid var(--ink);box-shadow:10px 10px 0 var(--hot);
+  padding:clamp(28px,6vw,44px) clamp(20px,5vw,44px)}
+.card__pin{position:absolute;top:-11px;left:50%;translate:-50% 0;width:22px;height:22px;border-radius:50%;
+  background:var(--hot);border:1px solid var(--ink);box-shadow:2px 3px 0 rgba(0,0,0,.35)}
+
+/* 썸네일 액자 — 9:16. 기본 화면(미디어 잉크 + 재생 글리프 + 로고 바)이 원판이고
+   썸네일 <img>는 API가 답한 뒤에야 그 위를 덮는다(.thumb--on). object-fit:cover라
+   서버가 어떤 비율을 주든 액자가 흔들리지 않는다 */
+.frame{position:relative;margin:18px auto 0;width:min(216px,58vw);aspect-ratio:9/16;
+  background:var(--ink);border:1px solid var(--ink);box-shadow:6px 6px 0 var(--ink);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;overflow:hidden}
+.frame__thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity .25s}
+.frame__thumb.thumb--on{opacity:1}
+.frame__space{display:none;font-family:var(--mono);font-size:10.5px;letter-spacing:.02em;
+  line-height:1.6;color:#9aa3b5}
+.in-space .frame__space{display:block}
+
+/* 공유 문구 — 이름은 형광펜(mark)으로 든다(::selection과 같은 색 계열).
+   h1이다(정상 화면의 유일한 제목 — 없으면 접근성 아웃라인에 heading이 0개가 된다) —
+   전역 h1 규칙(굵기 800·행간 .94·자간 -.035em)은 제목 활자용이라 여기서 문장값으로 되돌린다 */
+.card__msg{margin-top:20px;font-size:clamp(1.05rem,1.5vw,1.15rem);font-weight:700;
+  line-height:1.55;letter-spacing:-.01em}
+.card__msg mark{background:var(--mark);color:var(--ink);padding:0 3px}
+/* 안내 화면의 라벨·제목·본문 — /s/의 .inv__k·h1·.inv__lede와 같은 값이다. 인라인으로 박으면
+   아래 미디어쿼리의 폰 보정을 받지 못해 두 페이지의 같은 문단이 폰에서 갈린다 */
+.card__k{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--mute)}
+.card__title{margin-top:10px;font-size:clamp(1.7rem,6vw,2.5rem);line-height:1.06}
+.card__lede{margin-top:14px;color:var(--ink-2);font-size:clamp(.95rem,1.3vw,1.05rem);line-height:1.65}
+/* 이름이 없으면 문장째 바뀐다 — 「님이」가 주어 없이 남지 않게 두 벌을 통째로 갈아 끼운다 */
+.card__msg--named{display:none}
+.has-from .card__msg--named{display:block}
+.has-from .card__msg--anon{display:none}
+
+.card__cta{margin-top:26px;display:grid;gap:14px}
+.card__note{margin-top:18px;padding-top:14px;border-top:1px solid var(--line-soft);
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;line-height:1.9;color:var(--mute)}
+
+/* 상태 전환 — /s/와 같은 구조: 기본값이 「안내」다. JS가 죽으면 id도 못 읽은 것이므로
+   빈 카드가 아니라 안내가 남아야 하고, 성공했을 때만 has-its로 뒤집는다 */
+.card__ok{display:none}
+.has-its .card__ok{display:block}
+.has-its .card__bad{display:none}
+
+/* ════ 푸터 — /s/와 동일 ════ */
+footer{padding:26px 0 calc(40px + env(safe-area-inset-bottom,0px));
+  border-top:1px solid var(--ink);display:grid;gap:14px;justify-items:center;text-align:center}
+.foot__id{font-size:18px;font-weight:800;letter-spacing:-.03em;color:var(--ink)}
+.foot__t{display:block;margin-top:5px;font-size:12.5px;color:var(--ink-2)}
+.foot__b{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 22px}
+.foot__b a{font-size:13px;font-weight:700;color:var(--ink-2)}
+.foot__c{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--mute)}
+footer a:hover{color:var(--hot)}
+
+/* 폰 타이포 보정 — /s/의 ①②③과 같은 근거(한글 받침·모노 자간·본문 행간) */
+@media(max-width:860px){
+  h1{line-height:1.2;letter-spacing:-.015em}
+  .card__title{line-height:1.2}
+  /* 공유 문구는 제목 활자가 아니라 문장이다 — 전역 h1 보정이 덮지 않게 자기 값을 다시 편다 */
+  h1.card__msg{line-height:1.55;letter-spacing:-.01em}
+  .card__k{letter-spacing:.07em}
+  .card__lede{font-size:1rem;line-height:1.75}
+  .top__nav a,.foot__c{letter-spacing:.07em}
+  .card__note{font-size:12px;line-height:1.85;letter-spacing:.02em}
+  .foot__t{font-size:12.5px;line-height:1.75}
+  .foot__b a{font-size:13.5px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="top__id" href="/">
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" fill="#1a1f2b"/>
+        <rect x="9" y="13" width="3" height="6" fill="#f7f8fb"/>
+        <rect x="15" y="8" width="3" height="16" fill="#4c8df6"/>
+        <rect x="21" y="11" width="3" height="10" fill="#f7f8fb"/>
+      </svg>
+      JAMIT
+    </a>
+    <nav class="top__nav"><a href="/">소개</a></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="card">
+    <span class="card__pin" aria-hidden="true"></span>
+
+    <div class="card__ok">
+      <!-- 썸네일 액자. img의 alt가 비어 있는 것은 장식이라서다 — 내용은 아래 문구가 다 말한다 -->
+      <div class="frame">
+        <img class="frame__thumb" id="thumb" alt="">
+        <svg width="46" height="46" viewBox="0 0 46 46" aria-hidden="true">
+          <polygon points="16,11 38,23 16,35" fill="#f7f8fb"/>
+        </svg>
+        <svg width="24" height="20" viewBox="0 0 24 20" aria-hidden="true">
+          <rect x="1" y="8" width="4" height="8" fill="#f7f8fb"/>
+          <rect x="10" y="2" width="4" height="16" fill="#4c8df6"/>
+          <rect x="19" y="5" width="4" height="11" fill="#f7f8fb"/>
+        </svg>
+        <p class="frame__space">비공개 스페이스에서<br>올라온 잇츠입니다</p>
+      </div>
+
+      <h1 class="card__msg card__msg--named"><mark id="from-name"></mark>님이 이 잇츠를<br>회원님과 공유했습니다</h1>
+      <h1 class="card__msg card__msg--anon">잇츠를 공유받았습니다<br>앱에서 이 합주 영상을 볼 수 있어요</h1>
+
+      <div class="card__cta">
+        <a class="btn" id="open" href="#">JAMIT 열기 <span aria-hidden="true">→</span></a>
+        <a class="btn btn--ghost" id="install" href="#">앱 설치하기</a>
+      </div>
+      <!-- 두 줄인 이유는 /s/와 같다: 첫 줄은 iOS 회복 경로, 둘째 줄은 안드로이드 안내.
+           안드로이드가 출시되면 둘째 줄만 지운다 -->
+      <p class="card__note">앱이 열리지 않으면 카카오톡 오른쪽 위 ⋯ → 다른 브라우저로 열기<br>안드로이드는 아직 앱이 없어요 — 조금만 기다려 주세요</p>
+    </div>
+
+    <div class="card__bad">
+      <p class="card__k">잇츠 공유</p>
+      <h1 class="card__title">링크를<br>읽지 못했습니다</h1>
+      <p class="card__lede">받은 링크를 그대로 다시 눌러 주세요. 링크를 옮겨 적는 과정에서 주소 뒷부분이 잘리면 어떤 잇츠인지 알 수 없게 됩니다.</p>
+      <div class="card__cta">
+        <a class="btn btn--ghost" id="install2" href="#">앱 설치하기</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="wrap">
+  <div>
+    <span class="foot__id">JAMIT</span>
+    <span class="foot__t">각자의 연주가 하나의 합주가 되는 앱 · 2026년 9월 iOS · Android 출시 예정</span>
+  </div>
+  <nav class="foot__b">
+    <a href="/">소개</a><a href="/#faq">질문</a><a href="mailto:support@jamit.kr">문의</a>
+  </nav>
+  <span class="foot__c">© 2026 JAMIT · N° 001</span>
+</footer>
+
+</body>
+</html>
