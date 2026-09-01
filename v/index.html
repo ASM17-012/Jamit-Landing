@@ -59,8 +59,10 @@
 
   /* 공유자 이름 — 서버는 공유자가 누군지 모르므로(무인증 미리보기의 응답은 썸네일뿐)
      앱이 링크에 실어 보낸다. 화면에 textContent로만 넣으므로 값이 무엇이든 스크립트가 되지
-     않지만, 길이만은 여기서 자른다 — 손으로 고친 링크가 문장 하나를 통째로 실어 올 수 있다 */
-  const from = (new URLSearchParams(location.search).get("from") || "").trim().slice(0, 20);
+     않지만, 길이만은 여기서 자른다 — 손으로 고친 링크가 문장 하나를 통째로 실어 올 수 있다.
+     자르기는 글자 단위다(스프레드) — 코드유닛으로 자르면 이모지 한가운데가 잘려 끝이 �가 된다 */
+  const from = [...(new URLSearchParams(location.search).get("from") || "").trim()]
+    .slice(0, 20).join("");
 
   /* 스페이스 잇츠 표식 — 이것도 앱이 링크에 싣는다. 서버에 물어봐도 알 수 없다:
      비공개는 미리보기 API가 존재조차 갈라 말하지 않는 404라, 「비공개 스페이스의 잇츠」와
@@ -69,6 +71,9 @@
 
   if (ok) document.documentElement.classList.add("has-its");
   if (inSpace) document.documentElement.classList.add("in-space");
+  /* 문구 두 벌(이름 있음/없음)을 가르는 클래스도 첫 그리기 전에 — has-its와 같은 이유다:
+     늦게 붙이면 익명 문구가 한 프레임 보였다 바뀐다. 글자 채우기만 아래(DOM 생긴 뒤)에 남는다 */
+  if (ok && from) document.documentElement.classList.add("has-from");
 
   addEventListener("DOMContentLoaded", () => {
     /* 설치 버튼은 id와 무관하게 늘 채운다 — /s/와 같은 이유(href가 비면 안 된다).
@@ -83,7 +88,6 @@
     if (from) {
       /* textContent다 — innerHTML로 바꾸면 이 줄이 XSS 주입구가 된다(값이 링크에서 온다) */
       document.getElementById("from-name").textContent = from;
-      document.documentElement.classList.add("has-from");
     }
 
     /* ── 자동으로 앱을 연다 — /s/가 일부러 안 하는 것을 여기는 한다 ──
@@ -95,8 +99,10 @@
        그래서 버튼을 지우지 않는다 — 자동 이동이 막히는 환경의 회복 경로가 이 버튼이다.
 
        모바일에서만 시도한다: 데스크톱은 jamit:// 을 받는 앱이 있을 수 없어 경고만 남는다.
-       카카오·인스타 인앱도 UA로 갈라 빼지 않는다 — 인앱 브라우저의 UA는 믿을 게 못 되고
-       (/s/ 주석), 막히는 환경에서는 위 계산대로 잃는 것이 없다 */
+       iPadOS 13+ 사파리는 데스크톱 UA(Macintosh)를 내서 이 검사에 안 걸린다 — 알고 둔다:
+       아이패드는 자동 이동 없이 버튼으로 열면 되고, 맥을 아이패드로 오인해 경고를 세우는
+       것보다 그쪽이 싸다. 카카오·인스타 인앱도 UA로 갈라 빼지 않는다 — 인앱 브라우저의
+       UA는 믿을 게 못 되고(/s/ 주석), 막히는 환경에서는 위 계산대로 잃는 것이 없다 */
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
       location.href = deepLink;
     }
@@ -248,9 +254,17 @@ main{flex:1;display:grid;place-items:center;padding:clamp(30px,7vw,64px) 0}
   line-height:1.6;color:#9aa3b5}
 .in-space .frame__space{display:block}
 
-/* 공유 문구 — 이름은 형광펜(mark)으로 든다(::selection과 같은 색 계열) */
-.card__msg{margin-top:20px;font-size:clamp(1.05rem,1.5vw,1.15rem);font-weight:700;line-height:1.55}
+/* 공유 문구 — 이름은 형광펜(mark)으로 든다(::selection과 같은 색 계열).
+   h1이다(정상 화면의 유일한 제목 — 없으면 접근성 아웃라인에 heading이 0개가 된다) —
+   전역 h1 규칙(굵기 800·행간 .94·자간 -.035em)은 제목 활자용이라 여기서 문장값으로 되돌린다 */
+.card__msg{margin-top:20px;font-size:clamp(1.05rem,1.5vw,1.15rem);font-weight:700;
+  line-height:1.55;letter-spacing:-.01em}
 .card__msg mark{background:var(--mark);color:var(--ink);padding:0 3px}
+/* 안내 화면의 라벨·제목·본문 — /s/의 .inv__k·h1·.inv__lede와 같은 값이다. 인라인으로 박으면
+   아래 미디어쿼리의 폰 보정을 받지 못해 두 페이지의 같은 문단이 폰에서 갈린다 */
+.card__k{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--mute)}
+.card__title{margin-top:10px;font-size:clamp(1.7rem,6vw,2.5rem);line-height:1.06}
+.card__lede{margin-top:14px;color:var(--ink-2);font-size:clamp(.95rem,1.3vw,1.05rem);line-height:1.65}
 /* 이름이 없으면 문장째 바뀐다 — 「님이」가 주어 없이 남지 않게 두 벌을 통째로 갈아 끼운다 */
 .card__msg--named{display:none}
 .has-from .card__msg--named{display:block}
@@ -279,7 +293,11 @@ footer a:hover{color:var(--hot)}
 /* 폰 타이포 보정 — /s/의 ①②③과 같은 근거(한글 받침·모노 자간·본문 행간) */
 @media(max-width:860px){
   h1{line-height:1.2;letter-spacing:-.015em}
-  .card h1{line-height:1.2}
+  .card__title{line-height:1.2}
+  /* 공유 문구는 제목 활자가 아니라 문장이다 — 전역 h1 보정이 덮지 않게 자기 값을 다시 편다 */
+  h1.card__msg{line-height:1.55;letter-spacing:-.01em}
+  .card__k{letter-spacing:.07em}
+  .card__lede{font-size:1rem;line-height:1.75}
   .top__nav a,.foot__c{letter-spacing:.07em}
   .card__note{font-size:12px;line-height:1.85;letter-spacing:.02em}
   .foot__t{font-size:12.5px;line-height:1.75}
@@ -327,8 +345,8 @@ footer a:hover{color:var(--hot)}
         <p class="frame__space">비공개 스페이스에서<br>올라온 잇츠입니다</p>
       </div>
 
-      <p class="card__msg card__msg--named"><mark id="from-name"></mark>님이 이 잇츠를<br>회원님과 공유했습니다</p>
-      <p class="card__msg card__msg--anon">잇츠를 공유받았습니다<br>앱에서 이 합주 영상을 볼 수 있어요</p>
+      <h1 class="card__msg card__msg--named"><mark id="from-name"></mark>님이 이 잇츠를<br>회원님과 공유했습니다</h1>
+      <h1 class="card__msg card__msg--anon">잇츠를 공유받았습니다<br>앱에서 이 합주 영상을 볼 수 있어요</h1>
 
       <div class="card__cta">
         <a class="btn" id="open" href="#">JAMIT 열기 <span aria-hidden="true">→</span></a>
@@ -340,9 +358,9 @@ footer a:hover{color:var(--hot)}
     </div>
 
     <div class="card__bad">
-      <p style="font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--mute)">잇츠 공유</p>
-      <h1 style="margin-top:10px;font-size:clamp(1.7rem,6vw,2.5rem);line-height:1.06">링크를<br>읽지 못했습니다</h1>
-      <p style="margin-top:14px;color:var(--ink-2);font-size:clamp(.95rem,1.3vw,1.05rem);line-height:1.65">받은 링크를 그대로 다시 눌러 주세요. 링크를 옮겨 적는 과정에서 주소 뒷부분이 잘리면 어떤 잇츠인지 알 수 없게 됩니다.</p>
+      <p class="card__k">잇츠 공유</p>
+      <h1 class="card__title">링크를<br>읽지 못했습니다</h1>
+      <p class="card__lede">받은 링크를 그대로 다시 눌러 주세요. 링크를 옮겨 적는 과정에서 주소 뒷부분이 잘리면 어떤 잇츠인지 알 수 없게 됩니다.</p>
       <div class="card__cta">
         <a class="btn btn--ghost" id="install2" href="#">앱 설치하기</a>
       </div>
