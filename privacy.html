@@ -397,7 +397,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
       <dl class="meta">
         <dt>문서 상태</dt><dd>시행 중</dd>
         <dt>시행일</dt><dd><time datetime="2026-08-25">2026년 8월 25일</time></dd>
-        <dt>최종 수정</dt><dd><time datetime="2026-09-01">2026년 9월 1일</time></dd>
+        <dt>최종 수정</dt><dd><time datetime="2026-09-02">2026년 9월 2일</time></dd>
         <!-- 본문을 고치면 이 날짜도 같이 올린다 — 독자가 「바뀌었는가」를 판단하는 유일한 표지다. -->
         <dt>관련 문서</dt><dd><a class="x" href="terms.html">JamIT 이용약관</a></dd>
       </dl>
@@ -428,8 +428,9 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
           <a class="x" href="#art-3">제3조</a></li>
         <li>서비스 운영을 위해 AWS·Google·Microsoft·HubSpot에 처리를 맡기며, 일부 정보는
           <strong>미국으로 이전</strong>됩니다. <a class="x" href="#art-5">제5조</a>·<a class="x" href="#art-6">제6조</a></li>
-        <li><strong>앱에는 이용 행태를 분석하는 도구가 없습니다.</strong> 웹사이트(jamit.kr)만 Microsoft
-          Clarity로 방문 기록을 봅니다 — 쿠키는 브라우저에서 거부하실 수 있습니다.
+        <li><strong>앱은 어떤 화면과 기능이 얼마나 쓰이는지 보기 위해 Google Firebase Analytics를 씁니다.</strong>
+          회원 계정과 연결하지 않고, 광고 식별자는 수집하지 않습니다. 웹사이트(jamit.kr)는 Microsoft Clarity로
+          방문 기록을 봅니다 — 쿠키는 브라우저에서 거부하실 수 있습니다.
           <a class="x" href="#art-10">제10조</a></li>
         <li>열람·정정·삭제·처리정지·동의 철회를 앱 안에서, 또는
           <a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a>로 언제든 요구하실 수 있습니다.
@@ -491,7 +492,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               숏폼의 기기 저장·외부 공유 기능 제공, 프로필 표시</li>
             <li><strong>알림 발송</strong>: 합주 참여·숏폼 게시 등 서비스 이용 관련 푸시 알림 발송</li>
             <li><strong>이용자 보호 및 서비스 운영</strong>: 신고 접수·처리, 부적절 콘텐츠·부정 이용 방지 및 제재,
-              차단 기능 제공, 분쟁 대응, 서비스 오류 확인 및 품질 개선</li>
+              차단 기능 제공, 분쟁 대응, 서비스 오류 확인, 이용 통계 분석 및 품질 개선</li>
             <li><strong>콘텐츠를 활용한 서비스 개선</strong>: 이용자가 서비스에 게시한 트랙·숏폼(얼굴·목소리·연주 실연
               등 영상·음성 포함)을 운영자가 내부적으로 열람·분석하여 촬영·싱크 보정·숏폼 합성의 품질과 기능의 사용성(UX)을
               개선하는 데 활용. 이 열람은 서비스 운영에 관여하는 운영자 내부 인원에 한하며, 서비스 홍보 등 외부에
@@ -523,6 +524,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                     <tr><td>콘텐츠 업로드</td><td>트랙 촬영·업로드, 숏폼 제작</td><td><strong>영상 및 음성</strong>(이용자의 얼굴·신체·목소리·연주 실연이 포함될 수 있음)</td><td>필수(해당 기능 이용 시)</td></tr>
                     <tr><td>알림</td><td>앱 실행·로그인</td><td><strong>기기 푸시 토큰(FCM 토큰)</strong></td><td>필수(알림 수신 시)</td></tr>
                     <tr><td>자동 수집</td><td>서비스 이용 과정</td><td>서비스 이용 기록, 접속 로그, 기기 정보(모델명·OS 버전·앱 버전), 오류 로그</td><td>자동 수집</td></tr>
+                    <tr><td>자동 수집</td><td>앱 이용 과정(Google Firebase Analytics)</td><td>무작위로 생성된 앱 인스턴스 식별자, 이용 이벤트(로그인·가입·탭 조회·트랙 업로드·합주 영상 공개), 기기 정보(모델명·OS 버전·앱 버전·언어), IP 주소로 추정한 접속 국가·지역</td><td>자동 수집</td></tr>
                     <tr><td>신고·문의</td><td>신고 접수, 고객 문의</td><td>신고·문의 내용에 포함된 정보</td><td>해당 시</td></tr>
                     <tr><td>사전등록</td><td>웹사이트 출시 알림 신청</td><td>이메일</td><td>선택</td></tr>
                     <tr><td>웹사이트 이용</td><td>웹사이트(jamit.kr) 방문</td><td>방문 기록, 화면에서의 움직임(이동·클릭·스크롤), 쿠키, 브라우저·기기 정보</td><td>자동 수집</td></tr>
@@ -532,9 +534,12 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               <p class="tw__hint">표는 좌우로 넘겨 볼 수 있습니다.</p>
               <!-- 실제 구성과 대조 완료(2026-08-20). 표는 실제보다 **넓게** 적혀 있고, 그 방향이 안전해
                    그대로 둔다 — 지금 서버가 실제로 남기는 로그·항목은 이 표보다 적다(대조 근거는 내부
-                   기록에 있다 — 공개 페이지라 구성 세부는 적지 않는다). 분석 SDK 없음 — 기기 정보는
-                   FCM 등록 과정에서 Google 로만 간다(제5·6조). 로깅을 늘리는 변경은 이 표를 넘지
-                   않는지 확인할 것. -->
+                   기록에 있다 — 공개 페이지라 구성 세부는 적지 않는다). 로깅을 늘리는 변경은 이 표를 넘지
+                   않는지 확인할 것.
+                   2026-09-02 추가: 앱에 Firebase Analytics 가 들어갔다(iOS FEV-476, 2026-08-29 dev 머지).
+                   보내는 이벤트의 정본은 iOS `AppAnalytics.swift` 하나다 — 거기에 이벤트를 더하면 위
+                   Firebase Analytics 행의 「이용 이벤트」 괄호도 함께 늘릴 것. 사용자 ID·사용자 속성은
+                   붙이지 않으며(계정과 연결 안 함), IDFA 는 링크하지 않아 「추적」이 아니다. -->
             </li>
             <li>수집 방법: 소셜 로그인 시 해당 플랫폼(카카오·구글·Apple)으로부터 제공받거나, 이용자가 서비스 이용 과정에서
               직접 입력·업로드하거나, 서비스 이용 과정에서 자동으로 생성·수집됩니다.</li>
@@ -682,7 +687,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                     </tr>
                     <tr>
                       <td>Google LLC (Firebase)</td>
-                      <td>푸시 알림 발송(FCM) — 앱에는 Analytics·Crashlytics 등 분석 도구를 사용하지 않습니다</td>
+                      <td>푸시 알림 발송(FCM), 앱 이용 통계 분석(Firebase Analytics) — Crashlytics 등 오류 수집 도구는 사용하지 않습니다</td>
                       <td><a class="ref" href="#art-6">제6조</a> 국외 이전 참조</td>
                     </tr>
                     <tr>
@@ -732,6 +737,16 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                   <td>서비스 이용 시 네트워크를 통한 전송</td>
                   <td>푸시 알림 발송</td>
                   <td>탈퇴 또는 토큰 무효화 시까지</td>
+                </tr>
+                <tr>
+                  <td>Google LLC (Firebase Analytics)</td>
+                  <td>미국</td>
+                  <td>무작위로 생성된 앱 인스턴스 식별자, 이용 이벤트(로그인·가입·탭 조회·트랙 업로드·합주 영상 공개), 기기 정보(모델명·OS 버전·앱 버전·언어), IP 주소로 추정한 접속 국가·지역</td>
+                  <td>앱 이용 시 네트워크를 통한 전송</td>
+                  <td>앱 이용 통계 분석 및 서비스 개선</td>
+                  <td>이벤트·기기 단위 데이터는 수집일로부터 최대 14개월(Google Analytics 데이터 보관 설정), 개인을 식별할 수 없는 집계 통계는 그 이후에도 보관</td>
+                  <!-- 14개월은 GA4 표준 속성의 보관 설정 상한이다(선택지는 2개월·14개월). 콘솔 「데이터 보관」이
+                       2개월이면 이 문구는 상한으로서 여전히 참이지만, 정확히 적고 싶으면 콘솔 값을 확인해 고칠 것. -->
                 </tr>
                 <tr>
                   <td>Microsoft Corporation</td>
@@ -838,11 +853,21 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
         <section id="art-10">
           <h2 class="art"><span class="art__no">제10조</span>개인정보 자동 수집 장치의 설치·운영 및 거부 <a class="art__link" href="#art-10" aria-label="제10조 링크">#</a></h2>
           <ol class="clauses">
-            <li><strong>앱</strong>은 웹 브라우저의 쿠키(cookie)를 사용하지 않습니다. 운영자는 앱에서 맞춤형 광고를 위한
-              광고 식별자를 수집하지 않으며, 이용 행태를 분석하는 도구(Firebase Analytics·Crashlytics 등)를 사용하지
-              않습니다.
-              <!-- 앱에 연결된 Firebase 제품은 FirebaseMessaging(푸시) 하나다. 앱에 분석 도구를 도입하면
-                   이 조와 제2조·제5조·제6조를 함께 고쳐야 한다. --></li>
+            <li><strong>앱</strong>은 웹 브라우저의 쿠키(cookie)를 사용하지 않으며, 맞춤형 광고를 위한 광고 식별자(IDFA)를
+              수집하지 않습니다. 다만 어떤 화면과 기능이 얼마나 쓰이는지 파악해 서비스를 개선하기 위하여
+              <strong>Google Firebase Analytics</strong>를 사용합니다. 이 과정에서 무작위로 생성된 앱 인스턴스 식별자,
+              이용 이벤트(로그인·가입·탭 조회·트랙 업로드·합주 영상 공개), 기기 정보(모델명·OS 버전·앱 버전·언어),
+              IP 주소로 추정한 접속 국가·지역이 Google로 전송됩니다(<a class="x" href="#art-2">제2조</a>·<a class="x" href="#art-6">제6조</a>).
+              이 정보는 회원 계정(이메일·닉네임 등)과 연결하지 않으며, 광고 목적으로 쓰지 않습니다. Crashlytics 등
+              오류 수집 도구는 사용하지 않습니다.
+              <!-- 2026-09-02 반영. 앱에 연결된 Firebase 제품은 FirebaseMessaging(푸시)·FirebaseAnalytics 둘이다
+                   (iOS FEV-476). 릴리스 빌드는 `setAnalyticsCollectionEnabled(true)` 로 항상 켜고 디버그는 끈다
+                   (PushDelegate.swift). Crashlytics·IDFA(FirebaseAnalyticsIdentitySupport)를 붙이는 날 이 항과
+                   제2·5·6조, App Store 「앱 개인정보」 라벨을 함께 고칠 것. --></li>
+            <li>앱 안에는 제1항의 수집만 따로 끄는 설정이 없습니다. 이 수집을 원하지 않으시는 경우
+              <a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a>로 알려 주시기 바랍니다.
+              <!-- 정직하게 적는다 — 앱에 토글이 없다. `Analytics.setAnalyticsCollectionEnabled(false)` 를 설정 화면에
+                   노출하면 이 항을 「설정 > … 에서 끌 수 있습니다」로 바꿀 수 있고, 그편이 이 조를 훨씬 튼튼하게 한다. --></li>
             <li><strong>웹사이트(jamit.kr)</strong>는 페이지가 어떻게 이용되는지 파악해 화면을 개선하기 위하여
               <strong>Microsoft Clarity</strong>를 사용합니다. 이 과정에서 방문 기록과 화면에서의 움직임(이동·클릭·스크롤)이
               수집되고 쿠키가 저장됩니다. 이 정보는 회원 계정이나 사전등록 이메일과 연결하지 않습니다.
@@ -969,6 +994,17 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                    이용자가 없어 「미리 알릴 대상」 자체가 없다 — 기존 이용자에게 영향을 주는 개정이 아니라
                    출시 전에 문서를 실제 동작에 맞추는 일이다(2026-09-01 결정).
                    ⚠️ **출시 뒤에는 이 근거가 사라진다** — 그다음 개정부터는 제14조 제1항의 고지 기간을 지킬 것. --></li>
+            <li>2026년 9월 2일 3차 개정 — 앱 이용 통계 분석 도구(Google Firebase Analytics)의 사용을 반영했습니다.
+              앱은 어떤 화면과 기능이 얼마나 쓰이는지 보기 위해 이 도구를 쓰는데, 종전 방침은 「앱에는 분석 도구가 없다」고
+              적고 있어 사실과 어긋나 있었습니다. <a class="x" href="#art-2">제2조</a>의 자동 수집 항목에 앱 인스턴스
+              식별자·이용 이벤트 등을 더하고, <a class="x" href="#art-1">제1조</a> 제4호에 이용 통계 분석을 더했으며,
+              <a class="x" href="#art-5">제5조</a>·<a class="x" href="#art-6">제6조</a>의 Google 위탁·국외 이전 범위에 앱 이용
+              통계 분석을 더하고, <a class="x" href="#art-10">제10조</a>를 다시 썼습니다. <strong>수집 항목이 늘어나는
+              개정입니다.</strong> 늘어나는 정보는 회원 계정과 연결되지 않는 통계 목적의 정보이며, 광고 식별자는 종전과 같이
+              수집하지 않습니다. 이 개정은 2026년 9월 2일부터 시행합니다.
+              <!-- 즉시 시행 근거는 2차 개정과 같다 — 서비스 출시 전이라 종전 방침에 동의한 이용자가 없다. 다만 이번은
+                   2차와 달리 **항목이 늘어나는** 개정이라, 출시 뒤였다면 제14조 제1항의 30일 전 고지 대상이다.
+                   ⚠️ 출시 뒤에 항목·목적을 늘리는 개정은 반드시 30일 전 고지부터 하고 시행일을 뒤로 잡을 것. --></li>
           </ol>
         </section>
 
