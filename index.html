@@ -70,15 +70,22 @@
      다시 잰다. 스크립트보다 CSS 가 먼저 서므로 여기 head 에서 세운다 -->
 <script>
 (function(){
-  var d = document.documentElement, w = 0;
+  var d = document.documentElement, w = 0, t = 0;
+  function set(){ w = innerWidth; d.style.setProperty('--vh0', innerHeight + 'px'); }
+  /* ⚠️ **폭이 조금 바뀐 것으로는 다시 재지 않는다.** 인앱 브라우저는 웹뷰를
+     애니메이션으로 줄였다 늘이는데, 그 사이에 폭도 몇 px 씩 흔들리며 resize 가
+     연달아 온다. 「폭이 바뀌면 다시 잰다」로 두었더니 그 중간값을 물어서
+     기기 크기가 계속 움직였다(2026-09-11 신고: 인스타그램).
+     40px 은 회전이나 창 크기 조절과 그 흔들림을 가르는 선이다.
+     게다가 잰 값이 굳기까지 250ms 를 기다린다 — 애니메이션이 끝난 뒤의 값을 쓴다 */
   function lock(){
-    if (innerWidth === w) return;      /* 높이만 바뀐 것은 무시한다 */
-    w = innerWidth;
-    d.style.setProperty('--vh0', innerHeight + 'px');
+    if (Math.abs(innerWidth - w) < 40) return;
+    clearTimeout(t);
+    t = setTimeout(set, 250);
   }
-  lock();
+  set();
   addEventListener('resize', lock, {passive:true});
-  addEventListener('orientationchange', function(){ setTimeout(lock, 120); }, {passive:true});
+  addEventListener('orientationchange', function(){ clearTimeout(t); t = setTimeout(set, 300); }, {passive:true});
 })();
 </script>
 
@@ -2268,8 +2275,14 @@ body[data-theme="soft"]{--bg:var(--paper-2)}
       + 'padding:8px 10px;white-space:pre;-webkit-user-select:text;user-select:text';
     document.body.appendChild(box);
     var draw = function(){
-      var out = [location.pathname + '  ' + innerWidth + '×' + innerHeight
-        + '  dpr' + (devicePixelRatio||1) + '  ' + (navigator.userAgent.match(/(iPhone|iPad|Android)[^)]*/)||[''])[0]];
+      var dv = document.querySelector('#how .dev');
+      var dr = dv ? dv.getBoundingClientRect() : {width:0,height:0};
+      var out = [location.pathname + '  뷰 ' + innerWidth + '×' + innerHeight
+        + '  dpr' + (devicePixelRatio||1)
+        + '  --vh0 ' + getComputedStyle(document.documentElement).getPropertyValue('--vh0').trim()
+        + '  기기 ' + Math.round(dr.width) + '×' + Math.round(dr.height)
+        + '  문서 ' + document.documentElement.scrollHeight,
+        (navigator.userAgent.match(/(iPhone|iPad|Android)[^)]*/)||[''])[0]];
       document.querySelectorAll('.shot').forEach(function(sh){
         var v = sh.querySelector('video');
         var name = (sh.dataset.src || (sh.querySelector('img')||{}).currentSrc || '?').split('/').pop();
