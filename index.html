@@ -61,6 +61,27 @@
      media 로 갈라 한 벌만 받는다 — 휴대폰 780 벌 86KB, 데스크톱 1040 벌 117KB.
      영상은 preload 하지 않는다: 466KB 는 첫 그림 앞에 둘 무게가 아니고,
      poster 만 서면 화면은 이미 말이 된다 -->
+<!-- ── 화면 높이를 한 번 재서 못 박는다(--vh0) ──
+     카카오톡 · 인스타그램 같은 **인앱 브라우저는 위아래로 스크롤할 때 웹뷰 자체를
+     늘였다 줄인다.** 사파리의 주소창과 달리 뷰포트가 진짜로 바뀌는 것이라 svh 도
+     같이 움직인다 — 기기 크기가 커졌다 작아지고 페이지 길이도 흔들린다
+     (2026-09-11 신고: 「카톡에서 열면 스크롤할 때 앱 프레임 크기가 바뀐다」).
+     그래서 길이와 크기를 정하는 것은 이 값을 쓴다. **폭이 바뀔 때만**(=회전)
+     다시 잰다. 스크립트보다 CSS 가 먼저 서므로 여기 head 에서 세운다 -->
+<script>
+(function(){
+  var d = document.documentElement, w = 0;
+  function lock(){
+    if (innerWidth === w) return;      /* 높이만 바뀐 것은 무시한다 */
+    w = innerWidth;
+    d.style.setProperty('--vh0', innerHeight + 'px');
+  }
+  lock();
+  addEventListener('resize', lock, {passive:true});
+  addEventListener('orientationchange', function(){ setTimeout(lock, 120); }, {passive:true});
+})();
+</script>
+
 <link rel="preload" as="image" href="assets/app/sm/record.jpg" media="(max-width:860px)" fetchpriority="high">
 <link rel="preload" as="image" href="assets/app/record.jpg" media="(min-width:861px)" fetchpriority="high">
 
@@ -248,8 +269,8 @@ body[data-theme="soft"]{--bg:var(--paper-2)}
    iOS 사파리에서 100vh 는 주소창을 빼지 않아 늘 한 뼘씩 잘린다
    ══════════════════════════════════════════════════════════ */
 .stage{
-  min-height:100vh;min-height:100svh;display:grid;align-content:center;
-  padding-block:clamp(72px,11vh,132px);
+  min-height:100vh;min-height:var(--vh0,100svh);display:grid;align-content:center;
+  padding-block:clamp(72px,calc(var(--vh0,100vh) * .11),132px);
   scroll-margin-top:56px;
 }
 .stage__in{width:var(--wrap);margin-inline:auto}
@@ -397,7 +418,7 @@ body[data-theme="soft"]{--bg:var(--paper-2)}
      밑으로 27px 들어가고 아래는 34px 만 남았다 — 가운데도 아니고 여백도 없다.
      그래서 절대 dvh 대신 「헤더 아래 남은 높이 − 위아래 48px」을 쓴다.
      2.052 는 프레임 그림의 비율(1689/823)이다 */
-  --dev-w:min(520px,72vw,calc((100svh - var(--bar) - 96px) / 2.052));
+  --dev-w:min(520px,72vw,calc((var(--vh0,100svh) - var(--bar) - 96px) / 2.052));
   display:grid;grid-template-columns:minmax(0,1fr)}
 
 /* 판 하나가 화면에 못 박히고, 그 안의 줄만 열리고 닫힌다 — toss.im 에서 실측한
@@ -420,10 +441,10 @@ body[data-theme="soft"]{--bg:var(--paper-2)}
 .seq__beats{grid-column:1;grid-row:1;visibility:hidden;pointer-events:none}
 /* 마디 = 스크롤 자 한 칸. 휴대폰에서는 한 화면보다 길게 잡는다 —
    근거는 아래 --beat 주석에 있다 */
-.beat{min-height:calc(100vh * var(--beat,1));min-height:calc(100svh * var(--beat,1))}
+.beat{min-height:calc(100vh * var(--beat,1));min-height:calc(var(--vh0,100svh) * var(--beat,1))}
 /* 첫 마디(녹화)만 더 길다 — 아래 --beat-1 주석 참고 */
 .seq .beat[data-beat="0"]{min-height:calc(100vh * var(--beat-1,var(--beat,1)));
-  min-height:calc(100svh * var(--beat-1,var(--beat,1)))}
+  min-height:calc(var(--vh0,100svh) * var(--beat-1,var(--beat,1)))}
 
 /* ── 아코디언 — 제목은 고정, 줄 하나만 열린다.
    숫자는 toss.im 에서 읽어 온 것이다: 제목 48/700/-0.02em, 줄 제목 20/700/1.48,
@@ -531,7 +552,7 @@ body[data-theme="soft"]{--bg:var(--paper-2)}
      여유 24 는 상단바와 기기 사이에 남길 틈이다. 판이 가운데 정렬이라 이 값의
      절반이 위쪽 틈이 된다 — 8 로 뒀더니 4px 밖에 안 남아서, 글꼴이 조금만
      크게 잡혀도 기기 윗머리가 상단바에 닿았다 */
-  .seq{--dev-w:min(318px,82vw,calc((100svh - 178px) / 2.052))}
+  .seq{--dev-w:min(318px,82vw,calc((var(--vh0,100svh) - 178px) / 2.052))}
   /* 판 제목은 뺀다 — 좁은 화면에서 두 줄을 차지하고, 그 자리를 기기에 준다.
      줄 제목이 지금 무엇을 보는지 이미 말해 준다 */
   .acc h2{display:none}
@@ -625,7 +646,7 @@ body[data-theme="soft"]{--bg:var(--paper-2)}
   /* 세 번째 값은 위와 같은 「남은 높이」 셈이다 — 태블릿을 눕히면(가로 810,
      세로 700) 이게 없을 때 기기가 화면 밖으로 나간다.
      440px 까지 키우면 배율 2 에서 880 실제 px 이라 780 벌 안이다 */
-  .seq{--dev-w:min(480px,50vw,calc((100svh - 212px) / 2.052))}
+  .seq{--dev-w:min(480px,50vw,calc((var(--vh0,100svh) - 212px) / 2.052))}
 }
 
 /* 861~1100 사이 — 두 칸은 서지만 폭이 빠듯하다. 기기를 줄여 글 칸을 지킨다.
@@ -655,7 +676,7 @@ body[data-theme="soft"]{--bg:var(--paper-2)}
     width:calc(var(--wrap) + (100% - var(--wrap)) / 2 - 24px)}
   /* 히어로 장만 위아래 여백을 줄인다 — 엇갈려 세운 두 대가 세로를 더 쓴다
      (1440 화면에서 쓸 수 있는 높이가 702 → 780px) */
-  main > .stage:first-child{padding-block:clamp(40px,6.6vh,80px)}
+  main > .stage:first-child{padding-block:clamp(40px,calc(var(--vh0,100vh) * .066),80px)}
 }
 .hero h1{font-size:var(--t-hero)}
 .hero__lede{font-size:var(--t-lede);color:var(--ink-2);margin-top:24px;max-width:34ch}
@@ -739,8 +760,8 @@ body[data-theme="soft"]{--bg:var(--paper-2)}
   /* 첫 장은 **헤더를 뺀 한 화면**이다. 100dvh 로 두면 sticky 헤더가 흐름에서 차지한
      50px 만큼 아래가 잘려, 화면 밑에 붙인 꺾쇠가 접힌 자리로 내려간다.
      아래 45px 은 당근에서 잰 값이다(꺾쇠 밑에서 화면 끝까지) */
-  main > .stage:first-child{min-height:calc(100svh - var(--bar));
-    padding-top:clamp(20px,3.4vh,36px);padding-bottom:45px;align-content:stretch}
+  main > .stage:first-child{min-height:calc(var(--vh0,100svh) - var(--bar));
+    padding-top:clamp(20px,calc(var(--vh0,100vh) * .034),36px);padding-bottom:45px;align-content:stretch}
   /* 위 칸(1fr)에 글이 가운데 서고, 아래 칸(auto)에 꺾쇠가 붙는다 */
   .hero{grid-template-columns:1fr;grid-template-rows:1fr auto;gap:0;
     text-align:center;justify-items:center}
@@ -785,7 +806,7 @@ body[data-theme="soft"]{--bg:var(--paper-2)}
   .acc,.feat{order:1}
   .seq--flip .acc,.seq--flip .feat{order:2}
   /* 기기는 이제 글과 자리를 다투지 않는다 — 높이만 보면 된다 */
-  .seq{--dev-w:min(318px,34vw,calc((100svh - var(--bar) - 40px) / 2.052))}
+  .seq{--dev-w:min(318px,34vw,calc((var(--vh0,100svh) - var(--bar) - 40px) / 2.052))}
   .acc__list,.feat{min-height:0}
 }
 
