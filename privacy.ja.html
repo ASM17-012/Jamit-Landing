@@ -1,0 +1,1094 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>プライバシーポリシー — JAMIT</title>
+<meta name="description" content="JAMITのアプリおよびウェブサイトのプライバシーポリシー — 取得する項目、利用目的、保有期間、利用者の権利。">
+<meta name="theme-color" content="#ecedf1">
+<!-- 앱 안 시트(FEV-389)는 이 문서를 `?embed=1`로 연다. class 는 **첫 그리기 전에** 붙어야 상단바가
+     한 프레임 번쩍이고 사라지는 일이 없으므로 <style> 보다 앞, head 안에서 돈다. JS 가 없으면
+     그냥 보통 페이지다 — 크롬만 다르고 본문은 한 벌이다. -->
+<script>
+(() => {
+  if (!new URLSearchParams(location.search).has("embed")) return;
+  document.documentElement.classList.add("embed");
+  // 문서끼리 건너가는 링크(약관↔처리방침)는 시트 안에서도 embed 로 남아야 한다 — 아니면
+  // 한 번 건너간 순간 상단바·목차가 돌아와 '링크를 열었다'는 느낌이 되돌아온다.
+  // 외부 링크(카카오·구글·Apple)는 건드리지 않는다 — 그건 앱이 가로채 인앱 사파리로 연다.
+  addEventListener("DOMContentLoaded", () => {
+    for (const a of document.querySelectorAll("a[href]")) {
+      const raw = a.getAttribute("href");
+      if (raw.startsWith("#")) continue;
+      const u = new URL(raw, location.href);
+      if (u.origin !== location.origin || !u.pathname.endsWith(".html")) continue;
+      u.searchParams.set("embed", "1");
+      a.setAttribute("href", u.href);
+    }
+  });
+})();
+</script>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="%230d0f24"/><rect x="8" y="13" width="3" height="6" rx="1.5" fill="%2398cff6"/><rect x="14" y="8" width="3" height="16" rx="1.5" fill="%23baadf5"/><rect x="20" y="11" width="3" height="10" rx="1.5" fill="%23dd8bf4"/></svg>'>
+
+<style>
+/* ══════════════════════════════════════════════════════════
+   법적 고지 문서 — index.html과 같은 색·글꼴·여백 언어를 쓴다.
+   외부 요청 0. 폰트도 색도 전부 이 파일 안에 있다.
+   ══════════════════════════════════════════════════════════ */
+:root{
+  /* 색·서체는 랜딩 본문(index.html)의 언어를 그대로 따른다 — 법적 문서만 세대가 달라
+     보이던 것을 맞춘 것이다. 순백·순검정은 쓰지 않는다(눈부심·대비 피로). */
+  --bg:#ecedf1;               /* 차가운 회색 종이 */
+  --bg-rgb:236,237,241;       /* 반투명 상단바·스크림이 쓰는 채널 */
+  --bg-2:#f7f8fb;
+  --ink:#1a1f2b;              /* 남빛 먹. 종이 대비 14.1:1 */
+  --copy:#4b5468;             /* 6.5:1 — 본문 */
+  --muted:#5f6779;            /* 4.7:1 — 작은 글씨도 AA */
+  /* 면 위에 얹는 옅은 색조. **채널을 토큰으로 둔 이유**는 다크로 뒤집을 때
+     이 한 줄만 바꾸면 rgba(...)를 쓰는 자리가 전부 따라오기 때문이다. */
+  --tint:26,31,43;
+  --line:rgba(var(--tint),.16);
+  /* 강조는 인디고 하나다. 예전에는 문서마다 색을 달리 가져갔는데(약관 청록·처리방침 보라)
+     랜딩이 "강조는 하나로만"으로 정리되면서 여기도 맞춘다. */
+  --accent:#3a5fd1;
+  --doc:#3a5fd1;
+  --doc-soft:rgba(58,95,209,.45);
+  --warn:#8a6100;
+  --warn-soft:rgba(245,158,11,.10);
+  --warn-line:rgba(180,83,9,.34);
+  --mark:#bfd6ff;             /* 형광펜 */
+  --r:16px; --r-lg:24px;
+  --topbar:64px;
+  --strip:0px;                /* 초안 띠가 있던 자리 — 변수는 남긴다: main 여백과 앵커 스크롤이 쓴다 */
+  --edge:max(clamp(20px,5vw,40px),env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));
+  --sans:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:var(--bg);-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);color:var(--ink);line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  word-break:keep-all;               /* 한글은 단어 중간에서 끊지 않는다 */
+  -webkit-tap-highlight-color:transparent;
+}
+/* 문서가 길다. 배경 그라데이션을 문서 높이에 걸면 수천 픽셀에 퍼져 사실상 안 보인다.
+   화면에 고정된 판을 뒤에 깔아 index와 같은 깊이를 유지한다 */
+body::before{content:"";position:fixed;inset:0;z-index:-1;
+  background:linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 100%)}
+::selection{background:var(--mark);color:var(--ink)}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+h1,h2,h3{letter-spacing:-.02em;font-weight:750;line-height:1.15;text-wrap:balance}
+p{text-wrap:pretty}
+.wrap{width:min(1080px,calc(100% - var(--edge)*2));margin-inline:auto}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+/* 고정 머리(상단바 + 초안 띠) 아래로 제목이 숨지 않게 한다 */
+[id]{scroll-margin-top:calc(var(--topbar) + var(--strip) + 14px)}
+
+/* ════ 상단 바 ════ */
+.top{position:fixed;top:0;left:0;right:0;z-index:60;
+  background:rgba(var(--bg-rgb),.82);backdrop-filter:blur(18px) saturate(180%)}
+.top::after{content:"";position:absolute;left:0;right:0;top:100%;height:22px;pointer-events:none;
+  background:linear-gradient(rgba(var(--bg-rgb),.5),rgba(var(--bg-rgb),0));
+  opacity:0;transition:opacity .3s}
+body.scrolled .top::after{opacity:1}
+.top__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0;min-height:var(--topbar)}
+.top__id{display:flex;align-items:center;gap:9px;min-height:44px;cursor:pointer;
+  font-weight:750;font-size:17px;letter-spacing:-.02em;transition:opacity .18s}
+/* 상단 마크는 **iOS 앱 아이콘 원본**이다(Assets.xcassets/AppIcon). 원본이 각진 사각형이라
+   둥근 모서리를 여기서 씌운다 — 22.5%가 애플의 스퀘어클에 가장 가깝다. */
+.top__mark{display:block;border-radius:22.5%}
+.top__nav{display:flex;align-items:center;gap:2px}
+.top__nav a{padding:0 12px;line-height:44px;border-radius:999px;font-size:13.5px;font-weight:600;
+  color:var(--muted);white-space:nowrap;transition:color .18s,background .18s}
+.top__nav a[aria-current="page"]{color:var(--ink);background:rgba(var(--tint),.07)}
+@media(max-width:560px){
+  .top__nav a{padding:0 9px;font-size:12.5px}
+  .top__id{font-size:15.5px;gap:7px}
+  .long{display:none}          /* 좁으면 "개인정보 처리방침" → "개인정보" */
+}
+
+/* ── 초안 띠 — 상단바에 붙어 항상 따라다닌다.
+      배너는 스크롤하면 사라지지만, 이 줄은 어느 조문을 보고 있어도 초안임을 말한다 ── */
+.strip{height:var(--strip);display:flex;align-items:center;justify-content:center;gap:9px;
+  padding-inline:var(--edge);text-align:center;
+  background:rgba(245,158,11,.16);border-top:1px solid var(--warn-line);border-bottom:1px solid var(--warn-line);
+  color:var(--warn);font-size:11.5px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
+.strip b{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;font-weight:700;
+  padding:3px 7px;border-radius:5px;background:var(--warn);color:var(--bg-2)}
+
+/* ════ 문서 ════ */
+main{padding-top:calc(var(--topbar) + var(--strip))}
+.doc{padding-block:clamp(30px,5vw,58px) clamp(48px,7vw,88px)}
+.doc__head{max-width:74ch}
+.doc h1{margin-top:12px;font-size:clamp(2rem,4.6vw,2.85rem);font-weight:800;letter-spacing:-.035em;line-height:1.08}
+.doc__lede{margin-top:14px;color:var(--copy);font-size:clamp(.98rem,1.3vw,1.1rem);max-width:52em}
+
+/* 초안 배너 — 문서 첫 화면에서 제목 다음으로 눈에 들어와야 한다 */
+.banner{display:flex;gap:14px;align-items:flex-start;margin-top:26px;padding:18px 20px;
+  border:1px solid var(--warn-line);border-radius:var(--r);background:var(--warn-soft)}
+.banner svg{flex:none;margin-top:2px;color:var(--warn)}
+.banner b{display:block;color:var(--warn);font-size:1rem;letter-spacing:-.02em}
+.banner p{margin-top:7px;color:var(--copy);font-size:.93rem;line-height:1.65}
+.banner strong{color:var(--ink);font-weight:700}
+
+.meta{margin-top:24px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px 20px;
+  font-size:.9rem;align-items:baseline}
+.meta dt{color:var(--muted);font-weight:600}
+.meta dd{color:var(--copy)}
+
+
+/* ── 「핵심만」 요약 ── 전문 위에 서서 무엇을 받고 왜 두는지를 먼저 말한다.
+   전문을 대체하지 않는다는 표시(.summary__note)를 빼지 말 것 — 요약만 읽고 동의했다는 주장을
+   만들지 않기 위한 줄이다. ── */
+.summary{margin-top:clamp(26px,4vw,38px);padding:clamp(18px,2.6vw,24px);
+  border:1px solid var(--line);border-radius:var(--r);background:rgba(127,127,127,.05)}
+.summary h2{font-size:1.02rem;letter-spacing:-.02em;color:var(--ink)}
+.summary ul{list-style:none;margin-top:14px;display:grid;gap:11px}
+.summary li{position:relative;padding-left:16px;color:var(--copy);
+  font-size:clamp(.9rem,.3vw + .84rem,.98rem);line-height:1.72}
+.summary li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;
+  border-radius:50%;background:var(--doc)}
+.summary strong{color:var(--ink);font-weight:700}
+.summary__note{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);
+  color:var(--muted);font-size:.85rem}
+
+/* ── 목차 + 본문 ── */
+.layout{margin-top:clamp(34px,5vw,54px)}
+@media(min-width:900px){
+  .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:clamp(32px,4.5vw,64px);align-items:start}
+}
+.toc{margin-bottom:30px;border:1px solid var(--line);border-radius:var(--r);background:rgba(var(--tint),.04)}
+.toc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:0 18px;min-height:52px;font-size:.95rem;font-weight:650}
+.toc>summary::-webkit-details-marker{display:none}
+.toc>summary::after{content:"+";font-family:var(--mono);font-size:1.35rem;font-weight:300;color:var(--muted);
+  transition:transform .25s var(--ease),color .25s}
+.toc[open]>summary::after{transform:rotate(45deg);color:var(--doc)}
+.toc__list{padding:2px 10px 14px}
+.toc ol{list-style:none}
+.toc a{display:block;padding:11px 10px;border-radius:8px;font-size:.88rem;line-height:1.45;
+  color:var(--muted);border-left:2px solid transparent;
+  transition:color .18s,background .18s,border-color .18s}
+.toc a .n{font-family:var(--mono);font-size:.82em;color:rgba(var(--tint),.34);margin-right:8px}
+.toc a.on{color:var(--ink);background:rgba(var(--tint),.05);border-left-color:var(--doc)}
+.toc a.on .n{color:var(--doc)}
+@media(min-width:900px){
+  /* 데스크톱에서는 접는 장치가 아니라 그냥 옆에 서 있는 목차다.
+     summary를 지우면 details는 열린 채로 고정된다 */
+  .toc{position:sticky;top:calc(var(--topbar) + var(--strip) + 24px);
+    margin-bottom:0;border:0;background:none}
+  .toc>summary{display:none}
+  .toc__list{position:relative;padding:0 6px 0 0;
+    max-height:calc(100vh - var(--topbar) - var(--strip) - 60px);overflow-y:auto;
+    scrollbar-width:thin;scrollbar-color:rgba(var(--tint),.18) transparent}
+  .toc a{padding:6px 10px}
+}
+
+/* ── 조문 ── */
+.prose{max-width:68ch;color:var(--copy);font-size:clamp(.95rem,.35vw + .87rem,1.03rem);line-height:1.8}
+.prose strong{color:var(--ink);font-weight:700}
+.prose p{margin-top:14px}
+.prose .intro{margin-top:0;padding-bottom:clamp(10px,2vw,18px)}
+.art{margin-top:clamp(30px,3.6vw,42px);color:var(--ink);
+  font-size:clamp(1.06rem,1.4vw,1.2rem);letter-spacing:-.022em;line-height:1.35}
+.art__no{display:block;margin-bottom:7px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:var(--doc);font-weight:600}
+/* 조문 하나를 가리켜 링크로 보낼 수 있어야 한다 — "제3조 제3항 봐" 가 되는 문서다 */
+.art__link{margin-left:8px;font-family:var(--mono);font-weight:400;font-size:.78em;
+  color:rgba(var(--tint),.24);opacity:0;transition:opacity .18s,color .18s}
+section:hover .art__link,.art__link:focus-visible{opacity:1}
+@media(hover:none){.art__link{opacity:.4}}
+
+/* 항(項)과 호(號) — 번호는 본문보다 한 칸 물러난 자리에 둔다 */
+.clauses{list-style:none;counter-reset:clause;margin-top:14px}
+.clauses>li{counter-increment:clause;position:relative;padding-left:2.1em;margin-top:13px}
+.clauses>li::before{content:counter(clause) ".";position:absolute;left:0;top:0;
+  font-family:var(--mono);font-size:.9em;font-weight:600;color:var(--doc)}
+.sub{list-style:none;counter-reset:sub;margin-top:10px;padding-left:16px;border-left:1px solid var(--line)}
+.sub>li{counter-increment:sub;position:relative;padding-left:1.9em;margin-top:9px}
+.sub>li::before{content:counter(sub) ".";position:absolute;left:0;top:0;
+  font-family:var(--mono);font-size:.88em;color:var(--muted)}
+/* 외부 처리방침처럼 번호가 필요 없는 목록 */
+.plain{list-style:none;margin-top:10px;padding-left:16px;border-left:1px solid var(--line)}
+.plain>li{margin-top:7px}
+.clauses p,.sub p{margin-top:8px}
+
+/* 문서 안팎을 가리키는 참조 — 눌러서 갈 수 있다는 것만 조용히 알린다 */
+.ref{color:var(--doc);border-bottom:1px dotted var(--doc-soft);transition:border-color .18s,color .18s}
+.x{color:var(--doc);text-decoration:underline;text-underline-offset:3px;
+  text-decoration-color:var(--doc-soft);transition:text-decoration-color .18s}
+.ext::after{content:"\2197";margin-left:3px;font-size:.85em;vertical-align:.05em;opacity:.75}
+
+/* ── 미확정 항목 ──
+   지우지 않는다. 형광펜으로 칠해 둔다. 확정 전에 이 페이지가 올라가면
+   무엇이 안 끝났는지가 문장보다 먼저 보여야 한다 */
+.tbd{display:inline;padding:.14em .45em;border-radius:5px;
+  background:var(--mark);color:#1b1405;
+  font-family:var(--mono);font-size:.85em;font-weight:600;letter-spacing:-.01em;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone}
+.note-line{margin-top:14px}
+
+/* ── 표 ── */
+.tw{margin-top:18px;border:1px solid var(--line);border-radius:var(--r);
+  background:rgba(var(--tint),.03);overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;scrollbar-color:rgba(var(--tint),.18) transparent}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.9rem;line-height:1.6}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+thead th{background:rgba(var(--tint),.05);color:var(--ink);font-weight:650;font-size:.86rem;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+td:first-child{color:var(--ink);font-weight:600}
+/* 보존 항목 칸의 보충 설명 — 항목명과 같은 굵기로 읽히면 표가 무거워진다 */
+td small{display:block;margin-top:4px;font-weight:400;font-size:.85em;color:var(--muted);line-height:1.5}
+.tw--narrow table{min-width:420px}
+.tw--wide table{min-width:900px}
+/* 넘겨 볼 수 있다는 안내는 실제로 넘칠 때만 띄운다.
+   화면 폭으로 판단하면 여섯 칸짜리 표가 데스크톱에서 잘려도 아무 말을 못 한다 —
+   .over는 JS가 표의 실제 폭을 재서 붙인다 */
+.tw__hint{display:none;margin-top:8px;font-size:12px;color:var(--muted)}
+.tw.over+.tw__hint{display:block}
+
+/* ── 문서 끝: 옆 문서로 건너가는 자리 ── */
+.also{margin-top:clamp(44px,6vw,64px);padding-top:26px;border-top:1px solid var(--line)}
+.also__list{display:grid;gap:12px;margin-top:14px}
+@media(min-width:640px){.also__list{grid-template-columns:1fr 1fr}}
+.also a{display:block;padding:16px 18px;border:1px solid var(--line);border-radius:var(--r);
+  background:rgba(var(--tint),.04);transition:border-color .18s,background .18s,transform .18s}
+.also b{display:block;font-size:.98rem;letter-spacing:-.02em}
+.also span{display:block;margin-top:5px;font-size:.86rem;color:var(--muted)}
+
+footer{padding:30px 0 calc(48px + env(safe-area-inset-bottom,0px));
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
+footer nav{display:flex;flex-wrap:wrap;gap:4px}
+footer nav a{line-height:44px;padding-inline:12px;transition:color .18s}
+
+/* ══ 누르는 느낌 ══ index와 같은 규칙: hover는 커서가 있는 기기에서만 ══ */
+@media(hover:hover){
+  .top__id:hover{opacity:.72}
+  .top__nav a:hover,footer nav a:hover{color:var(--ink)}
+  .toc a:hover{color:var(--ink);background:rgba(var(--tint),.05)}
+  .art__link:hover{color:var(--doc)}
+  .ref:hover{border-bottom-color:var(--doc)}
+  .x:hover{text-decoration-color:var(--doc)}
+  .also a:hover{border-color:rgba(var(--tint),.24);background:var(--bg-2);transform:translateY(-1px)}
+}
+.top__id:active{opacity:.6}
+.also a:active{transform:scale(.99)}
+.toc a:active,.top__nav a:active,footer nav a:active{color:var(--doc)}
+
+@media(prefers-reduced-transparency:reduce){
+  .top{backdrop-filter:none;background:rgba(var(--bg-rgb),.97)}
+  .toc,.also a{background:rgba(18,20,46,.98)}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important}
+}
+
+/* ── 인쇄 ── 법적 고지는 종이로도 나간다.
+   색이 빠져도 초안 표시와 [TBD]는 반드시 남아야 한다 ── */
+@media print{
+  body{background:#fff;color:#000}
+  body::before{display:none}
+  .top,.toc,.also,footer nav,.art__link,.tw__hint{display:none}
+  main{padding-top:0}
+  .layout{display:block}
+  .prose,.doc__head{max-width:none}
+  .prose,.doc__lede,.meta dd,.banner p{color:#1a1a1a}
+  .prose strong,.art,.doc h1{color:#000}
+  .art__no,.eyebrow{color:#444}
+  .banner{border:2px solid #b45309;background:#fffbeb}
+  .banner b{color:#7c2d12}
+  .tbd{background:#fff;color:#000;border:1.5px solid #000;font-weight:700}
+  .tw,table,th,td{border-color:#bbb}
+  thead th{background:#f1f1f1;color:#000}
+  td:first-child{color:#000}
+  td small{color:#333}
+  .ref,.x{color:#000;border:0;text-decoration:underline}
+  .art{break-after:avoid}
+  tr{break-inside:avoid}
+}
+
+/* ── 앱 안 시트(embed) ── 앱이 `?embed=1`로 열면 제목 + 본문만 남긴다(FEV-389).
+   시트에는 이미 앱 헤더(문서 제목·닫기)가 있으니 이 페이지의 상단바·목차·바닥글은 **두 번째 크롬**이다.
+   색은 앱 표면(AppColor.bg — 라이트 #fff / 다크 #131313)에 맞춘다: 시트 안에서 페이지가 '다른 곳'으로
+   보이는 순간 '링크를 연' 느낌이 되돌아온다. 인쇄 규칙과 같은 발상이라 숨기는 목록도 비슷하다. ── */
+/* 페이지 기본이 종이라 시트도 그대로 라이트다 — 뒤집는 것은 아래 다크 분기다. */
+html.embed{scroll-behavior:auto}
+html.embed body::before{background:var(--bg)}
+html.embed .top,html.embed .also,html.embed footer,
+html.embed .eyebrow,html.embed .art__link{display:none}
+html.embed main{padding-top:0}
+html.embed .doc{padding-block:18px calc(40px + env(safe-area-inset-bottom,0px))}
+html.embed .doc h1{margin-top:0;font-size:1.55rem}
+html.embed .doc__lede{font-size:.95rem}
+html.embed .layout{display:block;margin-top:22px}
+html.embed .prose,html.embed .doc__head{max-width:none}
+html.embed [id]{scroll-margin-top:14px}
+
+/* ── embed 목차 ── 앱 시트에서도 조문으로 건너뛸 수 있어야 한다(FEV-366 후속).
+   처음 embed를 만들 때 `.toc`를 크롬으로 보고 함께 껐는데, 목차는 크롬이 아니라 **본문 탐색**이다.
+   처리방침 14조·약관 23조를 목차 없이 세로로만 훑게 두면 원하는 조항에 닿을 방법이 없다.
+   개인정보 처리방침 작성지침(개인정보보호위원회, 2025.4)도 「목차 + 하이퍼링크로 조항 이동」을
+   권장하고, 국내 주요 서비스 대부분이 앵커 목차를 둔다. ── */
+html.embed .toc{position:static;margin-bottom:22px;background:rgba(127,127,127,.06)}
+/* 요약은 embed 에서도 남긴다 — 시트에서 첫 화면에 보이는 것이 이 장치의 요점이다 */
+html.embed .summary{margin-top:22px}
+/* **시트에서는 항상 접힌 채로 시작한다.** 아래 JS의 넓은 화면 판정(900px)은 iPad 시트에서 참이
+   될 수 있는데, 그러면 목차가 펼쳐진 채로 본문 위를 덮는다 — 그쪽은 sticky 사이드바를 전제한
+   레이아웃이고 시트에는 그 가로 폭이 없다. */
+html.embed .toc>summary{display:flex}
+
+/* ── 조문 경계 ── 「한 줄로 쭉 나열돼 보인다」의 절반은 스크롤 길이가 아니라 **경계가 안 보이는**
+   것이다. 작성지침은 「중요 사항·제목은 본문보다 최소 20% 이상 크게」라는 드문 정량 기준을 주는데,
+   390pt 폰에서 본문 0.955rem 대비 조문 제목이 1.06rem — **+11%로 그 선 아래였다.**
+   `.art__no`(제N조)는 아예 본문보다 작았다. 넓은 화면은 vw 항이 커져 이미 기준을 넘으므로
+   embed에서만 올린다. ── */
+html.embed .art{font-size:1.16rem}          /* 본문 0.955rem 대비 +21% */
+html.embed .art__no{font-size:12.5px}
+/* 구분선 하나가 목차만큼 체감이 크다 — 지침의 「굵기·색상으로 구분」 대안에도 맞는다.
+   첫 조문에는 걸지 않는다(전문 바로 아래라 이미 경계가 있다). */
+html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px solid var(--line)}
+
+/* ── 앱 시트의 다크 ── 페이지 기본이 종이(라이트)라, **뒤집는 쪽이 다크다.**
+   예전에는 반대였다(기본 다크 + 라이트 분기) — 랜딩이 종이 바탕으로 가면서 방향이 바뀌었다.
+   값은 앱 표면을 따른다(`AppColor.bg` 다크 #131313). */
+@media(prefers-color-scheme:dark){
+  html.embed{--bg:#131313;--bg-rgb:19,19,19;--bg-2:#1d1d1d;--ink:#f5f5f5;--copy:#afafaf;--muted:#7e7e7e;
+    --tint:255,255,255;--line:rgba(255,255,255,.1);
+    /* 인디고 원색은 어두운 면에서 3.4:1로 모자라다 — 랜딩이 어두운 면용으로 잡아 둔 파랑을 쓴다 */
+    --accent:#4c8df6;--doc:#4c8df6;--doc-soft:rgba(76,141,246,.5);
+    --warn:#da9e2f;--warn-soft:rgba(245,158,11,.13);--warn-line:rgba(245,158,11,.34);--mark:#fde047}
+  html.embed ::selection{background:#4c8df6;color:#131313}
+  html.embed .banner svg path{stroke:#da9e2f}
+  html.embed .banner svg circle{fill:#da9e2f}
+}
+/* 일본어판: 가나·한자는 keep-all 이면 줄이 바뀌지 않는다 */
+:root{--sans:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",system-ui,sans-serif}
+body{word-break:normal;line-break:strict}
+</style>
+</head>
+<body id="top">
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="top__id" href="index.html">
+      <img class="top__mark" src="assets/app-icon.png" width="28" height="28" alt="" decoding="async">
+      JAMIT
+    </a>
+    <nav class="top__nav" aria-label="法的情報">
+      <a href="terms.ja.html">利用規約</a>
+      <a href="privacy.ja.html" aria-current="page">プライバシー<span class="long">ポリシー</span></a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap doc">
+
+    <div class="doc__head">
+      <p class="eyebrow">JAMIT Legal</p>
+      <h1>プライバシーポリシー</h1>
+      <p class="doc__lede">この日本語版は利用者の便宜のために提供する翻訳です。韓国語版が正本であり、両者の内容に相違がある場合は韓国語版が優先します。<a class="x" href="privacy.html">韓国語版を見る</a></p>
+      <p class="doc__lede">
+        JAMITがどのような個人情報をどのような目的で取得し、どの程度の期間保有するのか、また利用者がそれについてどのような権利を行使できるのかをまとめた文書です。
+      </p>
+
+      <dl class="meta">
+        <dt>ステータス</dt><dd>施行中</dd>
+        <dt>施行日</dt><dd><time datetime="2026-08-25">2026年8月25日</time></dd>
+        <dt>最終改定</dt><dd><time datetime="2026-10-20">2026年10月20日</time></dd>
+        <!-- 본문을 고치면 이 날짜도 같이 올린다 — 독자가 「바뀌었는가」를 판단하는 유일한 표지다. -->
+        <dt>関連文書</dt><dd><a class="x" href="terms.ja.html">JAMIT 利用規約</a></dd>
+      </dl>
+
+    </div>
+
+
+    <!-- 「핵심만」 — 카카오·당근·쿠팡·네이버가 전부 갖고 있는 요약 장치이고, 개인정보 처리방침
+         작성지침(2025.4)도 세부는 링크로 넘기고 핵심을 앞세우는 구성을 권장한다.
+         **별도 페이지가 아니라 같은 문서 안의 섹션이다** — 앱 시트는 host+path로 문서를 가르므로
+         (`TermsDocument.matching`) 새 path가 생기면 시트 제목이 안 잡히고 「뒤로」 동선이 늘어난다.
+         ⚠️ **본문을 개정하면 이 아홉 줄도 반드시 함께 고칠 것.** 요약과 전문이 어긋나면 요약이
+         없느니만 못하다. 약관(terms.html)에는 두지 않는다 — 조문이 23개라 일곱 줄로 줄이면
+         「이건 안 적혔는데」가 나오기 쉽고, 그쪽은 목차로 충분하다고 봤다(2026-08-25 결정). -->
+    <section class="summary" id="summary" aria-labelledby="summary-h">
+      <h2 id="summary-h">要点</h2>
+      <ul>
+        <li>ソーシャルログインで受け取った情報と、投稿されたトラック・Its（会員のトラックを組み合わせたショート動画）を取り扱います。トラックには顔・声・演奏が含まれます。 <a class="x" href="#art-2">第2条</a></li>
+        <li>撮影・同期・合成の品質とユーザビリティを改善するため、<strong>運営者が投稿されたトラック・Itsを直接閲覧します。</strong>宣伝など外部に公開する利用については、別途同意をいただきます。 <a class="x" href="#art-1">第1条</a></li>
+        <li><strong>退会されると、アカウントとメールアドレス・ニックネーム・プロフィール写真を遅滞なく破棄します。</strong>ただし、投稿されたトラック・Its・募集投稿は報告の確認のため<strong>30日</strong>後に破棄され（他の会員が作成したセッション動画に含まれるトラックは、その動画とともに残ります）、再登録確認用の一方向ハッシュが30日間（利用停止中の退会はその期間まで、最長1年）残ります。 <a class="x" href="#art-3">第3条</a></li>
+        <li><strong>アプリで削除したトラック・Its・募集投稿も30日後に破棄されます。</strong>削除した時点で他の利用者には表示されなくなりますが、報告されたコンテンツを削除して確認を逃れることを防ぐため、その間は運営者のみが閲覧できる状態で保管します。 <a class="x" href="#art-3">第3条</a></li>
+        <li><strong>好みのジャンルと演奏パートでホームの募集投稿一覧の並び順を、演奏パートとItsの視聴履歴でIts一覧の並び順を決めます。</strong>好みのジャンルは任意項目であり、登録しなくてもサービスの利用に制限はありません。募集投稿の閲覧・ジャンルフィルターの選択・Itsの視聴履歴は、そのおすすめの改善と実績の判定に使用し、<strong>90日を経過すると削除されます。</strong>Its一覧には複数の会員の視聴数・いいね数を合計した人気度も反映されますが、誰が何を見たかは他の利用者には表示されません。 <a class="x" href="#art-1">第1条</a>・<a class="x" href="#art-3">第3条</a></li>
+        <li><strong>会員同士でやり取りしたチャットメッセージを保管します。</strong>削除または退会された場合は30日後に内容を削除しますが、既読位置を維持するため、番号・送信者・送信日時とメッセージの種類は残ります。<strong>運営者は、報告を受けた場合に限り、報告されたメッセージとその前後の数件のみを確認します。</strong> <a class="x" href="#art-3">第3条</a>・<a class="x" href="terms.ja.html#art-13">利用規約第13条</a></li>
+        <li>サービス運営のためにAWS・Google・Microsoft・HubSpotに処理を委託しており、一部の情報は<strong>米国へ移転</strong>されます。 <a class="x" href="#art-5">第5条</a>・<a class="x" href="#art-6">第6条</a></li>
+        <li><strong>アプリは、どの画面や機能がどの程度使われているかを把握するため、Google Firebase Analyticsを使用します。</strong>会員アカウントとは紐づけず、広告識別子は取得しません。<strong>アプリを削除すると取得が停止します。</strong>ウェブサイト（jamit.kr）はMicrosoft Clarityで訪問記録を確認します — Cookieはブラウザで拒否することができます。 <a class="x" href="#art-10">第10条</a></li>
+        <li>閲覧・訂正・削除・処理停止・同意の撤回は、アプリ内で、または <a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a> にて、いつでも請求することができます。 <a class="x" href="#art-8">第8条</a></li>
+      </ul>
+      <p class="summary__note">これは要約であり、正確な内容は以下の全文が優先します。</p>
+    </section>
+
+    <div class="layout">
+
+      <!-- 목차 — 데스크톱에서는 옆에 붙어 따라오고, 좁은 화면에서는 접힌다 -->
+      <details class="toc" id="toc" open>
+        <summary>条文目次<span class="sr-only">を開く</span></summary>
+        <nav class="toc__list" aria-label="条文目次">
+          <ol>
+            <li><a href="#art-1"><span class="n">第1条</span>個人情報の処理目的</a></li>
+            <li><a href="#art-2"><span class="n">第2条</span>取得する個人情報の項目および取得方法</a></li>
+            <li><a href="#art-3"><span class="n">第3条</span>個人情報の処理および保有期間</a></li>
+            <li><a href="#art-4"><span class="n">第4条</span>個人情報の第三者提供</a></li>
+            <li><a href="#art-5"><span class="n">第5条</span>個人情報の処理の委託</a></li>
+            <li><a href="#art-6"><span class="n">第6条</span>個人情報の国外移転</a></li>
+            <li><a href="#art-7"><span class="n">第7条</span>個人情報の破棄の手続および方法</a></li>
+            <li><a href="#art-8"><span class="n">第8条</span>情報主体と法定代理人の権利・義務およびその行使方法</a></li>
+            <li><a href="#art-9"><span class="n">第9条</span>個人情報の安全性確保措置</a></li>
+            <li><a href="#art-10"><span class="n">第10条</span>個人情報を自動的に取得する装置の設置・運営およびその拒否</a></li>
+            <li><a href="#art-11"><span class="n">第11条</span>アプリのアクセス権限</a></li>
+            <li><a href="#art-12"><span class="n">第12条</span>個人情報保護責任者</a></li>
+            <li><a href="#art-13"><span class="n">第13条</span>権益侵害の救済方法</a></li>
+            <li><a href="#art-14"><span class="n">第14条</span>プライバシーポリシーの変更</a></li>
+            <li><a href="#addendum"><span class="n">附則</span>施行日</a></li>
+          </ol>
+        </nav>
+      </details>
+
+      <article class="prose">
+
+        <p class="intro">
+          김민재（キム・ミンジェ。以下「運営者」といいます）は、モバイルアプリケーション「JAMIT」およびウェブサイト（jamit.kr）（以下、総称して「本サービス」といいます）を提供するにあたり、大韓民国の「個人情報保護法」（개인정보 보호법）その他の関係法令を遵守し、情報主体の個人情報を保護し、これに関する苦情を迅速に処理するため、「個人情報保護法」第30条に基づき、このプライバシーポリシーを策定・公開します。以下、本ポリシーにおいて法令名を掲げる場合、大韓民国の法令をいいます。
+        </p>
+
+        <section id="art-1">
+          <h2 class="art"><span class="art__no">第1条</span>個人情報の処理目的 <a class="art__link" href="#art-1" aria-label="第1条へのリンク">#</a></h2>
+          <p>
+            運営者は、次の目的のために個人情報を処理します。処理した個人情報は次の目的以外の用途には利用せず、利用目的が変更される場合には、「個人情報保護法」第18条に基づき別途同意を得るなど、必要な措置を講じます。
+          </p>
+          <ol class="clauses">
+            <li><strong>会員登録および管理</strong>：ソーシャルログイン（Kakao・Google・Apple）による会員の識別・認証、会員資格の維持・管理、各種の告知・通知、退会の処理
+              <!-- 2026-09-01 삭제: 원래 여기에 「만 14세 미만 여부 확인」이 있었는데, 제2조 표대로 생년월일·연령을
+                   한 항목도 받지 않으므로 수행할 수 없는 목적이었다 — 문서가 하지 않는 일을 한다고 적고 있었다.
+                   연령 확인 절차(동의 화면의 「만 14세 이상입니다」 체크 등)를 앱에 들이는 날 이 목적과
+                   제8조 제5항을 함께 되살릴 것. --></li>
+            <li><strong>サービスの提供</strong>：セッションの募集投稿・トラック・Itsの掲載と再生、トラックの自動同期補正およびItsの合成、Itsの端末への保存・外部共有機能の提供、プロフィールの表示、<strong>会員間のチャット</strong>（1対1および複数人が参加するチャットルーム）の送受信・保管と既読状態の表示、<strong>実績・レベル</strong>の判定と表示
+              <!-- 업적·레벨은 종전부터 제공해 온 기능인데 이 조에 기재가 없었다(2026-10-20 정정) — 처리 내용이
+                   바뀐 것이 아니라 빠져 있던 것을 적는 것이다. 제3조의 숏폼 시청 기록 보유 근거가 이 호를
+                   가리키므로, 그 행을 적으면서 함께 드러났다(GamificationService.onViewLogged). --></li>
+            <li><strong>通知の送信</strong>：セッションへの参加・Itsの公開など、サービスの利用に関するプッシュ通知の送信</li>
+            <li><strong>利用者の保護およびサービスの運営</strong>：報告の受付・処理（<strong>メッセージが報告された場合、運営者は、報告されたメッセージと同じチャットルームでその前後にやり取りされたメッセージを、会員が送信したものについてそれぞれ5件まで、削除されたメッセージを含めて確認します</strong> — <a class="x" href="terms.ja.html#art-13">利用規約第13条第3項</a>）、不適切なコンテンツ・不正利用の防止および制裁、ブロック機能の提供、紛争への対応、サービスの不具合の確認、利用統計の分析および品質の改善</li>
+            <li><strong>コンテンツを活用したサービスの改善</strong>：利用者が本サービスに投稿したトラック・Its（顔・声・演奏の実演などの映像・音声を含みます）を運営者が内部で閲覧・分析し、撮影・同期補正・Itsの合成の品質および機能のユーザビリティ（UX）の改善に活用します。この閲覧は本サービスの運営に携わる運営者内部の人員に限られ、サービスの宣伝など外部に公開する利用については、<a class="x" href="terms.ja.html#art-13">利用規約第13条第2項</a>に基づき別途同意を得ます。
+              <!-- 2026-08-22 추가. 운영진이 사용자 영상을 직접 보고 UX 를 고치려는 계획이 있어, 제4호의 「품질 개선」
+                   한 마디에 숨기지 않고 따로 적는다 — 사람 얼굴·목소리가 든 영상을 사람이 본다는 사실은 읽는 사람이
+                   알아볼 수 있는 자리에 있어야 한다. 범위를 「서비스에 게시한」으로 한정한 것은, 그 콘텐츠가 이미
+                   다른 이용자에게 노출되는 것(약관 제14조 제2항 제1호)이라 운영자 열람이 새 노출이 아니기 때문이다.
+                   외부 리서처·협력사에 보여 주거나, 분석용 사본·클립을 따로 모아 두거나, 모델 학습에 쓰는 것은
+                   이 호가 덮지 않는다 — 그때는 제4·5조(제3자 제공·위탁) 또는 제3조(보유 기간)를 함께 고칠 것. --></li>
+            <li><strong>パーソナライズされたおすすめ</strong>：会員が登録した<strong>好みのジャンル</strong>と<strong>演奏パート（楽器）情報</strong>を利用してホームの募集投稿一覧を、<strong>演奏パート（楽器）情報</strong>と<strong>Itsの視聴履歴</strong>を利用してIts一覧を、会員の関心に近い順に並べ替え、<strong>募集投稿の閲覧・ジャンルフィルターの選択の履歴</strong>を、そのおすすめの品質を高めるために取得します。Its一覧の並び順には、複数の会員の視聴数・いいね数を合計した人気度も反映され、会員の視聴履歴は、誰のものか分からない数としてのみこれに加算されます。好みのジャンルは任意項目であり、登録しなくてもサービスの利用に制限はありません。誰が何を見たかは<strong>他の会員には表示されず</strong>、この処理は、利用者に法的効果またはこれに準ずる影響を及ぼす自動化された決定には該当しません。
+              <!-- 🚨 **「정렬에 쓰는 것」과 「그 목적으로 모으는 것」을 일부러 가른다**(2026-09-23 리뷰에서 잡혔다).
+                   모집글 랭커에 실제로 곱해지는 개인 신호는 선호 장르와 연주 세션 둘뿐이고(PostFeedRanker의
+                   PREFERRED_GENRE_BOOST·OPEN_SESSION_BOOST), 열람·필터·시청 기록을 읽는 코드는 적재·정리·파기와
+                   업적 판정뿐이다 — 모집글 랭커는 그 리포지토리를 주입받지도 않는다. 초안은 그 셋을 「이용하여 정렬」이라
+                   적었는데 거짓이었다.
+                   숏폼 목록은 관심 세션(INTEREST_SESSION_BOOST)과 이미 본 곡의 벌점(SEEN_PENALTY, 시청 기록)을
+                   곱하고, 활동 항에 전체 회원의 서로 다른 시청자 수·좋아요 수를 쓴다(ShortformFeedRanker).
+                   두 앱이 추천순을 청하는 것은 dev 기준이다 — 그 빌드가 시행일 전에 스토어에 닿지 못하면 이 호와
+                   요약에서 숏폼을 다시 뺄 것.
+                   ⚠️ 랭커가 실제로 그 기록들을 읽기 시작하면 「수집·분석」을 「이용하여 정렬」로 옮긴다 — 항목이
+                   느는 것이 아니라 이미 고지한 목적 안이므로 30일 고지 대상은 아니다. -->
+              <!-- 2026-10-20 4차 개정으로 추가(FEV-785·FEV-906·FEV-247·FEV-940). **제4호의 「이용 통계 분석 및
+                   품질 개선」에 묻지 않고 따로 적는다** — 그쪽은 집계이고 이쪽은 **개인별로 다른 화면을 만드는**
+                   처리라, 읽는 사람이 구별할 수 있어야 한다.
+                   ⚠️ **순서를 넘어서는 처리를 더하는 날 이 호를 함께 고칠 것** — 목록에서 무엇을 빼거나(필터링),
+                   추천 결과를 다른 회원에게 보이거나, 외부에 제공하는 것은 이 호가 덮지 않는다.
+                   ⚠️ 국외 이전은 없다 — 판정과 정렬을 전부 서버(AWS 서울 리전)에서 한다. 곡 정보 추론을 위한
+                   국외 LLM 이용은 2026-09-19 에 폐기했다(FEV-792). 다시 들이는 날에는 제5·6조와 이 호를 함께
+                   고치고 제14조 제1항의 30일 전 고지부터 해야 한다. --></li>
+          </ol>
+        </section>
+
+        <section id="art-2">
+          <h2 class="art"><span class="art__no">第2条</span>取得する個人情報の項目および取得方法 <a class="art__link" href="#art-2" aria-label="第2条へのリンク">#</a></h2>
+          <ol class="clauses">
+            <li>運営者は、次の個人情報を取得します。
+              <div class="tw">
+                <table>
+                  <caption class="sr-only">取得の時点別の個人情報の取得項目と必須・任意の区分</caption>
+                  <thead>
+                    <tr><th scope="col">区分</th><th scope="col">取得の時点</th><th scope="col">取得項目</th><th scope="col">必須/任意</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>会員登録</td><td>Kakaoログイン</td><td>ソーシャルアカウントの固有識別子、ニックネーム、プロフィール写真、メールアドレス</td><td>必須</td></tr>
+                    <tr><td>会員登録</td><td>Googleログイン</td><td>ソーシャルアカウントの固有識別子、氏名、プロフィール写真、メールアドレス</td><td>必須</td></tr>
+                    <tr><td>会員登録</td><td>Appleログイン</td><td>ソーシャルアカウントの固有識別子、氏名、メールアドレス（非公開のリレーアドレスである場合があります）</td><td>必須</td></tr>
+                    <tr><td>プロフィール設定</td><td>オンボーディング・マイページ</td><td>ニックネーム、プロフィール写真、演奏パート（楽器）情報</td><td>必須（ニックネーム）/任意</td></tr>
+                    <tr><td>プロフィール設定</td><td>オンボーディング・マイページ・規約への再同意の直後</td><td><strong>好みのジャンル</strong>（提示されたジャンルから選択）</td><td>任意</td></tr>
+                    <!-- 🚨 **시행일에 가장 많은 수집이 일어나는 자리가 「재동의 직후」다.** 기존 회원은 온보딩을
+                         다시 타지 않으므로(온보딩 완료 표식이 로그인 때 닉네임 유무로 선다), 4차 개정 재동의가
+                         도는 그날 선호 장르를 묻는 자리는 사실상 그 화면 하나다.
+                         한 번 뺐다가 되돌렸다 — 2026-09-23 01:08 시점에는 그 화면이 없어 뺐는데, 같은 날 12:50에
+                         FEV-938(iOS #225)이 `dev` 로 머지돼 참이 됐다. ⚠️ 그 빌드가 시행일 전에 사용자에게
+                         닿지 못하면 이 칸이 다시 거짓이 된다 — 출시 전 점검에서 볼 자리다. -->
+                    <tr><td>コンテンツのアップロード</td><td>トラックの撮影・アップロード、Itsの作成</td><td><strong>映像および音声</strong>（利用者の顔・身体・声・演奏の実演が含まれる場合があります）</td><td>必須（該当機能の利用時）</td></tr>
+                    <tr><td>チャット</td><td>1対1・グループ・スペースのチャットルーム</td><td><strong>会員同士でやり取りしたメッセージの内容</strong>と送信者・送信日時、メッセージに添えて共有した募集投稿・Its・トラックの識別子、チャットルームで最後に読んだメッセージの番号、会員がチャットルームに独自に付けた名前（その会員にのみ表示されます）</td><td>必須（該当機能の利用時）</td></tr>
+                    <tr><td>通知</td><td>アプリの起動・ログイン</td><td><strong>端末のプッシュトークン（FCMトークン）</strong></td><td>必須（通知の受信時）</td></tr>
+                    <tr><td>自動取得</td><td>サービスの利用過程</td><td>サービスの利用記録、アクセスログ、端末情報（モデル名・OSバージョン・アプリバージョン）、エラーログ</td><td>自動取得</td></tr>
+                    <tr><td>自動取得</td><td>募集投稿の閲覧、ジャンルフィルターの選択、Itsの視聴</td><td><strong>閲覧した募集投稿・視聴したItsの識別子と日時、選択したジャンルフィルター、Itsを再生した時間とその動画の長さ</strong><br><small>パーソナライズされたおすすめ（第1条第6号）と実績の判定（第1条第2号）に使用され、他の会員には表示されません</small></td><td>自動取得</td></tr>
+                    <!-- 재생 시간과 영상 길이는 완료율로 접지 않고 원본 둘을 그대로 남긴다(ShortformViewLog).
+                         「몇 시에 봤다」와 「3분 중 2분 47초를 봤다」는 다른 정보라 따로 적는다(2026-09-23 리뷰). -->
+                    <tr><td>自動取得</td><td>アプリでのトラックの録画</td><td><strong>録画診断情報</strong> — 録画方式（原曲の動画に合わせた録画・他の会員のトラックと一緒の録画）、端末情報（モデル名・OSバージョン・アプリバージョン）、接続されたオーディオ出力装置の種類（スピーカー・有線・Bluetooth・その他の外部出力）とBluetoothの接続方式・製品群（例：AirPods Pro。利用者が端末に付けた名前は取得しません）、オーディオの遅延・バッファ・サンプルレートの設定値、アプリの「録音のキャリブレーション」の結果と測定日時、録画に適用された自動同期補正値、録画中にオーディオ装置が切り替わった回数と電話の着信などにより中断された回数、他の会員のトラックと一緒に録画する際にそのトラックの再生が停止した回数と時間、端末の発熱・低電力状態、カメラの向き、録画の長さと撮影回数<br><small>トラックの同期が合わない場合に原因を確認するため（第1条第2号・第4号）に使用され、運営者のみが閲覧でき、該当するトラックとともに保管・破棄されます</small></td><td>自動取得</td></tr>
+                    <!-- 앱이 트랙 등록 요청에 싣는 recordingDiagnostics(iOS RecordingDiagnostics, Backend Track.recording_diagnostics).
+                         서버는 필드를 거르지 않는다 — iOS·Android 모두 이 목록을 넘지 말 것(블루투스 이름은 제품군으로만).
+                         파기는 보관 만료 배치의 행 삭제, 행이 남는 트랙은 Track.destroyMedia 가 진단을 비운다. -->
+                    <tr><td>自動取得</td><td>アプリの利用過程</td><td>Google Firebase Analytics — ランダムに生成されたアプリインスタンス識別子、アプリのインストール・起動・セッションなどGoogle Analyticsが自動的に収集する利用イベントと運営者が指定した利用イベント（ログイン・登録・タブの表示・トラックの登録・Itsの公開）およびそれに付随する項目（ログイン手段、トラックの登録経路）、プッシュ通知の受信・開封の記録、端末情報（モデル名・OSバージョン・アプリバージョン・言語・画面情報など）、アクセス元のIPアドレスおよびそこから推定した国・地域</td><td>自動取得</td></tr>
+                    <tr><td>報告・お問い合わせ</td><td>報告の受付、お問い合わせ</td><td>報告・お問い合わせの内容に含まれる情報</td><td>該当する場合</td></tr>
+                    <tr><td>事前登録</td><td>ウェブサイトでのリリース通知の申込み</td><td>メールアドレス</td><td>任意</td></tr>
+                    <tr><td>ウェブサイトの利用</td><td>ウェブサイト（jamit.kr）への訪問</td><td>訪問記録、画面上の動き（移動・クリック・スクロール）、Cookie、ブラウザ・端末情報</td><td>自動取得</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="tw__hint">表は左右にスクロールしてご覧いただけます。</p>
+              <!-- 실제 구성과 대조 완료(2026-08-20). 표는 실제보다 **넓게** 적혀 있고, 그 방향이 안전해
+                   그대로 둔다 — 지금 서버가 실제로 남기는 로그·항목은 이 표보다 적다(대조 근거는 내부
+                   기록에 있다 — 공개 페이지라 구성 세부는 적지 않는다). 로깅을 늘리는 변경은 이 표를 넘지
+                   않는지 확인할 것.
+                   2026-09-02 추가: 앱에 Firebase Analytics 가 들어갔다(iOS FEV-476, 2026-08-29 dev 머지).
+                   운영자가 지정한 이벤트의 정본은 iOS `AppAnalytics.swift` 하나다 — 거기에 이벤트나 파라미터를
+                   더하면 위 행의 괄호 둘(「운영자가 지정한 이용 이벤트」·「그에 딸린 항목」)도 함께 늘릴 것.
+                   SDK 가 스스로 보내는 것(first_open·session_start·user_engagement, FCM 이 함께 있어
+                   notification_receive·notification_open)은 괄호 밖 문장이 덮는다 — 수집을 통째로 끄지 않는 한
+                   막을 수 없는 것들이라 열거하지 않고 「자동으로 수집하는」으로 적었다. 사용자 ID·사용자 속성은
+                   붙이지 않으며(계정과 연결 안 함), IDFA 는 링크하지 않아 「추적」이 아니다. -->
+            </li>
+            <li>取得方法：ソーシャルログインの際に各プラットフォーム（Kakao・Google・Apple）から提供を受けるほか、利用者がサービスの利用過程で直接入力・アップロードし、またはサービスの利用過程で自動的に生成・取得されます。</li>
+            <li>ソーシャルログインの過程における個人情報の取扱いには、各プラットフォームのプライバシーポリシーもあわせて適用されます。
+              <ul class="plain">
+                <li>Kakao: <a class="x ext" href="https://policy.kakao.com/kr/privacy" target="_blank" rel="noopener noreferrer">policy.kakao.com/kr/privacy</a></li>
+                <li>Google: <a class="x ext" href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">policies.google.com/privacy</a></li>
+                <li>Apple: <a class="x ext" href="https://www.apple.com/legal/privacy/kr/" target="_blank" rel="noopener noreferrer">apple.com/legal/privacy/kr</a></li>
+              </ul>
+            </li>
+            <li>運営者は、住民登録番号およびセンシティブ情報（思想・信条、健康など）を取得しません。</li>
+          </ol>
+        </section>
+
+        <section id="art-3">
+          <h2 class="art"><span class="art__no">第3条</span>個人情報の処理および保有期間 <a class="art__link" href="#art-3" aria-label="第3条へのリンク">#</a></h2>
+          <ol class="clauses">
+            <li>運営者は、法令に基づく保有期間または情報主体から同意を得た保有期間の範囲内で、個人情報を処理・保有します。</li>
+            <li>第6項のアプリ利用統計分析情報を除く個人情報は、<strong>会員の退会時まで</strong>保有します。<strong>退会されると、会員を識別できる情報 — メールアドレス、ニックネーム、プロフィール写真、ソーシャルログインの連携情報 — を遅滞なく破棄し、破棄したアカウントは復旧できません。</strong>ただし、次の項目は、不正利用の防止と紛争への対応に必要な最小限の範囲で、表の期間に限り保存します。これらの項目によって退会したアカウントを復元することはできません。
+              <!-- 2026-09-01 문장 순서 조정. 내용은 그대로다 — 「탈퇴 시까지 보유하며, 탈퇴 시 파기합니다. 다만…」
+                   순서에서는 「다만」이 먼저 읽혀 무엇이 남는지가 앞에 서고 계정 삭제가 조건부처럼 보였다.
+                   App Store Guideline 5.1.1(v)는 계정 삭제를 요구하고 예외는 명시하라고 하므로, 삭제가 먼저
+                   서고 예외가 뒤에 붙는 순서로 둔다. -->
+
+              <div class="tw tw--narrow">
+                <table>
+                  <caption class="sr-only">削除・退会後も保存する項目とその根拠・期間</caption>
+                  <thead>
+                    <tr><th scope="col">保存項目</th><th scope="col">保存の根拠</th><th scope="col">保存期間</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>サーバーログ（リクエスト・エラーの記録）</td><td>サービスの運営・障害対応、不正利用の確認</td><td>最長14日</td></tr>
+                    <!-- 2026-08-24 정정: 원래 「통신비밀보호법 제15조의2 · 3개월」로 적었으나 실제 보존은 14일이라
+                         문서가 거짓이었다. 그 법의 통신사실확인자료 보존 의무가 이 서비스에 적용되는지는 법률 검토
+                         항목 — 적용된다고 판단되면 로그 보존을 3개월로 늘리고 이 행을 함께 되돌릴 것. -->
+                    <tr><td>利用制限（利用停止）の記録および再登録確認用の識別子<br><small>ソーシャルアカウント識別子の一方向ハッシュ値 — 元の識別子は復元できず、同じアカウントによる再登録かどうかのみを確認できます</small></td><td>不正利用の再発、ならびに退会による利用制限の回避および再登録の悪用の防止（運営者の正当な利益）</td><td>退会後30日。利用停止中に退会した場合は利用停止の終了日まで（最長1年）</td></tr>
+                    <!-- 백엔드의 쿨다운(30일)·이월 상한(1년) 설정과 같아야 한다(FEV-391) — 한쪽만 바꾸면 문서가
+                         거짓이 된다. 2026-08-22 결정 — 카카오(부정이용 기록 최대 1년)·쿠팡(탈퇴 후 30일)을 따랐다. -->
+                    <tr><td>削除したチャットメッセージの内容<br><small>削除した時点で他の会員には表示されなくなり、30日を経過すると本文と共有対象・案内対象を削除します。チャットルームの既読位置がずれないよう、<strong>メッセージの番号・送信者・送信日時とそのメッセージの種類（テキスト・トラック・案内など）は残ります</strong></small></td><td>相手方の既読位置の維持、報告されたメッセージを当事者が先に削除して確認できなくなることの防止（運営者の正当な利益）</td><td>削除日または退会日から30日</td></tr>
+                    <!-- 비우는 것은 본문·공유 대상 id·안내 대상 id 셋이고 종류(TEXT·SHARE_*·SYSTEM)는 남는다
+                         (MessageRepository.purgeContent). 초안의 「번호·보낸 사람·시각은 남습니다」를 배타적으로
+                         읽으면 부정확하다(2026-09-23 리뷰).
+                         탈퇴 축을 더한 것은 탈퇴가 그 사람의 메시지를 전부 소프트 삭제하기 때문이다
+                         (UserWithdrawalPurger) — 바로 아래 콘텐츠 행과 같은 모양이어야 한다. -->
+                    <tr><td>報告の受付・処理の記録</td><td>紛争への対応、Appleの審査ガイドライン（Guideline）1.2に対応するための運営記録</td><td>処理完了日から1年</td></tr>
+                    <!-- 1년 경과 행을 지우는 장치는 FEV-394(Backend)로 건다 — 첫 신고가 2026-08이라 2027-08 전에만
+                         들어가면 이 문장은 거짓이 되지 않는다. -->
+                    <tr><td>削除されたコンテンツ（トラック・Its・募集投稿）とその映像・音声ファイル<br><small>本サービスには表示されず、報告を受けたコンテンツかどうかを確認する目的に限り運営者が閲覧します</small></td><td>報告されたコンテンツを当事者が先に削除して確認できなくなることの防止（運営者の正当な利益）</td><td>削除日または退会日から30日</td></tr>
+                    <!-- 🚨 **이 행을 공개하기 전에 파기 배치가 실제로 돌고 있어야 한다.** FEV-495 는 기본이
+                         꺼짐(RETENTION_PURGE_ENABLED=false)이고 dry-run 이라, 켜지 않으면 「30일 뒤 파기」가
+                         일어나지 않는다 — 그러면 이 행이 곧 새 거짓말이 된다. 배포 순서는
+                         ①FEV-506+495 를 prod 로 ②RETENTION_PURGE_ENABLED=true ③dry-run 해제 ④이 문서 게시.
+                         옆 신고 기록 행이 「2027-08 전에만 들어가면 거짓이 아니다」로 기한을 적어 둔 것과 같은 장치다.
+
+                         백엔드의 보관 기간과 같아야 한다(FEV-506 소프트 삭제 · FEV-495 만료 파기 배치의
+                         RETENTION_PURGE_DAYS) — 한쪽만 바꾸면 문서가 거짓이 된다. 2026-09-01 결정.
+                         ⚠️ **동의가 아니라 정당한 이익이 근거인 것이 요점이다** — 동의로 두면 철회할 수 있고,
+                         그러면 신고당한 사람이 철회 한 번으로 검토를 피한다(보관 목적이 그 자리에서 무너진다). -->
+                  </tbody>
+                </table>
+              </div>
+              <p class="tw__hint">表は左右にスクロールしてご覧いただけます。</p>
+            </li>
+            <li><strong>退会した会員が投稿したコンテンツ（トラック・募集投稿・Its）とやり取りしたメッセージは、次のとおり取り扱います。</strong>
+              <!-- 두문을 넓힌 것은 아래에 메시지 호가 들어왔기 때문이다(2026-09-23 리뷰) — 메시지는 트랙·게시글·
+                   숏폼도 아니고 영상·음성도 아니라 옛 두문의 범위 밖이었다. 항을 새로 두지 않은 이유는 제3조의
+                   항 번호를 가리키는 자리가 있어서다(이 파일의 「제3조 제6항」 주석). 그래도 결제 조항이 제7항 → 제8항으로
+                   밀려 terms.html 의 그 주석은 함께 고쳤다 — 항을 더하면 이런 자리가 반드시 하나는 나온다. -->
+              <ol class="sub">
+                <li>会員がアップロードしたトラックと会員が作成したItsは、<strong>退会された時点で本サービスに表示されなくなり、他の利用者に再び表示されることはありません。</strong>ただし、報告の確認のため30日間保管した後、映像・音声ファイルまで復元できない方法で破棄します。この期間中も、運営者は報告を受けたコンテンツかどうかを確認する目的に限り閲覧します。会員を識別できるアカウント情報はすでに破棄されており、このコンテンツとは紐づきませんが、映像・音声そのものには顔・声が含まれているため、保管期間を30日に限定します。</li>
+                <li>他の会員が作成したItsは、<a class="x" href="terms.ja.html#art-14">利用規約第14条第4項</a>の同意に基づき維持されます。退会した会員は、「個人情報保護法」第37条に基づき、当該Itsについて処理の停止・削除を請求することができ、運営者は正当な請求に対して遅滞なく対応します。この場合も、会員のメールアドレス・ニックネーム・プロフィール写真は退会とともに破棄されるため、当該Itsに会員が誰であるかは表示されません。</li>
+                <li>会員が作成した募集投稿は、他の会員のトラックまたはItsが残っている場合、作成者の表示を「不明」に変更して維持しますが、<strong>会員が投稿した参考動画（セッションのベースとなるよう会員が自ら撮影・アップロードした動画をいい、YouTubeのリンクで指定した原曲は含みません）は募集投稿から切り離し、第1号と同様に取り扱います。</strong>他の会員のコンテンツがない募集投稿は、第1号と同様に取り扱います。</li>
+                <li><strong>会員が送信したチャットメッセージは、退会された時点で相手方の画面に表示されなくなり</strong>、30日を経過するとその内容を削除します。相手方が送信したメッセージは、相手方の画面にそのまま残ります。複数人が参加するチャットルームに残っている人が一人もいなくなった場合、<strong>そのルームのメッセージは、他の会員が送信したものも含めて</strong>同じ手続で取り扱われます。
+                  <!-- 2026-10-20 신설. 탈퇴 파기가 「그 사람의 메시지 전부」와 「비게 된 단체방의 메시지 전부」
+                       둘을 소프트 삭제한다(UserWithdrawalPurger). 초안은 이 축을 통째로 빠뜨려, 상대 화면에서
+                       대화가 사라지는데 그 사실이 어디에도 없었다(2026-09-23 리뷰). --></li>
+              </ol>
+              <!-- 「(2026-08-20 확정)」 표기를 걷었다 — 그 결정(FEV-358: 탈퇴 시 즉시 파기)이 2026-09-01 결정으로
+                   뒤집혔고, 날짜는 부칙과 머리말이 이미 나른다. 제3호의 「기준 영상을 분리한다」는 실제 동작이다
+                   (FEV-543) — 그 문장이 없으면 남은 게시글에서 영상이 사라지는 이유를 이용자가 알 길이 없다. -->
+            </li>
+            <li><strong>退会していない状態でコンテンツが削除された場合も、30日間保管します。</strong>会員がトラック・Its・募集投稿を自ら削除した場合、複数の会員が共同で利用するスペースから退出した場合若しくは退出させられた場合、又はそのスペースが削除された場合が、いずれもこれに該当します。いずれの場合も、その時点で本サービスに表示されなくなり、他の利用者も閲覧できなくなります。ただし、報告を受けたコンテンツを当事者が先に削除して確認できなくなることを防ぐため、削除された日から30日間、運営者のみがアクセスできる状態で保管した後、映像・音声ファイルまで破棄します。
+              <p>会員のトラックを他の利用者が自身のItsに使用していた場合、<strong>その参加記録は削除と同時に消去されます。</strong>当該Itsの参加者一覧から、会員のニックネーム・プロフィール写真が消えるという意味です。ただし、すでに作成されたセッション動画の中に含まれる顔・声は動画自体の一部であるため、消去することはできません。</p>
+              <p>一方、削除されたItsに<strong>他の利用者が残したいいねと視聴履歴</strong>は、あわせて消去されません。これらの記録は、コンテンツを削除した会員の情報ではなく、その記録を残した他の利用者の情報であり、報告を受けた際にコンテンツがどこまで公開されていたかを確認するため、およびその記録を残した利用者本人へのパーソナライズされたおすすめに使用します。これらの記録は、それを残した利用者が退会するとあわせて破棄され、視聴履歴はそれとは別に、90日を経過すると自動的に削除されます。</p>
+              <!-- 2026-09-01 신설. FEV-506 은 사용자 삭제·나가기·강퇴·방 삭제·탈퇴 다섯 경로를 모두 바꿨는데
+                   방침에는 탈퇴 축(제3항)밖에 없었다 — 앱에서 그냥 지우는 쪽이 훨씬 흔하고, 제8조 제2항이 그것을
+                   「권리 행사」로 명시하고 있어 명문화가 필요했다.
+                   ⚠️ **참여 기록(shortform_tracks)은 이 경로에서 「남는」 것이 아니라 「즉시 지워지는」 것이다.**
+                   TrackService.deleteTrack·deleteForLeave 가 그 자리에서 deleteAllByTrackId 를 부른다 —
+                   그 행이 남의 잇츠 캡션에 실리는 귀속이라, 남기면 「지웠다」는 뜻이 지켜지지 않기 때문이다.
+                   행이 보존되는 것은 **탈퇴 경로뿐**이고(FEV-358 결정 ②) 그것은 제3항 제2호가 다룬다.
+                   좋아요·시청 기록만 제3자의 정보라 남는다 — 그 구분이 이 두 문단의 요점이다. -->
+            </li>
+            <li><strong>会員ではない情報主体の個人情報は、次のとおり取り扱います。</strong>事前登録（リリース通知）の申込みのメールアドレスは、リリース通知を送信した後、遅滞なく破棄し、それ以前であっても<a class="x" href="#art-12">第12条</a>の連絡先までご請求いただければ直ちに破棄します。ウェブサイトの利用分析情報は、<a class="ref" href="#art-10">第10条</a>に基づき取得され、取得日から1年間保管されます。</li>
+            <li><strong>アプリ利用統計分析情報</strong>（<a class="x" href="#art-10">第10条</a>）は、会員アカウントと紐づいていないため退会時にあわせて破棄することができず、Google Analyticsのデータ保持設定の上限に従い、取得日から最長14か月を経過すると削除されます。個人を識別できない集計統計は、その後も保管されます。
+              <!-- 2026-09-02 추가. 제2항 「탈퇴 시까지」의 예외가 표 네 행뿐이던 때 이 정보만 자리가 없었다 —
+                   제5항이 웹사이트 분석 정보에 같은 자리를 이미 두고 있어 그 대칭이다. 14개월은 GA4 표준 속성의
+                   보관 설정 상한(선택지 2개월·14개월)이라 콘솔 값이 2개월이어도 거짓은 아니다 — 정확히 적으려면
+                   콘솔 「데이터 보관」을 확인해 제6조 표와 함께 고칠 것. --></li>
+            <li><strong>募集投稿の閲覧履歴、ジャンルフィルターの選択履歴、Itsの視聴履歴は、取得日から90日を経過すると自動的に削除され、それ以前に退会された場合は、退会とともに破棄されます。</strong>これらの記録はパーソナライズされたおすすめ（<a class="ref" href="#art-1">第1条</a>第6号）と実績の判定（<a class="ref" href="#art-1">第1条</a>第2号）に使用され、他の会員には表示されません。
+              <!-- 🚨 **제2항의 표에 넣었다가 뺐다**(2026-09-23 리뷰). 그 표는 「삭제·탈퇴 후에도 보존하는 항목」이고
+                   머리말이 성격을 「부정 이용 방지와 분쟁 대응에 필요한 최소한」으로 한정하는데, 이 기록들은
+                   ① 탈퇴하면 함께 파기되고(UserWithdrawalPurger 가 그 사람의 행을 걷는다) ② 보존 근거도 추천·업적이라
+                   둘 다 어긋났다. 표에 둔 채로는 「탈퇴해도 90일 남는다」로 읽힌다.
+                   맨 끝에 세운 것은 앞 항 번호를 안 밀리게 하려는 것이다 — 제6항·제7항을 가리키는 주석이
+                   이 파일과 terms.html 에 있다. --></li>
+            <li>決済機能のない無料のサービスであるため、「電子商取引等における消費者保護に関する法律」（전자상거래 등에서의 소비자보호에 관한 법률）に基づく取引記録の保存義務は該当しません。
+              <!-- 유료화하는 날 이 항과 약관 제1조(소재지 생략 근거)를 함께 고칠 것. --></li>
+          </ol>
+        </section>
+
+        <section id="art-4">
+          <h2 class="art"><span class="art__no">第4条</span>個人情報の第三者提供 <a class="art__link" href="#art-4" aria-label="第4条へのリンク">#</a></h2>
+          <ol class="clauses">
+            <li>運営者は、情報主体の個人情報を第1条の目的の範囲内でのみ処理し、情報主体の同意、法律の特別な規定など、「個人情報保護法」第17条・第18条に該当する場合に限り、第三者に提供します。</li>
+            <li>現在、運営者が個人情報を第三者に提供している事例はありません。第三者提供が必要となった場合は、提供を受ける者、提供の目的、提供する項目、保有期間を告知し、別途同意を得ます。</li>
+            <li>ただし、捜査機関等が法令に定められた手続および方法に従って要求する場合には、提供されることがあります。</li>
+            <li><strong>サービスの特性に関するご案内</strong>：利用者が掲載したプロフィール（ニックネーム・プロフィール写真）とコンテンツ（トラック・Itsなど）は、本サービス内の他の利用者に公開され、セッションに参加したトラックは、本サービスの機能により他の参加者のItsに組み合わされ、端末への保存・外部への共有が行われることがあります。これに関する詳細な条件は、<a class="x" href="terms.ja.html#art-13">利用規約第13条</a>・<a class="x" href="terms.ja.html#art-14">第14条</a>に従います。</li>
+          </ol>
+        </section>
+
+        <section id="art-5">
+          <h2 class="art"><span class="art__no">第5条</span>個人情報の処理の委託 <a class="art__link" href="#art-5" aria-label="第5条へのリンク">#</a></h2>
+          <ol class="clauses">
+            <li>運営者は、円滑なサービスの提供のため、次のとおり個人情報の処理業務を委託しています。
+              <div class="tw tw--narrow">
+                <table>
+                  <caption class="sr-only">個人情報の処理の受託者と委託業務</caption>
+                  <thead>
+                    <tr><th scope="col">受託者</th><th scope="col">委託業務</th><th scope="col">備考</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Amazon Web Services, Inc. (AWS)</td>
+                      <td>サービスインフラの運営、データ（コンテンツを含む）の保管</td>
+                      <td>リージョン：アジアパシフィック（ソウル）</td>
+                    </tr>
+                    <tr>
+                      <td>Google LLC (Firebase)</td>
+                      <td>プッシュ通知の送信（FCM）、アプリ利用統計の分析（Firebase Analytics） — Crashlyticsなどのエラー収集ツールは使用しません</td>
+                      <td><a class="ref" href="#art-6">第6条</a>（国外移転）を参照</td>
+                    </tr>
+                    <tr>
+                      <td>Microsoft Corporation</td>
+                      <td>ウェブサイト（jamit.kr）の利用分析（Microsoft Clarity） — アプリには適用されません</td>
+                      <td><a class="ref" href="#art-6">第6条</a>（国外移転）を参照</td>
+                    </tr>
+                    <tr>
+                      <td>HubSpot, Inc.</td>
+                      <td>ウェブサイトでの事前登録（リリース通知）の申込みの受付・保管</td>
+                      <td><a class="ref" href="#art-6">第6条</a>（国外移転）を参照</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="tw__hint">表は左右にスクロールしてご覧いただけます。</p>
+            </li>
+            <li>運営者は、委託契約の締結時に、「個人情報保護法」第26条に基づき、委託業務の遂行目的以外の個人情報の処理の禁止、技術的・管理的保護措置、再委託の制限などを契約文書（各社のデータ処理契約を含みます）に明記し、受託者が個人情報を安全に処理しているかを監督します。</li>
+            <li>委託業務の内容または受託者が変更された場合は、遅滞なくこのプライバシーポリシーを通じて公開します。</li>
+            <li>ソーシャルログインの提供者（Kakao・Google・Apple）は、利用者と各社との間の別途の契約に基づき認証を処理する独立した個人情報処理者であり、運営者は、認証の結果として<a class="ref" href="#art-2">第2条第1項</a>の項目の提供を受けます。</li>
+          </ol>
+        </section>
+
+        <section id="art-6">
+          <h2 class="art"><span class="art__no">第6条</span>個人情報の国外移転 <a class="art__link" href="#art-6" aria-label="第6条へのリンク">#</a></h2>
+          <p>
+            運営者は、サービスインフラの利用のため、次のとおり個人情報を国外に移転（委託・保管）します。情報主体は国外移転を拒否することができますが、その場合、サービスの全部または一部（プッシュ通知など）の利用が制限されることがあります。アプリ利用統計分析情報の取得を停止する方法は、<a class="x" href="#art-10">第10条</a>でご案内しています。
+          </p>
+          <div class="tw tw--wide">
+            <table>
+              <caption class="sr-only">国外に移転される個人情報の移転先、国、項目、方法、目的、保有期間</caption>
+              <thead>
+                <tr>
+                  <th scope="col">移転先</th><th scope="col">移転先の国</th><th scope="col">移転する項目</th>
+                  <th scope="col">移転の日時および方法</th><th scope="col">利用目的</th><th scope="col">保有期間</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Google LLC (Firebase)</td>
+                  <td>米国</td>
+                  <td>端末のプッシュトークン（FCM）、FCMの登録過程で送信される端末情報（モデル名・OSバージョン・アプリバージョン）、プッシュ通知のタイトルと本文（通知の種類により、他の会員のニックネームと対象となる募集投稿のタイトルまたはスペース名が含まれ、<strong>チャットの通知には送信した会員のニックネームとメッセージ内容の冒頭部分が含まれます</strong>）、通知と対象コンテンツの識別子</td>
+                  <td>サービスの利用時にネットワークを通じて送信</td>
+                  <td>プッシュ通知の送信</td>
+                  <td>退会またはトークンの無効化まで</td>
+                </tr>
+                <tr>
+                  <td>Google LLC (Firebase Analytics)</td>
+                  <td>米国</td>
+                  <td>ランダムに生成されたアプリインスタンス識別子、アプリのインストール・起動・セッションなどGoogle Analyticsが自動的に収集する利用イベントと運営者が指定した利用イベント（ログイン・登録・タブの表示・トラックの登録・Itsの公開）およびそれに付随する項目（ログイン手段、トラックの登録経路）、プッシュ通知の受信・開封の記録、端末情報（モデル名・OSバージョン・アプリバージョン・言語・画面情報など）、アクセス元のIPアドレスおよびそこから推定した国・地域</td>
+                  <td>アプリの利用時にネットワークを通じて送信</td>
+                  <td>アプリ利用統計の分析およびサービスの改善</td>
+                  <td>イベント・端末単位のデータは取得日から最長14か月（Google Analyticsのデータ保持設定の上限）、個人を識別できない集計統計はその後も保管</td>
+                </tr>
+                <!-- 14개월은 GA4 표준 속성의 보관 설정 상한이다(선택지는 2개월·14개월). 콘솔 「데이터 보관」이
+                     2개월이면 이 문구는 상한으로서 여전히 참이지만, 정확히 적고 싶으면 콘솔 값을 확인해 제3조 제6항과
+                     함께 고칠 것. 항목 문구는 제2조 표·제10조 제1항과 글자 단위로 같아야 한다. -->
+                <tr>
+                  <td>Microsoft Corporation</td>
+                  <td>米国</td>
+                  <td>ウェブサイトの訪問記録、画面上の動き、Cookie、ブラウザ・端末情報</td>
+                  <td>ウェブサイトの訪問時にネットワークを通じて送信</td>
+                  <td>ウェブサイトの利用分析および画面の改善</td>
+                  <td>取得日から1年（Microsoft Clarityの保持ポリシー）</td>
+                </tr>
+                <tr>
+                  <td>HubSpot, Inc.</td>
+                  <td>米国</td>
+                  <td>事前登録の申込みのメールアドレス</td>
+                  <td>事前登録の申込み時にネットワークを通じて送信</td>
+                  <td>リリース通知の送信</td>
+                  <td>リリース通知の送信後、遅滞なく破棄</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="tw__hint">表は左右にスクロールしてご覧いただけます。</p>
+          <!-- AWS 는 서울 리전이라 국외 이전에 해당하지 않는다 — 제5조 위탁 표에만 남긴다.
+               리전을 옮기면 이 표에 AWS 행을 되살려야 한다. -->
+        </section>
+
+        <section id="art-7">
+          <h2 class="art"><span class="art__no">第7条</span>個人情報の破棄の手続および方法 <a class="art__link" href="#art-7" aria-label="第7条へのリンク">#</a></h2>
+          <ol class="clauses">
+            <li>運営者は、個人情報の保有期間の経過、処理目的の達成などにより個人情報が不要となったときは、遅滞なく当該個人情報を破棄します。</li>
+            <li>法令に基づき保存しなければならない情報は、別のデータベース（DB）または保管場所に移して分離保管します。<a class="x" href="#art-3">第3条</a>に基づき一定期間保存する削除されたコンテンツは、本サービスの閲覧経路から除外して他の利用者に表示されないようにし、報告を受けたコンテンツかどうかを確認する目的に限り閲覧します。いずれの場合も、保存期間が経過したときは遅滞なく破棄します。
+              <!-- 2026-09-01 정정: 소프트 삭제는 같은 저장소에 「지운 시각」만 기록하는 방식이라 「별도 DB 로 옮겨
+                   분리 보관」이 사실이 아니었다. 실제 방식(조회 경로 제외 + 목적 제한)에 맞췄다 — 이용자에게는
+                   「안 보인다」는 실질이 그대로 전달된다. -->
+              </li>
+            <li>破棄の方法：電子的ファイル形式の情報は復元・再生できない技術的方法により削除し、紙の文書は裁断または焼却します。</li>
+            <li>退会時には、運営者が保管していたソーシャルログインの連携情報を破棄し、各プラットフォームとの連携の解除もあわせて要求します（Appleは運営者のサーバーが、Kakao・Googleはアプリが要求します）。ネットワークエラーなどにより連携解除の要求が失敗した場合でも、運営者が保管していた連携情報は破棄され、各プラットフォームのアカウント設定から直接連携を解除することもできます。
+              <!-- 2026-09-01 정정: 셋 다 보장되는 것처럼 읽혔으나 서버가 확실히 하는 것은 Apple revoke 뿐이고
+                   카카오·구글은 앱 SDK 의 베스트에포트다. -->
+              </li>
+          </ol>
+        </section>
+
+        <section id="art-8">
+          <h2 class="art"><span class="art__no">第8条</span>情報主体と法定代理人の権利・義務およびその行使方法 <a class="art__link" href="#art-8" aria-label="第8条へのリンク">#</a></h2>
+          <ol class="clauses">
+            <li>情報主体は、運営者に対して、いつでも個人情報の閲覧、訂正・削除、処理停止、同意の撤回を請求することができます。</li>
+            <li>権利の行使は次の方法により行うことができ、運営者は遅滞なく（法定期限内に）対応します。
+              <ol class="sub">
+                <li>アプリ内の機能：プロフィールの編集（訂正）、コンテンツの削除、通知の受信拒否、退会（同意の撤回・削除）</li>
+                <li>メール： <a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a></li>
+              </ol>
+              <p>アプリでコンテンツを削除され、または退会された場合、<strong>その時点で本サービスに表示されなくなります。</strong>ただし、報告の確認のため、削除されたコンテンツを30日間保管した後に破棄します。その内容は<a class="x" href="#art-3">第3条</a>に記載しています。30日を待たずに破棄すべき事情がある場合は、上記のメールアドレスまでご請求いただけます。ただし、報告を受けて確認中のコンテンツは確認の終了後に破棄し、<strong>運営者は報告を受け付けた日から7営業日以内に確認を完了します</strong>（<a class="x" href="terms.ja.html#art-16">利用規約第16条第3項</a>）。</p>
+              <!-- 2026-09-01 추가. 이 조가 앱 내 「콘텐츠 삭제」를 「지체 없이 조치하는 권리 행사」로 적어 둔 채
+                   30일 보관을 하면 그 자체가 불일치다(FEV-506 티켓이 이 조를 배포 차단 사유로 지목했다).
+                   후단(검토 중 예외)이 없으면 즉시 파기 요청이 곧 신고 회피 수단이 되어 보관 목적이 무너진다. -->
+            </li>
+            <li>権利の行使は、情報主体の法定代理人または委任を受けた者を通じて行うこともできます。この場合、「個人情報保護法施行規則」（개인정보 보호법 시행규칙）の別紙様式による委任状を提出しなければなりません。</li>
+            <li>閲覧・処理停止の請求は「個人情報保護法」第35条・第37条により制限されることがあり、他の法令で取得の対象として明示されている個人情報の削除は請求することができません。</li>
+            <li>本サービスには満14歳以上の方のみ登録することができます（<a class="x" href="terms.ja.html#art-5">利用規約第5条</a>）。運営者は生年月日・年齢を取得しないため、登録の時点で年齢を確認することはありませんが、報告・お問い合わせなどにより満14歳未満の児童の個人情報が取得されたことが確認された場合は、遅滞なく当該アカウントと個人情報を破棄し、その児童が投稿したトラック・Its・募集投稿もあわせて破棄します。映像・音声ファイルの破棄には最長30日かかる場合があり、その期間中も本サービスには表示されません。
+              <!-- 2026-09-01: 「즉시 파기」로 강화하지 않았다 — 지금 파기 경로가 탈퇴 하나뿐이고 그것이 30일 보관을
+                   만들기 때문이다. 못 지킬 문장을 쓰지 않는 쪽을 택했다. 관리자용 즉시 파기 경로가 생기면
+                   이 문장의 「최대 30일」을 걷을 것. -->
+              <!-- 2026-09-01 정정: 원래 「가입을 받지 않으며」라고만 적어 가입 시점에 거르는 장치가 있는 것처럼
+                   읽혔다. 실제 앱의 동의 화면(TermsAgreementView)은 필수 2건만 받고 연령을 묻지 않는다 —
+                   확인은 사후에만 가능하므로 그렇게 적는다. 앱에 연령 확인을 들이면 이 항과 제1조 제1호를
+                   함께 고칠 것. --></li>
+          </ol>
+        </section>
+
+        <section id="art-9">
+          <h2 class="art"><span class="art__no">第9条</span>個人情報の安全性確保措置 <a class="art__link" href="#art-9" aria-label="第9条へのリンク">#</a></h2>
+          <p>運営者は、「個人情報保護法」第29条に基づき、次の措置を講じています。</p>
+          <ol class="clauses">
+            <li><strong>管理的措置</strong>：個人情報を取り扱う人員の最小化（個人による運営）、内部処理手続の策定・点検</li>
+            <li><strong>技術的措置</strong>：通信経路の暗号化（HTTPS/TLS）、<strong>保存データの暗号化</strong>（データベースはクラウドの管理型キーで、アップロードファイルはサーバー側暗号化で保存）、ソーシャルログインの採用によるパスワードの非取得・非保管、アクセス権限の最小限の付与および認証トークンの管理、クラウドへのアクセス制御、サーバーログの保管（最長14日）</li>
+            <li><strong>物理的措置</strong>：クラウド事業者（AWS）の物理的アクセス制御環境の利用</li>
+          </ol>
+          <!-- JamIT-Infra 실제 구성과 대조 완료:
+               데이터베이스·업로드 파일 모두 클라우드 저장 암호화가 켜져 있고 접근은 역할 기반으로
+               통제된다(실측 2026-08-20). 구성 세부는 내부 기록에 — 공개 페이지라 적지 않는다.
+               위 세 줄을 바꾸는 인프라 변경은 이 조를 함께 고쳐야 한다. -->
+        </section>
+
+        <section id="art-10">
+          <h2 class="art"><span class="art__no">第10条</span>個人情報を自動的に取得する装置の設置・運営およびその拒否 <a class="art__link" href="#art-10" aria-label="第10条へのリンク">#</a></h2>
+          <ol class="clauses">
+            <li><strong>アプリ</strong>はウェブブラウザのCookie（クッキー）を使用せず、ターゲティング広告のための広告識別子（IDFA）を取得しません。ただし、どの画面や機能がどの程度使われているかを把握してサービスを改善するため、<strong>Google Firebase Analytics</strong>を使用します。この過程で、ランダムに生成されたアプリインスタンス識別子、アプリのインストール・起動・セッションなどGoogle Analyticsが自動的に収集する利用イベントと運営者が指定した利用イベント（ログイン・登録・タブの表示・トラックの登録・Itsの公開）およびそれに付随する項目（ログイン手段、トラックの登録経路）、プッシュ通知の受信・開封の記録、端末情報（モデル名・OSバージョン・アプリバージョン・言語・画面情報など）、アクセス元のIPアドレスおよびそこから推定した国・地域がGoogleに送信されます（<a class="x" href="#art-2">第2条</a>・<a class="x" href="#art-6">第6条</a>）。これらの情報は会員アカウント（メールアドレス・ニックネームなど）と紐づけず、広告目的には使用しません。Crashlyticsなどのエラー収集ツールは使用しません。
+              <!-- 2026-09-02 반영. 앱에 연결된 Firebase 제품은 FirebaseMessaging(푸시)·FirebaseAnalytics 둘이다
+                   (iOS FEV-476). 릴리스 빌드는 켜고 디버그는 끈다(PushDelegate.swift). 앱 안에서 끄는 스위치는
+                   없다 — FEV-632 는 2026-09-03 보류(통계는 항상 수집한다는 결정). Crashlytics·IDFA(FirebaseAnalyticsIdentitySupport)를 붙이는 날 이 항과
+                   제2·5·6조, App Store 「앱 개인정보」 라벨을 함께 고칠 것. --></li>
+            <li>この取得をアプリ内で停止する設定はなく、<strong>アプリを削除すると停止します。</strong>アプリインスタンス識別子はアプリとともに削除され、再インストールすると新たに生成されます。すでに送信された情報は、<a class="x" href="#art-3">第3条</a>第6項の期間中保管されます。これらの情報は会員アカウントと紐づいていないため特定の利用者のデータを識別することができず、個別の削除・処理停止の請求には応じることができません。その他のお問い合わせは <a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a> までご連絡ください。
+              <!-- 2026-09-03 반영. 앱 안 스위치(iOS FEV-632, 구현은 브랜치에 있음)는 보류했다 — 통계는 항상 수집한다는
+                   결정이라 거부 방법은 앱 삭제뿐이다. 스위치를 넣는 날 이 항을 「마이 탭 > 설정 > 앱 이용 통계 수집에서
+                   끌 수 있다」로 다시 쓰고 개정할 것(권리가 늘어나는 개정이라 30일 전 고지 없이 시행해도 된다).
+                   「support@ 로 알려 달라」를 거부 방법으로 적지 않는 이유: 사용자 ID 를 붙이지 않아 특정인의 데이터를
+                   지목할 수 없고 원격으로 끌 통로(Remote Config)도 없어, 메일을 받아도 운영자가 할 수 있는 일이 없다. --></li>
+            <li><strong>ウェブサイト（jamit.kr）</strong>は、ページがどのように利用されているかを把握して画面を改善するため、<strong>Microsoft Clarity</strong>を使用します。この過程で、訪問記録と画面上の動き（移動・クリック・スクロール）が取得され、Cookieが保存されます。これらの情報は、会員アカウントや事前登録のメールアドレスとは紐づけません。
+              <!-- 2026-08-24 반영. 랜딩페이지에 Clarity 태그가 들어가 있는데(index.html) 이 조가 「분석 도구를
+                   쓰지 않는다」고 적고 있어 같은 도메인 안에서 문서와 사실이 어긋나 있었다. 태그를 걷어내거나
+                   다른 도구로 바꾸는 날 이 항과 제2·5·6조를 함께 고칠 것. 이 문서 페이지(terms.html·privacy.html)
+                   자체에는 Clarity를 넣지 않는다 — 약관을 읽는 행위까지 기록할 이유가 없다. --></li>
+            <li>Cookieの保存を希望されない場合は、ウェブブラウザの設定でCookieを拒否し、または保存されたCookieを削除することができます。ただし、Cookieを拒否すると、ウェブサイトの一部機能の利用が困難になる場合があります。</li>
+          </ol>
+        </section>
+
+        <section id="art-11">
+          <h2 class="art"><span class="art__no">第11条</span>アプリのアクセス権限 <a class="art__link" href="#art-11" aria-label="第11条へのリンク">#</a></h2>
+          <p>
+            本サービスは、次のスマートフォンのアクセス権限を利用します。任意のアクセス権限は、許可しなくても該当機能以外のサービスを利用することができ、端末の設定からいつでも変更することができます。
+          </p>
+          <div class="tw tw--narrow">
+            <table>
+              <caption class="sr-only">アプリが利用するアクセス権限とその目的</caption>
+              <thead>
+                <tr><th scope="col">権限</th><th scope="col">必須/任意</th><th scope="col">利用目的</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>カメラ</td><td>任意</td><td>トラック（演奏動画）の撮影</td></tr>
+                <tr><td>マイク</td><td>任意</td><td>トラックの撮影時の音声・演奏の録音</td></tr>
+                <tr><td>写真/メディア</td><td>任意</td><td>セッションに使用する演奏動画の選択、プロフィール写真の登録、完成したItsの端末への保存</td></tr>
+                <!-- 2026-09-01 보강: 「(저장)」만 적혀 있어 갤러리에서 영상·사진을 **고르는** 쪽이 빠져 있었다.
+                     iOS는 읽기(NSPhotoLibraryUsageDescription)와 저장(…AddUsageDescription)이 별개 키이고
+                     둘 다 번들에 있다(JamIT-iOS `apple/Config/Info.plist`). 고르는 쪽은 PhotosPicker라 런타임
+                     권한 창이 뜨지 않지만, 목적은 적혀 있어야 심사자가 보는 문구와 이 표가 같아진다. -->
+                <tr><td>通知</td><td>任意</td><td>プッシュ通知の受信</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="tw__hint">表は左右にスクロールしてご覧いただけます。</p>
+        </section>
+
+        <section id="art-12">
+          <h2 class="art"><span class="art__no">第12条</span>個人情報保護責任者 <a class="art__link" href="#art-12" aria-label="第12条へのリンク">#</a></h2>
+          <ol class="clauses">
+            <li>運営者は、個人情報の処理に関する業務を統括して責任を負い、個人情報の処理に関する情報主体の苦情処理および被害救済などのため、次のとおり個人情報保護責任者を指定しています。
+              <div class="tw tw--narrow">
+                <table>
+                  <caption class="sr-only">個人情報保護責任者と連絡先</caption>
+                  <thead>
+                    <tr><th scope="col">区分</th><th scope="col">内容</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>個人情報保護責任者</td><td>김민재（キム・ミンジェ）（個人運営者）</td></tr>
+                    <tr><td>連絡先（メール）</td><td><a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="tw__hint">表は左右にスクロールしてご覧いただけます。</p>
+            </li>
+            <li>情報主体は、本サービスの利用中に生じたすべての個人情報保護に関するお問い合わせ、苦情処理、被害救済などに関する事項を、個人情報保護責任者に問い合わせることができ、運営者は遅滞なく回答・処理します。</li>
+          </ol>
+        </section>
+
+        <section id="art-13">
+          <h2 class="art"><span class="art__no">第13条</span>権益侵害の救済方法 <a class="art__link" href="#art-13" aria-label="第13条へのリンク">#</a></h2>
+          <p>
+            情報主体は、個人情報の侵害に対する救済を受けるため、次の機関に紛争の解決や相談などを申請することができます。
+          </p>
+          <ol class="clauses">
+            <li>個人情報紛争調停委員会（개인정보분쟁조정위원회）：（市外局番なし） 1833-6972 /
+              <a class="x ext" href="https://www.kopico.go.kr" target="_blank" rel="noopener noreferrer">www.kopico.go.kr</a></li>
+            <li>個人情報侵害申告センター（개인정보침해신고센터）［韓国インターネット振興院（한국인터넷진흥원）］：（市外局番なし） 118 /
+              <a class="x ext" href="https://privacy.kisa.or.kr" target="_blank" rel="noopener noreferrer">privacy.kisa.or.kr</a></li>
+            <li>大検察庁（대검찰청）：（市外局番なし） 1301 /
+              <a class="x ext" href="https://www.spo.go.kr" target="_blank" rel="noopener noreferrer">www.spo.go.kr</a></li>
+            <li>大韓民国警察庁（경찰청）：（市外局番なし） 182 /
+              <a class="x ext" href="https://ecrm.cyber.go.kr" target="_blank" rel="noopener noreferrer">ecrm.cyber.go.kr</a></li>
+          </ol>
+        </section>
+
+        <section id="art-14">
+          <h2 class="art"><span class="art__no">第14条</span>プライバシーポリシーの変更 <a class="art__link" href="#art-14" aria-label="第14条へのリンク">#</a></h2>
+          <ol class="clauses">
+            <li>このプライバシーポリシーは施行日から適用され、法令・方針またはサービスの変更により内容が追加・削除・修正される場合は、変更の施行の7日前から（取得項目・目的など重要な変更は30日前から）このページおよびアプリ内の案内を通じて告知します。
+              <!-- 2026-09-01 정정: 「서비스 내 공지사항」이라고 적었으나 앱에 공지사항 화면이 없다. 실제로 고지가
+                   닿는 경로는 이 페이지(앱은 마이페이지·동의 화면에서 같은 주소를 시트로 연다)뿐이라 그렇게 적는다.
+                   앱에 공지 화면이 생기면 되돌릴 것. --></li>
+            <li>改定履歴はこの文書の<a class="x" href="#addendum">附則</a>でご確認いただけます。以前のバージョンのプライバシーポリシーが必要な場合は、<a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a> までご請求いただけます。
+              <!-- 2026-09-01 정정: 원래 「이전 버전은 안내 페이지에서 확인할 수 있습니다」였는데 그런 페이지가
+                   레포에 없다(index·terms·privacy·presentation 뿐) — 없는 곳을 가리키는 문장이었다.
+                   페이지를 새로 만들지 않고 **부칙 + 이메일 요청**으로 돌리는 이유는, 개정이 잦지 않아
+                   버전 보관소를 세울 만큼의 일이 아니고 부칙 한 줄이 같은 답을 주기 때문이다.
+                   개정이 쌓여 부칙만으로 무엇이 바뀌었는지 따라가기 어려워지면 그때 보관 페이지를 만들고
+                   이 문장을 그쪽으로 돌릴 것. 이메일 요청을 받으면 git 이력에서 해당 시점 파일을 꺼내면 된다. --></li>
+          </ol>
+        </section>
+
+        <section id="addendum">
+          <h2 class="art"><span class="art__no">附則</span>施行日 <a class="art__link" href="#addendum" aria-label="附則へのリンク">#</a></h2>
+          <ol class="clauses">
+            <li>このプライバシーポリシーは、2026年8月25日から施行します。</li>
+            <li>2026年9月1日改定 — 実際の処理と食い違っていた文言を修正しました。第1条第1号から、実施していない「満14歳未満かどうかの確認」を削除し、第8条に年齢の確認が事後的にのみ行われることを明記し、第11条の写真/メディアへのアクセス権限の目的に動画・写真の選択を追加し、第14条の告知手段と以前のバージョンの案内を実際の経路に合わせて修正しました。<strong>取得する項目を増やし、または処理目的を広げる変更はありません。</strong>この改定は、2026年9月1日から施行します。
+              <!-- 부칙이 곧 개정 이력이다 — 제14조 제2항이 여기를 가리킨다. 다음 개정도 이 아래에 한 줄을
+                   더하고 머리말의 「최종 수정」을 함께 올릴 것. 항목·목적이 **늘어나는** 개정이라면
+                   제14조 제1항대로 시행 30일 전에 먼저 고지해야 하므로, 그때는 날짜를 앞당겨 적지 말 것. --></li>
+            <li>2026年9月1日第2次改定 — 削除・退会したコンテンツの保管期間を明記しました。報告されたコンテンツを当事者が先に削除して確認できなくなることを防ぐため、削除・退会したトラック・Its・投稿を<strong>30日</strong>間保管した後に破棄します（<a class="x" href="#art-3">第3条</a>第2項～第4項）。<strong>メールアドレス・ニックネーム・プロフィール写真など会員を識別できる情報は、従前どおり退会後直ちに破棄します。</strong>そのほか、第7条の破棄方法とソーシャル連携の解除に関する文言、第8条の権利行使の案内を、実際の処理に合わせて修正しました。<strong>取得する項目を増やし、または処理目的を広げる変更はありません</strong> — 映像・音声は従前から取得項目であり（<a class="x" href="#art-2">第2条</a>）、報告の受付・処理は従前から処理目的でした（<a class="x" href="#art-1">第1条</a>第4号）。この改定は、2026年9月1日から施行します。
+              <!-- 즉시 시행인 근거를 여기 남긴다: 제14조 제1항의 30일 고지 대상은 「수집 항목·목적 등 중요한 변경」인데
+                   이번 개정은 둘 다 아니고 보유 기간만 바뀐다. 그리고 서비스 출시 전이라 종전 방침에 동의한
+                   이용자가 없어 「미리 알릴 대상」 자체가 없다 — 기존 이용자에게 영향을 주는 개정이 아니라
+                   출시 전에 문서를 실제 동작에 맞추는 일이다(2026-09-01 결정).
+                   ⚠️ **출시 뒤에는 이 근거가 사라진다** — 그다음 개정부터는 제14조 제1항의 고지 기간을 지킬 것. --></li>
+            <li>2026年9月2日第3次改定 — アプリ利用統計分析ツール（Google Firebase Analytics）の使用を反映しました。アプリはどの画面や機能がどの程度使われているかを把握するためにこのツールを使用していますが、従前のポリシーは「アプリには分析ツールがない」と記載しており、事実と食い違っていました。要約（要点）と<a class="x" href="#art-2">第2条</a>の自動取得項目にアプリインスタンス識別子・利用イベントなどを追加し、<a class="x" href="#art-1">第1条</a>第4号に利用統計の分析を、<a class="x" href="#art-3">第3条</a>にその情報の保有期間（第6項）を追加し、<a class="x" href="#art-5">第5条</a>・<a class="x" href="#art-6">第6条</a>のGoogleへの委託・国外移転の範囲にアプリ利用統計の分析を追加し、<a class="x" href="#art-10">第10条</a>を全面的に改めて取得内容と停止方法をご案内しました。そのほか、<a class="x" href="#art-8">第8条</a>第2項が参照していた利用規約の条項番号（第17条 → 第16条第3項）を修正しました。<strong>取得項目が増える改定です。</strong>増える情報は会員アカウントと紐づかない統計目的の情報であり、広告識別子は従前どおり取得しません。ただし、この改定はサービスのリリース前に行われ、従前のポリシーに同意した利用者がいないため、第14条第1項の30日前の告知手続を経ずに、2026年9月2日から施行します。
+              <!-- 즉시 시행 근거는 2차 개정과 같다 — 서비스 출시 전이라 종전 방침에 동의한 이용자가 없다. 다만 이번은
+                   2차와 달리 **항목이 늘어나는** 개정이라, 출시 뒤였다면 제14조 제1항의 30일 전 고지 대상이다.
+                   ⚠️ 출시 뒤에 항목·목적을 늘리는 개정은 반드시 30일 전 고지부터 하고 시행일을 뒤로 잡을 것. --></li>
+            <li>2026年9月18日訂正 — 通知の送信のためにGoogle（Firebase）に移転される項目に<strong>通知のタイトルと本文</strong>が含まれることを、<a class="x" href="#art-6">第6条</a>に反映しました。通知バナーには、通知の種類により他の会員のニックネームと対象となる投稿のタイトルまたはスペース名が表示されますが、従前の表には端末のプッシュトークンと端末情報のみが記載されていました。<strong>処理の内容が変わったのではなく、事実と異なっていた記載を訂正したものであり、取得する項目や処理目的は増えません。</strong>この訂正は、2026年9月18日から適用します。
+              <!-- 4차 개정(2026-10-20 시행)과 일부러 분리해 오늘 반영한다 — 틀린 기재를 30일 더 「현행」으로 두는 것이
+                   30일 고지 원칙을 지키는 것보다 나쁘다고 봤다(2026-09-16 결정). 채팅 메시지 발췌가 실리는 것은 채팅
+                   기능이 켜진 뒤의 일이라 여기 적지 않는다 — 그건 4차 개정 본문이 다룬다. --></li>
+            <li>2026年10月20日第4次改定 — <strong>パーソナライズされたおすすめ</strong>と<strong>会員間のチャット</strong>を反映しました。<a class="x" href="#art-1">第1条</a>に第6号（パーソナライズされたおすすめ）を追加し、第2号（サービスの提供）にチャットを追加し、<a class="x" href="#art-2">第2条</a>の取得項目に好みのジャンル、チャットメッセージ、募集投稿の閲覧・ジャンルフィルターの選択・Itsの視聴の履歴を追加し、<a class="x" href="#art-3">第3条</a>にこれらの記録の保有期間（取得日から90日）と削除したチャットメッセージの保有期間（削除日または退会日から30日）を追加し、退会時のメッセージの取扱いを明記しました。<a class="x" href="#art-6">第6条</a>のGoogleへの移転項目に<strong>チャットの通知に表示されるメッセージ内容の冒頭部分</strong>を追加しました。要約（要点）もあわせて修正しました。同期が合わないトラックの原因を確認するため、<a class="x" href="#art-2">第2条</a>の自動取得項目に<strong>トラックの録画診断情報</strong>を追加し、この情報は該当するトラックとともに保管・破棄します。アプリ画面の名称に合わせて、「投稿」を「募集投稿」と呼び改めました。指す対象は同じです。<strong>あわせて訂正したもの</strong> — <a class="x" href="#art-1">第1条</a>第2号に、従前から提供してきた実績・レベルを記載しました。処理の内容が変わったのではなく、記載が漏れていたものです。<strong>取得項目と処理目的が増える改定</strong>であり、2026年9月18日からこのページで事前にお知らせしており、この改定は2026年10月20日から施行します。<strong>トラックの録画診断情報はその告知に含まれておらず</strong>、この改定とあわせてお知らせします。
+              <p><strong>事前にお知らせした内容のうち、施行しないものがあります。</strong>2026年9月18日の告知には、投稿に紐づく曲の情報を推定するため、動画のタイトル・チャンネル名・説明と投稿のタイトル・タグをAnthropic（米国）に移転する内容が含まれていました。その後、ジャンルを<strong>作成者が自ら選ぶ方式</strong>に変更し、当該処理が不要となったため、<strong>この移転は施行せず、この改定には含まれません。</strong>告知した内容よりも少なく処理するものであるため、別途の告知期間を設けずに施行します。</p>
+              <p>同じ告知では、Itsのおすすめに使用する記録を個別に記載していませんでした。Its一覧の並び順に使用する<strong>Itsの視聴履歴</strong>は従前から取得してきた項目であり、告知した目的である「投稿・Itsを関心に合わせておすすめ」の範囲内で使用するものです。</p>
+              <!-- Anthropic 이전은 FEV-792 폐기(2026-09-19)로 사라졌다. **고지했는데 안 하는 것**이라 고지 의무
+                   위반이 아니지만, 배너를 읽은 사람이 본문에서 그 항목을 못 찾고 「빠뜨린 것인가」 하지 않도록
+                   부칙에 명시한다.
+                   ⚠️ 제5조 위탁 표·제6조 국외 이전 표는 **손대지 않았다** — Google·Microsoft·HubSpot 은 종전
+                   그대로다. 「국외 이전이 없어졌다」가 아니라 「이번에 더하려던 줄이 안 들어갔다」이다.
+                   ⚠️ 맞춤 추천에 국외 LLM 을 다시 들이려면 제1조 제6호·제5조·제6조를 함께 고치고 제14조 제1항의
+                   30일 전 고지부터 다시 해야 한다. --></li>
+          </ol>
+        </section>
+
+        <nav class="also" aria-label="関連文書">
+          <p class="eyebrow">関連文書</p>
+          <div class="also__list">
+            <a href="terms.ja.html">
+              <b>利用規約</b>
+              <span>利用契約、コンテンツの権利、セッションへの参加の同意、報告と利用制限</span>
+            </a>
+            <a href="index.html">
+              <b>JAMITの紹介に戻る</b>
+              <span>一人で撮ってアップロードすれば、セッションが完成します</span>
+            </a>
+          </div>
+        </nav>
+
+      </article>
+    </div>
+
+    <footer>
+      <p>&copy; 2026 JamIT</p>
+      <nav aria-label="フッター">
+        <a href="index.html">ホーム</a>
+        <a href="terms.ja.html">利用規約</a>
+        <a href="privacy.ja.html" aria-current="page">プライバシーポリシー</a>
+        <a href="#top">ページの先頭へ</a>
+      </nav>
+    </footer>
+
+  </div>
+</main>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// 목차 — 지금 읽고 있는 조문을 따라간다
+// ══════════════════════════════════════════════════════════
+(() => {
+  const toc = document.getElementById("toc");
+  const cs  = getComputedStyle(document.documentElement);
+  // 고정 머리 높이는 CSS가 진실이다. 여기서 숫자를 다시 적으면 둘이 어긋난다
+  const off = parseFloat(cs.getPropertyValue("--topbar")) + parseFloat(cs.getPropertyValue("--strip"));
+
+  // 좁은 화면에서는 목차가 접혀 있어야 한다. JS가 없으면 펼쳐진 채로 두는 편이 안전해서
+  // 마크업은 open으로 두고, 접는 일만 여기서 한다
+  const wide = matchMedia("(min-width:900px)");
+  // embed(앱 시트)는 폭이 넓어도 사이드바 레이아웃이 아니다 — 늘 접어 둔다.
+  const inSheet = document.documentElement.classList.contains("embed");
+  const sync = () => { toc.open = wide.matches && !inSheet; };
+  sync();
+  wide.addEventListener("change", sync);
+  toc.querySelectorAll("a").forEach((a) => {
+    a.addEventListener("click", () => { if (!wide.matches) toc.open = false; });
+  });
+
+  // **시트에서는 목차 점프가 히스토리를 늘리면 안 된다.** 앵커 링크는 WKWebView의 back-forward
+  // list에 항목을 쌓는데, 시트는 뒤로 스와이프와 「뒤로」 버튼이 `canGoBack`을 읽는다 — 목차를
+  // 몇 번 누르면 그 둘이 **문서가 아니라 스크롤 위치**로 되돌아가고, 사용자에게는 「뒤로가 안
+  // 먹는」 화면이 된다. `replaceState`라 주소는 남고 히스토리는 그대로다.
+  // 웹(비-embed)은 손대지 않는다 — 브라우저 뒤로가기가 앵커를 되짚는 건 정상 동작이다.
+  if (document.documentElement.classList.contains("embed")) {
+    toc.addEventListener("click", (e) => {
+      const a = e.target.closest("a[href^='#']");
+      if (!a) return;
+      e.preventDefault();
+      const href = a.getAttribute("href");
+      document.getElementById(href.slice(1))?.scrollIntoView({ block: "start" });
+      history.replaceState(null, "", href);
+      toc.open = false;
+    });
+  }
+
+  const heads = [...document.querySelectorAll(".prose section[id]")];
+  const links = new Map();
+  toc.querySelectorAll("a[href^='#']").forEach((a) => links.set(a.getAttribute("href").slice(1), a));
+  const panel = toc.querySelector(".toc__list");
+
+  let cur = null, ticking = false;
+  function spy(){
+    ticking = false;
+    document.body.classList.toggle("scrolled", scrollY > 8);
+
+    let hit = null;
+    for (const h of heads){
+      if (h.getBoundingClientRect().top <= off + 24) hit = h; else break;
+    }
+    // 맨 아래에 닿으면 마지막 조문을 가리킨다 — 짧은 조문은 위 기준을 못 넘긴다
+    if (scrollY + innerHeight >= document.documentElement.scrollHeight - 4) hit = heads[heads.length - 1];
+    if (hit === cur) return;
+    cur = hit;
+
+    links.forEach((a) => a.classList.remove("on"));
+    const a = hit && links.get(hit.id);
+    if (!a) return;
+    a.classList.add("on");
+    // 목차가 스스로 스크롤되는 경우에만 따라 움직인다. 페이지는 건드리지 않는다
+    if (wide.matches && panel.scrollHeight > panel.clientHeight + 4){
+      const y = a.offsetTop - panel.clientHeight / 2 + a.offsetHeight / 2;
+      panel.scrollTop = Math.max(0, y);
+    }
+  }
+  addEventListener("scroll", () => { if (!ticking){ ticking = true; requestAnimationFrame(spy); } }, {passive:true});
+  addEventListener("resize", spy, {passive:true});
+  spy();
+
+  // 표가 자기 자리보다 넓을 때만 "넘겨 보세요"를 띄운다
+  const tables = document.querySelectorAll(".tw");
+  const gauge = () => tables.forEach((el) => el.classList.toggle("over", el.scrollWidth > el.clientWidth + 2));
+  addEventListener("resize", gauge, {passive:true});
+  gauge();
+})();
+</script>
+</body>
+</html>
