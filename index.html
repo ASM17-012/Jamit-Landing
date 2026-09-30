@@ -689,6 +689,15 @@ body[data-theme="soft"]{--bg:var(--paper-2)}
 .hero__lede{font-size:var(--t-lede);color:var(--ink-2);margin-top:24px;max-width:34ch}
 .hero__cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:34px}
 .hero__note{font-size:14px;color:var(--mute);margin-top:20px}
+/* ── 풍선 스티커 ── */
+main > .stage:first-child{position:relative}
+.hero__balloons{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.hero__say,.hero__box,.hero__down{z-index:2}
+/* 종이 위에선 보이지 않고, 검은 스티커가 뒤로 지날 때만 글자 윤곽을 살린다 */
+.hero__say,.hero__down b{text-shadow:0 0 2px var(--bg),0 0 5px var(--bg),0 0 10px var(--bg)}
+.hero__say .mark{text-shadow:none}
+main > .stage.is-over{cursor:grab}
+main > .stage.is-grab,main > .stage.is-grab *{cursor:grabbing}
 /* ── 비스듬히 겹친 두 대 ──
    히어로 제목이 「나만의 연주가 우리의 합주로」다. 그 말이 곧 화면 둘이다 —
    왼쪽이 혼자 녹화하는 화면, 오른쪽이 그것이 합주가 된 잇츠.
@@ -828,12 +837,13 @@ body[data-theme="soft"]{--bg:var(--paper-2)}
 @media(max-width:860px){
   .hero__down{display:grid;justify-items:center;gap:18px;align-self:end}
   .hero__down b{font-size:14px;font-weight:600;letter-spacing:-.01em;
-    color:rgba(26,31,43,.34)}
+    color:var(--ink);opacity:.34;animation:downInk 1.9s ease-in-out infinite}
   .hero__down svg{display:block;width:40px;height:16px;color:var(--ink-2);
     animation:downBob 1.9s ease-in-out infinite}
   @keyframes downBob{0%,100%{translate:0 0}50%{translate:0 4px}}
+  @keyframes downInk{50%{opacity:1}}
 }
-@media(prefers-reduced-motion:reduce){.hero__down svg{animation:none}}
+@media(prefers-reduced-motion:reduce){.hero__down svg,.hero__down b{animation:none}}
 
 /* ── 기능 장 — 글 왼쪽, 기기 오른쪽. 히어로와 같은 짜임이지만 제목이 한 급 작다.
    자료(앱스토어 스크린샷)는 가운데 정렬 세로 스택이었는데, 그건 세로로 긴
@@ -1131,6 +1141,7 @@ body[data-theme="soft"]{--bg:var(--paper-2)}
 
 <!-- ══════════ 히어로 ══════════ 문구는 v1 에서 그대로 왔다 -->
 <section class="stage" data-theme="paper">
+  <canvas class="hero__balloons" aria-hidden="true"></canvas>
   <div class="stage__in hero">
     <div class="rise hero__say">
       <p class="kick">JAMIT</p>
@@ -1184,8 +1195,6 @@ body[data-theme="soft"]{--bg:var(--paper-2)}
         </div>
       </div>
     </div>
-    <!-- 스티커 셋 — 휴대폰에서만 선다. 첫 화면에 글밖에 없어 비어 보이던 자리를 채운다.
-         글 뒤(z-index 0)에 깔리고 pointer-events 가 없어 배지를 가리지 않는다 -->
     <!-- 아래로 내려보세요 — 휴대폰에서만 선다. 제목 하나뿐인 화면에서
          「여기가 끝인가」로 읽히지 않게 하는 유일한 장치다 -->
     <div class="hero__down" aria-hidden="true">
@@ -2753,6 +2762,375 @@ body[data-theme="soft"]{--bg:var(--paper-2)}
     if(still && !AUTOPLAY_ALWAYS) return;
     var p = v.play();
     if(p && p.catch) p.catch(function(){});
+  }
+})();
+</script>
+
+<script>
+/* 풍선 스티커 — 첫 화면 로딩과 겹치지 않게 load 뒤에 받는다 */
+(function(){
+  'use strict';
+  var net = navigator.connection;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || (net && net.saveData)) return;
+  if (!window.ResizeObserver) return;
+
+  var stage = document.querySelector('main > .stage:first-child');
+  function away(){ return stage.getBoundingClientRect().bottom < innerHeight / 2; }
+
+  var kinds = [
+    {src:'assets/stickers/drum.webp',   s:1.12},
+    {src:'assets/stickers/guitar.webp', s:1.2},
+    {src:'assets/stickers/piano.webp',  s:1.3},
+    {src:'assets/stickers/record.webp', s:1.0},
+    {src:'assets/stickers/notes.webp',  s:.74},
+    {src:'assets/stickers/phones.webp', s:.84}
+  ];
+
+  function boot(){
+    if (away()) return;
+    var images = Promise.all(kinds.map(function(k){
+      var im = new Image();
+      im.src = k.src;
+      return im.decode().then(function(){ k.img = im; }, function(){});
+    }));
+    var s = document.createElement('script');
+    s.src = 'assets/vendor/matter-0.19.0.min.js';
+    s.onload = function(){ images.then(balloons); };
+    document.head.appendChild(s);
+  }
+  if (document.readyState === 'complete') boot(); else addEventListener('load', boot);
+
+  function balloons(){
+    var M = window.Matter, Bod = M.Bodies, Body = M.Body, Comp = M.Composite;
+    var cv = stage.querySelector('.hero__balloons'), ctx = cv.getContext('2d');
+    var SKIP = 'a,button,.hero__cta,.hero__box,.hero__down';
+    var P = {lift:-.5, bounce:.12, friction:.2, airDrag:.03, density:.0008,
+      spring:.1, damping:.09, hitGain:.008, hitMax:.03};
+    var STEP = 1000 / 60, MAXV = 42, DEPTH = 320, BASE_MAX = 120, SIZE_LO = .86, SIZE_HI = 1.12;
+
+    kinds = kinds.filter(function(k){ return k.img; });
+    if (!kinds.length || away()) return;
+
+    var engine = M.Engine.create(), world = engine.world;
+    engine.gravity.y = P.lift;
+    /* matter 0.19 적분식의 종단 속도 — 처음부터 이 속도로 띄워야 튀어나왔다 느려지지 않는다 */
+    var RISE = -P.lift * engine.gravity.scale * STEP * STEP / P.airDrag;
+
+    var W = 0, H = 0, dpr = 1, walls = [], items = [], queue = [];
+    var drag = null, mouse = null, running = false, visible = true, raf = 0, last = 0, acc = 0, lerp = 0, simT = 0;
+
+    function cross(o, a, b){ return (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x); }
+    function chain(c, p){
+      while (c.length > 1 && cross(c[c.length - 2], c[c.length - 1], p) <= 0) c.pop();
+      c.push(p);
+    }
+
+    /* 사각형 몸체면 기울어진 기타 사이에 빈 틈이 뜬다 */
+    function shape(k){
+      var n = 96, im = k.img, r = im.naturalWidth / im.naturalHeight;
+      var w = r >= 1 ? n : Math.round(n * r), h = r >= 1 ? Math.round(n / r) : n;
+      var c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      var g = c.getContext('2d');
+      g.drawImage(im, 0, 0, w, h);
+      var d = g.getImageData(0, 0, w, h).data, a = new Uint8Array(w * h), pts = [], x, y, i;
+      for (y = 0; y < h; y++) {
+        var L = -1, R = -1;
+        for (x = 0; x < w; x++) {
+          a[y * w + x] = d[(y * w + x) * 4 + 3];
+          if (a[y * w + x] > 60) { if (L < 0) L = x; R = x; }
+        }
+        if (L >= 0) pts.push({x:L, y:y}, {x:R + 1, y:y}, {x:L, y:y + 1}, {x:R + 1, y:y + 1});
+      }
+      pts.sort(function(p, q){ return p.x - q.x || p.y - q.y; });
+      var lo = [], up = [];
+      for (i = 0; i < pts.length; i++) chain(lo, pts[i]);
+      for (i = pts.length - 1; i >= 0; i--) chain(up, pts[i]);
+      var hl = lo.slice(0, -1).concat(up.slice(0, -1));
+      while (hl.length > 14) {
+        var mi = 0, ma = Infinity;
+        for (i = 0; i < hl.length; i++) {
+          var ar = Math.abs(cross(hl[(i - 1 + hl.length) % hl.length], hl[i], hl[(i + 1) % hl.length]));
+          if (ar < ma) { ma = ar; mi = i; }
+        }
+        hl.splice(mi, 1);
+      }
+      k.hull = hl.map(function(q){ return {x:q.x / w - .5, y:q.y / h - .5}; });
+      k.mask = {a:a, w:w, h:h};
+      k.ar = im.naturalHeight / im.naturalWidth;
+    }
+
+    /* 매 프레임 shadowBlur 를 쓰면 사파리가 버벅인다 — 가장 크게 그려질 크기로 미리 굽는다 */
+    function bake(k){
+      var w = Math.round(BASE_MAX * SIZE_HI * k.s * dpr), h = Math.round(w * k.ar), px = Math.max(w, h);
+      var pad = Math.round(px * .09), m = Math.max(w, h);
+      var s = document.createElement('canvas');
+      s.width = w; s.height = h;
+      var gs = s.getContext('2d');
+      gs.drawImage(k.img, 0, 0, w, h);
+      gs.globalCompositeOperation = 'source-atop';
+      var hi = gs.createRadialGradient(w * .34, h * .28, 0, w * .34, h * .28, m * .62);
+      hi.addColorStop(0, 'rgba(255,255,255,.5)');
+      hi.addColorStop(.45, 'rgba(255,255,255,.1)');
+      hi.addColorStop(1, 'rgba(255,255,255,0)');
+      gs.fillStyle = hi; gs.fillRect(0, 0, w, h);
+      var sh = gs.createRadialGradient(w * .6, h * .7, m * .12, w * .6, h * .7, m * .78);
+      sh.addColorStop(0, 'rgba(20,26,40,0)');
+      sh.addColorStop(1, 'rgba(20,26,40,.38)');
+      gs.fillStyle = sh; gs.fillRect(0, 0, w, h);
+      var sp = gs.createRadialGradient(w * .3, h * .22, 0, w * .3, h * .22, m * .1);
+      sp.addColorStop(0, 'rgba(255,255,255,.9)');
+      sp.addColorStop(1, 'rgba(255,255,255,0)');
+      gs.fillStyle = sp; gs.fillRect(0, 0, w, h);
+      var b = document.createElement('canvas');
+      b.width = w + pad * 2; b.height = h + pad * 2;
+      var gb = b.getContext('2d');
+      gb.shadowColor = 'rgba(26,31,43,.2)'; gb.shadowBlur = pad * .8; gb.shadowOffsetY = pad * .45;
+      gb.drawImage(s, pad, pad);
+      k.tex = {img:b, pad:pad, w:w, h:h};
+    }
+
+    function base(){
+      var narrow = matchMedia('(max-width:860px)').matches;
+      return Math.min(Math.max(W * (narrow ? .25 : .068), 84), narrow ? 118 : BASE_MAX, H * .14);
+    }
+
+    function make(k, x, y){
+      var w = base() * k.s * (SIZE_LO + Math.random() * (SIZE_HI - SIZE_LO)), h = w * k.ar;
+      var verts = k.hull.map(function(p){ return {x:p.x * w, y:p.y * h}; });
+      var cen = M.Vertices.centre(verts);
+      var b = Bod.fromVertices(x, y, [verts], {restitution:P.bounce, friction:P.friction,
+        frictionAir:P.airDrag, density:P.density});
+      var it = {k:k, b:b, w:w, h:h, cx:-cen.x, cy:-cen.y, a:0, va:0, phi:0};
+      b.plugin.it = it;
+      return it;
+    }
+
+    function fit(b){
+      var o = b.bounds, dx = Math.max(0, 6 - o.min.x) - Math.max(0, o.max.x - (W - 6));
+      var dy = Math.min(0, H + DEPTH - 6 - o.max.y);
+      if (dx || dy) Body.translate(b, {x:dx, y:dy});
+    }
+
+    /* 바닥은 아래로 던진 스티커를 받는 자리라 화면 밖에 둔다 */
+    function build(){
+      var r = stage.getBoundingClientRect();
+      W = r.width; H = r.height;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      if (walls.length) Comp.remove(world, walls);
+      var T = 400, o = {isStatic:true, friction:.6, restitution:.1}, bot = H + DEPTH, top = -H;
+      walls = [
+        Bod.rectangle(W / 2, bot + T / 2, W + T * 2, T, o),
+        Bod.rectangle(-T / 2, (top + bot) / 2, T, bot - top, o),
+        Bod.rectangle(W + T / 2, (top + bot) / 2, T, bot - top, o)
+      ];
+      Comp.add(world, walls);
+      items.forEach(function(it){ fit(it.b); });
+    }
+
+    function shuffle(a){
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1)), x = a[i];
+        a[i] = a[j]; a[j] = x;
+      }
+      return a;
+    }
+
+    function launch(){
+      var seq = shuffle(kinds.slice()), n = seq.length, slots = [];
+      for (var i = 0; i < n; i++) slots.push(i);
+      shuffle(slots);
+      seq.forEach(function(k, i){
+        queue.push({k:k, x:(slots[i] + .25 + Math.random() * .5) / n, at:300 + i * 200 + Math.random() * 120});
+      });
+    }
+
+    /* 겹친 채 넣으면 matter 가 서로 튕겨 낸다 — 앞 풍선이 비킬 때까지 기다린다 */
+    function spawn(q){
+      if (!q.it) {
+        var bs = base() * q.k.s;
+        q.it = make(q.k, Math.min(Math.max(q.x * W, bs / 2), W - bs / 2), H + bs / 2 + Math.random() * 60);
+        Body.setAngle(q.it.b, (Math.random() - .5) * .6);
+      }
+      var bb = q.it.b.bounds;
+      if (bb.min.y < H) Body.translate(q.it.b, {x:0, y:H + 2 - bb.min.y});
+      fit(q.it.b);
+      if (items.some(function(o){ return M.Bounds.overlaps(o.b.bounds, bb); })) return false;
+      Body.setVelocity(q.it.b, {x:(Math.random() - .5) * .3, y:-RISE});
+      Comp.add(world, q.it.b);
+      items.push(q.it);
+      return true;
+    }
+
+    M.Events.on(engine, 'collisionStart', function(e){
+      e.pairs.forEach(function(p){
+        var A = p.bodyA.parent, B = p.bodyB.parent, n = p.collision.normal;
+        var sp = Math.abs((A.velocity.x - B.velocity.x) * n.x + (A.velocity.y - B.velocity.y) * n.y);
+        if (sp < 1.5) return;
+        [A, B].forEach(function(x){
+          var it = x.plugin.it;
+          if (!it || (drag && drag.it === it)) return;
+          it.phi = Math.atan2(n.y, n.x);
+          it.va -= Math.min(sp * P.hitGain, P.hitMax);
+        });
+      });
+    });
+
+    function wobble(it){
+      var tgt = 0, b = it.b;
+      if (drag && drag.it === it) {
+        var v = b.velocity, sp = Math.hypot(v.x, v.y);
+        if (sp > .6) { tgt = Math.min(sp * .004, .08); it.phi = Math.atan2(v.y, v.x); }
+      }
+      it.va += -P.spring * (it.a - tgt) - P.damping * it.va;
+      it.a += it.va;
+      if (Math.abs(it.a) < 1e-4 && Math.abs(it.va) < 1e-4) it.a = it.va = 0;
+    }
+
+    function step(){
+      simT += STEP;
+      while (queue.length && queue[0].at <= simT && spawn(queue[0])) queue.shift();
+      M.Engine.update(engine, STEP);
+      items = items.filter(function(it){
+        var b = it.b, gone = b.bounds.max.y < -8 || b.bounds.min.y > H + DEPTH;
+        if (gone && !(drag && drag.it === it)) { Comp.remove(world, b); return false; }
+        var v = b.velocity, sp = Math.hypot(v.x, v.y);
+        if (sp > MAXV) Body.setVelocity(b, {x:v.x * MAXV / sp, y:v.y * MAXV / sp});
+        wobble(it);
+        return true;
+      });
+    }
+
+    /* 고정 스텝 사이는 속도로 메워 그린다 — 90·120Hz 화면에서 계단처럼 끊겨 보이지 않게 */
+    function draw(t){
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      items.forEach(function(it){
+        var b = it.b, tx = it.k.tex, s = it.w / tx.w;
+        var x = b.position.x + b.velocity.x * t, y = b.position.y + b.velocity.y * t;
+        if (y - Math.max(it.w, it.h) > H) return;
+        ctx.save();
+        ctx.translate(x, y);
+        if (it.a) { ctx.rotate(it.phi); ctx.scale(1 + it.a, 1 - it.a * .85); ctx.rotate(-it.phi); }
+        ctx.rotate(b.angle + b.angularVelocity * t);
+        ctx.translate(it.cx, it.cy);
+        ctx.drawImage(tx.img, -(tx.w / 2 + tx.pad) * s, -(tx.h / 2 + tx.pad) * s, tx.img.width * s, tx.img.height * s);
+        ctx.restore();
+      });
+    }
+
+    function pt(e){
+      var r = stage.getBoundingClientRect();
+      return {x:(e.clientX - r.left) * W / r.width, y:(e.clientY - r.top) * H / r.height};
+    }
+
+    /* 껍질이 아니라 그림의 알파로 가른다 — 헤드폰 구멍이나 기타 넥 옆을 쓸면 스크롤이 돼야 한다 */
+    function inside(it, p){
+      var b = it.b, o = b.bounds, ox = b.velocity.x * lerp, oy = b.velocity.y * lerp;
+      if (p.x < o.min.x + ox || p.x > o.max.x + ox || p.y < o.min.y + oy || p.y > o.max.y + oy) return false;
+      var ang = b.angle + b.angularVelocity * lerp, c = Math.cos(ang), s = Math.sin(ang);
+      var dx = p.x - b.position.x - ox, dy = p.y - b.position.y - oy;
+      var m = it.k.mask;
+      var u = Math.floor(((dx * c + dy * s - it.cx) / it.w + .5) * m.w);
+      var v = Math.floor(((dy * c - dx * s - it.cy) / it.h + .5) * m.h);
+      return u >= 0 && v >= 0 && u < m.w && v < m.h && m.a[v * m.w + u] > 60;
+    }
+    function pick(p){
+      for (var i = items.length - 1; i >= 0; i--) if (inside(items[i], p)) return items[i];
+      return null;
+    }
+
+    function frame(now){
+      raf = 0;
+      acc += Math.min(now - (last || now), 50); last = now;
+      var n = 0;
+      while (acc >= STEP && n < 4) { step(); acc -= STEP; n++; }
+      if (n === 4) acc = 0;
+      lerp = acc / STEP;
+      draw(lerp);
+      if (mouse) {
+        var el = document.elementFromPoint(mouse.clientX, mouse.clientY);
+        stage.classList.toggle('is-over', !!el && !el.closest(SKIP) && !!pick(pt(mouse)));
+      }
+      if (!items.length && !queue.length && !drag) return finish();
+      raf = requestAnimationFrame(frame);
+    }
+    function wake(){
+      if (running || !visible) return;
+      running = true; last = 0; acc = 0;
+      raf = requestAnimationFrame(frame);
+    }
+    function sleep(){ running = false; cancelAnimationFrame(raf); raf = 0; }
+
+    var off = new AbortController(), on = {signal:off.signal};
+
+    /* 다시 띄우는 일이 없으니 리스너·캔버스·그림을 전부 놓는다 */
+    function finish(){
+      running = false;
+      off.abort(); io.disconnect(); ro.disconnect();
+      stage.classList.remove('is-over', 'is-grab');
+      cv.width = cv.height = 0;
+      kinds = [];
+    }
+
+    function drop(e){
+      if (!drag || e.pointerId !== drag.id) return;
+      Comp.remove(world, drag.con);
+      drag = null;
+      stage.classList.remove('is-grab');
+      wake();
+    }
+
+    build();
+    kinds.forEach(function(k){ shape(k); bake(k); });
+    launch();
+
+    stage.addEventListener('pointerdown', function(e){
+      if (drag || e.button > 0 || e.target.closest(SKIP)) return;
+      var p = pt(e), it = pick(p);
+      if (!it) return;
+      e.preventDefault();
+      stage.setPointerCapture(e.pointerId);
+      items.splice(items.indexOf(it), 1); items.push(it);
+      var b = it.b;
+      var con = M.Constraint.create({pointA:p, bodyB:b, pointB:{x:p.x - b.position.x, y:p.y - b.position.y},
+        stiffness:.2, damping:.1, length:0});
+      Comp.add(world, con);
+      drag = {it:it, con:con, id:e.pointerId};
+      stage.classList.add('is-grab');
+      wake();
+    }, on);
+    /* 포인터 이벤트로는 스크롤을 못 막는다(touch-action 소관) — 비수동 touchstart 에서만 막힌다 */
+    stage.addEventListener('touchstart', function(e){
+      if (e.touches.length === 1 && !e.target.closest(SKIP) && pick(pt(e.touches[0]))) e.preventDefault();
+    }, {passive:false, signal:off.signal});
+    stage.addEventListener('pointermove', function(e){
+      if (e.pointerType === 'mouse') mouse = {clientX:e.clientX, clientY:e.clientY};
+      if (drag && e.pointerId === drag.id) {
+        var p = pt(e);
+        drag.con.pointA.x = p.x;
+        drag.con.pointA.y = Math.min(p.y, H + DEPTH / 2);
+      }
+    }, on);
+    stage.addEventListener('pointerup', drop, on);
+    stage.addEventListener('pointercancel', drop, on);
+    stage.addEventListener('lostpointercapture', drop, on);
+    document.addEventListener('visibilitychange', function(){ if (document.hidden) sleep(); else wake(); }, on);
+
+    var io = new IntersectionObserver(function(es){
+      visible = es[es.length - 1].isIntersecting;
+      if (visible) wake(); else sleep();
+    });
+    /* 인앱 브라우저는 스크롤 중에 웹뷰 폭을 몇 px 씩 흔든다 — 회전·창 크기 조절만 받는다 */
+    var ro = new ResizeObserver(function(){
+      var r = stage.getBoundingClientRect();
+      if (Math.abs(r.width - W) < 40 && Math.abs(r.height - H) < 40) return;
+      build(); draw(0); wake();
+    });
+    io.observe(stage);
+    ro.observe(stage, {box:'border-box'});
+    wake();
   }
 })();
 </script>
