@@ -606,7 +606,8 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                          서버는 필드를 거르지 않는다 — iOS·Android 모두 이 목록을 넘지 말 것(블루투스 이름은 제품군으로만).
                          파기는 보관 만료 배치의 행 삭제, 행이 남는 트랙은 Track.destroyMedia 가 진단을 비운다. -->
                     <tr><td>Automatic collection</td><td>In the course of using the app</td><td>Google Firebase Analytics — a randomly generated app instance identifier, usage events automatically collected by Google Analytics such as app installation, launch, and sessions, and usage events designated by the Operator (login, sign-up, tab view, track registration, Its publication) and their associated items (login method, track registration path), push notification receipt and open records, device information (model name, OS version, app version, language, screen information, etc.), access IP address and the country and region estimated from it</td><td>Automatically collected</td></tr>
-                    <tr><td>Reports and inquiries</td><td>Receipt of reports, customer inquiries</td><td>Information contained in the report or inquiry</td><td>When applicable</td></tr>
+                    <tr><td>Reports and inquiries</td><td>Receipt of reports, customer inquiries, sync fix requests</td><td>Information contained in the report or inquiry, the track for which a sync fix was requested, and the time of the request<br><small>Sync fix requests are used by the Operator to check and correct the sync of tracks (Article 1, subparagraphs 2 and 4); they are visible only to the Operator, and are retained and destroyed together with the relevant track</small></td><td>When applicable</td></tr>
+                    <!-- 싱크 보정 요청은 Backend SyncFixRequest(sync_fix_requests) — 트랙 행이 하드 삭제되면 DB가 연쇄 삭제한다(@OnDelete CASCADE). -->
                     <tr><td>Pre-registration</td><td>Signing up for launch notifications on the website</td><td>Email</td><td>Optional</td></tr>
                     <tr><td>Website use</td><td>Visiting the website (jamit.kr)</td><td>Visit records, on-screen movement (navigation, clicks, scrolling), cookies, browser and device information</td><td>Automatically collected</td></tr>
                   </tbody>
@@ -1206,15 +1207,17 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               transferred to Google in <a class="x" href="#art-6">Article 6</a>. We also updated the Key points. To identify
               the cause of tracks that are out of sync, we added <strong>track recording diagnostic information</strong> to
               the automatically collected items in <a class="x" href="#art-2">Article 2</a>; this information is retained
-              and destroyed together with the relevant track. To match the names used on the app screens, we changed the
+              and destroyed together with the relevant track. In the same Article, we specified <strong>records of sync fix
+              requests</strong> in the items for reports and inquiries; these records are also retained and destroyed
+              together with the relevant track. To match the names used on the app screens, we changed the
               Korean term for posts from “게시글” to “모집글”; they refer to the same thing.
               <strong>Also corrected</strong> — In <a class="x" href="#art-1">Article 1</a>, subparagraph 2, we listed
               achievements and levels, which have been provided since before. This does not change what is processed; it
               had been omitted.
               <strong>This revision increases the items collected and the purposes of processing</strong>; we gave
               advance notice of it on this page from September 18, 2026, and this revision takes effect on October 20, 2026.
-              <strong>Track recording diagnostic information was not included in that notice</strong>, and we are
-              informing you of it together with this revision.
+              <strong>Track recording diagnostic information and records of sync fix requests were not included in that
+              notice</strong>, and we are informing you of them together with this revision.
               <p><strong>Some of the content we gave advance notice of will not take effect.</strong> The notice of
                 September 18, 2026 included transferring the title, channel name, and description of videos and the title
                 and tags of posts to Anthropic (United States) in order to infer information about the songs linked to
