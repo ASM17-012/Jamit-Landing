@@ -583,7 +583,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                     <tr><td>자동 수집</td><td>서비스 이용 과정</td><td>서비스 이용 기록, 접속 로그, 기기 정보(모델명·OS 버전·앱 버전), 오류 로그, 앱을 연 날짜별 횟수(출석 기록 — 업적 판정에 쓰입니다)</td><td>자동 수집</td></tr>
                     <!-- 2026-10-01 추가. 출석은 사용자×날짜(KST) 한 행에 그날 앱을 연 횟수만 남긴다(UserAttendance) — 탈퇴하면
                          UserWithdrawalPurger 가 지운다. 모집글·닉네임 검색어는 검색에만 쓰고 저장·로그하지 않는다(검색 로그 테이블 없음,
-                         요청 로그는 getRequestURI 라 쿼리 문자열이 안 남는다). 검색어를 남기기 시작하면 이 표에 적을 것. -->
+                         요청 로그는 getRequestURI 라 쿼리 문자열이 안 남는다 — 단 staging ALB 원본 로그(Infra modules/api-access-logs, 11일)에는 keyword 가 남고, prod 에는 ALB 로그가 없다). 검색어를 남기기 시작하면 이 표에 적을 것. -->
                     <tr><td>자동 수집</td><td>모집글 열람, 장르 필터 선택, 숏폼 시청</td><td><strong>열람한 모집글·시청한 숏폼의 식별자와 시각, 선택한 장르 필터와 그 화면, 숏폼을 재생한 시간과 그 영상의 길이</strong><br><small>맞춤 추천(제1조 제6호)과 업적 판정(제1조 제2호)에 쓰이며, 다른 회원에게 표시되지 않습니다</small></td><td>자동 수집</td></tr>
                     <!-- 재생 시간과 영상 길이는 완료율로 접지 않고 원본 둘을 그대로 남긴다(ShortformViewLog).
                          「몇 시에 봤다」와 「3분 중 2분 47초를 봤다」는 다른 정보라 따로 적는다(2026-09-23 리뷰). -->
