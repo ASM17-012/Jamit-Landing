@@ -501,8 +501,10 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
         <section id="art-5">
           <h3 class="art"><span class="art__no">제5조</span>이용계약의 체결 <a class="art__link" href="#art-5" aria-label="제5조 링크">#</a></h3>
           <ol class="clauses">
-            <li>이용계약은 서비스를 이용하려는 자가 이 약관과 개인정보 처리방침에 각각 동의하고 카카오, 구글, Apple
-              계정을 통한 소셜 로그인으로 가입을 신청하면, 운영자가 이를 승낙함으로써 체결됩니다.
+            <li>이용계약은 서비스를 이용하려는 자가 카카오, 구글, Apple 계정을 통한 소셜 로그인으로 가입을 신청한 뒤
+              이 약관과 개인정보 처리방침에 각각 동의하면, 운영자가 이를 승낙함으로써 체결됩니다.
+              <!-- 2026-10-01 정정. 앱은 소셜 로그인을 먼저 하고 그 뒤에 동의 화면을 띄운다(iOS SessionManager → TermsAgreementView,
+                   Android TermsAgreementViewModel). 동의하지 않은 계정의 정보 처리는 개인정보 처리방침 제3조 제5항이 적는다. -->
               <strong>이 약관에 대한 동의 없이는 서비스에 가입할 수 없습니다.</strong></li>
             <li>서비스는 만 14세 이상인 자만 가입할 수 있습니다. 만 14세 미만임이 확인된 계정에 대해 운영자는
               이용계약을 해지할 수 있습니다.</li>
@@ -596,7 +598,12 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
         <section id="art-9">
           <h3 class="art"><span class="art__no">제9조</span>원곡의 재생과 YouTube 서비스 <a class="art__link" href="#art-9" aria-label="제9조 링크">#</a></h3>
           <ol class="clauses">
-            <li>원곡은 YouTube가 제공하는 플레이어를 통해 재생되며, 그 이용에는 YouTube 서비스 약관이 적용됩니다.</li>
+            <li>원곡은 YouTube가 제공하는 플레이어를 통해 재생되며, 그 이용에는
+              <a class="x" href="https://www.youtube.com/t/terms">YouTube 서비스 약관</a>이 적용됩니다. 회원은 서비스를 이용함으로써
+              YouTube 서비스 약관에 동의하게 됩니다. YouTube 이용 과정의 개인정보 처리는
+              <a class="x" href="privacy.html#art-10">개인정보 처리방침 제10조</a>를 따릅니다.
+              <!-- 2026-10-01 정정. YouTube API 서비스 개발자 정책 III.A.1 은 API 클라이언트의 약관에 YouTube 서비스 약관 링크와
+                   「이용함으로써 그 약관에 구속된다」는 문장을 요구한다. --></li>
             <li>운영자는 원곡의 권리자가 아니며, 원곡이 삭제·비공개 처리되거나 임베드가 제한되는 등 YouTube 측 사정으로
               관련 모집글·기능의 이용이 제한될 수 있습니다. 이 경우 운영자는 고의 또는 과실이 없는 한 책임지지 않습니다.</li>
           </ol>
@@ -859,7 +866,8 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               <strong>함께 바로잡은 것</strong> — <a class="x" href="#art-7">제7조</a> 제2항의 소셜 로그인 연결 해제
               문구를 실제 처리에 맞추고(Apple 계정은 연결 해제가 완료되어야 탈퇴가 처리됩니다),
               <a class="x" href="#art-18">제18조</a> 제1항에 연주 세션별 랭킹에는 차단 여부와 관계없이 순위가 표시된다는
-              점을 적었습니다. 처리 내용이 바뀐 것이 아니라 기재가 사실과 달랐거나 빠져 있던 것입니다.
+              점을 적었으며, <a class="x" href="#art-5">제5조</a> 제1항의 가입 순서를 앱의 실제 순서(소셜 로그인 뒤 동의)에 맞추고
+              <a class="x" href="#art-9">제9조</a> 제1항에 YouTube 서비스 약관 링크를 더했습니다. 처리 내용이 바뀐 것이 아니라 기재가 사실과 달랐거나 빠져 있던 것입니다.
               이 개정은 2026년 9월 18일부터 미리 알려 드렸으며,
               2026년 10월 20일부터 시행합니다. 같은 날
               <a class="x" href="privacy.html">개인정보 처리방침</a>도 개정됩니다. 다만 그 전에 앱에서 개정 약관에 동의하신
