@@ -39,14 +39,13 @@
 <script>
 (() => {
   /* ════ 바꿀 곳은 이 세 줄과 en/v/·ja/v/ 사본의 같은 줄이다 ════
-     INSTALL_URL — App Store 출시 전이라 TestFlight 자리표시자다(/s/와 같은 상태).
-                   ⚠️ 지금 이 주소는 실제로 열리지 않는다.
+     INSTALL_URL — App Store 주소.
      API_BASE    — 썸네일을 주는 백엔드. 앱(TestFlight)이 스테이징을 보는 동안은 여기도
                    스테이징이어야 한다 — 링크의 id는 앱이 보는 DB의 것이라, 운영을 물으면
                    맞는 id가 전부 404로 떨어진다. 앱이 운영으로 넘어가는 날 함께 바꾼다.
      SCHEME_BASE — 앱이 받는 딥링크. iOS ShortformShareRoute가 이 모양을 파싱한다 —
                    바꾸려면 그쪽과 함께 바꿔야 한다(주소의 정본은 앱 쪽 주석 참조) */
-  const INSTALL_URL = "https://testflight.apple.com/join/XXXXXXXX";
+  const INSTALL_URL = "https://apps.apple.com/kr/app/jamit-%EB%82%98%EB%A7%8C%EC%9D%98-%EC%97%B0%EC%A3%BC%EA%B0%80-%EC%9A%B0%EB%A6%AC%EC%9D%98-%ED%95%A9%EC%A3%BC%EB%A1%9C/id6801850526";
   const API_BASE = "https://api-stg.jamit.kr";
   const SCHEME_BASE = "jamit://shortform/watch?id=";
 

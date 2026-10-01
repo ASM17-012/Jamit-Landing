@@ -1,7 +1,23 @@
 <!doctype html>
 <html lang="ko">
 <head>
+<!-- 문구 외 변경(구조·스타일·스크립트·자산)은 en/·ja/ 번역본에도 같이 옮긴다 -->
 <meta charset="utf-8">
+<script>
+/* 다른 언어판으로 갈 방문자는 스타일·Clarity 를 받기 전에 떠나야 해서 head 맨 앞에 둔다.
+   봇·링크 미리보기는 대개 언어가 en-US 라, 넘기면 루트의 한국어 본문·카드를 못 읽는다 */
+(function(){
+  try {
+    if (location.protocol === 'file:' || /bot|crawl|spider|slurp|lighthouse|headless|facebookexternalhit|kakaotalk-scrap|embedly|preview/i.test(navigator.userAgent)) return;
+    var to = localStorage.getItem('jamit-lang');
+    if (to !== 'ko' && to !== 'en' && to !== 'ja') {
+      var langs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language];
+      to = langs.some(function(l){ return /^ko\b/i.test(l); }) ? 'ko' : /^ja\b/i.test(langs[0]) ? 'ja' : 'en';
+    }
+    if (to !== 'ko') location.replace('/' + to + '/' + location.search + location.hash);
+  } catch (e) {}
+})();
+</script>
 <!-- viewport-fit=cover — 이 버전은 화면을 100dvh로 꽉 채우는 섹션이 뼈대다.
      cover가 없으면 노치 기기에서 브라우저가 뷰포트를 안전영역 안쪽으로 잡아,
      "화면 한 장"이 화면보다 작아진다. 대신 --edge가 env()로 그만큼을 되돌린다 -->
@@ -16,6 +32,10 @@
      전부 301 로 여기 모이긴 하지만, 주소를 명시해 두면 링크에 ?utm_ 같은 꼬리가
      붙어 들어와도 검색엔진이 한 페이지로 합쳐서 센다 -->
 <link rel="canonical" href="https://jamit.kr/">
+<link rel="alternate" hreflang="ko" href="https://jamit.kr/">
+<link rel="alternate" hreflang="en" href="https://jamit.kr/en/">
+<link rel="alternate" hreflang="ja" href="https://jamit.kr/ja/">
+<link rel="alternate" hreflang="x-default" href="https://jamit.kr/">
 <!-- 종이색과 같아야 한다 — 어긋나면 휴대폰에서 주소창과 페이지 상단 사이에 색 띠가 생긴다 -->
 <meta name="theme-color" content="#ecedf1">
 
@@ -241,6 +261,20 @@ body[data-theme="soft"]{--bg:var(--paper-2)}
 .top__nav a{font-size:14px;font-weight:500;color:var(--ink-2)}
 .top__nav a:hover{color:var(--ink)}
 @media(max-width:640px){.top__nav .m--hide{display:none}}
+
+.lang{display:flex;align-items:center;font:500 12px/1 var(--mono);letter-spacing:.04em;color:var(--mute)}
+.lang a{position:relative;font:inherit;color:inherit}
+/* 누름 영역만 넓힌다 — 패딩으로 넓히면 포커스 링까지 커진다 */
+.lang a::after{content:"";position:absolute;inset:-16px -5px}
+.lang [aria-current]{font-weight:700;color:var(--ink)}
+.lang span{padding:0 3px;opacity:.5}
+/* 기본값으로는 340px 남짓부터 배지가 화면 밖으로 밀린다 — 여유를 두고 360 부터 줄인다 */
+@media(max-width:360px){
+  .top__in{gap:10px}
+  .top__nav{gap:8px}
+  .lang{font-size:11px}
+  .lang span{padding:0 1px}
+}
 
 /* 버튼 — 알약이다. v1의 각진 잉크 덩어리 그림자는 버렸다 */
 .btn{
@@ -1132,6 +1166,13 @@ main > .stage.is-grab,main > .stage.is-grab *{cursor:grabbing}
     <nav class="top__nav">
       <a href="#how" class="m--hide">어떻게</a>
       <a href="#more" class="m--hide">기능</a>
+      <div class="lang" role="group" aria-label="언어">
+        <a href="/" lang="ko" hreflang="ko" aria-current="page">KO</a>
+        <span aria-hidden="true">·</span>
+        <a href="/en/" lang="en" hreflang="en">EN</a>
+        <span aria-hidden="true">·</span>
+        <a href="/ja/" lang="ja" hreflang="ja">JA</a>
+      </div>
       <a class="badge" data-cta="header" href="https://apps.apple.com/kr/app/jamit-%EB%82%98%EB%A7%8C%EC%9D%98-%EC%97%B0%EC%A3%BC%EA%B0%80-%EC%9A%B0%EB%A6%AC%EC%9D%98-%ED%95%A9%EC%A3%BC%EB%A1%9C/id6801850526" target="_blank" rel="noopener"><img src="assets/app-store.webp" width="336" height="112" alt="App Store 에서 다운로드" decoding="async"></a>
     </nav>
   </div>
@@ -3133,6 +3174,14 @@ main > .stage.is-grab,main > .stage.is-grab *{cursor:grabbing}
     wake();
   }
 })();
+</script>
+
+<script>
+document.querySelectorAll('.lang a').forEach(function(a){
+  a.addEventListener('click', function(){
+    try { localStorage.setItem('jamit-lang', a.lang); } catch (e) {}
+  });
+});
 </script>
 
 </body>
