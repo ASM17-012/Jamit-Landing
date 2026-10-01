@@ -507,8 +507,10 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
         <section id="art-5">
           <h3 class="art"><span class="art__no">Article 5</span>Formation of the Service Agreement <a class="art__link" href="#art-5" aria-label="Link to Article 5">#</a></h3>
           <ol class="clauses">
-            <li>The service agreement is formed when a person who wishes to use the Service agrees to each of these Terms and the Privacy Policy,
-              applies for membership through social login with a Kakao, Google, or Apple account, and the Operator accepts the application.
+            <li>The service agreement is formed when a person who wishes to use the Service applies for membership through social login with a
+              Kakao, Google, or Apple account and then agrees to each of these Terms and the Privacy Policy, and the Operator accepts the application.
+              <!-- 2026-10-01 정정. 앱은 소셜 로그인을 먼저 하고 그 뒤에 동의 화면을 띄운다(iOS SessionManager → TermsAgreementView,
+                   Android TermsAgreementViewModel). 동의하지 않은 계정의 정보 처리는 개인정보 처리방침 제3조 제5항이 적는다. -->
               <strong>You cannot sign up for the Service without agreeing to these Terms.</strong></li>
             <li>Only persons aged 14 or older may sign up for the Service. The Operator may terminate the service agreement for any account
               confirmed to belong to a person under the age of 14.</li>
@@ -604,7 +606,12 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
         <section id="art-9">
           <h3 class="art"><span class="art__no">Article 9</span>Playback of Original Songs and YouTube Services <a class="art__link" href="#art-9" aria-label="Link to Article 9">#</a></h3>
           <ol class="clauses">
-            <li>Original songs are played through the player provided by YouTube, and their use is subject to the YouTube Terms of Service.</li>
+            <li>Original songs are played through the player provided by YouTube, and their use is subject to the
+              <a class="x" href="https://www.youtube.com/t/terms">YouTube Terms of Service</a>. By using the Service, members agree to be bound by
+              the YouTube Terms of Service. The processing of personal information in the course of using YouTube is governed by
+              <a class="x" href="privacy.en.html#art-10">Article 10 of the Privacy Policy</a>.
+              <!-- 2026-10-01 정정. YouTube API 서비스 개발자 정책 III.A.1 은 API 클라이언트의 약관에 YouTube 서비스 약관 링크와
+                   「이용함으로써 그 약관에 구속된다」는 문장을 요구한다. --></li>
             <li>The Operator is not the rights holder of original songs, and the use of related posts and features may be restricted due to circumstances
               on YouTube’s side, such as an original song being deleted or made private or its embedding being restricted. In such cases, the Operator is not liable unless it acted intentionally or negligently.</li>
           </ol>
@@ -862,9 +869,10 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               — the Operator processes messages only to the extent of delivering and storing them and reviewing reported messages, and does not subject them to
               internal viewing or analysis for improving the Service (Article 13(3), newly added).
               <strong>Also corrected</strong> — the wording on unlinking social logins in <a class="x" href="#art-7">Article 7</a>(2) was aligned with
-              actual processing (for an Apple account, account deletion is processed only once the unlink has been completed), and
-              <a class="x" href="#art-18">Article 18</a>(1) now states that ranks are shown in rankings by part regardless of any blocking between users.
-              This does not change what is processed; the wording did not match the facts or had been omitted.
+              actual processing (for an Apple account, account deletion is processed only once the unlink has been completed);
+              <a class="x" href="#art-18">Article 18</a>(1) now states that ranks are shown in rankings by part regardless of any blocking between users;
+              the sign-up order in <a class="x" href="#art-5">Article 5</a>(1) was aligned with the actual order in the app (agreement after social login);
+              and a link to the YouTube Terms of Service was added to <a class="x" href="#art-9">Article 9</a>(1). This does not change what is processed; the wording did not match the facts or had been omitted.
               Notice of this amendment was given in advance beginning September 18, 2026,
               and it takes effect on October 20, 2026. On the same date, the
               <a class="x" href="privacy.en.html">Privacy Policy</a> is also amended. However, for members who agree to the

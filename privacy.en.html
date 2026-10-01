@@ -598,10 +598,13 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                          FEV-938(iOS #225)이 `dev` 로 머지돼 참이 됐다. ⚠️ 그 빌드가 시행일 전에 사용자에게
                          닿지 못하면 이 칸이 다시 거짓이 된다 — 출시 전 점검에서 볼 자리다. -->
                     <tr><td>Content upload</td><td>Recording and uploading tracks, creating Its</td><td><strong>Video and audio</strong> (may include the user’s face, body, voice, and musical performance)</td><td>Required (when using the relevant feature)</td></tr>
-                    <tr><td>Chat</td><td>One-on-one, group, and Space chat rooms</td><td><strong>Content of messages exchanged between members</strong> and the sender and time sent, identifiers of posts, Its, and tracks shared in messages, the number of the last message read in a chat room, and names a member has given to a chat room (visible only to that member)</td><td>Required (when using the relevant feature)</td></tr>
-                    <tr><td>Notifications</td><td>App launch, login</td><td><strong>Device push token (FCM token)</strong></td><td>Required (when receiving notifications)</td></tr>
-                    <tr><td>Automatic collection</td><td>In the course of using the Service</td><td>Service usage records, access logs, device information (model name, OS version, app version), error logs</td><td>Automatically collected</td></tr>
-                    <tr><td>Automatic collection</td><td>Viewing posts, selecting genre filters, viewing Its</td><td><strong>Identifiers and times of posts viewed and Its watched, genre filters selected, and how long an Its was played (playback duration) and the length of that video</strong><br><small>Used for personalized recommendations (Article 1, subparagraph 6) and determination of achievements (Article 1, subparagraph 2), and not shown to other members</small></td><td>Automatically collected</td></tr>
+                    <tr><td>Chat</td><td>One-on-one, group, and Space chat rooms</td><td><strong>Content of messages exchanged between members</strong> and the sender and time sent, identifiers of posts, Its, and tracks shared in messages, the number of the last message read in a chat room, and names a member has given to a chat room (not visible to other members)</td><td>Required (when using the relevant feature)</td></tr>
+                    <tr><td>Notifications</td><td>App launch, login</td><td><strong>Device push token (FCM token)</strong>, device platform (iOS, Android) and language setting</td><td>Required (when receiving notifications)</td></tr>
+                    <tr><td>Automatic collection</td><td>In the course of using the Service</td><td>Service usage records, access logs, device information (model name, OS version, app version), error logs, the number of times the app was opened on each date (attendance records — used to determine achievements)</td><td>Automatically collected</td></tr>
+                    <!-- 2026-10-01 추가. 출석은 사용자×날짜(KST) 한 행에 그날 앱을 연 횟수만 남긴다(UserAttendance) — 탈퇴하면
+                         UserWithdrawalPurger 가 지운다. 모집글·닉네임 검색어는 검색에만 쓰고 저장·로그하지 않는다(검색 로그 테이블 없음,
+                         요청 로그는 getRequestURI 라 쿼리 문자열이 안 남는다). 검색어를 남기기 시작하면 이 표에 적을 것. -->
+                    <tr><td>Automatic collection</td><td>Viewing posts, selecting genre filters, viewing Its</td><td><strong>Identifiers and times of posts viewed and Its watched, genre filters selected and the screens on which they were selected, and how long an Its was played (playback duration) and the length of that video</strong><br><small>Used for personalized recommendations (Article 1, subparagraph 6) and determination of achievements (Article 1, subparagraph 2), and not shown to other members</small></td><td>Automatically collected</td></tr>
                     <!-- 재생 시간과 영상 길이는 완료율로 접지 않고 원본 둘을 그대로 남긴다(ShortformViewLog).
                          「몇 시에 봤다」와 「3분 중 2분 47초를 봤다」는 다른 정보라 따로 적는다(2026-09-23 리뷰). -->
                     <tr><td>Automatic collection</td><td>Recording a track in the app</td><td><strong>Recording diagnostic information</strong> — recording mode (recording along with the original song video, or recording along with another member’s track), device information (model name, OS version, app version), the type of connected audio output device (speaker, wired, Bluetooth, or other external output) and the Bluetooth connection type and product family (e.g., AirPods Pro; the name the user has given the device is not collected), audio latency, buffer, and sample rate settings, the result and time of the app’s “Calibrate sync” measurement, the automatic sync correction value applied to the recording, the number of times the audio device changed during recording and the number of interruptions such as incoming calls, when recording along with another member’s track the number of times and duration that track’s playback stopped, the device’s thermal and low-power state, camera orientation, and the recording length and take number<br><small>Used to identify the cause when a track is out of sync (Article 1, subparagraphs 2 and 4); visible only to the Operator, and retained and destroyed together with the relevant track</small></td><td>Automatically collected</td></tr>
@@ -672,7 +675,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                     <!-- 2026-08-24 정정: 원래 「통신비밀보호법 제15조의2 · 3개월」로 적었으나 실제 보존은 14일이라
                          문서가 거짓이었다. 그 법의 통신사실확인자료 보존 의무가 이 서비스에 적용되는지는 법률 검토
                          항목 — 적용된다고 판단되면 로그 보존을 3개월로 늘리고 이 행을 함께 되돌릴 것. -->
-                    <tr><td>Records of use restrictions (suspensions) and identifiers for checking re-registration<br><small>A one-way hash of the social account identifier — the original identifier cannot be restored, and it can only be used to check whether the same account is re-registering</small></td><td>Preventing recurrence of fraudulent use and abuse of account deletion to evade use restrictions or to re-register (Operator’s legitimate interest)</td><td>30 days after account deletion. If the account is deleted during a suspension, until the end date of the suspension (up to 1 year)</td></tr>
+                    <tr><td>Identifiers for checking re-registration, and the end date of the re-registration restriction and the type of reason (ordinary account deletion or account deletion during a suspension)<br><small>A one-way hash of the social account identifier — the original identifier cannot be restored, and it can only be used to check whether the same account is re-registering. The reasons for and details of a suspension are destroyed upon account deletion</small></td><td>Preventing recurrence of fraudulent use and abuse of account deletion to evade use restrictions or to re-register (Operator’s legitimate interest)</td><td>30 days after account deletion. If the account is deleted during a suspension, until the end date of the suspension (up to 1 year)</td></tr>
                     <!-- 백엔드의 쿨다운(30일)·이월 상한(1년) 설정과 같아야 한다(FEV-391) — 한쪽만 바꾸면 문서가
                          거짓이 된다. 2026-08-22 결정 — 카카오(부정이용 기록 최대 1년)·쿠팡(탈퇴 후 30일)을 따랐다. -->
                     <tr><td>Content of deleted chat messages<br><small>Invisible to other members as soon as you delete them; after 30 days, the body, the shared item, and the item a notice refers to are deleted. So that read positions in the chat room do not shift, <strong>the message number, sender, time sent, and the type of message (text, track, notice, etc.) remain</strong></small></td><td>Maintaining the read position of the other participants, and preventing a reported message from being deleted first by the person concerned so that it cannot be reviewed (Operator’s legitimate interest)</td><td>30 days from the date of deletion or account deletion</td></tr>
@@ -781,7 +784,14 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               submitted for pre-registration (launch notifications) are destroyed without delay after the launch
               notification is sent, and are destroyed immediately upon request, even before then, through the contact in
               <a class="x" href="#art-12">Article 12</a>. Website usage analysis information is collected in accordance
-              with <a class="ref" href="#art-10">Article 10</a> and kept for 1 year from the date of collection.</li>
+              with <a class="ref" href="#art-10">Article 10</a> and kept for 1 year from the date of collection.
+              If you complete social login but do not finish signing up because you do not agree to the Terms of Service and
+              the Privacy Policy, the information received through social login (social account identifier, email, profile
+              photo) is kept so that you can log in again and finish signing up, and is destroyed immediately upon request
+              through the contact in Article 12.
+              <!-- 2026-10-01 추가. 소셜 로그인이 users 행을 먼저 만들고 동의 화면은 그 뒤에 뜬다(AuthService, 앱의
+                   TermsAgreementView) — 거부하면 로그아웃만 되고 행은 남는다. 미동의 계정을 지우는 작업이 생기면 이 문장을
+                   그 기간으로 바꿀 것. --></li>
             <li><strong>App usage statistics information</strong> (<a class="x" href="#art-10">Article 10</a>) is not
               linked to member accounts and therefore cannot be destroyed upon account deletion; it is deleted after up to
               14 months from the date of collection in accordance with the maximum of the Google Analytics data retention
@@ -994,7 +1004,10 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                    「안 보인다」는 실질이 그대로 전달된다. -->
               </li>
             <li>Methods of destruction: information in the form of electronic files is deleted using technical methods that
-              make recovery or reproduction impossible, and paper documents are shredded or incinerated.</li>
+              make recovery or reproduction impossible, and paper documents are shredded or incinerated. Destroyed
+              information remains in the database’s automatic backups for up to 7 days before being deleted on a rolling
+              basis, and backups are not used for any purpose other than recovery from failures.
+              <!-- 2026-10-01 추가. RDS 자동 백업 보관 7일(Infra modules/database backup_retention_period). 값을 바꾸면 함께 고칠 것. --></li>
             <li>Upon account deletion, the social login linkage information held by the Operator is destroyed, and
               disconnection from each platform is also handled.
               For Apple, the Operator’s server requests disconnection, and <strong>account deletion is processed only once
@@ -1021,7 +1034,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
             <li>Data subjects may at any time request the Operator to provide access to, correct or delete, or suspend the processing of their personal information, or withdraw their consent.</li>
             <li>These rights may be exercised in the following ways, and the Operator will act without delay (within the statutory time limit).
               <ol class="sub">
-                <li>In-app features: editing your profile (correction), deleting content, opting out of notifications, deleting your account (withdrawal of consent, deletion)</li>
+                <li>In-app features: editing your profile (correction), deleting content, turning off notifications for each chat room or Space (all notifications can be turned off in your device settings), deleting your account (withdrawal of consent, deletion)</li>
                 <li>Email: <a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a></li>
               </ol>
               <p>When you delete content or your account in the app, <strong>it is no longer displayed in the Service
@@ -1077,7 +1090,8 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
         <section id="art-10">
           <h2 class="art"><span class="art__no">Article 10</span>Installation, operation, and refusal of automatic personal information collection tools <a class="art__link" href="#art-10" aria-label="Link to Article 10">#</a></h2>
           <ol class="clauses">
-            <li>The <strong>app</strong> does not use web browser cookies and does not collect advertising identifiers (IDFA)
+            <li>The <strong>app</strong> itself does not use web browser cookies (although the YouTube player used to play
+              original songs may use YouTube’s cookies — paragraph 5) and does not collect advertising identifiers (IDFA)
               for targeted advertising. However, it uses <strong>Google Firebase Analytics</strong> to understand which
               screens and features are used and how often, in order to improve the Service. In this process, a randomly generated app instance identifier, usage events automatically collected by Google Analytics such as app installation, launch, and sessions, and usage events designated by the Operator (login, sign-up, tab view, track registration, Its publication, message sending) and their associated items (login method, track registration path), push notification receipt and open records, device information (model name, OS version, app version, language, screen information, etc.), access IP address and the country and region estimated from it are
               transmitted to Google (<a class="x" href="#art-2">Article 2</a>·<a class="x" href="#art-6">Article 6</a>).
@@ -1108,6 +1122,16 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                    자체에는 Clarity를 넣지 않는다 — 약관을 읽는 행위까지 기록할 이유가 없다. --></li>
             <li>If you do not want cookies to be stored, you can refuse cookies or delete stored cookies in your web browser settings.
               However, refusing cookies may make it difficult to use some features of the website.</li>
+            <li>The Service uses the <strong>YouTube player</strong> to play original songs, and the YouTube Data API to
+              check information about original song videos (title, channel, topics) (YouTube API Services). While an
+              original song is playing, Google may collect information such as your IP address, device information, and
+              cookies directly from your device, and the <a class="x" href="https://policies.google.com/privacy">Google Privacy Policy</a>
+              applies to this. The Operator sends only the video identifier to the YouTube Data API and does not send any
+              member information.
+              <!-- 2026-10-01 추가. YouTube API 서비스 개발자 정책 III.A.2 는 API 클라이언트의 처리방침에 「YouTube API 서비스를
+                   쓴다」는 고지와 Google 개인정보처리방침 링크를 요구한다. 앱은 WKWebView·WebView 안의 IFrame 플레이어로 원곡을
+                   재생하고(iOS YouTubePlayer·Android YouTubePlayer), 서버는 videos?part=snippet,topicDetails 로 영상 ID 와 API 키만
+                   보낸다(YoutubeDataApiClient). 약관 쪽 요건(III.A.1)은 이용약관 제9조 제1항이 맡는다. --></li>
           </ol>
         </section>
 
@@ -1300,6 +1324,11 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               posts they wrote in that Space and the reference videos remain; and in <a class="x" href="#art-7">Article 7</a>,
               we corrected the statements that account deletion is processed only once the disconnection from Apple has been
               completed, and that for Google accounts the Android app only clears the sign-in state on the device.
+              In addition, we specified attendance records and the device platform and language setting in
+              <a class="x" href="#art-2">Article 2</a>; the handling of cases where sign-up is not completed and the scope of
+              the re-registration check information that remains after account deletion in <a class="x" href="#art-3">Article 3</a>;
+              the backup retention period in <a class="x" href="#art-7">Article 7</a>; how to turn off notifications in
+              <a class="x" href="#art-8">Article 8</a>; and the use of YouTube API Services in <a class="x" href="#art-10">Article 10</a>.
               This does not change what is processed; these had been omitted or did not match the facts. However, Slack
               report notifications previously also included the member’s nickname; they now include only the member’s
               identifier, and the earlier notifications that included nicknames have been deleted.

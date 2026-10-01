@@ -508,8 +508,10 @@ body{word-break:normal;line-break:strict}
         <section id="art-5">
           <h3 class="art"><span class="art__no">第5条</span>利用契約の締結 <a class="art__link" href="#art-5" aria-label="第5条へのリンク">#</a></h3>
           <ol class="clauses">
-            <li>利用契約は、本サービスを利用しようとする者が本規約及びプライバシーポリシーにそれぞれ同意し、Kakao、Google、Appleの
-              アカウントによるソーシャルログインで登録を申し込み、運営者がこれを承諾することにより成立する。
+            <li>利用契約は、本サービスを利用しようとする者がKakao、Google、Appleのアカウントによるソーシャルログインで登録を申し込んだ後、
+              本規約及びプライバシーポリシーにそれぞれ同意し、運営者がこれを承諾することにより成立する。
+              <!-- 2026-10-01 정정. 앱은 소셜 로그인을 먼저 하고 그 뒤에 동의 화면을 띄운다(iOS SessionManager → TermsAgreementView,
+                   Android TermsAgreementViewModel). 동의하지 않은 계정의 정보 처리는 개인정보 처리방침 제3조 제5항이 적는다. -->
               <strong>本規約に同意しない限り、本サービスに登録することはできない。</strong></li>
             <li>本サービスには、満14歳以上の者のみ登録することができる。運営者は、満14歳未満であることが確認されたアカウントについて、
               利用契約を解除することができる。</li>
@@ -603,7 +605,12 @@ body{word-break:normal;line-break:strict}
         <section id="art-9">
           <h3 class="art"><span class="art__no">第9条</span>原曲の再生とYouTubeサービス <a class="art__link" href="#art-9" aria-label="第9条へのリンク">#</a></h3>
           <ol class="clauses">
-            <li>原曲はYouTubeが提供するプレーヤーを通じて再生され、その利用にはYouTubeの利用規約が適用される。</li>
+            <li>原曲はYouTubeが提供するプレーヤーを通じて再生され、その利用には
+              <a class="x" href="https://www.youtube.com/t/terms">YouTubeの利用規約</a>が適用される。会員は、本サービスを利用することにより、
+              YouTubeの利用規約に同意したものとする。YouTubeの利用過程における個人情報の取扱いは、
+              <a class="x" href="privacy.ja.html#art-10">プライバシーポリシー第10条</a>に従う。
+              <!-- 2026-10-01 정정. YouTube API 서비스 개발자 정책 III.A.1 은 API 클라이언트의 약관에 YouTube 서비스 약관 링크와
+                   「이용함으로써 그 약관에 구속된다」는 문장을 요구한다. --></li>
             <li>運営者は原曲の権利者ではなく、原曲が削除され、非公開とされ、又は埋め込みが制限される等のYouTube側の事情により、
               関連する募集投稿・機能の利用が制限されることがある。この場合、運営者は故意又は過失がない限り責任を負わない。</li>
           </ol>
@@ -866,7 +873,8 @@ body{word-break:normal;line-break:strict}
               <strong>あわせて訂正したもの</strong> — <a class="x" href="#art-7">第7条</a>第2項のソーシャルログインの連携解除に関する
               文言を実際の取扱いに合わせ（Appleアカウントは連携解除が完了しなければ退会が処理されない）、
               <a class="x" href="#art-18">第18条</a>第1項に、演奏パート別のランキングにはブロックの有無にかかわらず順位が表示される
-              ことを記載した。取扱いの内容が変わったのではなく、記載が事実と異なっていたもの又は漏れていたものである。
+              ことを記載し、<a class="x" href="#art-5">第5条</a>第1項の登録の順序をアプリの実際の順序（ソーシャルログインの後に同意）に合わせ、
+              <a class="x" href="#art-9">第9条</a>第1項にYouTubeの利用規約へのリンクを加えた。取扱いの内容が変わったのではなく、記載が事実と異なっていたもの又は漏れていたものである。
               本改定は、2026年9月18日から事前に告知しており、
               2026年10月20日から施行する。同日、
               <a class="x" href="privacy.ja.html">プライバシーポリシー</a>も改定される。ただし、それ以前にアプリで改定後の本規約に同意した会員には、同意した時から適用する。
