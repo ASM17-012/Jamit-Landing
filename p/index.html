@@ -35,12 +35,12 @@
 <script>
 (() => {
   /* ════ 바꿀 곳은 이 두 줄과 en/p/·ja/p/ 사본의 같은 줄이다 ════
-     INSTALL_URL — /v/와 같은 TestFlight 자리표시자다. ⚠️ 지금 이 주소는 실제로 열리지 않는다.
+     INSTALL_URL — App Store 주소.
      SCHEME_BASE — 앱이 받는 딥링크. iOS·Android의 PostShareRoute가 이 모양을 파싱한다 —
                    바꾸려면 그쪽과 함께 바꿔야 한다(주소의 정본은 앱 쪽 PostShareLink).
      /v/와 달리 API_BASE가 없다 — 이 페이지는 서버에 아무것도 묻지 않는다(FEV-768: 카드 한 장이면
      「앱에서 열기」라는 이 페이지의 일이 성립하고, 무인증으로 모집글을 내보낼 API를 열지 않았다) */
-  const INSTALL_URL = "https://testflight.apple.com/join/XXXXXXXX";
+  const INSTALL_URL = "https://apps.apple.com/kr/app/jamit-%EB%82%98%EB%A7%8C%EC%9D%98-%EC%97%B0%EC%A3%BC%EA%B0%80-%EC%9A%B0%EB%A6%AC%EC%9D%98-%ED%95%A9%EC%A3%BC%EB%A1%9C/id6801850526";
   const SCHEME_BASE = "jamit://post/detail?id=";
 
   /* id·from 판정은 /v/와 같다 — 숫자만 통과시키므로 아래에서 URL에 그대로 이어 붙여도 안전하고,

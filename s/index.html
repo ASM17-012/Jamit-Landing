@@ -49,9 +49,8 @@
 <script>
 (() => {
   /* ════ 앱 설치 주소 — 바꿀 곳은 여기 한 줄과 en/s/·ja/s/ 사본의 같은 줄이다 ════
-     App Store 출시 전이라 TestFlight 자리표시자다. 출시하면 App Store 주소로 교체할 것.
-     ⚠️ 지금 이 주소는 실제로 열리지 않는다 */
-  const INSTALL_URL = "https://testflight.apple.com/join/XXXXXXXX";
+     App Store 주소다 */
+  const INSTALL_URL = "https://apps.apple.com/kr/app/jamit-%EB%82%98%EB%A7%8C%EC%9D%98-%EC%97%B0%EC%A3%BC%EA%B0%80-%EC%9A%B0%EB%A6%AC%EC%9D%98-%ED%95%A9%EC%A3%BC%EB%A1%9C/id6801850526";
 
   /* 코드는 쿼리스트링으로 받는다. /s/A3K9XM2P 같은 경로 세그먼트는 GitHub Pages가 못 준다 —
      rewrite가 없어서 그 주소는 그냥 404다. 해시도 함께 받는다: 링크를 손으로 고쳐 보내는
@@ -307,7 +306,7 @@ footer a:hover{color:var(--hot)}
       </div>
       <!-- 두 줄인 이유: 첫 줄은 iOS용 회복 경로다(다른 브라우저로 옮기면 스킴이 열린다).
            둘째 줄은 안드로이드용이다 — 옮겨도 안 열린다. jamit:// 를 받는 앱이 아직 없고
-           설치 버튼도 TestFlight(iOS 전용)라 두 버튼이 다 죽는다. 이 페이지는 거의 전부
+           설치 버튼도 App Store(iOS 전용)라 두 버튼이 다 죽는다. 이 페이지는 거의 전부
            단톡에서 열리고 그중 절반은 안드로이드인데 지금까지 그 사실을 어디에도 안 적었다.
            남는 경로는 코드를 손으로 옮겨 적는 것뿐이라(.inv__code의 user-select:all) 그리로 안내한다.
            UA로 갈라 버튼을 감추지는 않는다 — 계약서 §5가 버튼 둘을 못박았고, 인앱 브라우저의

@@ -15,11 +15,11 @@
 <meta property="og:url" content="https://jamit.kr/en/p/">
 <meta property="og:title" content="Someone shared a JAMIT post with you">
 <meta property="og:description" content="A post looking for people to play with. Tap the link to join in the app.">
-<meta property="og:image" content="https://jamit.kr/assets/og.jpg">
+<meta property="og:image" content="https://jamit.kr/assets/og-en.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="JAMIT — Your own track becomes our jam. The app’s home and recording screens.">
+<meta property="og:image:alt" content="JAMIT — Your track, our jam. The app’s recording screen and a jam video.">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" as="font" type="font/woff2" href="../../assets/fonts/jetbrains-mono-latin.woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/pretendard-subset.woff2" as="font" type="font/woff2" crossorigin>
@@ -27,7 +27,7 @@
 
 <script>
 (() => {
-  const INSTALL_URL = "https://testflight.apple.com/join/XXXXXXXX";
+  const INSTALL_URL = "https://apps.apple.com/kr/app/jamit-%EB%82%98%EB%A7%8C%EC%9D%98-%EC%97%B0%EC%A3%BC%EA%B0%80-%EC%9A%B0%EB%A6%AC%EC%9D%98-%ED%95%A9%EC%A3%BC%EB%A1%9C/id6801850526";
   const SCHEME_BASE = "jamit://post/detail?id=";
 
   const params = new URLSearchParams(location.search);
@@ -197,6 +197,9 @@ footer a:hover{color:var(--hot)}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
 }
+/* MonoEn이 --sans 맨 앞이면 라틴 본문 전체가 고정폭이 된다 */
+:root{--sans:"Pretendard",-apple-system,BlinkMacSystemFont,"Helvetica Neue",system-ui,sans-serif}
+.top__id,.foot__id{font-family:"MonoEn",var(--sans)}
 </style>
 </head>
 <body>
