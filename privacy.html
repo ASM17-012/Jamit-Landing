@@ -437,8 +437,8 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
           삭제하며, 읽은 위치를 유지하기 위해 번호·보낸 사람·시각과 메시지 종류는 남습니다.
           <strong>운영자는 신고가 접수된 경우에만, 신고된 메시지와 그 앞뒤 몇 건만 확인합니다.</strong>
           <a class="x" href="#art-3">제3조</a>·<a class="x" href="terms.html#art-13">이용약관 제13조</a></li>
-        <li>서비스 운영을 위해 AWS·Google·Microsoft·HubSpot·Slack에 처리를 맡기며, 일부 정보는
-          <strong>미국으로 이전</strong>됩니다. <a class="x" href="#art-5">제5조</a>·<a class="x" href="#art-6">제6조</a></li>
+        <li>서비스 운영을 위해 AWS·Google·Microsoft·HubSpot·Slack·Grafana Labs에 처리를 맡기며, 일부 정보는
+          <strong>미국·일본으로 이전</strong>됩니다. <a class="x" href="#art-5">제5조</a>·<a class="x" href="#art-6">제6조</a></li>
         <li><strong>앱은 어떤 화면과 기능이 얼마나 쓰이는지 보기 위해 Google Firebase Analytics를 씁니다.</strong>
           회원 계정과 연결하지 않고, 광고 식별자는 수집하지 않습니다. <strong>앱을 삭제하면 수집이 멈춥니다.</strong>
           웹사이트(jamit.kr)는 Microsoft Clarity로 방문 기록을 봅니다 — 쿠키는 브라우저에서 거부하실 수 있습니다.
@@ -501,10 +501,14 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                    제8조 제5항을 함께 되살릴 것. --></li>
             <li><strong>서비스 제공</strong>: 합주 모집글·트랙·숏폼의 게시와 재생, 트랙 자동 싱크 보정 및 숏폼 합성,
               숏폼의 기기 저장·외부 공유 기능 제공, 프로필 표시, <strong>회원 간 채팅</strong>(1:1과 여러 명이 참여하는
-              대화방)의 전달·보관과 읽음 상태 표시, <strong>업적·레벨</strong>의 판정과 표시
+              대화방)의 전달·보관과 읽음 상태 표시, <strong>업적·레벨</strong>의 판정과 표시, 연주 세션(악기)별
+              <strong>랭킹</strong> 표시
               <!-- 업적·레벨은 종전부터 제공해 온 기능인데 이 조에 기재가 없었다(2026-10-20 정정) — 처리 내용이
                    바뀐 것이 아니라 빠져 있던 것을 적는 것이다. 제3조의 숏폼 시청 기록 보유 근거가 이 호를
-                   가리키므로, 그 행을 적으면서 함께 드러났다(GamificationService.onViewLogged). --></li>
+                   가리키므로, 그 행을 적으면서 함께 드러났다(GamificationService.onViewLogged). -->
+              <!-- 랭킹도 같은 정정이다(2026-10-01 대조) — 2026-08-28 부터 악기별 누적 XP 순위(SessionRankingController)와
+                   전체·월간·주간 순위(RankingController, RankingPeriod)를 다른 회원에게 보여 왔는데 어디에도 없었다.
+                   보이는 항목은 제4조 제4항이 적는다. --></li>
             <li><strong>알림 발송</strong>: 합주 참여·숏폼 게시 등 서비스 이용 관련 푸시 알림 발송</li>
             <li><strong>이용자 보호 및 서비스 운영</strong>: 신고 접수·처리(<strong>메시지가 신고된 경우 운영자는
               신고된 메시지와 같은 대화방에서 그 앞뒤에 오간 메시지를 회원이 쓴 것으로 각 5건까지, 지워진 메시지를
@@ -584,8 +588,12 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                     <!-- 앱이 트랙 등록 요청에 싣는 recordingDiagnostics(iOS RecordingDiagnostics, Backend Track.recording_diagnostics).
                          서버는 필드를 거르지 않는다 — iOS·Android 모두 이 목록을 넘지 말 것(블루투스 이름은 제품군으로만).
                          파기는 보관 만료 배치의 행 삭제, 행이 남는 트랙은 Track.destroyMedia 가 진단을 비운다. -->
-                    <tr><td>자동 수집</td><td>앱 이용 과정</td><td>Google Firebase Analytics — 무작위로 생성된 앱 인스턴스 식별자, 앱 설치·실행·세션 등 Google Analytics가 자동으로 수집하는 이용 이벤트와 운영자가 지정한 이용 이벤트(로그인·가입·탭 조회·트랙 등록·숏폼 공개) 및 그에 딸린 항목(로그인 수단, 트랙 등록 경로), 푸시 알림 수신·열람 기록, 기기 정보(모델명·OS 버전·앱 버전·언어·화면 정보 등), 접속 IP 주소 및 그로부터 추정한 국가·지역</td><td>자동 수집</td></tr>
-                    <tr><td>신고·문의</td><td>신고 접수, 고객 문의</td><td>신고·문의 내용에 포함된 정보</td><td>해당 시</td></tr>
+                    <tr><td>자동 수집</td><td>앱 이용 과정</td><td>Google Firebase Analytics — 무작위로 생성된 앱 인스턴스 식별자, 앱 설치·실행·세션 등 Google Analytics가 자동으로 수집하는 이용 이벤트와 운영자가 지정한 이용 이벤트(로그인·가입·탭 조회·트랙 등록·숏폼 공개·메시지 전송) 및 그에 딸린 항목(로그인 수단, 트랙 등록 경로), 푸시 알림 수신·열람 기록, 기기 정보(모델명·OS 버전·앱 버전·언어·화면 정보 등), 접속 IP 주소 및 그로부터 추정한 국가·지역</td><td>자동 수집</td></tr>
+                    <!-- 「메시지 전송」은 iOS·Android 의 dm_sent(파라미터 없음, 채팅과 함께 2026-09-16 들어옴)다 — 4차 개정 초안이
+                         지정 이벤트 목록에서 빠뜨렸다(2026-10-01 대조). 이벤트를 더하는 날 제6조 표·제10조 제1항과 함께 고칠 것. -->
+                    <tr><td>신고·문의</td><td>신고 접수, 고객 문의, 싱크 보정 요청</td><td>신고·문의 내용에 포함된 정보, 싱크 보정을 요청한 트랙과 요청 시각<br><small>싱크 보정 요청은 운영자가 트랙의 싱크를 확인·보정하는 데(제1조 제2호·제4호) 쓰이며, 운영자만 볼 수 있고 해당 트랙과 함께 보관·파기됩니다</small></td><td>해당 시</td></tr>
+                    <!-- 싱크 보정 요청(FEV-1075, 2026-09-28): 본문 없는 POST 라 요청한 회원·트랙·시각만 남는다(SyncFixRequest).
+                         트랙 행과 함께 지워지고 보관 만료 배치에서도 걷힌다. 영어·일본어판이 먼저 적었고 정본에만 빠져 있었다. -->
                     <tr><td>사전등록</td><td>웹사이트 출시 알림 신청</td><td>이메일</td><td>선택</td></tr>
                     <tr><td>웹사이트 이용</td><td>웹사이트(jamit.kr) 방문</td><td>방문 기록, 화면에서의 움직임(이동·클릭·스크롤), 쿠키, 브라우저·기기 정보</td><td>자동 수집</td></tr>
                   </tbody>
@@ -701,11 +709,20 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                    (FEV-543) — 그 문장이 없으면 남은 게시글에서 영상이 사라지는 이유를 이용자가 알 길이 없다. -->
             </li>
             <li><strong>탈퇴하지 않은 상태에서 콘텐츠가 삭제되는 경우에도 30일간 보관합니다.</strong> 회원이
-              트랙·숏폼·모집글을 직접 삭제하신 경우, 여러 회원이 함께 쓰는 합주 방에서 나가시거나 그 방에서 내보내진
-              경우, 그 방이 삭제된 경우가 모두 여기에 해당합니다. 어느 경우든 그 즉시 서비스에서 보이지 않게 되고,
+              트랙·숏폼·모집글을 직접 삭제하신 경우, 여러 회원이 함께 쓰는 스페이스에서 나가시거나 내보내져 그
+              스페이스에 올리신 트랙·숏폼이 삭제되는 경우, 마지막 회원이 나가 스페이스가 없어지면서 그 안의 콘텐츠가
+              삭제되는 경우가 모두 여기에 해당합니다. 어느 경우든 그 즉시 서비스에서 보이지 않게 되고,
               다른 이용자도 더는 볼 수 없습니다. 다만 신고가 접수된 콘텐츠를 당사자가 먼저 삭제하여 검토할 수 없게
               되는 일을 막기 위하여, 삭제된 날부터 30일 동안 운영자만 접근할 수 있는 상태로 보관한 뒤 영상·음성
               파일까지 파기합니다.
+              <p>스페이스에서 나가시거나 내보내진 경우 <strong>그 스페이스에 쓰신 모집글은 삭제되지 않고</strong>,
+              작성자 표시를 「나간 사용자」로 바꾸어 남은 멤버에게 계속 보입니다. 그 모집글에 회원이 올린 기준 영상도
+              함께 남으며, 스페이스가 없어질 때 위와 같이 삭제되어 30일 뒤 파기됩니다.</p>
+              <!-- 2026-10-01 정정. 초안은 나가기·강퇴를 「삭제」와 한 줄에 묶어 모집글까지 지워지는 것처럼 읽혔는데,
+                   SpaceLeavePurger.purgeLeaver 는 잇츠·트랙만 지우고 글은 detachAuthor 로 표식만 남긴다
+                   (PostUserResponse.LEFT_NICKNAME). 기준 영상은 나가는 사람의 REFERENCE_COPY 트랙과 같은 S3 객체라
+                   글과 함께 남는다. 스페이스 「삭제」는 따로 없고 마지막 멤버가 나갈 때 purgeContents 가 전부 지운다.
+                   나가기에서 기준 영상을 떼어 내도록 바꾸는 날 이 문단을 함께 고칠 것. -->
               <p>회원의 트랙을 다른 이용자가 자신의 숏폼에 사용하고 있었다면, <strong>그 참여 기록은 삭제와 동시에
               지워집니다.</strong> 그 숏폼의 참여자 목록에서 회원의 닉네임·프로필 사진이 사라진다는 뜻입니다. 다만
               이미 만들어진 합주 영상 안에 담긴 얼굴·목소리는 영상 자체의 일부라 지울 수 없습니다.</p>
@@ -763,7 +780,11 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               서비스 내 다른 이용자에게 공개되며, 합주에 참여한 트랙은 서비스의 기능에 따라 다른 참여자의 숏폼에
               조합되어 기기 저장·외부 공유될 수 있습니다. 이에 관한 상세한 조건은
               <a class="x" href="terms.html#art-13">이용약관 제13조</a>·<a class="x" href="terms.html#art-14">제14조</a>에
-              따릅니다.</li>
+              따릅니다. 또한 연주 세션(악기)별 <strong>랭킹</strong>(전체·월간·주간)에는 회원의 닉네임·프로필 사진과
+              경험치·레벨·등급·순위가 다른 이용자에게 표시되며, 차단 여부와 관계없이 표시됩니다.
+              <!-- 2026-10-01 추가. 랭킹 응답(RankingResponse·RankingsResponse)이 userId·닉네임·프로필 사진·XP·레벨·티어를
+                   싣고, 차단 관계를 거르지 않는다(SessionRankingController 문서의 「목록 규약의 예외」). 랭킹에서 빠지는
+                   설정은 없다 — 만드는 날 이 문장에 적을 것. --></li>
           </ol>
         </section>
 
@@ -803,6 +824,14 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                       <td>신고 접수를 운영자에게 알리는 업무 메신저(Slack)</td>
                       <td><a class="ref" href="#art-6">제6조</a> 국외 이전 참조</td>
                     </tr>
+                    <tr>
+                      <td>Raintank, Inc. (Grafana Labs)</td>
+                      <td>서비스 장애·성능 모니터링(Grafana Cloud) — 서버 로그와 지표의 조회·표시</td>
+                      <td><a class="ref" href="#art-6">제6조</a> 국외 이전 참조</td>
+                    </tr>
+                    <!-- 2026-10-01 추가. Grafana Cloud 스택(playfulpuma1416)이 IAM 역할로 CloudWatch 지표와 /ecs/jamit-*·
+                         /aws/lambda/jamit-* 로그를 조회한다(Infra modules/grafana-access, FEV-1058 2026-09-28·FEV-1148).
+                         그 로그에 회원 식별번호가 실린다. 로그에서 식별자를 걷어 내면 이 행과 제6조 행을 함께 뺄 수 있다. -->
                   </tbody>
                 </table>
               </div>
@@ -828,16 +857,18 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
           </p>
           <div class="tw tw--wide">
             <table>
-              <caption class="sr-only">국외로 이전되는 개인정보의 이전받는 자, 국가, 항목, 방법, 목적, 보유 기간</caption>
+              <caption class="sr-only">국외로 이전되는 개인정보의 이전받는 자와 연락처, 국가, 항목, 방법, 목적, 보유 기간</caption>
               <thead>
                 <tr>
-                  <th scope="col">이전받는 자</th><th scope="col">이전 국가</th><th scope="col">이전 항목</th>
+                  <th scope="col">이전받는 자(연락처)</th><th scope="col">이전 국가</th><th scope="col">이전 항목</th>
                   <th scope="col">이전 일시 및 방법</th><th scope="col">이용 목적</th><th scope="col">보유 기간</th>
                 </tr>
               </thead>
               <tbody>
+                <!-- 연락처는 개인정보 보호법 제28조의8 제2항 제4호의 기재사항이다(2026-10-01 추가). 각 사 개인정보처리방침에서
+                     옮겼다 — Google 은 한국어판의 문의 주소, Microsoft 는 개인정보 문의 양식, 나머지는 개인정보 문의 이메일. -->
                 <tr>
-                  <td>Google LLC (Firebase)</td>
+                  <td>Google LLC (Firebase)<br><small>googlekrsupport@google.com</small></td>
                   <td>미국</td>
                   <td>기기 푸시 토큰(FCM), FCM 등록 과정에서 전송되는 기기 정보(모델명·OS 버전·앱 버전), 푸시 알림의 제목과 본문(알림 종류에 따라 다른 회원의 닉네임과 대상 모집글 제목 또는 스페이스 이름이 포함되며, <strong>채팅 알림에는 보낸 회원의 닉네임과 메시지 내용의 앞부분이 포함됩니다</strong>), 알림과 대상 콘텐츠의 식별자</td>
                   <td>서비스 이용 시 네트워크를 통한 전송</td>
@@ -845,9 +876,9 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                   <td>탈퇴 또는 토큰 무효화 시까지</td>
                 </tr>
                 <tr>
-                  <td>Google LLC (Firebase Analytics)</td>
+                  <td>Google LLC (Firebase Analytics)<br><small>googlekrsupport@google.com</small></td>
                   <td>미국</td>
-                  <td>무작위로 생성된 앱 인스턴스 식별자, 앱 설치·실행·세션 등 Google Analytics가 자동으로 수집하는 이용 이벤트와 운영자가 지정한 이용 이벤트(로그인·가입·탭 조회·트랙 등록·숏폼 공개) 및 그에 딸린 항목(로그인 수단, 트랙 등록 경로), 푸시 알림 수신·열람 기록, 기기 정보(모델명·OS 버전·앱 버전·언어·화면 정보 등), 접속 IP 주소 및 그로부터 추정한 국가·지역</td>
+                  <td>무작위로 생성된 앱 인스턴스 식별자, 앱 설치·실행·세션 등 Google Analytics가 자동으로 수집하는 이용 이벤트와 운영자가 지정한 이용 이벤트(로그인·가입·탭 조회·트랙 등록·숏폼 공개·메시지 전송) 및 그에 딸린 항목(로그인 수단, 트랙 등록 경로), 푸시 알림 수신·열람 기록, 기기 정보(모델명·OS 버전·앱 버전·언어·화면 정보 등), 접속 IP 주소 및 그로부터 추정한 국가·지역</td>
                   <td>앱 이용 시 네트워크를 통한 전송</td>
                   <td>앱 이용 통계 분석 및 서비스 개선</td>
                   <td>이벤트·기기 단위 데이터는 수집일로부터 최대 14개월(Google Analytics 데이터 보관 설정의 상한), 개인을 식별할 수 없는 집계 통계는 그 이후에도 보관</td>
@@ -856,7 +887,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                      2개월이면 이 문구는 상한으로서 여전히 참이지만, 정확히 적고 싶으면 콘솔 값을 확인해 제3조 제6항과
                      함께 고칠 것. 항목 문구는 제2조 표·제10조 제1항과 글자 단위로 같아야 한다. -->
                 <tr>
-                  <td>Microsoft Corporation</td>
+                  <td>Microsoft Corporation<br><small><a class="x" href="https://go.microsoft.com/fwlink/?linkid=2126612">개인정보 문의 양식</a></small></td>
                   <td>미국</td>
                   <td>웹사이트 방문 기록, 화면에서의 움직임, 쿠키, 브라우저·기기 정보</td>
                   <td>웹사이트 방문 시 네트워크를 통한 전송</td>
@@ -864,7 +895,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                   <td>수집일로부터 1년(Microsoft Clarity 보존 정책)</td>
                 </tr>
                 <tr>
-                  <td>HubSpot, Inc.</td>
+                  <td>HubSpot, Inc.<br><small>privacy@hubspot.com</small></td>
                   <td>미국</td>
                   <td>사전등록 신청 이메일</td>
                   <td>사전등록 신청 시 네트워크를 통한 전송</td>
@@ -872,13 +903,26 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                   <td>출시 알림 발송 후 지체 없이 파기</td>
                 </tr>
                 <tr>
-                  <td>Slack Technologies, LLC</td>
+                  <td>Slack Technologies, LLC<br><small>privacy@slack.com</small></td>
                   <td>미국</td>
                   <td>신고 번호, 신고 대상의 종류와 식별자, 신고 대상 회원(콘텐츠·메시지를 올린 회원 또는 신고된 회원)의 식별자, 신고 사유, 신고한 회원의 식별자, 신고 상세 내용(앞 200자), 같은 대상에 쌓인 신고 수</td>
                   <td>신고 접수 시 네트워크를 통한 전송</td>
                   <td>운영자에게 신고 접수 알림</td>
                   <td>전송일로부터 1년</td>
                 </tr>
+                <tr>
+                  <td>Raintank, Inc. (Grafana Labs)<br><small>dsr-privacy@grafana.com</small></td>
+                  <td>일본</td>
+                  <td>서버 로그(주로 오류·경고 기록이며, 회원 식별번호, 요청 경로 등이 포함될 수 있음), 서비스 지표(요청 수·응답 시간·오류율 등)</td>
+                  <td>운영자가 모니터링 화면을 조회할 때 네트워크를 통한 전송</td>
+                  <td>서비스 장애 감지·대응 및 성능 모니터링</td>
+                  <td>조회 결과를 화면에 표시하는 동안만 처리하며 별도로 저장하지 않음(원본 로그는 AWS 서울 리전에서 최대 14일 보관)</td>
+                </tr>
+                <!-- 2026-10-01 추가. 국가는 스택 리전(Grafana Cloud prod-ap-northeast-0 = AWS 일본)이다 — staging 의 OTLP
+                     엔드포인트(Infra environments/staging/variables.tf otlp_metrics_url)로 확인했다. 운영 로그는 Grafana 가
+                     CloudWatch 를 조회할 때만 넘어가고(대시보드 jamit-overview 의 원문 패널), prod 의 OTLP 지표 전송은 꺼져
+                     있다(otlp_metrics_enabled 기본 false). prod OTLP 를 켜면 지표가 Grafana Cloud 에 저장되므로 보유 기간
+                     칸을 그 스택의 보존 기간으로 고칠 것. -->
               </tbody>
             </table>
           </div>
@@ -902,12 +946,19 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               </li>
             <li>파기 방법: 전자적 파일 형태의 정보는 복구·재생할 수 없는 기술적 방법으로 삭제하며, 종이 문서는 분쇄하거나
               소각합니다.</li>
-            <li>탈퇴 시 운영자가 보관하던 소셜 로그인 연동 정보는 파기되며, 각 플랫폼과의 연결 해제도 함께 요청합니다
-              (Apple 은 운영자 서버가, 카카오·구글은 앱이 요청합니다). 네트워크 오류 등으로 연결 해제 요청이
-              실패하더라도 운영자가 보관하던 연동 정보는 파기되며, 각 플랫폼 계정 설정에서 직접 연결을 해제하실 수도
-              있습니다.
+            <li>탈퇴 시 운영자가 보관하던 소셜 로그인 연동 정보는 파기되며, 각 플랫폼과의 연결 해제도 함께 처리합니다.
+              Apple은 운영자 서버가 연결 해제를 요청하며, <strong>Apple의 연결 해제가 완료되어야 탈퇴가 처리됩니다</strong>
+              (해제 요청이 실패하면 탈퇴가 진행되지 않으며, 다시 시도하실 수 있습니다). 카카오는 앱이 연결 해제를 요청하고,
+              구글은 iOS 앱에서는 앱이 연결 해제를 요청하며 Android 앱에서는 기기의 로그인 상태만 정리합니다.
+              카카오·구글의 연결 해제 요청이 네트워크 오류 등으로 실패하더라도 운영자가 보관하던 연동 정보는 파기되며,
+              남아 있는 연결은 각 플랫폼 계정 설정에서 직접 해제하실 수 있습니다.
               <!-- 2026-09-01 정정: 셋 다 보장되는 것처럼 읽혔으나 서버가 확실히 하는 것은 Apple revoke 뿐이고
                    카카오·구글은 앱 SDK 의 베스트에포트다. -->
+              <!-- 2026-10-01 정정: ① Apple revoke 가 실패하면 UserWithdrawalService.withdraw 가 예외로 끝나 DB 를 건드리지
+                   않는다 — 「실패해도 파기」는 Apple 에는 맞지 않았다. ② Android 의 구글은 revoke 가 아니라
+                   ClearCredentialStateRequest(기기의 자격 증명 상태 정리)뿐이다(SocialDisconnect, Credential Manager 에
+                   revoke API 가 없음). iOS 는 GIDSignIn.disconnect 로 실제 revoke 를 보낸다. Android 에 revoke 를
+                   들이는 날 이 문장과 이용약관 제7조 제2항을 함께 고칠 것. -->
               </li>
           </ol>
         </section>
@@ -970,7 +1021,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
           <ol class="clauses">
             <li><strong>앱</strong>은 웹 브라우저의 쿠키(cookie)를 사용하지 않으며, 맞춤형 광고를 위한 광고 식별자(IDFA)를
               수집하지 않습니다. 다만 어떤 화면과 기능이 얼마나 쓰이는지 파악해 서비스를 개선하기 위하여
-              <strong>Google Firebase Analytics</strong>를 사용합니다. 이 과정에서 무작위로 생성된 앱 인스턴스 식별자, 앱 설치·실행·세션 등 Google Analytics가 자동으로 수집하는 이용 이벤트와 운영자가 지정한 이용 이벤트(로그인·가입·탭 조회·트랙 등록·숏폼 공개) 및 그에 딸린 항목(로그인 수단, 트랙 등록 경로), 푸시 알림 수신·열람 기록, 기기 정보(모델명·OS 버전·앱 버전·언어·화면 정보 등), 접속 IP 주소 및 그로부터 추정한 국가·지역이
+              <strong>Google Firebase Analytics</strong>를 사용합니다. 이 과정에서 무작위로 생성된 앱 인스턴스 식별자, 앱 설치·실행·세션 등 Google Analytics가 자동으로 수집하는 이용 이벤트와 운영자가 지정한 이용 이벤트(로그인·가입·탭 조회·트랙 등록·숏폼 공개·메시지 전송) 및 그에 딸린 항목(로그인 수단, 트랙 등록 경로), 푸시 알림 수신·열람 기록, 기기 정보(모델명·OS 버전·앱 버전·언어·화면 정보 등), 접속 IP 주소 및 그로부터 추정한 국가·지역이
               Google로 전송됩니다(<a class="x" href="#art-2">제2조</a>·<a class="x" href="#art-6">제6조</a>).
               이 정보는 회원 계정(이메일·닉네임 등)과 연결하지 않으며, 광고 목적으로 쓰지 않습니다. Crashlytics 등
               오류 수집 도구는 사용하지 않습니다.
@@ -1145,18 +1196,28 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               <a class="x" href="#art-6">제6조</a>의 Google 이전 항목에 <strong>채팅 알림에 실리는 메시지 내용의 앞부분</strong>을
               더했습니다. 요약(핵심만)도 함께 고쳤습니다. 싱크가 맞지 않는 트랙의 원인을 확인하기 위하여
               <a class="x" href="#art-2">제2조</a>의 자동 수집 항목에 <strong>트랙 녹화 진단 정보</strong>를 더했으며,
-              이 정보는 해당 트랙과 함께 보관·파기합니다. 앱 화면의 이름에 맞추어 「게시글」을 「모집글」로
+              이 정보는 해당 트랙과 함께 보관·파기합니다. 같은 조의 신고·문의 항목에는 <strong>싱크 보정 요청</strong>
+              기록을 명시했으며, 이 기록도 해당 트랙과 함께 보관·파기합니다. <a class="x" href="#art-2">제2조</a>·<a class="x" href="#art-6">제6조</a>·<a class="x" href="#art-10">제10조</a>의
+              운영자가 지정한 이용 이벤트에 <strong>메시지 전송</strong>을 더했습니다. 앱 화면의 이름에 맞추어 「게시글」을 「모집글」로
               바꾸어 불렀습니다. 가리키는 대상은 같습니다.
               <strong>함께 바로잡은 것</strong> — <a class="x" href="#art-1">제1조</a> 제2호에 종전부터 제공해 온
-              업적·레벨을 적고, <a class="x" href="#art-5">제5조</a>·<a class="x" href="#art-6">제6조</a>에 신고 접수를
-              운영자에게 알리는 데 써 온 Slack(미국)을 적었으며, <a class="x" href="#art-3">제3조</a>에는 지운 숏폼에 남은
-              좋아요·시청 기록이 그 숏폼과 함께 파기되고 업적 판정에도 쓰인다는 점을 바로잡았습니다. 처리 내용이 바뀐 것이
+              업적·레벨과 연주 세션별 랭킹을 적고(랭킹에 표시되는 항목은 <a class="x" href="#art-4">제4조</a> 제4항),
+              <a class="x" href="#art-5">제5조</a>·<a class="x" href="#art-6">제6조</a>에 신고 접수를
+              운영자에게 알리는 데 써 온 Slack(미국)과 서비스 장애를 살피는 데 써 온 Grafana Labs(일본)를 적었으며,
+              <a class="x" href="#art-6">제6조</a> 표에 이전받는 자의 연락처를 더했습니다. <a class="x" href="#art-3">제3조</a>에는 지운 숏폼에 남은
+              좋아요·시청 기록이 그 숏폼과 함께 파기되고 업적 판정에도 쓰인다는 점과, 스페이스에서 나가거나 내보내진 경우
+              그 스페이스에 쓴 모집글과 기준 영상은 남는다는 점을 바로잡았고, <a class="x" href="#art-7">제7조</a>에는 Apple의
+              연결 해제가 완료되어야 탈퇴가 처리되며 Android 앱의 구글 계정은 기기의 로그인 상태만 정리된다는 점을
+              바로잡았습니다. 처리 내용이 바뀐 것이
               아니라 기재가 빠져 있거나 사실과 달랐던 것입니다. 다만 Slack 신고 알림에는 종전에 회원의 닉네임도 실렸으나
               이제 회원 식별자만 싣고, 닉네임이 실린 종전 알림은 삭제했습니다.
               <strong>수집 항목과 처리 목적이 늘어나는 개정</strong>으로, 2026년 9월 18일부터 이 페이지에서 미리 알려
               드렸으며, 이 개정은 2026년 10월 20일부터 시행합니다.
-              <strong>트랙 녹화 진단 정보는 그 고지에 포함되지 않았으며</strong>, 이 개정과 함께 알려 드립니다. 위 2026년 9월 16일 정정은
+              <strong>트랙 녹화 진단 정보, 싱크 보정 요청 기록, 메시지 전송 이벤트는 그 고지에 포함되지 않았으며</strong>, 이 개정과 함께 알려 드립니다. 위 2026년 9월 16일 정정은
               실제로는 2026년 9월 18일에 이 페이지에 게시되었습니다.
+              <!-- 2026-10-01 dev 전체(iOS·Android·Backend·AI)와 Infra 대조에서 나온 것을 이 개정에 함께 실었다.
+                   싱크 보정 요청(FEV-1075)·메시지 전송 이벤트(dm_sent)는 2.0.0 과 함께 나가는 처리라 「고지에 포함되지
+                   않았다」 쪽에, 랭킹·Grafana·연락처·스페이스 나가기·연결 해제는 이미 하던 처리라 「바로잡은 것」 쪽에 둔다. -->
               <p><strong>미리 알려 드린 내용 중 시행하지 않는 것이 있습니다.</strong> 2026년 9월 18일 고지에는 게시글에
                 연결된 곡 정보를 추론하기 위하여 영상의 제목·채널명·설명과 게시글 제목·태그를 Anthropic(미국)으로
                 이전하는 내용이 포함되어 있었습니다. 그 뒤 장르를 <strong>작성자가 직접 고르는 방식</strong>으로 바꾸어
