@@ -1,0 +1,995 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>利用規約 — JAMIT</title>
+<meta name="description" content="JAMIT 利用規約 — 利用契約、コンテンツの権利、セッション参加への同意、報告と利用制限。">
+<meta name="theme-color" content="#ecedf1">
+<!-- 앱 안 시트(FEV-389)는 이 문서를 `?embed=1`로 연다. class 는 **첫 그리기 전에** 붙어야 상단바가
+     한 프레임 번쩍이고 사라지는 일이 없으므로 <style> 보다 앞, head 안에서 돈다. JS 가 없으면
+     그냥 보통 페이지다 — 크롬만 다르고 본문은 한 벌이다. -->
+<script>
+(() => {
+  if (!new URLSearchParams(location.search).has("embed")) return;
+  document.documentElement.classList.add("embed");
+  // 문서끼리 건너가는 링크(약관↔처리방침)는 시트 안에서도 embed 로 남아야 한다 — 아니면
+  // 한 번 건너간 순간 상단바·목차가 돌아와 '링크를 열었다'는 느낌이 되돌아온다.
+  // 외부 링크(카카오·구글·Apple)는 건드리지 않는다 — 그건 앱이 가로채 인앱 사파리로 연다.
+  addEventListener("DOMContentLoaded", () => {
+    for (const a of document.querySelectorAll("a[href]")) {
+      const raw = a.getAttribute("href");
+      if (raw.startsWith("#")) continue;
+      const u = new URL(raw, location.href);
+      if (u.origin !== location.origin || !u.pathname.endsWith(".html")) continue;
+      u.searchParams.set("embed", "1");
+      a.setAttribute("href", u.href);
+    }
+  });
+})();
+</script>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="%230d0f24"/><rect x="8" y="13" width="3" height="6" rx="1.5" fill="%2398cff6"/><rect x="14" y="8" width="3" height="16" rx="1.5" fill="%23baadf5"/><rect x="20" y="11" width="3" height="10" rx="1.5" fill="%23dd8bf4"/></svg>'>
+
+<style>
+/* ══════════════════════════════════════════════════════════
+   법적 고지 문서 — index.html과 같은 색·글꼴·여백 언어를 쓴다.
+   외부 요청 0. 폰트도 색도 전부 이 파일 안에 있다.
+   ══════════════════════════════════════════════════════════ */
+:root{
+  /* 색·서체는 랜딩 본문(index.html)의 언어를 그대로 따른다 — 법적 문서만 세대가 달라
+     보이던 것을 맞춘 것이다. 순백·순검정은 쓰지 않는다(눈부심·대비 피로). */
+  --bg:#ecedf1;               /* 차가운 회색 종이 */
+  --bg-rgb:236,237,241;       /* 반투명 상단바·스크림이 쓰는 채널 */
+  --bg-2:#f7f8fb;
+  --ink:#1a1f2b;              /* 남빛 먹. 종이 대비 14.1:1 */
+  --copy:#4b5468;             /* 6.5:1 — 본문 */
+  --muted:#5f6779;            /* 4.7:1 — 작은 글씨도 AA */
+  /* 면 위에 얹는 옅은 색조. **채널을 토큰으로 둔 이유**는 다크로 뒤집을 때
+     이 한 줄만 바꾸면 rgba(...)를 쓰는 자리가 전부 따라오기 때문이다. */
+  --tint:26,31,43;
+  --line:rgba(var(--tint),.16);
+  /* 강조는 인디고 하나다. 예전에는 문서마다 색을 달리 가져갔는데(약관 청록·처리방침 보라)
+     랜딩이 "강조는 하나로만"으로 정리되면서 여기도 맞춘다. */
+  --accent:#3a5fd1;
+  --doc:#3a5fd1;
+  --doc-soft:rgba(58,95,209,.45);
+  --warn:#8a6100;
+  --warn-soft:rgba(245,158,11,.10);
+  --warn-line:rgba(180,83,9,.34);
+  --mark:#bfd6ff;             /* 형광펜 */
+  --r:16px; --r-lg:24px;
+  --topbar:64px;
+  --strip:0px;                /* 초안 띠가 있던 자리 — 변수는 남긴다: main 여백과 앵커 스크롤이 쓴다 */
+  --edge:max(clamp(20px,5vw,40px),env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));
+  --sans:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:var(--bg);-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);color:var(--ink);line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  word-break:keep-all;               /* 한글은 단어 중간에서 끊지 않는다 */
+  -webkit-tap-highlight-color:transparent;
+}
+/* 문서가 길다. 배경 그라데이션을 문서 높이에 걸면 수천 픽셀에 퍼져 사실상 안 보인다.
+   화면에 고정된 판을 뒤에 깔아 index와 같은 깊이를 유지한다 */
+body::before{content:"";position:fixed;inset:0;z-index:-1;
+  background:linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 100%)}
+::selection{background:var(--mark);color:var(--ink)}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+h1,h2,h3{letter-spacing:-.02em;font-weight:750;line-height:1.15;text-wrap:balance}
+p{text-wrap:pretty}
+.wrap{width:min(1080px,calc(100% - var(--edge)*2));margin-inline:auto}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+/* 고정 머리(상단바 + 초안 띠) 아래로 제목이 숨지 않게 한다 */
+[id]{scroll-margin-top:calc(var(--topbar) + var(--strip) + 14px)}
+
+/* ════ 상단 바 ════ */
+.top{position:fixed;top:0;left:0;right:0;z-index:60;
+  background:rgba(var(--bg-rgb),.82);backdrop-filter:blur(18px) saturate(180%)}
+.top::after{content:"";position:absolute;left:0;right:0;top:100%;height:22px;pointer-events:none;
+  background:linear-gradient(rgba(var(--bg-rgb),.5),rgba(var(--bg-rgb),0));
+  opacity:0;transition:opacity .3s}
+body.scrolled .top::after{opacity:1}
+.top__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0;min-height:var(--topbar)}
+.top__id{display:flex;align-items:center;gap:9px;min-height:44px;cursor:pointer;
+  font-weight:750;font-size:17px;letter-spacing:-.02em;transition:opacity .18s}
+/* 상단 마크는 **iOS 앱 아이콘 원본**이다(Assets.xcassets/AppIcon). 원본이 각진 사각형이라
+   둥근 모서리를 여기서 씌운다 — 22.5%가 애플의 스퀘어클에 가장 가깝다. */
+.top__mark{display:block;border-radius:22.5%}
+.top__nav{display:flex;align-items:center;gap:2px}
+.top__nav a{padding:0 12px;line-height:44px;border-radius:999px;font-size:13.5px;font-weight:600;
+  color:var(--muted);white-space:nowrap;transition:color .18s,background .18s}
+.top__nav a[aria-current="page"]{color:var(--ink);background:rgba(var(--tint),.07)}
+@media(max-width:560px){
+  .top__nav a{padding:0 9px;font-size:12.5px}
+  .top__id{font-size:15.5px;gap:7px}
+  .long{display:none}          /* 좁으면 "개인정보 처리방침" → "개인정보" */
+}
+
+/* ── 초안 띠 — 상단바에 붙어 항상 따라다닌다.
+      배너는 스크롤하면 사라지지만, 이 줄은 어느 조문을 보고 있어도 초안임을 말한다 ── */
+.strip{height:var(--strip);display:flex;align-items:center;justify-content:center;gap:9px;
+  padding-inline:var(--edge);text-align:center;
+  background:rgba(245,158,11,.16);border-top:1px solid var(--warn-line);border-bottom:1px solid var(--warn-line);
+  color:var(--warn);font-size:11.5px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
+.strip b{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;font-weight:700;
+  padding:3px 7px;border-radius:5px;background:var(--warn);color:var(--bg-2)}
+
+/* ════ 문서 ════ */
+main{padding-top:calc(var(--topbar) + var(--strip))}
+.doc{padding-block:clamp(30px,5vw,58px) clamp(48px,7vw,88px)}
+.doc__head{max-width:74ch}
+.doc h1{margin-top:12px;font-size:clamp(2rem,4.6vw,2.85rem);font-weight:800;letter-spacing:-.035em;line-height:1.08}
+.doc__lede{margin-top:14px;color:var(--copy);font-size:clamp(.98rem,1.3vw,1.1rem);max-width:52em}
+
+/* 초안 배너 — 문서 첫 화면에서 제목 다음으로 눈에 들어와야 한다 */
+.banner{display:flex;gap:14px;align-items:flex-start;margin-top:26px;padding:18px 20px;
+  border:1px solid var(--warn-line);border-radius:var(--r);background:var(--warn-soft)}
+.banner svg{flex:none;margin-top:2px;color:var(--warn)}
+.banner b{display:block;color:var(--warn);font-size:1rem;letter-spacing:-.02em}
+.banner p{margin-top:7px;color:var(--copy);font-size:.93rem;line-height:1.65}
+.banner strong{color:var(--ink);font-weight:700}
+
+.meta{margin-top:24px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px 20px;
+  font-size:.9rem;align-items:baseline}
+.meta dt{color:var(--muted);font-weight:600}
+.meta dd{color:var(--copy)}
+
+/* ── 목차 + 본문 ── */
+.layout{margin-top:clamp(34px,5vw,54px)}
+@media(min-width:900px){
+  .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:clamp(32px,4.5vw,64px);align-items:start}
+}
+.toc{margin-bottom:30px;border:1px solid var(--line);border-radius:var(--r);background:rgba(var(--tint),.04)}
+.toc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:0 18px;min-height:52px;font-size:.95rem;font-weight:650}
+.toc>summary::-webkit-details-marker{display:none}
+.toc>summary::after{content:"+";font-family:var(--mono);font-size:1.35rem;font-weight:300;color:var(--muted);
+  transition:transform .25s var(--ease),color .25s}
+.toc[open]>summary::after{transform:rotate(45deg);color:var(--doc)}
+.toc__list{padding:2px 10px 14px}
+.toc ol{list-style:none}
+.toc a{display:block;padding:11px 10px;border-radius:8px;font-size:.88rem;line-height:1.45;
+  color:var(--muted);border-left:2px solid transparent;
+  transition:color .18s,background .18s,border-color .18s}
+.toc a .n{font-family:var(--mono);font-size:.82em;color:rgba(var(--tint),.34);margin-right:8px}
+.toc a.on{color:var(--ink);background:rgba(var(--tint),.05);border-left-color:var(--doc)}
+.toc a.on .n{color:var(--doc)}
+.toc__chap>a{color:var(--copy);font-weight:700;font-size:.87rem;margin-top:8px}
+.toc__chap:first-child>a{margin-top:0}
+@media(min-width:900px){
+  /* 데스크톱에서는 접는 장치가 아니라 그냥 옆에 서 있는 목차다.
+     summary를 지우면 details는 열린 채로 고정된다 */
+  .toc{position:sticky;top:calc(var(--topbar) + var(--strip) + 24px);
+    margin-bottom:0;border:0;background:none}
+  .toc>summary{display:none}
+  .toc__list{position:relative;padding:0 6px 0 0;
+    max-height:calc(100vh - var(--topbar) - var(--strip) - 60px);overflow-y:auto;
+    scrollbar-width:thin;scrollbar-color:rgba(var(--tint),.18) transparent}
+  .toc a{padding:6px 10px}
+  .toc__chap>a{margin-top:12px}
+}
+
+/* ── 조문 ── */
+.prose{max-width:68ch;color:var(--copy);font-size:clamp(.95rem,.35vw + .87rem,1.03rem);line-height:1.8}
+.prose strong{color:var(--ink);font-weight:700}
+.prose p{margin-top:14px}
+.chap{margin-top:clamp(46px,6vw,70px);padding-top:24px;border-top:1px solid var(--line);
+  color:var(--ink);font-size:clamp(1.12rem,1.8vw,1.35rem);
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.chap:first-child{margin-top:0;padding-top:0;border-top:0}
+.chap .n{font-family:var(--mono);font-size:.68em;letter-spacing:.12em;color:var(--doc);font-weight:600}
+.art{margin-top:clamp(30px,3.6vw,42px);color:var(--ink);
+  font-size:clamp(1.06rem,1.4vw,1.2rem);letter-spacing:-.022em;line-height:1.35}
+.chap+section .art{margin-top:22px}
+.art__no{display:block;margin-bottom:7px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:var(--doc);font-weight:600}
+/* 조문 하나를 가리켜 링크로 보낼 수 있어야 한다 — "제14조 제4항 봐" 가 되는 문서다 */
+.art__link{margin-left:8px;font-family:var(--mono);font-weight:400;font-size:.78em;
+  color:rgba(var(--tint),.24);opacity:0;transition:opacity .18s,color .18s}
+section:hover .art__link,.art__link:focus-visible{opacity:1}
+@media(hover:none){.art__link{opacity:.4}}
+
+/* 항(項)과 호(號) — 번호는 본문보다 한 칸 물러난 자리에 둔다 */
+.clauses{list-style:none;counter-reset:clause;margin-top:14px}
+.clauses>li{counter-increment:clause;position:relative;padding-left:2.1em;margin-top:13px}
+.clauses>li::before{content:counter(clause) ".";position:absolute;left:0;top:0;
+  font-family:var(--mono);font-size:.9em;font-weight:600;color:var(--doc)}
+.sub{list-style:none;counter-reset:sub;margin-top:10px;padding-left:16px;border-left:1px solid var(--line)}
+.sub>li{counter-increment:sub;position:relative;padding-left:1.9em;margin-top:9px}
+.sub>li::before{content:counter(sub) ".";position:absolute;left:0;top:0;
+  font-family:var(--mono);font-size:.88em;color:var(--muted)}
+.clauses p,.sub p{margin-top:8px}
+
+/* 문서 안팎을 가리키는 참조 — 눌러서 갈 수 있다는 것만 조용히 알린다 */
+.ref{color:var(--doc);border-bottom:1px dotted var(--doc-soft);transition:border-color .18s,color .18s}
+.x{color:var(--doc);text-decoration:underline;text-underline-offset:3px;
+  text-decoration-color:var(--doc-soft);transition:text-decoration-color .18s}
+
+/* ── 미확정 항목 ──
+   지우지 않는다. 형광펜으로 칠해 둔다. 확정 전에 이 페이지가 올라가면
+   무엇이 안 끝났는지가 문장보다 먼저 보여야 한다 */
+.tbd{display:inline;padding:.14em .45em;border-radius:5px;
+  background:var(--mark);color:#1b1405;
+  font-family:var(--mono);font-size:.85em;font-weight:600;letter-spacing:-.01em;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone}
+
+/* 표는 이 문서에 없다. 개인정보 처리방침에만 있고, 표 스타일도 그쪽 파일에 있다 */
+
+/* ── 문서 끝: 옆 문서로 건너가는 자리 ── */
+.also{margin-top:clamp(44px,6vw,64px);padding-top:26px;border-top:1px solid var(--line)}
+.also__list{display:grid;gap:12px;margin-top:14px}
+@media(min-width:640px){.also__list{grid-template-columns:1fr 1fr}}
+.also a{display:block;padding:16px 18px;border:1px solid var(--line);border-radius:var(--r);
+  background:rgba(var(--tint),.04);transition:border-color .18s,background .18s,transform .18s}
+.also b{display:block;font-size:.98rem;letter-spacing:-.02em}
+.also span{display:block;margin-top:5px;font-size:.86rem;color:var(--muted)}
+
+footer{padding:30px 0 calc(48px + env(safe-area-inset-bottom,0px));
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
+footer nav{display:flex;flex-wrap:wrap;gap:4px}
+footer nav a{line-height:44px;padding-inline:12px;transition:color .18s}
+
+/* ══ 누르는 느낌 ══ index와 같은 규칙: hover는 커서가 있는 기기에서만 ══ */
+@media(hover:hover){
+  .top__id:hover{opacity:.72}
+  .top__nav a:hover,footer nav a:hover{color:var(--ink)}
+  .toc a:hover{color:var(--ink);background:rgba(var(--tint),.05)}
+  .art__link:hover{color:var(--doc)}
+  .ref:hover{border-bottom-color:var(--doc)}
+  .x:hover{text-decoration-color:var(--doc)}
+  .also a:hover{border-color:rgba(var(--tint),.24);background:var(--bg-2);transform:translateY(-1px)}
+}
+.top__id:active{opacity:.6}
+.also a:active{transform:scale(.99)}
+.toc a:active,.top__nav a:active,footer nav a:active{color:var(--doc)}
+
+@media(prefers-reduced-transparency:reduce){
+  .top{backdrop-filter:none;background:rgba(var(--bg-rgb),.97)}
+  .toc,.also a{background:rgba(18,20,46,.98)}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important}
+}
+
+/* ── 인쇄 ── 법적 고지는 종이로도 나간다.
+   색이 빠져도 초안 표시와 [TBD]는 반드시 남아야 한다 ── */
+@media print{
+  body{background:#fff;color:#000}
+  body::before{display:none}
+  .top,.toc,.also,footer nav,.art__link{display:none}
+  main{padding-top:0}
+  .layout{display:block}
+  .prose,.doc__head{max-width:none}
+  .prose,.doc__lede,.meta dd,.banner p{color:#1a1a1a}
+  .prose strong,.chap,.art,.doc h1{color:#000}
+  .art__no,.chap .n,.eyebrow{color:#444}
+  .banner{border:2px solid #b45309;background:#fffbeb}
+  .banner b{color:#7c2d12}
+  .tbd{background:#fff;color:#000;border:1.5px solid #000;font-weight:700}
+  .ref,.x{color:#000;border:0;text-decoration:underline}
+  .art{break-after:avoid}
+}
+
+/* ── 앱 안 시트(embed) ── 앱이 `?embed=1`로 열면 제목 + 본문만 남긴다(FEV-389).
+   시트에는 이미 앱 헤더(문서 제목·닫기)가 있으니 이 페이지의 상단바·목차·바닥글은 **두 번째 크롬**이다.
+   색은 앱 표면(AppColor.bg — 라이트 #fff / 다크 #131313)에 맞춘다: 시트 안에서 페이지가 '다른 곳'으로
+   보이는 순간 '링크를 연' 느낌이 되돌아온다. 인쇄 규칙과 같은 발상이라 숨기는 목록도 비슷하다. ── */
+/* 페이지 기본이 종이라 시트도 그대로 라이트다 — 뒤집는 것은 아래 다크 분기다. */
+html.embed{scroll-behavior:auto}
+html.embed body::before{background:var(--bg)}
+html.embed .top,html.embed .also,html.embed footer,
+html.embed .eyebrow,html.embed .art__link{display:none}
+html.embed main{padding-top:0}
+html.embed .doc{padding-block:18px calc(40px + env(safe-area-inset-bottom,0px))}
+html.embed .doc h1{margin-top:0;font-size:1.55rem}
+html.embed .doc__lede{font-size:.95rem}
+html.embed .layout{display:block;margin-top:22px}
+html.embed .prose,html.embed .doc__head{max-width:none}
+html.embed [id]{scroll-margin-top:14px}
+
+/* ── embed 목차 ── 앱 시트에서도 조문으로 건너뛸 수 있어야 한다(FEV-366 후속).
+   처음 embed를 만들 때 `.toc`를 크롬으로 보고 함께 껐는데, 목차는 크롬이 아니라 **본문 탐색**이다.
+   처리방침 14조·약관 23조를 목차 없이 세로로만 훑게 두면 원하는 조항에 닿을 방법이 없다.
+   개인정보 처리방침 작성지침(개인정보보호위원회, 2025.4)도 「목차 + 하이퍼링크로 조항 이동」을
+   권장하고, 국내 주요 서비스 대부분이 앵커 목차를 둔다. ── */
+html.embed .toc{position:static;margin-bottom:22px;background:rgba(127,127,127,.06)}
+/* **시트에서는 항상 접힌 채로 시작한다.** 아래 JS의 넓은 화면 판정(900px)은 iPad 시트에서 참이
+   될 수 있는데, 그러면 목차가 펼쳐진 채로 본문 위를 덮는다 — 그쪽은 sticky 사이드바를 전제한
+   레이아웃이고 시트에는 그 가로 폭이 없다. */
+html.embed .toc>summary{display:flex}
+
+/* ── 조문 경계 ── 「한 줄로 쭉 나열돼 보인다」의 절반은 스크롤 길이가 아니라 **경계가 안 보이는**
+   것이다. 작성지침은 「중요 사항·제목은 본문보다 최소 20% 이상 크게」라는 드문 정량 기준을 주는데,
+   390pt 폰에서 본문 0.955rem 대비 조문 제목이 1.06rem — **+11%로 그 선 아래였다.**
+   `.art__no`(제N조)는 아예 본문보다 작았다. 넓은 화면은 vw 항이 커져 이미 기준을 넘으므로
+   embed에서만 올린다. ── */
+html.embed .art{font-size:1.16rem}          /* 본문 0.955rem 대비 +21% */
+html.embed .art__no{font-size:12.5px}
+/* 구분선 하나가 목차만큼 체감이 크다 — 지침의 「굵기·색상으로 구분」 대안에도 맞는다.
+   첫 조문에는 걸지 않는다(전문 바로 아래라 이미 경계가 있다). */
+html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px solid var(--line)}
+
+/* ── 앱 시트의 다크 ── 페이지 기본이 종이(라이트)라, **뒤집는 쪽이 다크다.**
+   예전에는 반대였다(기본 다크 + 라이트 분기) — 랜딩이 종이 바탕으로 가면서 방향이 바뀌었다.
+   값은 앱 표면을 따른다(`AppColor.bg` 다크 #131313). */
+@media(prefers-color-scheme:dark){
+  html.embed{--bg:#131313;--bg-rgb:19,19,19;--bg-2:#1d1d1d;--ink:#f5f5f5;--copy:#afafaf;--muted:#7e7e7e;
+    --tint:255,255,255;--line:rgba(255,255,255,.1);
+    /* 인디고 원색은 어두운 면에서 3.4:1로 모자라다 — 랜딩이 어두운 면용으로 잡아 둔 파랑을 쓴다 */
+    --accent:#4c8df6;--doc:#4c8df6;--doc-soft:rgba(76,141,246,.5);
+    --warn:#da9e2f;--warn-soft:rgba(245,158,11,.13);--warn-line:rgba(245,158,11,.34);--mark:#fde047}
+  html.embed ::selection{background:#4c8df6;color:#131313}
+  html.embed .banner svg path{stroke:#da9e2f}
+  html.embed .banner svg circle{fill:#da9e2f}
+}
+/* 日本語版: 仮名・漢字は単語の区切りがないため keep-all だと行が折り返せない */
+:root{--sans:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif}
+body{word-break:normal;line-break:strict}
+</style>
+</head>
+<body id="top">
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="top__id" href="index.html">
+      <img class="top__mark" src="assets/app-icon.png" width="28" height="28" alt="" decoding="async">
+      JAMIT
+    </a>
+    <nav class="top__nav" aria-label="法的情報">
+      <a href="terms.ja.html" aria-current="page">利用規約</a>
+      <a href="privacy.ja.html">プライバシー<span class="long">ポリシー</span></a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap doc">
+
+    <div class="doc__head">
+      <p class="eyebrow">JAMIT Legal</p>
+      <h1>利用規約</h1>
+      <p class="doc__lede">
+        本翻訳は便宜のために提供するものであり、韓国語版を正本とする。両者の内容に相違がある場合は、韓国語版が優先する。
+        <a class="x" href="terms.html">韓国語版（이용약관）</a>
+      </p>
+      <p class="doc__lede">
+        JAMITモバイルアプリケーションサービスの利用条件及び手続、並びに運営者と会員の権利・義務を定めた文書である。
+      </p>
+
+      <dl class="meta">
+        <dt>文書の状態</dt><dd>施行中</dd>
+        <dt>施行日</dt><dd><time datetime="2026-08-25">2026年8月25日</time></dd>
+        <dt>最終改定</dt><dd><time datetime="2026-10-20">2026年10月20日</time></dd>
+        <!-- 본문을 고치면 이 날짜도 같이 올린다 — 독자가 「바뀌었는가」를 판단하는 유일한 표지다. -->
+        <dt>関連文書</dt><dd><a class="x" href="privacy.ja.html">JAMIT プライバシーポリシー</a></dd>
+      </dl>
+
+    </div>
+
+    <div class="layout">
+
+      <!-- 목차 — 데스크톱에서는 옆에 붙어 따라오고, 좁은 화면에서는 접힌다 -->
+      <details class="toc" id="toc" open>
+        <summary>条文目次<span class="sr-only">を開く</span></summary>
+        <nav class="toc__list" aria-label="条文目次">
+          <ol>
+            <li class="toc__chap"><a href="#ch-1"><span class="n">第1章</span>総則</a>
+              <ol>
+                <li><a href="#art-1"><span class="n">第1条</span>目的</a></li>
+                <li><a href="#art-2"><span class="n">第2条</span>定義</a></li>
+                <li><a href="#art-3"><span class="n">第3条</span>規約の掲示及び改定</a></li>
+                <li><a href="#art-4"><span class="n">第4条</span>規約外の準則</a></li>
+              </ol>
+            </li>
+            <li class="toc__chap"><a href="#ch-2"><span class="n">第2章</span>利用契約とアカウント</a>
+              <ol>
+                <li><a href="#art-5"><span class="n">第5条</span>利用契約の締結</a></li>
+                <li><a href="#art-6"><span class="n">第6条</span>アカウント及び会員情報の管理</a></li>
+                <li><a href="#art-7"><span class="n">第7条</span>退会</a></li>
+              </ol>
+            </li>
+            <li class="toc__chap"><a href="#ch-3"><span class="n">第3章</span>本サービスの利用</a>
+              <ol>
+                <li><a href="#art-8"><span class="n">第8条</span>本サービスの内容</a></li>
+                <li><a href="#art-9"><span class="n">第9条</span>原曲の再生とYouTubeサービス</a></li>
+                <li><a href="#art-10"><span class="n">第10条</span>通知</a></li>
+                <li><a href="#art-11"><span class="n">第11条</span>本サービスの変更及び中断</a></li>
+              </ol>
+            </li>
+            <li class="toc__chap"><a href="#ch-4"><span class="n">第4章</span>コンテンツ</a>
+              <ol>
+                <li><a href="#art-12"><span class="n">第12条</span>コンテンツに関する権利と責任</a></li>
+                <li><a href="#art-13"><span class="n">第13条</span>コンテンツの利用許諾</a></li>
+                <li><a href="#art-14"><span class="n">第14条</span>セッションへの参加と肖像・音声・実演に関する同意</a></li>
+                <li><a href="#art-15"><span class="n">第15条</span>会員の義務及び禁止行為</a></li>
+                <li><a href="#art-16"><span class="n">第16条</span>不適切なコンテンツと悪質な利用者に対する不寛容の原則</a></li>
+                <li><a href="#art-17"><span class="n">第17条</span>権利侵害の報告及び掲載停止</a></li>
+                <li><a href="#art-18"><span class="n">第18条</span>利用者のブロック機能</a></li>
+                <li><a href="#art-19"><span class="n">第19条</span>利用制限</a></li>
+              </ol>
+            </li>
+            <li class="toc__chap"><a href="#ch-5"><span class="n">第5章</span>義務と責任</a>
+              <ol>
+                <li><a href="#art-20"><span class="n">第20条</span>運営者の義務</a></li>
+                <li><a href="#art-21"><span class="n">第21条</span>免責</a></li>
+                <li><a href="#art-22"><span class="n">第22条</span>損害賠償</a></li>
+              </ol>
+            </li>
+            <li class="toc__chap"><a href="#ch-6"><span class="n">第6章</span>雑則</a>
+              <ol>
+                <li><a href="#art-23"><span class="n">第23条</span>準拠法及び裁判管轄</a></li>
+              </ol>
+            </li>
+            <li class="toc__chap"><a href="#addendum"><span class="n">附則</span>施行日</a></li>
+          </ol>
+        </nav>
+      </details>
+
+      <article class="prose">
+
+        <h2 class="chap" id="ch-1"><span class="n">第1章</span>総則</h2>
+
+        <section id="art-1">
+          <h3 class="art"><span class="art__no">第1条</span>目的 <a class="art__link" href="#art-1" aria-label="第1条へのリンク">#</a></h3>
+          <p>
+            本規約は、김민재（以下「運営者」という。お問い合わせ：<a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a>）が
+            <!-- 소재지를 적지 않는다(2026-08-25). 주소·전화 표시 의무는 전자상거래법 제10조인데 그건
+                 통신판매업자(유료 거래) 대상이고, 이 서비스는 결제가 없어 해당하지 않는다. 개인정보
+                 보호법 제30조가 요구하는 것은 보호책임자 성명과 연락처이고 그건 처리방침 제12조에 있다.
+                 유료화하거나 사업자등록을 하는 날 이 줄과 처리방침 제3조 제8항(결제 기능 없음)을 함께 고칠 것.
+                 (2026-10-20 개정이 제3조에 항을 하나 더해 제7항 → 제8항이 됐다.) -->
+            提供するモバイルアプリケーションサービス「JAMIT」（以下「本サービス」という。）の利用に関し、運営者と会員との間の
+            権利、義務及び責任事項、本サービスの利用条件及び手続、その他必要な事項を定めることを目的とする。
+          </p>
+        </section>
+
+        <section id="art-2">
+          <h3 class="art"><span class="art__no">第2条</span>定義 <a class="art__link" href="#art-2" aria-label="第2条へのリンク">#</a></h3>
+          <p>本規約において使用する用語の意味は、次のとおりとする。</p>
+          <ol class="clauses">
+            <li><strong>「本サービス」</strong>とは、YouTubeに公開された原曲の特定の区間を基準として、会員がパート（楽器・ボーカル等）ごとの
+              演奏動画をアップロードしてセッションを完成させ、参加したトラックを組み合わせたItsを作成・保存・共有できるよう
+              運営者が提供するJAMITモバイルアプリケーション及び関連する一切のサービスをいう。</li>
+            <li><strong>「会員」</strong>とは、本規約に同意し、ソーシャルログインを通じて利用契約を締結して本サービスを利用する者をいう。</li>
+            <li><strong>「原曲」</strong>とは、セッションの基準となる、YouTubeに公開された音楽動画コンテンツをいう。
+              原曲は本サービスが保存・配信するものではなく、YouTubeを通じて再生される。</li>
+            <li><strong>「募集投稿」</strong>（又は「ジャム」）とは、会員が原曲の特定の区間及び募集するパートを指定して
+              セッションの参加者を募集する投稿をいう。</li>
+            <li><strong>「トラック」</strong>とは、会員が募集投稿に参加するために撮影・アップロードするパートごとの演奏動画（映像及び音声を含む。）をいう。</li>
+            <li><strong>「Its」</strong>とは、一つの募集投稿に集まったトラックを組み合わせてグリッド形式等で合成した短い動画をいい、
+              作成者はこれを端末に保存し、又は本サービスの外部に共有することができる。</li>
+            <li><strong>「チャット」</strong>とは、会員が他の会員と本サービス内でメッセージをやり取りする機能をいい、
+              2人の会員の間の会話及び複数の会員が参加するチャットルーム（スペースに付属するチャットルームを含む。）のいずれも含む。</li>
+            <li><strong>「メッセージ」</strong>とは、会員がチャットで送信するテキスト及びメッセージに添えて共有する
+              募集投稿・トラック・Itsをいう。
+              <!-- 「등」으로 열어 두었다가 셋을 적는다(2026-09-23 리뷰) — 처리방침 제2조가 셋을 적는데 이쪽만
+                   둘 + 「등」이라 좁았다. 공유 대상은 서버에서 셋으로 닫혀 있다(MessageType.SHARE_*). --></li>
+            <li><strong>「コンテンツ」</strong>とは、会員が本サービスに投稿・アップロードした募集投稿、トラック、Its、プロフィール、テキスト、
+              <strong>メッセージ</strong>等の一切の資料をいう。
+              <!-- 2026-10-20 4차 개정. **메시지를 「콘텐츠」에 넣는 것이 이 개정의 조용한 요점이다** — 제15조
+                   금지행위·제16조 불관용 원칙·제17조 권리침해 신고가 전부 「콘텐츠」를 대상으로 쓰여 있어,
+                   메시지가 그 정의 밖이면 채팅에서 벌어지는 일에 약관이 닿지 않는다.
+                   ⚠️ 반대로 **제13조 이용허락과 제14조 초상·실연 동의도 「콘텐츠」를 대상으로 한다** — 그쪽은
+                   공개 게시를 전제로 쓴 조항이라 메시지에 그대로 적용되면 안 된다. 그래서 제13조에 단서를 둔다. --></li>
+          </ol>
+        </section>
+
+        <section id="art-3">
+          <h3 class="art"><span class="art__no">第3条</span>規約の掲示及び改定 <a class="art__link" href="#art-3" aria-label="第3条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>運営者は、本規約の内容を会員が容易に確認できるよう、本サービス内の画面及び案内ページに掲示する。</li>
+            <li>運営者は、「約款の規制に関する法律」（약관의 규제에 관한 법률）、「情報通信網利用促進及び情報保護等に関する法律」（정보통신망 이용촉진 및 정보보호 등에 관한 법률）等の関係法令に
+              違反しない範囲で、本規約を改定することができる。</li>
+            <li>本規約を改定する場合は、適用日及び改定理由を明示して、適用日の7日前から（会員に不利な変更又は重大な変更の
+              場合は30日前から）本サービス内のお知らせ又はプッシュ通知等により告知する。</li>
+            <li>会員が改定後の規約の適用日以降も本サービスを継続して利用する場合は、改定後の規約に同意したものとみなす。
+              改定後の規約に同意しない会員は、<a class="ref" href="#art-7">第7条</a>に従い退会することができる。</li>
+          </ol>
+        </section>
+
+        <section id="art-4">
+          <h3 class="art"><span class="art__no">第4条</span>規約外の準則 <a class="art__link" href="#art-4" aria-label="第4条へのリンク">#</a></h3>
+          <p>
+            本規約に定めのない事項及び本規約の解釈については、関係法令及び一般的な商慣習に従う。
+            個人情報の取扱いに関する事項は、別途定める<a class="x" href="privacy.ja.html">「JAMIT プライバシーポリシー」</a>に従う。なお、本規約において法令名を掲げる場合、大韓民国の法令をいう。
+          </p>
+        </section>
+
+        <h2 class="chap" id="ch-2"><span class="n">第2章</span>利用契約とアカウント</h2>
+
+        <section id="art-5">
+          <h3 class="art"><span class="art__no">第5条</span>利用契約の締結 <a class="art__link" href="#art-5" aria-label="第5条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>利用契約は、本サービスを利用しようとする者がKakao、Google、Appleのアカウントによるソーシャルログインで登録を申し込んだ後、
+              本規約及びプライバシーポリシーにそれぞれ同意し、運営者がこれを承諾することにより成立する。
+              <!-- 2026-10-01 정정. 앱은 소셜 로그인을 먼저 하고 그 뒤에 동의 화면을 띄운다(iOS SessionManager → TermsAgreementView,
+                   Android TermsAgreementViewModel). 동의하지 않은 계정의 정보 처리는 개인정보 처리방침 제3조 제5항이 적는다. -->
+              <strong>本規約に同意しない限り、本サービスに登録することはできない。</strong></li>
+            <li>本サービスには、満14歳以上の者のみ登録することができる。運営者は、満14歳未満であることが確認されたアカウントについて、
+              利用契約を解除することができる。</li>
+            <li>本規約への同意には、<a class="ref" href="#art-16">第16条</a>の
+              <strong>不適切なコンテンツ及び悪質な利用者に対する不寛容（zero-tolerance）の原則</strong>への同意が含まれる。</li>
+            <li>運営者は、次の各号のいずれかに該当する申込みについて、承諾を拒否し、又は事後に利用契約を解除することができる。
+              <ol class="sub">
+                <li>過去に<a class="ref" href="#art-16">第16条</a>又は<a class="ref" href="#art-19">第19条</a>に基づき
+                  本サービスから排除された者が再度登録を申し込む場合</li>
+                <li>他人のソーシャルアカウントを盗用した場合</li>
+                <li>不正な目的又は方法により申し込んだ場合</li>
+              </ol>
+            </li>
+          </ol>
+        </section>
+
+        <section id="art-6">
+          <h3 class="art"><span class="art__no">第6条</span>アカウント及び会員情報の管理 <a class="art__link" href="#art-6" aria-label="第6条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>アカウントは会員本人のみが利用することができ、他人に譲渡・貸与することはできない。</li>
+            <li>会員は、自己のソーシャルアカウント及び端末の管理について責任を負い、第三者による無断使用を知った場合は、直ちに運営者に
+              通知しなければならない。会員の管理不十分により生じた不利益について、運営者は故意又は過失がない限り責任を負わない。</li>
+            <li>会員は、プロフィール等の会員情報に変更があった場合、本サービス内でこれを修正しなければならない。</li>
+          </ol>
+        </section>
+
+        <section id="art-7">
+          <h3 class="art"><span class="art__no">第7条</span>退会 <a class="art__link" href="#art-7" aria-label="第7条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>会員は、いつでもアプリ内の退会機能により利用契約を解除（退会）することができる。</li>
+            <li>退会時、運営者はログインセッション及びプッシュトークンを無効化し、ソーシャルログイン連携（Kakao・Google・Apple）の解除も
+              あわせて処理する。Appleアカウントは連携解除が完了しなければ退会が処理されず、Kakao・Googleアカウントは、連携解除の
+              要求が失敗し、又はアプリの環境において解除がサポートされていない場合であっても、運営者が保管していた連携情報が破棄される。
+              会員は各プラットフォームのアカウント設定から直接連携を解除することができ、詳細な取扱いは
+              <a class="x" href="privacy.ja.html#art-7">プライバシーポリシー第7条</a>に従う。
+              <!-- 2026-10-01 정정. Apple revoke 실패는 탈퇴 자체를 막고(UserWithdrawalService), Android 의 구글은 revoke 가
+                   아니라 기기 자격 증명 정리뿐이다 — 「실패해도 파기」를 셋 모두에 걸던 문장이 Apple 에는 맞지 않았다. --></li>
+            <li>退会した会員の個人情報は、<a class="x" href="privacy.ja.html">「JAMIT プライバシーポリシー」</a>に定めるところにより破棄される。
+              <strong>退会すると、会員が送信したメッセージは相手方の画面に表示されなくなり</strong>、複数人が参加した
+              チャットルームに残っている者が誰もいなくなった場合、そのルームのメッセージは他の会員が書いたものも含め、同じ手続に
+              従う。保管期間は、<a class="x" href="privacy.ja.html#art-3">プライバシーポリシー第3条</a>に従う。
+              <!-- 2026-10-20 추가. 메시지를 제2조의 「콘텐츠」에 넣으면서 탈퇴 축에서만 빠졌다 — 상대 화면에서
+                   대화가 사라지는데 그 사실이 약관에도 처리방침에도 없었다(2026-09-23 리뷰).
+                   🚨 **새 항으로 두지 않고 이 항에 붙인 것은 번호 때문이다.** 제7조의 항 번호는 제13조 제4항·
+                   제14조 제4항·제19조 제4항이 가리키고, **다른 저장소 둘**도 주석에서 「약관 제7조 4항」을
+                   가리킨다(iOS `WithdrawalConfirmView`, Android `WithdrawalSheet`). 여기 항을 하나 끼우면 그
+                   다섯이 조용히 어긋난다 — 앵커는 `#art-7` 하나라 링크는 안 깨지고 눈으로도 안 잡힌다.
+                   ⚠️ 이 조에 항을 더해야 하는 날에는 그 다섯을 함께 고칠 것. --></li>
+            <li><strong>退会した会員がアップロードしたコンテンツ（トラック・募集投稿・Its）の取扱いは、次のとおりとする。</strong>
+              <ol class="sub">
+                <li>会員がアップロードしたトラック（オリジナル・補正版・サムネイル）は、退会とともに本サービス上で表示されなくなり、
+                  <a class="x" href="privacy.ja.html#art-3">プライバシーポリシー第3条</a>に定める期間の経過後に
+                  破棄される。</li>
+                <li>会員が作成したItsは、公開の有無にかかわらず、同様の方法で取り扱われる。他の会員が作成したItsは、
+                  会員のトラックが含まれている場合であっても維持される（<a class="ref" href="#art-14">第14条第4項</a>）。</li>
+                <li>会員が作成した募集投稿は、他の会員のトラック又はItsが残っている場合、作成者を「不明」と
+                  表示したまま維持され、この場合、会員がアップロードした参考動画は募集投稿から切り離され、第1号と同様の方法で取り扱われる。
+                  他の会員のコンテンツがない募集投稿は、第1号と同様の方法で取り扱われる。</li>
+              </ol>
+            </li>
+            <li>本サービスの外部（SNS等）に既に共有・保存されたItsは、運営者の管理の範囲外であるため、運営者はその回収・削除を
+              保証することができない。</li>
+            <li><strong>退会後30日間は、同一のソーシャルアカウントで再登録することはできない。</strong>
+              <a class="ref" href="#art-19">第19条</a>に基づく利用停止中に退会した場合は、当該利用停止期間が終了するまで（最長1年）
+              再登録することはできない。このために運営者が保管する情報及び期間は、
+              <a class="x" href="privacy.ja.html#art-3">「JAMIT プライバシーポリシー」第3条</a>に従う。
+              <!-- 탈퇴가 신고·이용정지의 탈출구가 되지 않게 한다(FEV-391). 기간은 백엔드의
+                   쿨다운(30일)·이월 상한(1년) 설정과 같아야 한다. --></li>
+          </ol>
+        </section>
+
+        <h2 class="chap" id="ch-3"><span class="n">第3章</span>本サービスの利用</h2>
+
+        <section id="art-8">
+          <h3 class="art"><span class="art__no">第8条</span>本サービスの内容 <a class="art__link" href="#art-8" aria-label="第8条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>運営者は、次のサービスを提供する。
+              <ol class="sub">
+                <li>原曲の区間に基づくセッションの募集投稿の作成・探索・参加</li>
+                <li>パートごとのトラック動画の撮影・アップロード（端末のカメラ・マイクを利用）及び自動同期補正</li>
+                <li>参加トラックを組み合わせたItsの合成・再生・端末への保存・外部への共有</li>
+                <li><strong>会員間のチャット</strong> — メッセージの送達・保管、既読状態の表示、チャットルームの参加者の管理</li>
+                <li>プロフィール、通知、報告・ブロック等の付加機能</li>
+              </ol>
+            </li>
+            <li>本サービスは無料で提供される。有料サービスを導入する場合は、別途告知し、同意を得る。</li>
+            <li>本サービスは年中無休での提供を原則とするが、点検等の運営上の必要により一時的に中断されることがある。</li>
+          </ol>
+        </section>
+
+        <section id="art-9">
+          <h3 class="art"><span class="art__no">第9条</span>原曲の再生とYouTubeサービス <a class="art__link" href="#art-9" aria-label="第9条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>原曲はYouTubeが提供するプレーヤーを通じて再生され、その利用には
+              <a class="x" href="https://www.youtube.com/t/terms">YouTubeの利用規約</a>が適用される。会員は、本サービスを利用することにより、
+              YouTubeの利用規約に同意したものとする。YouTubeの利用過程における個人情報の取扱いは、
+              <a class="x" href="privacy.ja.html#art-10">プライバシーポリシー第10条</a>に従う。
+              <!-- 2026-10-01 정정. YouTube API 서비스 개발자 정책 III.A.1 은 API 클라이언트의 약관에 YouTube 서비스 약관 링크와
+                   「이용함으로써 그 약관에 구속된다」는 문장을 요구한다. --></li>
+            <li>運営者は原曲の権利者ではなく、原曲が削除され、非公開とされ、又は埋め込みが制限される等のYouTube側の事情により、
+              関連する募集投稿・機能の利用が制限されることがある。この場合、運営者は故意又は過失がない限り責任を負わない。</li>
+          </ol>
+        </section>
+
+        <section id="art-10">
+          <h3 class="art"><span class="art__no">第10条</span>通知 <a class="art__link" href="#art-10" aria-label="第10条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>運営者は、セッションへの参加、Itsの公開、<strong>チャットメッセージの受信</strong>等、本サービスの利用に必要な通知を
+              アプリのプッシュ通知により送信することができる。チャットの通知には、送信した会員のニックネーム及びメッセージ内容の冒頭部分が表示されることがある。</li>
+            <li>会員は、端末の設定又は本サービス内の設定により、プッシュ通知の受信を拒否することができる。ただし、本サービスの運営に関する
+              重要なお知らせは、プッシュ通知以外の方法によっても案内されることがある。</li>
+          </ol>
+        </section>
+
+        <section id="art-11">
+          <h3 class="art"><span class="art__no">第11条</span>本サービスの変更及び中断 <a class="art__link" href="#art-11" aria-label="第11条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>運営者は、運営上・技術上の必要に応じて本サービスの全部又は一部を変更することができ、重要な変更は事前に
+              本サービス内で告知する。</li>
+            <li>運営者は、次の場合、本サービスの提供を一時的に中断することができる。
+              <ol class="sub">
+                <li>システムの点検・保守・交換</li>
+                <li>停電、設備の障害、アクセスの集中、電気通信事業者又はクラウド事業者のサービスの中断</li>
+                <li>天災地変、国家非常事態等の不可抗力</li>
+              </ol>
+            </li>
+            <li>運営者が本サービスの提供を終局的に中止（サービス終了）しようとする場合は、終了日の30日前までに本サービス内のお知らせ等により
+              告知する。この場合、会員は、終了日までに自己のItsを端末に保存する等の方法によりコンテンツをバックアップすることができる。</li>
+            <li>無料で提供される本サービスの変更・中断により生じた損害について、運営者は故意又は重大な過失がない限り
+              責任を負わない。</li>
+          </ol>
+        </section>
+
+        <h2 class="chap" id="ch-4"><span class="n">第4章</span>コンテンツ</h2>
+
+        <section id="art-12">
+          <h3 class="art"><span class="art__no">第12条</span>コンテンツに関する権利と責任 <a class="art__link" href="#art-12" aria-label="第12条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>会員が本サービスに投稿したコンテンツに関する著作権等の知的財産権は、当該会員又は正当な権利者に帰属する。</li>
+            <li><strong>カバー演奏・カバーボーカル等、他人の著作物（原曲を含む。）を利用したコンテンツをアップロードする場合、それに必要な
+              著作権・著作隣接権等の権利の確認及び処理についての責任は、当該コンテンツをアップロードした会員が負う。</strong>
+              会員は、自己がアップロードするコンテンツが他人の著作権、商標権、肖像権、名誉等の権利を侵害しないことを保証する。</li>
+            <li>会員のコンテンツにより権利者との紛争が生じ、又は運営者が損害（損害賠償、紛争対応費用等）を被った場合、
+              その責任は当該コンテンツをアップロードした会員が負担する。</li>
+            <li>運営者は、会員のコンテンツが<a class="ref" href="#art-15">第15条</a>の禁止行為に該当し、又は関係法令に
+              違反すると判断した場合、事前の通知なく削除・非表示等の措置を講じることができる。
+              <strong>ただし、メッセージについては、<a class="ref" href="#art-16">第16条</a>に基づき報告を受け付けた
+              場合に限り</strong>、本項の措置を講じる。
+              <!-- 2026-10-20 신설. 제2조에서 메시지를 「콘텐츠」에 넣었기 때문에 이 단서가 **반드시** 필요하다 —
+                   그대로 두면 신고 없이도 사적 대화를 판단해 지울 수 있다는 뜻이 된다. 실제로는 전송 경로 어디에도
+                   본문을 보는 코드가 없다(MessageService.send — 관문은 참여·차단·공유 대상 접근 범위뿐이고,
+                   입력 검증은 1000자 상한과 NUL 거절이라는 형식 검사다). 2026-09-23 리뷰가 잡았다. --></li>
+          </ol>
+        </section>
+
+        <section id="art-13">
+          <h3 class="art"><span class="art__no">第13条</span>コンテンツの利用許諾 <a class="art__link" href="#art-13" aria-label="第13条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>会員は、自己が投稿したコンテンツについて、運営者に対し、本サービスの提供・運営・改善のために必要な範囲でこれを
+              保存・複製・エンコード・合成（トラックの同期補正及びItsのグリッド合成を含む。）・表示・送信し、並びに本サービスの品質及び
+              使いやすさの改善のために運営者の内部で閲覧・分析することができる非独占的な利用権を許諾する。内部での閲覧・分析の
+              目的及び範囲は、<a class="x" href="privacy.ja.html#art-1">プライバシーポリシー第1条</a>に従う。</li>
+            <li><strong>第1項の利用権には、本サービスの宣伝を目的とする利用は含まれない。</strong>運営者が会員の
+              コンテンツを本サービスの宣伝目的（広告、外部チャンネルへの掲載、アプリストアの紹介資料等）で利用しようとする場合は、事前に当該
+              会員の同意を得るものとし、セッションのItsのように複数の会員のコンテンツがともに含まれる場合は、各会員の同意を得る。
+              <!-- 기본 포함이 아니라 별도 동의로 확정(2026-08-20). 합주 영상 하나에 여러 사람의 초상·음성·실연이
+                   들어가는 구조라(제14조), 기본 포함으로 하면 게시자만 동의하고 함께 찍힌 참여자는 동의하지 않은
+                   상태가 된다. 홍보에 쓸 만한 영상일수록 사람이 여럿 나오므로 그 위험이 가장 큰 자리다. --></li>
+            <li><strong>メッセージには、第1項の利用権は適用されない。</strong>運営者は、チャットのメッセージを送達・保管し、
+              <a class="ref" href="#art-16">第16条</a>に基づき報告を受け付けた場合に<strong>報告されたメッセージと同じチャットルームで
+              その前後にやり取りされたメッセージ（人が書いたものについて前後それぞれ5件まで。削除されたメッセージを含む。）</strong>を確認する
+              範囲でのみ取り扱い、本サービスの品質・使いやすさの改善のための内部での閲覧・分析の対象とはしない。
+              <!-- 2026-10-20 4차 개정. 제2조에서 메시지를 「콘텐츠」에 넣었기 때문에 이 단서가 **반드시** 필요하다 —
+                   그대로 두면 제1항의 「전시·전송」과 「내부 열람·분석」이 사적 대화에까지 걸린다. 제14조(초상·실연
+                   동의)는 「게시」를 전제로 쓰여 있어 메시지에 자연히 닿지 않지만, 이 조는 「게시한 콘텐츠」라
+                   문언만으로는 갈리지 않는다. --></li>
+            <li>第1項の利用権は、会員が当該コンテンツを削除し、又は退会したときに終了する。ただし、
+              <a class="ref" href="#art-7">第7条第4項</a>の退会時のコンテンツの取扱方針及び既に合成されたItsについては、
+              当該条項が優先し、削除・退会したコンテンツを報告の審査のために一定期間保管する範囲においては、
+              <a class="x" href="privacy.ja.html#art-3">プライバシーポリシー第3条</a>が優先する。</li>
+          </ol>
+        </section>
+
+        <section id="art-14">
+          <h3 class="art"><span class="art__no">第14条</span>セッションへの参加と肖像・音声・実演に関する同意 <a class="art__link" href="#art-14" aria-label="第14条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>トラックには、会員の顔・身体・音声及び演奏の実演が含まれることがある。</li>
+            <li><strong>会員が募集投稿にトラックをアップロードしてセッションに参加することは、次の各号に同意したものとみなす。</strong>
+              <ol class="sub">
+                <li>当該トラックが本サービス内で他の利用者に表示・再生されること</li>
+                <li>同じ募集投稿に参加した他の会員がItsを作成する際に、<strong>会員のトラック（会員の肖像・音声・実演を含む。）を
+                  組合せに含める</strong>こと</li>
+                <li>そのように作成されたItsを、作成者が自己の端末に保存し、又は本サービスの外部（SNS等）に共有すること</li>
+              </ol>
+            </li>
+            <li>Itsの作成者は、<strong>自己がアップロードしたトラックを少なくとも1つ含め</strong>なければならず、他人のトラックのみでItsを
+              作成することはできない。</li>
+            <li>会員は、トラックを削除することにより、将来のItsの作成に対する同意を撤回することができる。ただし、削除以前に既に
+              作成されて端末に保存され、又は本サービスの外部に共有されたItsには及ばないことがある。
+              <strong>会員が退会した場合であっても、他の会員が作成したItsに含まれる会員のトラックは当該Itsとともに維持され、
+              会員はセッションへの参加時にこれに同意する。</strong>会員本人が作成したItsは、
+              <a class="ref" href="#art-7">第7条第4項第2号</a>に従って取り扱われる。</li>
+          </ol>
+        </section>
+
+        <section id="art-15">
+          <h3 class="art"><span class="art__no">第15条</span>会員の義務及び禁止行為 <a class="art__link" href="#art-15" aria-label="第15条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>会員は、関係法令、本規約及び本サービス内の案内事項を遵守しなければならない。</li>
+            <li>会員は、次の各号の行為をしてはならない。
+              <ol class="sub">
+                <li>わいせつ物、性的対象化するコンテンツ、児童・青少年を対象とする一切の性的コンテンツの投稿</li>
+                <li>暴力的・残虐なコンテンツ、自傷・自殺を助長するコンテンツの投稿</li>
+                <li>特定の個人・集団に対する嫌悪、差別、侮辱、嫌がらせ、脅迫、ストーカー行為</li>
+                <li>他人の著作権・肖像権・個人情報等の権利を侵害するコンテンツの投稿（同意のない他人の撮影物を含む。）</li>
+                <li>他人へのなりすまし、虚偽の事実の流布</li>
+                <li>広告・スパム、繰り返しの投稿、本サービスの目的と無関係なコンテンツの大量投稿</li>
+                <li>本サービスのソースコード・サーバー・APIへの不正アクセス、リバースエンジニアリング、自動化された手段を用いた不正利用</li>
+                <li><strong>チャットにおいて相手が望まないメッセージを繰り返し送信</strong>し、チャットルームに広告・スパムを
+                  送信し、又は会話の内容を相手の同意なく外部に公開する行為</li>
+                <li>報告機能の悪用（虚偽の報告・繰り返しの報告）</li>
+                <li>その他関係法令に違反し、又は公序良俗に反する行為</li>
+              </ol>
+            </li>
+          </ol>
+        </section>
+
+        <section id="art-16">
+          <h3 class="art"><span class="art__no">第16条</span>不適切なコンテンツと悪質な利用者に対する不寛容の原則 <a class="art__link" href="#art-16" aria-label="第16条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li><strong>運営者は、不適切なコンテンツ（objectionable content）及び悪質な（abusive）利用者に対して、
+              不寛容（zero-tolerance）の原則を適用する。</strong></li>
+            <li>会員は、本サービス内の報告機能により、募集投稿、トラック、Its、<strong>メッセージ</strong>又は利用者を報告することが
+              できる。会員は、<a class="ref" href="#art-18">第18条</a>のブロック機能により特定の会員との<strong>1対1の
+              チャットをブロック</strong>することができ、複数人が参加するチャットルームでは、ブロックした会員と同じルームにとどまるが、
+              <strong>互いのメッセージが非表示となる</strong>。
+              <!-- 2026-10-20 정정. 초안은 「특정 회원과의 채팅을 차단할 수 있습니다」였는데, 제2조에서 「채팅」에
+                   단체·스페이스 방을 포함시켰으므로 그 낱말로 쓰면 단체방에 대해 거짓이다 — 차단 판정은 1:1에만
+                   있다(ChattingGate: DIRECT가 아니면 차단 검사를 건너뛴다). 방을 통째로 닫으면 차단 한 번이
+                   남은 사람들의 대화에서 그 사람을 지우는 셈이 되어 그렇게 두지 않았다. 2026-09-23 리뷰. --></li>
+            <li><strong>運営者は、報告を受け付けた時から24時間以内に当該コンテンツを確認し、不適切なコンテンツであることが確認された場合は
+              これを削除又は非表示とし、当該コンテンツを投稿した利用者を本サービスから排除（利用停止又は永久利用停止）する。</strong>
+              最初の確認以降の審査は、受付日から<strong>7営業日</strong>以内に終える。
+              <!-- 2026-09-01 추가. 24시간은 「확인·1차 조치」이고 영업일 7일은 「검토 종료」다 — 처리방침 제3조가
+                   삭제된 콘텐츠를 30일 보관하는 근거가 이 검토이므로, 검토 기간에 상한이 없으면 그 보관도 상한이
+                   없어진다(privacy.html 제8조 제2항이 이 조를 가리킨다). -->
+              </li>
+            <li>運営者は、不適切なコンテンツが投稿されることを防止するための事前・事後のフィルタリング措置を運用することができる。
+              <strong>メッセージは本項の対象ではない</strong> — 運営者は、会員同士でやり取りされる会話の内容を、
+              報告なく閲覧しない（<a class="ref" href="#art-13">第13条</a>第3項）。</li>
+            <li>本条に基づく措置に異議のある会員は、<a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a>を通じて
+              異議を申し立てることができ、運営者は確認の上、正当な理由がある場合は措置を解除する。</li>
+          </ol>
+        </section>
+
+        <section id="art-17">
+          <h3 class="art"><span class="art__no">第17条</span>権利侵害の報告及び掲載停止 <a class="art__link" href="#art-17" aria-label="第17条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>自己の著作権、肖像権等の権利が会員のコンテンツにより侵害されていると主張する者（以下「権利主張者」という。）は、
+              その事実を疎明して、運営者に対し当該コンテンツの削除又は掲載停止を求めることができる。</li>
+            <li>運営者は、第1項の求めを受けた場合、「著作権法」（저작권법）第103条等の関係法令が定める手続に従い、<strong>遅滞なく当該
+              コンテンツを削除し、又はアクセスを遮断</strong>し、その旨をコンテンツの投稿者及び権利主張者に通知する。</li>
+            <li>コンテンツの投稿者は、自己に正当な権利があることを疎明して掲載の再開を求めることができ、運営者は関係法令が
+              定める手続に従って処理する。</li>
+            <li>権利侵害の報告窓口：本サービス内の報告機能又は<a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a></li>
+          </ol>
+        </section>
+
+        <section id="art-18">
+          <h3 class="art"><span class="art__no">第18条</span>利用者のブロック機能 <a class="art__link" href="#art-18" aria-label="第18条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>会員は他の利用者をブロックすることができ、ブロックした利用者のコンテンツは、会員のフィード、検索、通知等に表示されない。
+              <strong>チャットにおいては当該利用者との1対1のチャットが閉じられ、複数人が参加するチャットルームにおいては同じルームに
+              とどまるが、互いのメッセージが非表示となる。</strong>ただし、演奏パート別のランキングには、ブロックの有無にかかわらず順位が表示される。
+              <!-- 2026-10-01 추가. 랭킹은 차단 관계를 거르지 않는다(SessionRankingController 문서의 「목록 규약의 예외」).
+                   랭킹에도 차단 필터를 들이는 날 이 단서를 지우고 개인정보 처리방침 제4조 제4항도 함께 고칠 것. -->
+              <!-- 2026-10-20 추가. 제16조 제2항이 「제18조의 차단 기능으로 1:1 대화를 차단할 수 있다」고 가리키는데
+                   이 조가 채팅을 한 글자도 말하지 않아 근거가 비어 있었다(2026-09-23 리뷰). 항을 새로 두지 않고
+                   제1항을 넓힌 것은 제7조와 같은 이유다 — 번호가 밀리면 가리키는 자리들이 조용히 어긋난다. --></li>
+            <li>ブロックは相手方に別途通知されず、会員はいつでもブロックを解除することができる。</li>
+          </ol>
+        </section>
+
+        <section id="art-19">
+          <h3 class="art"><span class="art__no">第19条</span>利用制限 <a class="art__link" href="#art-19" aria-label="第19条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>運営者は、会員が本規約に違反し、又は本サービスの正常な運営を妨害した場合、違反の程度に応じて、警告、
+              コンテンツの削除、機能の制限、一時利用停止、永久利用停止等の措置を段階的に又は直ちに講じることができる。
+              <a class="ref" href="#art-16">第16条</a>に該当する違反については、段階を経ずに直ちに永久利用停止とすることができる。</li>
+            <li>運営者は、利用制限の措置を講じる場合、その理由及び内容を会員に通知する。ただし、緊急の措置が必要な場合は、
+              措置後に通知することができる。</li>
+            <li>会員は、利用制限の措置に対して異議を申し立てることができ、異議が正当であると認められる場合、運営者は直ちに
+              措置を解除する。</li>
+            <li>利用停止中は本サービスにログインすることができず、ログインを試みた際に利用停止の理由及び解除日が案内される。
+              <strong>利用停止中に退会した場合であっても利用停止期間は維持され</strong>、その期間中（最長1年）は同一のソーシャルアカウントで
+              再登録することはできない（<a class="ref" href="#art-7">第7条第6項</a>）。</li>
+          </ol>
+        </section>
+
+        <h2 class="chap" id="ch-5"><span class="n">第5章</span>義務と責任</h2>
+
+        <section id="art-20">
+          <h3 class="art"><span class="art__no">第20条</span>運営者の義務 <a class="art__link" href="#art-20" aria-label="第20条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>運営者は、関係法令及び本規約が禁止する行為を行わず、継続的かつ安定的な本サービスの提供のために
+              努める。</li>
+            <li>運営者は、個人情報保護のために<a class="x" href="privacy.ja.html">「JAMIT プライバシーポリシー」</a>を
+              策定・公開し、これを遵守する。</li>
+            <li>運営者は、会員の意見又は苦情が正当であると認める場合は、これを処理し、その経過を会員に案内する。</li>
+          </ol>
+        </section>
+
+        <section id="art-21">
+          <h3 class="art"><span class="art__no">第21条</span>免責 <a class="art__link" href="#art-21" aria-label="第21条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>運営者は、天災地変、不可抗力、会員の責めに帰すべき事由による本サービスの利用障害について責任を負わない。</li>
+            <li>運営者は、会員が投稿したコンテンツの信頼性・正確性・適法性について保証せず、会員相互間又は会員と
+              第三者との間でコンテンツを媒介として生じた紛争に介入する義務を負わない。ただし、
+              <a class="ref" href="#art-16">第16条</a>・<a class="ref" href="#art-17">第17条</a>に基づく措置義務は、
+              これとは関係なく履行する。</li>
+            <li>運営者は、無料で提供される本サービスに関して会員に生じた損害について、故意又は重大な過失がない限り
+              責任を負わない。</li>
+          </ol>
+        </section>
+
+        <section id="art-22">
+          <h3 class="art"><span class="art__no">第22条</span>損害賠償 <a class="art__link" href="#art-22" aria-label="第22条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>運営者又は会員が本規約に違反して相手方に損害を与えた場合、その損害を賠償する責任を負う。</li>
+            <li>会員が本規約に違反したことにより第三者が運営者に対して異議の申立て又は訴訟の提起をした場合、当該会員は自己の費用と
+              責任において運営者を免責させなければならず、運営者に生じた損害を賠償しなければならない。</li>
+          </ol>
+        </section>
+
+        <h2 class="chap" id="ch-6"><span class="n">第6章</span>雑則</h2>
+
+        <section id="art-23">
+          <h3 class="art"><span class="art__no">第23条</span>準拠法及び裁判管轄 <a class="art__link" href="#art-23" aria-label="第23条へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>本規約及び本サービスの利用に関する事項は、大韓民国の法令に従って解釈・適用される。</li>
+            <li>本サービスの利用に関して運営者と会員との間に紛争が生じた場合は、相互に協議して解決するよう努め、
+              協議が調わない場合は、「民事訴訟法」（민사소송법）に基づく管轄裁判所に訴えを提起することができる。</li>
+          </ol>
+        </section>
+
+        <section id="addendum">
+          <h3 class="art"><span class="art__no">附則</span>施行日 <a class="art__link" href="#addendum" aria-label="附則へのリンク">#</a></h3>
+          <ol class="clauses">
+            <li>本規約は、2026年8月25日から施行する。</li>
+            <li>2026年10月20日改定 — 会員同士でメッセージをやり取りする<strong>チャット</strong>機能を反映した。
+              <a class="x" href="#art-2">第2条</a>にチャット・メッセージの定義を加えて「コンテンツ」の定義にメッセージを含め、
+              <a class="x" href="#art-8">第8条</a>の本サービスの内容及び<a class="x" href="#art-10">第10条</a>の通知にチャットを
+              加え、<a class="x" href="#art-15">第15条</a>にチャットにおける禁止行為を、
+              <a class="x" href="#art-16">第16条</a>の報告の対象にメッセージを加えた。
+              アプリ画面の名称に合わせて、「投稿」（게시글）を「募集投稿」（모집글）と呼び改めた。指す対象は同じである。
+              <strong>メッセージには<a class="x" href="#art-13">第13条</a>第1項の利用権は適用されない</strong>
+              — 運営者は、メッセージを送達・保管し、報告されたメッセージを確認する範囲でのみ取り扱い、本サービスの改善のための
+              内部での閲覧・分析の対象とはしない（第13条第3項新設）。
+              <strong>あわせて訂正したもの</strong> — <a class="x" href="#art-7">第7条</a>第2項のソーシャルログインの連携解除に関する
+              文言を実際の取扱いに合わせ（Appleアカウントは連携解除が完了しなければ退会が処理されない）、
+              <a class="x" href="#art-18">第18条</a>第1項に、演奏パート別のランキングにはブロックの有無にかかわらず順位が表示される
+              ことを記載し、<a class="x" href="#art-5">第5条</a>第1項の登録の順序をアプリの実際の順序（ソーシャルログインの後に同意）に合わせ、
+              <a class="x" href="#art-9">第9条</a>第1項にYouTubeの利用規約へのリンクと、本サービスを利用することによりその規約に同意することとなる旨の文言を加えた。取扱いの内容が変わったのではなく、記載が事実と異なっていたもの又は漏れていたものである。
+              本改定は、2026年9月18日から事前に告知しており、
+              2026年10月20日から施行する。同日、
+              <a class="x" href="privacy.ja.html">プライバシーポリシー</a>も改定される。ただし、それ以前にアプリで改定後の本規約に同意した会員には、同意した時から適用する。
+              <!-- 2026-10-01 추가. 2.0.0 은 강제 업데이트와 함께 재동의(PRIVACY_VERSION·TERMS_VERSION = 2026-10-20)를 받으며
+                   나간다. 출시가 시행일보다 빠르면 개정본에 직접 동의한 회원에게는 그때부터 적용한다 — 30일 고지는 「동의 없이
+                   바뀐 조건이 적용되는 것」을 막는 장치라 명시적 동의가 있으면 그보다 강하다. 출시 당일 순서: 이 문서 머지 →
+                   버전값 변경 → 강제 업데이트(머지 전에 버전을 올리면 옛 문서에 동의받는다). -->
+              <!-- 메시지를 「콘텐츠」에 넣으면 제15·16·17조가 채팅에 닿고, 동시에 제13조 이용허락도 닿는다.
+                   전자는 필요하고 후자는 안 된다 — 그래서 제13조에 단서를 신설했다. 둘 중 하나만 하면
+                   「사적 대화를 운영자가 분석할 수 있다」거나 「채팅에서 벌어지는 일에 약관이 닿지 않는다」가 된다. --></li>
+          </ol>
+        </section>
+
+        <nav class="also" aria-label="関連文書">
+          <p class="eyebrow">関連文書</p>
+          <div class="also__list">
+            <a href="privacy.ja.html">
+              <b>プライバシーポリシー</b>
+              <span>収集項目、保有期間、委託及び国外移転、権利の行使方法</span>
+            </a>
+            <a href="index.html">
+              <b>JAMITの紹介に戻る</b>
+              <span>ひとりで撮ってアップロードすれば、セッションが完成します</span>
+            </a>
+          </div>
+        </nav>
+
+      </article>
+    </div>
+
+    <footer>
+      <p>&copy; 2026 JamIT</p>
+      <nav aria-label="フッター">
+        <a href="index.html">ホーム</a>
+        <a href="terms.ja.html" aria-current="page">利用規約</a>
+        <a href="privacy.ja.html">プライバシーポリシー</a>
+        <a href="#top">ページの先頭へ</a>
+      </nav>
+    </footer>
+
+  </div>
+</main>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// 목차 — 지금 읽고 있는 조문을 따라간다
+// ══════════════════════════════════════════════════════════
+(() => {
+  const toc = document.getElementById("toc");
+  const cs  = getComputedStyle(document.documentElement);
+  // 고정 머리 높이는 CSS가 진실이다. 여기서 숫자를 다시 적으면 둘이 어긋난다
+  const off = parseFloat(cs.getPropertyValue("--topbar")) + parseFloat(cs.getPropertyValue("--strip"));
+
+  // 좁은 화면에서는 목차가 접혀 있어야 한다. JS가 없으면 펼쳐진 채로 두는 편이 안전해서
+  // 마크업은 open으로 두고, 접는 일만 여기서 한다
+  const wide = matchMedia("(min-width:900px)");
+  // embed(앱 시트)는 폭이 넓어도 사이드바 레이아웃이 아니다 — 늘 접어 둔다.
+  const inSheet = document.documentElement.classList.contains("embed");
+  const sync = () => { toc.open = wide.matches && !inSheet; };
+  sync();
+  wide.addEventListener("change", sync);
+  toc.querySelectorAll("a").forEach((a) => {
+    a.addEventListener("click", () => { if (!wide.matches) toc.open = false; });
+  });
+
+  // **시트에서는 목차 점프가 히스토리를 늘리면 안 된다.** 앵커 링크는 WKWebView의 back-forward
+  // list에 항목을 쌓는데, 시트는 뒤로 스와이프와 「뒤로」 버튼이 `canGoBack`을 읽는다 — 목차를
+  // 몇 번 누르면 그 둘이 **문서가 아니라 스크롤 위치**로 되돌아가고, 사용자에게는 「뒤로가 안
+  // 먹는」 화면이 된다. `replaceState`라 주소는 남고 히스토리는 그대로다.
+  // 웹(비-embed)은 손대지 않는다 — 브라우저 뒤로가기가 앵커를 되짚는 건 정상 동작이다.
+  if (document.documentElement.classList.contains("embed")) {
+    toc.addEventListener("click", (e) => {
+      const a = e.target.closest("a[href^='#']");
+      if (!a) return;
+      e.preventDefault();
+      const href = a.getAttribute("href");
+      document.getElementById(href.slice(1))?.scrollIntoView({ block: "start" });
+      history.replaceState(null, "", href);
+      toc.open = false;
+    });
+  }
+
+  const heads = [...document.querySelectorAll(".prose h2.chap[id], .prose section[id]")];
+  const links = new Map();
+  toc.querySelectorAll("a[href^='#']").forEach((a) => links.set(a.getAttribute("href").slice(1), a));
+  const panel = toc.querySelector(".toc__list");
+
+  let cur = null, ticking = false;
+  function spy(){
+    ticking = false;
+    document.body.classList.toggle("scrolled", scrollY > 8);
+
+    let hit = null;
+    for (const h of heads){
+      if (h.getBoundingClientRect().top <= off + 24) hit = h; else break;
+    }
+    // 맨 아래에 닿으면 마지막 조문을 가리킨다 — 짧은 조문은 위 기준을 못 넘긴다
+    if (scrollY + innerHeight >= document.documentElement.scrollHeight - 4) hit = heads[heads.length - 1];
+    if (hit === cur) return;
+    cur = hit;
+
+    links.forEach((a) => a.classList.remove("on"));
+    const a = hit && links.get(hit.id);
+    if (!a) return;
+    a.classList.add("on");
+    // 목차가 스스로 스크롤되는 경우에만 따라 움직인다. 페이지는 건드리지 않는다
+    if (wide.matches && panel.scrollHeight > panel.clientHeight + 4){
+      const y = a.offsetTop - panel.clientHeight / 2 + a.offsetHeight / 2;
+      panel.scrollTop = Math.max(0, y);
+    }
+  }
+  addEventListener("scroll", () => { if (!ticking){ ticking = true; requestAnimationFrame(spy); } }, {passive:true});
+  addEventListener("resize", spy, {passive:true});
+  spy();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Terms of Service — JAMIT</title>
+<meta name="description" content="JAMIT Terms of Service — service agreement, rights in content, consent to jam participation, reporting, and restrictions on use.">
+<meta name="theme-color" content="#ecedf1">
+<!-- 앱 안 시트(FEV-389)는 이 문서를 `?embed=1`로 연다. class 는 **첫 그리기 전에** 붙어야 상단바가
+     한 프레임 번쩍이고 사라지는 일이 없으므로 <style> 보다 앞, head 안에서 돈다. JS 가 없으면
+     그냥 보통 페이지다 — 크롬만 다르고 본문은 한 벌이다. -->
+<script>
+(() => {
+  if (!new URLSearchParams(location.search).has("embed")) return;
+  document.documentElement.classList.add("embed");
+  // 문서끼리 건너가는 링크(약관↔처리방침)는 시트 안에서도 embed 로 남아야 한다 — 아니면
+  // 한 번 건너간 순간 상단바·목차가 돌아와 '링크를 열었다'는 느낌이 되돌아온다.
+  // 외부 링크(카카오·구글·Apple)는 건드리지 않는다 — 그건 앱이 가로채 인앱 사파리로 연다.
+  addEventListener("DOMContentLoaded", () => {
+    for (const a of document.querySelectorAll("a[href]")) {
+      const raw = a.getAttribute("href");
+      if (raw.startsWith("#")) continue;
+      const u = new URL(raw, location.href);
+      if (u.origin !== location.origin || !u.pathname.endsWith(".html")) continue;
+      u.searchParams.set("embed", "1");
+      a.setAttribute("href", u.href);
+    }
+  });
+})();
+</script>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="%230d0f24"/><rect x="8" y="13" width="3" height="6" rx="1.5" fill="%2398cff6"/><rect x="14" y="8" width="3" height="16" rx="1.5" fill="%23baadf5"/><rect x="20" y="11" width="3" height="10" rx="1.5" fill="%23dd8bf4"/></svg>'>
+
+<style>
+/* ══════════════════════════════════════════════════════════
+   법적 고지 문서 — index.html과 같은 색·글꼴·여백 언어를 쓴다.
+   외부 요청 0. 폰트도 색도 전부 이 파일 안에 있다.
+   ══════════════════════════════════════════════════════════ */
+:root{
+  /* 색·서체는 랜딩 본문(index.html)의 언어를 그대로 따른다 — 법적 문서만 세대가 달라
+     보이던 것을 맞춘 것이다. 순백·순검정은 쓰지 않는다(눈부심·대비 피로). */
+  --bg:#ecedf1;               /* 차가운 회색 종이 */
+  --bg-rgb:236,237,241;       /* 반투명 상단바·스크림이 쓰는 채널 */
+  --bg-2:#f7f8fb;
+  --ink:#1a1f2b;              /* 남빛 먹. 종이 대비 14.1:1 */
+  --copy:#4b5468;             /* 6.5:1 — 본문 */
+  --muted:#5f6779;            /* 4.7:1 — 작은 글씨도 AA */
+  /* 면 위에 얹는 옅은 색조. **채널을 토큰으로 둔 이유**는 다크로 뒤집을 때
+     이 한 줄만 바꾸면 rgba(...)를 쓰는 자리가 전부 따라오기 때문이다. */
+  --tint:26,31,43;
+  --line:rgba(var(--tint),.16);
+  /* 강조는 인디고 하나다. 예전에는 문서마다 색을 달리 가져갔는데(약관 청록·처리방침 보라)
+     랜딩이 "강조는 하나로만"으로 정리되면서 여기도 맞춘다. */
+  --accent:#3a5fd1;
+  --doc:#3a5fd1;
+  --doc-soft:rgba(58,95,209,.45);
+  --warn:#8a6100;
+  --warn-soft:rgba(245,158,11,.10);
+  --warn-line:rgba(180,83,9,.34);
+  --mark:#bfd6ff;             /* 형광펜 */
+  --r:16px; --r-lg:24px;
+  --topbar:64px;
+  --strip:0px;                /* 초안 띠가 있던 자리 — 변수는 남긴다: main 여백과 앵커 스크롤이 쓴다 */
+  --edge:max(clamp(20px,5vw,40px),env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));
+  --sans:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:var(--bg);-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);color:var(--ink);line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  word-break:keep-all;               /* 한글은 단어 중간에서 끊지 않는다 */
+  -webkit-tap-highlight-color:transparent;
+}
+/* 문서가 길다. 배경 그라데이션을 문서 높이에 걸면 수천 픽셀에 퍼져 사실상 안 보인다.
+   화면에 고정된 판을 뒤에 깔아 index와 같은 깊이를 유지한다 */
+body::before{content:"";position:fixed;inset:0;z-index:-1;
+  background:linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 100%)}
+::selection{background:var(--mark);color:var(--ink)}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+h1,h2,h3{letter-spacing:-.02em;font-weight:750;line-height:1.15;text-wrap:balance}
+p{text-wrap:pretty}
+.wrap{width:min(1080px,calc(100% - var(--edge)*2));margin-inline:auto}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+/* 고정 머리(상단바 + 초안 띠) 아래로 제목이 숨지 않게 한다 */
+[id]{scroll-margin-top:calc(var(--topbar) + var(--strip) + 14px)}
+
+/* ════ 상단 바 ════ */
+.top{position:fixed;top:0;left:0;right:0;z-index:60;
+  background:rgba(var(--bg-rgb),.82);backdrop-filter:blur(18px) saturate(180%)}
+.top::after{content:"";position:absolute;left:0;right:0;top:100%;height:22px;pointer-events:none;
+  background:linear-gradient(rgba(var(--bg-rgb),.5),rgba(var(--bg-rgb),0));
+  opacity:0;transition:opacity .3s}
+body.scrolled .top::after{opacity:1}
+.top__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0;min-height:var(--topbar)}
+.top__id{display:flex;align-items:center;gap:9px;min-height:44px;cursor:pointer;
+  font-weight:750;font-size:17px;letter-spacing:-.02em;transition:opacity .18s}
+/* 상단 마크는 **iOS 앱 아이콘 원본**이다(Assets.xcassets/AppIcon). 원본이 각진 사각형이라
+   둥근 모서리를 여기서 씌운다 — 22.5%가 애플의 스퀘어클에 가장 가깝다. */
+.top__mark{display:block;border-radius:22.5%}
+.top__nav{display:flex;align-items:center;gap:2px}
+.top__nav a{padding:0 12px;line-height:44px;border-radius:999px;font-size:13.5px;font-weight:600;
+  color:var(--muted);white-space:nowrap;transition:color .18s,background .18s}
+.top__nav a[aria-current="page"]{color:var(--ink);background:rgba(var(--tint),.07)}
+@media(max-width:560px){
+  .top__nav a{padding:0 9px;font-size:12.5px}
+  .top__id{font-size:15.5px;gap:7px}
+  .long{display:none}          /* 좁으면 "개인정보 처리방침" → "개인정보" */
+}
+
+/* ── 초안 띠 — 상단바에 붙어 항상 따라다닌다.
+      배너는 스크롤하면 사라지지만, 이 줄은 어느 조문을 보고 있어도 초안임을 말한다 ── */
+.strip{height:var(--strip);display:flex;align-items:center;justify-content:center;gap:9px;
+  padding-inline:var(--edge);text-align:center;
+  background:rgba(245,158,11,.16);border-top:1px solid var(--warn-line);border-bottom:1px solid var(--warn-line);
+  color:var(--warn);font-size:11.5px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
+.strip b{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;font-weight:700;
+  padding:3px 7px;border-radius:5px;background:var(--warn);color:var(--bg-2)}
+
+/* ════ 문서 ════ */
+main{padding-top:calc(var(--topbar) + var(--strip))}
+.doc{padding-block:clamp(30px,5vw,58px) clamp(48px,7vw,88px)}
+.doc__head{max-width:74ch}
+.doc h1{margin-top:12px;font-size:clamp(2rem,4.6vw,2.85rem);font-weight:800;letter-spacing:-.035em;line-height:1.08}
+.doc__lede{margin-top:14px;color:var(--copy);font-size:clamp(.98rem,1.3vw,1.1rem);max-width:52em}
+
+/* 초안 배너 — 문서 첫 화면에서 제목 다음으로 눈에 들어와야 한다 */
+.banner{display:flex;gap:14px;align-items:flex-start;margin-top:26px;padding:18px 20px;
+  border:1px solid var(--warn-line);border-radius:var(--r);background:var(--warn-soft)}
+.banner svg{flex:none;margin-top:2px;color:var(--warn)}
+.banner b{display:block;color:var(--warn);font-size:1rem;letter-spacing:-.02em}
+.banner p{margin-top:7px;color:var(--copy);font-size:.93rem;line-height:1.65}
+.banner strong{color:var(--ink);font-weight:700}
+
+.meta{margin-top:24px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px 20px;
+  font-size:.9rem;align-items:baseline}
+.meta dt{color:var(--muted);font-weight:600}
+.meta dd{color:var(--copy)}
+
+/* ── 목차 + 본문 ── */
+.layout{margin-top:clamp(34px,5vw,54px)}
+@media(min-width:900px){
+  .layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:clamp(32px,4.5vw,64px);align-items:start}
+}
+.toc{margin-bottom:30px;border:1px solid var(--line);border-radius:var(--r);background:rgba(var(--tint),.04)}
+.toc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:0 18px;min-height:52px;font-size:.95rem;font-weight:650}
+.toc>summary::-webkit-details-marker{display:none}
+.toc>summary::after{content:"+";font-family:var(--mono);font-size:1.35rem;font-weight:300;color:var(--muted);
+  transition:transform .25s var(--ease),color .25s}
+.toc[open]>summary::after{transform:rotate(45deg);color:var(--doc)}
+.toc__list{padding:2px 10px 14px}
+.toc ol{list-style:none}
+.toc a{display:block;padding:11px 10px;border-radius:8px;font-size:.88rem;line-height:1.45;
+  color:var(--muted);border-left:2px solid transparent;
+  transition:color .18s,background .18s,border-color .18s}
+.toc a .n{font-family:var(--mono);font-size:.82em;color:rgba(var(--tint),.34);margin-right:8px}
+.toc a.on{color:var(--ink);background:rgba(var(--tint),.05);border-left-color:var(--doc)}
+.toc a.on .n{color:var(--doc)}
+.toc__chap>a{color:var(--copy);font-weight:700;font-size:.87rem;margin-top:8px}
+.toc__chap:first-child>a{margin-top:0}
+@media(min-width:900px){
+  /* 데스크톱에서는 접는 장치가 아니라 그냥 옆에 서 있는 목차다.
+     summary를 지우면 details는 열린 채로 고정된다 */
+  .toc{position:sticky;top:calc(var(--topbar) + var(--strip) + 24px);
+    margin-bottom:0;border:0;background:none}
+  .toc>summary{display:none}
+  .toc__list{position:relative;padding:0 6px 0 0;
+    max-height:calc(100vh - var(--topbar) - var(--strip) - 60px);overflow-y:auto;
+    scrollbar-width:thin;scrollbar-color:rgba(var(--tint),.18) transparent}
+  .toc a{padding:6px 10px}
+  .toc__chap>a{margin-top:12px}
+}
+
+/* ── 조문 ── */
+.prose{max-width:68ch;color:var(--copy);font-size:clamp(.95rem,.35vw + .87rem,1.03rem);line-height:1.8}
+.prose strong{color:var(--ink);font-weight:700}
+.prose p{margin-top:14px}
+.chap{margin-top:clamp(46px,6vw,70px);padding-top:24px;border-top:1px solid var(--line);
+  color:var(--ink);font-size:clamp(1.12rem,1.8vw,1.35rem);
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.chap:first-child{margin-top:0;padding-top:0;border-top:0}
+.chap .n{font-family:var(--mono);font-size:.68em;letter-spacing:.12em;color:var(--doc);font-weight:600}
+.art{margin-top:clamp(30px,3.6vw,42px);color:var(--ink);
+  font-size:clamp(1.06rem,1.4vw,1.2rem);letter-spacing:-.022em;line-height:1.35}
+.chap+section .art{margin-top:22px}
+.art__no{display:block;margin-bottom:7px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:var(--doc);font-weight:600}
+/* 조문 하나를 가리켜 링크로 보낼 수 있어야 한다 — "제14조 제4항 봐" 가 되는 문서다 */
+.art__link{margin-left:8px;font-family:var(--mono);font-weight:400;font-size:.78em;
+  color:rgba(var(--tint),.24);opacity:0;transition:opacity .18s,color .18s}
+section:hover .art__link,.art__link:focus-visible{opacity:1}
+@media(hover:none){.art__link{opacity:.4}}
+
+/* 항(項)과 호(號) — 번호는 본문보다 한 칸 물러난 자리에 둔다 */
+.clauses{list-style:none;counter-reset:clause;margin-top:14px}
+.clauses>li{counter-increment:clause;position:relative;padding-left:2.1em;margin-top:13px}
+.clauses>li::before{content:counter(clause) ".";position:absolute;left:0;top:0;
+  font-family:var(--mono);font-size:.9em;font-weight:600;color:var(--doc)}
+.sub{list-style:none;counter-reset:sub;margin-top:10px;padding-left:16px;border-left:1px solid var(--line)}
+.sub>li{counter-increment:sub;position:relative;padding-left:1.9em;margin-top:9px}
+.sub>li::before{content:counter(sub) ".";position:absolute;left:0;top:0;
+  font-family:var(--mono);font-size:.88em;color:var(--muted)}
+.clauses p,.sub p{margin-top:8px}
+
+/* 문서 안팎을 가리키는 참조 — 눌러서 갈 수 있다는 것만 조용히 알린다 */
+.ref{color:var(--doc);border-bottom:1px dotted var(--doc-soft);transition:border-color .18s,color .18s}
+.x{color:var(--doc);text-decoration:underline;text-underline-offset:3px;
+  text-decoration-color:var(--doc-soft);transition:text-decoration-color .18s}
+
+/* ── 미확정 항목 ──
+   지우지 않는다. 형광펜으로 칠해 둔다. 확정 전에 이 페이지가 올라가면
+   무엇이 안 끝났는지가 문장보다 먼저 보여야 한다 */
+.tbd{display:inline;padding:.14em .45em;border-radius:5px;
+  background:var(--mark);color:#1b1405;
+  font-family:var(--mono);font-size:.85em;font-weight:600;letter-spacing:-.01em;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone}
+
+/* 표는 이 문서에 없다. 개인정보 처리방침에만 있고, 표 스타일도 그쪽 파일에 있다 */
+
+/* ── 문서 끝: 옆 문서로 건너가는 자리 ── */
+.also{margin-top:clamp(44px,6vw,64px);padding-top:26px;border-top:1px solid var(--line)}
+.also__list{display:grid;gap:12px;margin-top:14px}
+@media(min-width:640px){.also__list{grid-template-columns:1fr 1fr}}
+.also a{display:block;padding:16px 18px;border:1px solid var(--line);border-radius:var(--r);
+  background:rgba(var(--tint),.04);transition:border-color .18s,background .18s,transform .18s}
+.also b{display:block;font-size:.98rem;letter-spacing:-.02em}
+.also span{display:block;margin-top:5px;font-size:.86rem;color:var(--muted)}
+
+footer{padding:30px 0 calc(48px + env(safe-area-inset-bottom,0px));
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
+footer nav{display:flex;flex-wrap:wrap;gap:4px}
+footer nav a{line-height:44px;padding-inline:12px;transition:color .18s}
+
+/* ══ 누르는 느낌 ══ index와 같은 규칙: hover는 커서가 있는 기기에서만 ══ */
+@media(hover:hover){
+  .top__id:hover{opacity:.72}
+  .top__nav a:hover,footer nav a:hover{color:var(--ink)}
+  .toc a:hover{color:var(--ink);background:rgba(var(--tint),.05)}
+  .art__link:hover{color:var(--doc)}
+  .ref:hover{border-bottom-color:var(--doc)}
+  .x:hover{text-decoration-color:var(--doc)}
+  .also a:hover{border-color:rgba(var(--tint),.24);background:var(--bg-2);transform:translateY(-1px)}
+}
+.top__id:active{opacity:.6}
+.also a:active{transform:scale(.99)}
+.toc a:active,.top__nav a:active,footer nav a:active{color:var(--doc)}
+
+@media(prefers-reduced-transparency:reduce){
+  .top{backdrop-filter:none;background:rgba(var(--bg-rgb),.97)}
+  .toc,.also a{background:rgba(18,20,46,.98)}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important}
+}
+
+/* ── 인쇄 ── 법적 고지는 종이로도 나간다.
+   색이 빠져도 초안 표시와 [TBD]는 반드시 남아야 한다 ── */
+@media print{
+  body{background:#fff;color:#000}
+  body::before{display:none}
+  .top,.toc,.also,footer nav,.art__link{display:none}
+  main{padding-top:0}
+  .layout{display:block}
+  .prose,.doc__head{max-width:none}
+  .prose,.doc__lede,.meta dd,.banner p{color:#1a1a1a}
+  .prose strong,.chap,.art,.doc h1{color:#000}
+  .art__no,.chap .n,.eyebrow{color:#444}
+  .banner{border:2px solid #b45309;background:#fffbeb}
+  .banner b{color:#7c2d12}
+  .tbd{background:#fff;color:#000;border:1.5px solid #000;font-weight:700}
+  .ref,.x{color:#000;border:0;text-decoration:underline}
+  .art{break-after:avoid}
+}
+
+/* ── 앱 안 시트(embed) ── 앱이 `?embed=1`로 열면 제목 + 본문만 남긴다(FEV-389).
+   시트에는 이미 앱 헤더(문서 제목·닫기)가 있으니 이 페이지의 상단바·목차·바닥글은 **두 번째 크롬**이다.
+   색은 앱 표면(AppColor.bg — 라이트 #fff / 다크 #131313)에 맞춘다: 시트 안에서 페이지가 '다른 곳'으로
+   보이는 순간 '링크를 연' 느낌이 되돌아온다. 인쇄 규칙과 같은 발상이라 숨기는 목록도 비슷하다. ── */
+/* 페이지 기본이 종이라 시트도 그대로 라이트다 — 뒤집는 것은 아래 다크 분기다. */
+html.embed{scroll-behavior:auto}
+html.embed body::before{background:var(--bg)}
+html.embed .top,html.embed .also,html.embed footer,
+html.embed .eyebrow,html.embed .art__link{display:none}
+html.embed main{padding-top:0}
+html.embed .doc{padding-block:18px calc(40px + env(safe-area-inset-bottom,0px))}
+html.embed .doc h1{margin-top:0;font-size:1.55rem}
+html.embed .doc__lede{font-size:.95rem}
+html.embed .layout{display:block;margin-top:22px}
+html.embed .prose,html.embed .doc__head{max-width:none}
+html.embed [id]{scroll-margin-top:14px}
+
+/* ── embed 목차 ── 앱 시트에서도 조문으로 건너뛸 수 있어야 한다(FEV-366 후속).
+   처음 embed를 만들 때 `.toc`를 크롬으로 보고 함께 껐는데, 목차는 크롬이 아니라 **본문 탐색**이다.
+   처리방침 14조·약관 23조를 목차 없이 세로로만 훑게 두면 원하는 조항에 닿을 방법이 없다.
+   개인정보 처리방침 작성지침(개인정보보호위원회, 2025.4)도 「목차 + 하이퍼링크로 조항 이동」을
+   권장하고, 국내 주요 서비스 대부분이 앵커 목차를 둔다. ── */
+html.embed .toc{position:static;margin-bottom:22px;background:rgba(127,127,127,.06)}
+/* **시트에서는 항상 접힌 채로 시작한다.** 아래 JS의 넓은 화면 판정(900px)은 iPad 시트에서 참이
+   될 수 있는데, 그러면 목차가 펼쳐진 채로 본문 위를 덮는다 — 그쪽은 sticky 사이드바를 전제한
+   레이아웃이고 시트에는 그 가로 폭이 없다. */
+html.embed .toc>summary{display:flex}
+
+/* ── 조문 경계 ── 「한 줄로 쭉 나열돼 보인다」의 절반은 스크롤 길이가 아니라 **경계가 안 보이는**
+   것이다. 작성지침은 「중요 사항·제목은 본문보다 최소 20% 이상 크게」라는 드문 정량 기준을 주는데,
+   390pt 폰에서 본문 0.955rem 대비 조문 제목이 1.06rem — **+11%로 그 선 아래였다.**
+   `.art__no`(제N조)는 아예 본문보다 작았다. 넓은 화면은 vw 항이 커져 이미 기준을 넘으므로
+   embed에서만 올린다. ── */
+html.embed .art{font-size:1.16rem}          /* 본문 0.955rem 대비 +21% */
+html.embed .art__no{font-size:12.5px}
+/* 구분선 하나가 목차만큼 체감이 크다 — 지침의 「굵기·색상으로 구분」 대안에도 맞는다.
+   첫 조문에는 걸지 않는다(전문 바로 아래라 이미 경계가 있다). */
+html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px solid var(--line)}
+
+/* ── 앱 시트의 다크 ── 페이지 기본이 종이(라이트)라, **뒤집는 쪽이 다크다.**
+   예전에는 반대였다(기본 다크 + 라이트 분기) — 랜딩이 종이 바탕으로 가면서 방향이 바뀌었다.
+   값은 앱 표면을 따른다(`AppColor.bg` 다크 #131313). */
+@media(prefers-color-scheme:dark){
+  html.embed{--bg:#131313;--bg-rgb:19,19,19;--bg-2:#1d1d1d;--ink:#f5f5f5;--copy:#afafaf;--muted:#7e7e7e;
+    --tint:255,255,255;--line:rgba(255,255,255,.1);
+    /* 인디고 원색은 어두운 면에서 3.4:1로 모자라다 — 랜딩이 어두운 면용으로 잡아 둔 파랑을 쓴다 */
+    --accent:#4c8df6;--doc:#4c8df6;--doc-soft:rgba(76,141,246,.5);
+    --warn:#da9e2f;--warn-soft:rgba(245,158,11,.13);--warn-line:rgba(245,158,11,.34);--mark:#fde047}
+  html.embed ::selection{background:#4c8df6;color:#131313}
+  html.embed .banner svg path{stroke:#da9e2f}
+  html.embed .banner svg circle{fill:#da9e2f}
+}
+</style>
+</head>
+<body id="top">
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="top__id" href="index.html">
+      <img class="top__mark" src="assets/app-icon.png" width="28" height="28" alt="" decoding="async">
+      JAMIT
+    </a>
+    <nav class="top__nav" aria-label="Legal">
+      <a href="terms.en.html" aria-current="page">Terms</a>
+      <a href="privacy.en.html">Privacy<span class="long"> Policy</span></a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap doc">
+
+    <div class="doc__head">
+      <p class="eyebrow">JAMIT Legal</p>
+      <h1>Terms of Service</h1>
+      <p class="doc__lede">
+        This English translation is provided for convenience only. The <a class="x" href="terms.html" hreflang="ko">Korean version</a>
+        is the official version, and if the two differ, the Korean version prevails.
+      </p>
+      <p class="doc__lede">
+        This document sets out the conditions and procedures for using the JAMIT mobile application service and the rights and obligations of the Operator and members.
+      </p>
+
+      <dl class="meta">
+        <dt>Status</dt><dd>In effect</dd>
+        <dt>Effective date</dt><dd><time datetime="2026-08-25">August 25, 2026</time></dd>
+        <dt>Last revised</dt><dd><time datetime="2026-10-20">October 20, 2026</time></dd>
+        <!-- 본문을 고치면 이 날짜도 같이 올린다 — 독자가 「바뀌었는가」를 판단하는 유일한 표지다. -->
+        <dt>Related document</dt><dd><a class="x" href="privacy.en.html">JAMIT Privacy Policy</a></dd>
+      </dl>
+
+    </div>
+
+    <div class="layout">
+
+      <!-- 목차 — 데스크톱에서는 옆에 붙어 따라오고, 좁은 화면에서는 접힌다 -->
+      <details class="toc" id="toc" open>
+        <summary>Table of Contents<span class="sr-only">, expand</span></summary>
+        <nav class="toc__list" aria-label="Table of contents">
+          <ol>
+            <li class="toc__chap"><a href="#ch-1"><span class="n">Chapter 1</span>General Provisions</a>
+              <ol>
+                <li><a href="#art-1"><span class="n">Article 1</span>Purpose</a></li>
+                <li><a href="#art-2"><span class="n">Article 2</span>Definitions</a></li>
+                <li><a href="#art-3"><span class="n">Article 3</span>Posting and Amendment of the Terms</a></li>
+                <li><a href="#art-4"><span class="n">Article 4</span>Rules Not Covered by the Terms</a></li>
+              </ol>
+            </li>
+            <li class="toc__chap"><a href="#ch-2"><span class="n">Chapter 2</span>Service Agreement and Accounts</a>
+              <ol>
+                <li><a href="#art-5"><span class="n">Article 5</span>Formation of the Service Agreement</a></li>
+                <li><a href="#art-6"><span class="n">Article 6</span>Management of Accounts and Member Information</a></li>
+                <li><a href="#art-7"><span class="n">Article 7</span>Account Deletion</a></li>
+              </ol>
+            </li>
+            <li class="toc__chap"><a href="#ch-3"><span class="n">Chapter 3</span>Use of the Service</a>
+              <ol>
+                <li><a href="#art-8"><span class="n">Article 8</span>Description of the Service</a></li>
+                <li><a href="#art-9"><span class="n">Article 9</span>Playback of Original Songs and YouTube Services</a></li>
+                <li><a href="#art-10"><span class="n">Article 10</span>Notifications</a></li>
+                <li><a href="#art-11"><span class="n">Article 11</span>Changes to and Suspension of the Service</a></li>
+              </ol>
+            </li>
+            <li class="toc__chap"><a href="#ch-4"><span class="n">Chapter 4</span>Content</a>
+              <ol>
+                <li><a href="#art-12"><span class="n">Article 12</span>Rights and Responsibilities for Content</a></li>
+                <li><a href="#art-13"><span class="n">Article 13</span>License to Use Content</a></li>
+                <li><a href="#art-14"><span class="n">Article 14</span>Jam Participation and Consent to Use of Likeness, Voice, and Performance</a></li>
+                <li><a href="#art-15"><span class="n">Article 15</span>Members’ Obligations and Prohibited Acts</a></li>
+                <li><a href="#art-16"><span class="n">Article 16</span>Zero-Tolerance Policy for Objectionable Content and Abusive Users</a></li>
+                <li><a href="#art-17"><span class="n">Article 17</span>Reports of Rights Infringement and Takedown</a></li>
+                <li><a href="#art-18"><span class="n">Article 18</span>User Blocking</a></li>
+                <li><a href="#art-19"><span class="n">Article 19</span>Restrictions on Use</a></li>
+              </ol>
+            </li>
+            <li class="toc__chap"><a href="#ch-5"><span class="n">Chapter 5</span>Obligations and Liability</a>
+              <ol>
+                <li><a href="#art-20"><span class="n">Article 20</span>Obligations of the Operator</a></li>
+                <li><a href="#art-21"><span class="n">Article 21</span>Disclaimer</a></li>
+                <li><a href="#art-22"><span class="n">Article 22</span>Compensation for Damages</a></li>
+              </ol>
+            </li>
+            <li class="toc__chap"><a href="#ch-6"><span class="n">Chapter 6</span>Miscellaneous</a>
+              <ol>
+                <li><a href="#art-23"><span class="n">Article 23</span>Governing Law and Jurisdiction</a></li>
+              </ol>
+            </li>
+            <li class="toc__chap"><a href="#addendum"><span class="n">Addendum</span>Effective Date</a></li>
+          </ol>
+        </nav>
+      </details>
+
+      <article class="prose">
+
+        <h2 class="chap" id="ch-1"><span class="n">Chapter 1</span>General Provisions</h2>
+
+        <section id="art-1">
+          <h3 class="art"><span class="art__no">Article 1</span>Purpose <a class="art__link" href="#art-1" aria-label="Link to Article 1">#</a></h3>
+          <p>
+            These Terms set out the rights, obligations, and responsibilities of the Operator and members, the conditions and
+            procedures for using the Service, and other necessary matters in connection with the use of the mobile application
+            service &ldquo;JAMIT&rdquo; (the &ldquo;Service&rdquo;) provided by Minjae Kim (김민재) (the &ldquo;Operator&rdquo;; contact: <a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a>).
+            <!-- 소재지를 적지 않는다(2026-08-25). 주소·전화 표시 의무는 전자상거래법 제10조인데 그건
+                 통신판매업자(유료 거래) 대상이고, 이 서비스는 결제가 없어 해당하지 않는다. 개인정보
+                 보호법 제30조가 요구하는 것은 보호책임자 성명과 연락처이고 그건 처리방침 제12조에 있다.
+                 유료화하거나 사업자등록을 하는 날 이 줄과 처리방침 제3조 제8항(결제 기능 없음)을 함께 고칠 것.
+                 (2026-10-20 개정이 제3조에 항을 하나 더해 제7항 → 제8항이 됐다.) -->
+          </p>
+        </section>
+
+        <section id="art-2">
+          <h3 class="art"><span class="art__no">Article 2</span>Definitions <a class="art__link" href="#art-2" aria-label="Link to Article 2">#</a></h3>
+          <p>The terms used in these Terms have the following meanings.</p>
+          <ol class="clauses">
+            <li><strong>&ldquo;Service&rdquo;</strong> means the JAMIT mobile application and all related services provided by the Operator
+              that allow members to complete a jam by uploading performance videos for each part (instrument, vocals, etc.) based on a
+              specific section of an original song posted on YouTube, and to create, save, and share an Its that combines the
+              participating tracks.</li>
+            <li><strong>&ldquo;Member&rdquo;</strong> means a person who has agreed to these Terms, entered into a service agreement through social login, and uses the Service.</li>
+            <li><strong>&ldquo;Original song&rdquo;</strong> means music video content posted on YouTube that serves as the basis of a jam.
+              Original songs are not stored or distributed by the Service; they are played through YouTube.</li>
+            <li><strong>&ldquo;Post&rdquo;</strong> (or &ldquo;Jam&rdquo;) means a posting in which a member specifies a section of an original song and
+              the parts to be recruited in order to recruit participants for a jam.</li>
+            <li><strong>&ldquo;Track&rdquo;</strong> means a performance video for a part (including video and audio) that a member records and uploads to join a post.</li>
+            <li><strong>&ldquo;Its&rdquo;</strong> means a short video created by combining the tracks gathered in a post and compositing them in a grid layout or
+              similar format; its creator may save it to their device or share it outside the Service.</li>
+            <li><strong>&ldquo;Chat&rdquo;</strong> means the feature through which a member exchanges messages with other members within the Service, and includes
+              both conversations between two members and chat rooms in which multiple members participate (including chat rooms attached to a Space).</li>
+            <li><strong>&ldquo;Message&rdquo;</strong> means text that a member sends in a chat, and posts, tracks, and Its that a member shares
+              by including them in a message.
+              <!-- 「등」으로 열어 두었다가 셋을 적는다(2026-09-23 리뷰) — 처리방침 제2조가 셋을 적는데 이쪽만
+                   둘 + 「등」이라 좁았다. 공유 대상은 서버에서 셋으로 닫혀 있다(MessageType.SHARE_*). --></li>
+            <li><strong>&ldquo;Content&rdquo;</strong> means any and all materials that a member posts or uploads to the Service, including posts, tracks, Its, profiles, text,
+              and <strong>messages</strong>.
+              <!-- 2026-10-20 4차 개정. **메시지를 「콘텐츠」에 넣는 것이 이 개정의 조용한 요점이다** — 제15조
+                   금지행위·제16조 불관용 원칙·제17조 권리침해 신고가 전부 「콘텐츠」를 대상으로 쓰여 있어,
+                   메시지가 그 정의 밖이면 채팅에서 벌어지는 일에 약관이 닿지 않는다.
+                   ⚠️ 반대로 **제13조 이용허락과 제14조 초상·실연 동의도 「콘텐츠」를 대상으로 한다** — 그쪽은
+                   공개 게시를 전제로 쓴 조항이라 메시지에 그대로 적용되면 안 된다. 그래서 제13조에 단서를 둔다. --></li>
+          </ol>
+        </section>
+
+        <section id="art-3">
+          <h3 class="art"><span class="art__no">Article 3</span>Posting and Amendment of the Terms <a class="art__link" href="#art-3" aria-label="Link to Article 3">#</a></h3>
+          <ol class="clauses">
+            <li>The Operator posts these Terms on screens within the Service and on information pages so that members can easily review them.</li>
+            <li>The Operator may amend these Terms to the extent that doing so does not violate relevant laws, such as the Act on the Regulation
+              of Terms and Conditions and the Act on Promotion of Information and Communications Network Utilization and Information Protection.</li>
+            <li>When amending the Terms, the Operator will give notice, stating the effective date and the reasons for the amendment, by in-Service
+              notice, push notification, or other means, beginning 7 days before the effective date (or 30 days before, for changes that are
+              unfavorable to members or material).</li>
+            <li>If a member continues to use the Service on or after the effective date of the amended Terms, the member is deemed to have agreed to the amended Terms.
+              A member who does not agree to the amended Terms may delete their account in accordance with <a class="ref" href="#art-7">Article 7</a>.</li>
+          </ol>
+        </section>
+
+        <section id="art-4">
+          <h3 class="art"><span class="art__no">Article 4</span>Rules Not Covered by the Terms <a class="art__link" href="#art-4" aria-label="Link to Article 4">#</a></h3>
+          <p>
+            Matters not provided for in these Terms, and the interpretation of these Terms, are governed by relevant laws and general commercial practice.
+            Matters concerning the processing of personal information are governed by the separate <a class="x" href="privacy.en.html">JAMIT Privacy Policy</a>.
+          </p>
+        </section>
+
+        <h2 class="chap" id="ch-2"><span class="n">Chapter 2</span>Service Agreement and Accounts</h2>
+
+        <section id="art-5">
+          <h3 class="art"><span class="art__no">Article 5</span>Formation of the Service Agreement <a class="art__link" href="#art-5" aria-label="Link to Article 5">#</a></h3>
+          <ol class="clauses">
+            <li>The service agreement is formed when a person who wishes to use the Service applies for membership through social login with a
+              Kakao, Google, or Apple account and then agrees to each of these Terms and the Privacy Policy, and the Operator accepts the application.
+              <!-- 2026-10-01 정정. 앱은 소셜 로그인을 먼저 하고 그 뒤에 동의 화면을 띄운다(iOS SessionManager → TermsAgreementView,
+                   Android TermsAgreementViewModel). 동의하지 않은 계정의 정보 처리는 개인정보 처리방침 제3조 제5항이 적는다. -->
+              <strong>You cannot sign up for the Service without agreeing to these Terms.</strong></li>
+            <li>Only persons aged 14 or older may sign up for the Service. The Operator may terminate the service agreement for any account
+              confirmed to belong to a person under the age of 14.</li>
+            <li>Agreeing to these Terms includes agreeing to the <strong>zero-tolerance policy for objectionable content and abusive users</strong>
+              under <a class="ref" href="#art-16">Article 16</a>.</li>
+            <li>The Operator may refuse to accept an application, or terminate the service agreement afterwards, in any of the following cases:
+              <ol class="sub">
+                <li>A person previously excluded from the Service under <a class="ref" href="#art-16">Article 16</a> or <a class="ref" href="#art-19">Article 19</a>
+                  applies to sign up again</li>
+                <li>The applicant used another person’s social account without authorization</li>
+                <li>The application was made for an improper purpose or by improper means</li>
+              </ol>
+            </li>
+          </ol>
+        </section>
+
+        <section id="art-6">
+          <h3 class="art"><span class="art__no">Article 6</span>Management of Accounts and Member Information <a class="art__link" href="#art-6" aria-label="Link to Article 6">#</a></h3>
+          <ol class="clauses">
+            <li>An account may be used only by the member themselves and may not be transferred or lent to anyone else.</li>
+            <li>Members are responsible for managing their own social accounts and devices, and must notify the Operator immediately upon becoming
+              aware of any unauthorized use by a third party. The Operator is not liable for any disadvantage arising from a member’s failure to
+              manage these properly unless the Operator acted intentionally or negligently.</li>
+            <li>If a member’s information, such as their profile, changes, the member must update it within the Service.</li>
+          </ol>
+        </section>
+
+        <section id="art-7">
+          <h3 class="art"><span class="art__no">Article 7</span>Account Deletion <a class="art__link" href="#art-7" aria-label="Link to Article 7">#</a></h3>
+          <ol class="clauses">
+            <li>Members may terminate the service agreement (delete their account) at any time using the in-app account deletion feature.</li>
+            <li>Upon account deletion, the Operator invalidates the member’s login sessions and push tokens and also handles the removal of the social login
+              link (Kakao, Google, Apple). For an Apple account, account deletion is processed only once the unlink has been completed; for Kakao and Google
+              accounts, the link information held by the Operator is destroyed even if the unlink request fails or unlinking is not supported in the app
+              environment. The member may remove the link directly in the account settings of each platform, and the details of this processing are governed by
+              <a class="x" href="privacy.en.html#art-7">Article 7 of the Privacy Policy</a>.
+              <!-- 2026-10-01 정정. Apple revoke 실패는 탈퇴 자체를 막고(UserWithdrawalService), Android 의 구글은 revoke 가
+                   아니라 기기 자격 증명 정리뿐이다 — 「실패해도 파기」를 셋 모두에 걸던 문장이 Apple 에는 맞지 않았다. --></li>
+            <li>The personal information of a member who has deleted their account is destroyed as set out in the <a class="x" href="privacy.en.html">JAMIT Privacy Policy</a>.
+              <strong>If you delete your account, the messages you sent will no longer be visible on the other party’s screen</strong>, and if no one
+              remains in a chat room with multiple participants, the messages in that room, including those written by other members, follow the same
+              procedure. Retention periods are governed by <a class="x" href="privacy.en.html#art-3">Article 3 of the Privacy Policy</a>.
+              <!-- 2026-10-20 추가. 메시지를 제2조의 「콘텐츠」에 넣으면서 탈퇴 축에서만 빠졌다 — 상대 화면에서
+                   대화가 사라지는데 그 사실이 약관에도 처리방침에도 없었다(2026-09-23 리뷰).
+                   🚨 **새 항으로 두지 않고 이 항에 붙인 것은 번호 때문이다.** 제7조의 항 번호는 제13조 제4항·
+                   제14조 제4항·제19조 제4항이 가리키고, **다른 저장소 둘**도 주석에서 「약관 제7조 4항」을
+                   가리킨다(iOS `WithdrawalConfirmView`, Android `WithdrawalSheet`). 여기 항을 하나 끼우면 그
+                   다섯이 조용히 어긋난다 — 앵커는 `#art-7` 하나라 링크는 안 깨지고 눈으로도 안 잡힌다.
+                   ⚠️ 이 조에 항을 더해야 하는 날에는 그 다섯을 함께 고칠 것. --></li>
+            <li><strong>Content uploaded by a member who has deleted their account (tracks, posts, Its) is handled as follows.</strong>
+              <ol class="sub">
+                <li>Tracks uploaded by the member (originals, processed versions, and thumbnails) are no longer visible in the Service upon account
+                  deletion and are destroyed after the period set out in
+                  <a class="x" href="privacy.en.html#art-3">Article 3 of the Privacy Policy</a>
+                  has passed.</li>
+                <li>Its created by the member are handled in the same manner, whether or not they have been published. Its created by other members
+                  are retained even if they include the member’s tracks (<a class="ref" href="#art-14">Article 14(4)</a>).</li>
+                <li>A post written by the member is retained, with its author shown as &ldquo;Unknown,&rdquo; if other members’ tracks or Its
+                  remain on it; in this case, the reference video uploaded by the member is detached from the post and handled in the same manner as subparagraph 1.
+                  A post with no content from other members is handled in the same manner as subparagraph 1.</li>
+              </ol>
+            </li>
+            <li>Its that have already been shared or saved outside the Service (such as on social media) are beyond the Operator’s control, and the
+              Operator therefore cannot guarantee their retrieval or deletion.</li>
+            <li><strong>For 30 days after deleting your account, you cannot sign up again with the same social account.</strong>
+              If you delete your account while suspended under <a class="ref" href="#art-19">Article 19</a>, you cannot sign up again until that suspension period ends (up to 1 year).
+              The information the Operator retains for this purpose, and its retention period, are governed by
+              <a class="x" href="privacy.en.html#art-3">Article 3 of the JAMIT Privacy Policy</a>.
+              <!-- 탈퇴가 신고·이용정지의 탈출구가 되지 않게 한다(FEV-391). 기간은 백엔드의
+                   쿨다운(30일)·이월 상한(1년) 설정과 같아야 한다. --></li>
+          </ol>
+        </section>
+
+        <h2 class="chap" id="ch-3"><span class="n">Chapter 3</span>Use of the Service</h2>
+
+        <section id="art-8">
+          <h3 class="art"><span class="art__no">Article 8</span>Description of the Service <a class="art__link" href="#art-8" aria-label="Link to Article 8">#</a></h3>
+          <ol class="clauses">
+            <li>The Operator provides the following services:
+              <ol class="sub">
+                <li>Creating, browsing, and joining jam posts based on sections of original songs</li>
+                <li>Recording and uploading track videos for each part (using the device’s camera and microphone), and automatic sync correction</li>
+                <li>Compositing, playing, saving to the device, and sharing externally Its that combine participating tracks</li>
+                <li><strong>Chat between members</strong> — delivery and storage of messages, display of read status, and management of chat room participants</li>
+                <li>Additional features such as profiles, notifications, reporting, and blocking</li>
+              </ol>
+            </li>
+            <li>The Service is provided free of charge. If paid services are introduced, the Operator will give separate notice and obtain consent.</li>
+            <li>The Service is, in principle, provided year-round without interruption, but it may be temporarily suspended when operationally necessary, such as for maintenance.</li>
+          </ol>
+        </section>
+
+        <section id="art-9">
+          <h3 class="art"><span class="art__no">Article 9</span>Playback of Original Songs and YouTube Services <a class="art__link" href="#art-9" aria-label="Link to Article 9">#</a></h3>
+          <ol class="clauses">
+            <li>Original songs are played through the player provided by YouTube, and their use is subject to the
+              <a class="x" href="https://www.youtube.com/t/terms">YouTube Terms of Service</a>. By using the Service, members agree to be bound by
+              the YouTube Terms of Service. The processing of personal information in the course of using YouTube is governed by
+              <a class="x" href="privacy.en.html#art-10">Article 10 of the Privacy Policy</a>.
+              <!-- 2026-10-01 정정. YouTube API 서비스 개발자 정책 III.A.1 은 API 클라이언트의 약관에 YouTube 서비스 약관 링크와
+                   「이용함으로써 그 약관에 구속된다」는 문장을 요구한다. --></li>
+            <li>The Operator is not the rights holder of original songs, and the use of related posts and features may be restricted due to circumstances
+              on YouTube’s side, such as an original song being deleted or made private or its embedding being restricted. In such cases, the Operator is not liable unless it acted intentionally or negligently.</li>
+          </ol>
+        </section>
+
+        <section id="art-10">
+          <h3 class="art"><span class="art__no">Article 10</span>Notifications <a class="art__link" href="#art-10" aria-label="Link to Article 10">#</a></h3>
+          <ol class="clauses">
+            <li>The Operator may send app push notifications that are necessary for using the Service, such as notifications of jam participation,
+              Its publication, and <strong>incoming chat messages</strong>. Chat notifications may show the sending member’s nickname and the beginning of the message.</li>
+            <li>Members may opt out of push notifications through their device settings or the settings within the Service. However, important notices
+              regarding the operation of the Service may also be given by means other than push notifications.</li>
+          </ol>
+        </section>
+
+        <section id="art-11">
+          <h3 class="art"><span class="art__no">Article 11</span>Changes to and Suspension of the Service <a class="art__link" href="#art-11" aria-label="Link to Article 11">#</a></h3>
+          <ol class="clauses">
+            <li>The Operator may change all or part of the Service as operationally or technically necessary, and will give prior notice of material
+              changes within the Service.</li>
+            <li>The Operator may temporarily suspend the provision of the Service in the following cases:
+              <ol class="sub">
+                <li>System inspection, maintenance, or replacement</li>
+                <li>Power outages, equipment failures, surges in usage, or service interruptions by a facilities-based telecommunications carrier or a cloud provider</li>
+                <li>Force majeure, such as natural disasters or national emergencies</li>
+              </ol>
+            </li>
+            <li>If the Operator intends to permanently discontinue the provision of the Service (termination of the Service), it will give notice within the Service
+              or by other means at least 30 days before the termination date. In this case, members may back up their content before the termination date, for example by saving their Its to their devices.</li>
+            <li>The Operator is not liable for damages arising from changes to or suspension of services provided free of charge, unless it acted
+              intentionally or with gross negligence.</li>
+          </ol>
+        </section>
+
+        <h2 class="chap" id="ch-4"><span class="n">Chapter 4</span>Content</h2>
+
+        <section id="art-12">
+          <h3 class="art"><span class="art__no">Article 12</span>Rights and Responsibilities for Content <a class="art__link" href="#art-12" aria-label="Link to Article 12">#</a></h3>
+          <ol class="clauses">
+            <li>Copyright and other intellectual property rights in content that a member posts on the Service belong to that member or the legitimate rights holder.</li>
+            <li><strong>When a member uploads content that uses works of others (including original songs), such as cover performances or cover vocals, the member who
+              uploaded the content is responsible for confirming and clearing the rights required for it, such as copyright and neighboring rights.</strong>
+              Members warrant that the content they upload does not infringe the rights of others, such as copyright, trademark rights, portrait rights, or reputation.</li>
+            <li>If a dispute arises with a rights holder because of a member’s content, or if the Operator suffers damages (such as compensation paid or the cost of handling the dispute),
+              the member who uploaded the content bears responsibility.</li>
+            <li>If the Operator determines that a member’s content falls under the prohibited acts in <a class="ref" href="#art-15">Article 15</a> or violates
+              relevant laws, it may delete or hide the content, or take other measures, without prior notice.
+              <strong>However, for messages, the Operator takes the measures in this paragraph only when a report has been received under
+              <a class="ref" href="#art-16">Article 16</a>.</strong>
+              <!-- 2026-10-20 신설. 제2조에서 메시지를 「콘텐츠」에 넣었기 때문에 이 단서가 **반드시** 필요하다 —
+                   그대로 두면 신고 없이도 사적 대화를 판단해 지울 수 있다는 뜻이 된다. 실제로는 전송 경로 어디에도
+                   본문을 보는 코드가 없다(MessageService.send — 관문은 참여·차단·공유 대상 접근 범위뿐이고,
+                   입력 검증은 1000자 상한과 NUL 거절이라는 형식 검사다). 2026-09-23 리뷰가 잡았다. --></li>
+          </ol>
+        </section>
+
+        <section id="art-13">
+          <h3 class="art"><span class="art__no">Article 13</span>License to Use Content <a class="art__link" href="#art-13" aria-label="Link to Article 13">#</a></h3>
+          <ol class="clauses">
+            <li>For content they post, members grant the Operator a non-exclusive license, to the extent necessary to provide, operate, and improve the Service,
+              to store, reproduce, encode, composite (including sync correction of tracks and grid compositing of Its), display, and transmit that content,
+              and to view and analyze it internally within the Operator to improve the quality and usability of the Service. The purposes and scope of internal viewing and analysis are governed by <a class="x" href="privacy.en.html#art-1">Article 1 of the Privacy Policy</a>.</li>
+            <li><strong>The license in paragraph 1 does not include use for the purpose of promoting the Service.</strong> If the Operator intends to use a member’s
+              content to promote the Service (such as in advertising, posts on external channels, or app store promotional materials), it will obtain that
+              member’s prior consent, and where content of multiple members is included together, such as in an Its of a jam, it will obtain the consent of each member.
+              <!-- 기본 포함이 아니라 별도 동의로 확정(2026-08-20). 합주 영상 하나에 여러 사람의 초상·음성·실연이
+                   들어가는 구조라(제14조), 기본 포함으로 하면 게시자만 동의하고 함께 찍힌 참여자는 동의하지 않은
+                   상태가 된다. 홍보에 쓸 만한 영상일수록 사람이 여럿 나오므로 그 위험이 가장 큰 자리다. --></li>
+            <li><strong>The license in paragraph 1 does not apply to messages.</strong> The Operator processes chat messages only to the extent of delivering and storing them
+              and, when a report is received under <a class="ref" href="#art-16">Article 16</a>, reviewing <strong>the reported message and the messages exchanged before
+              and after it in the same chat room (up to 5 human-written messages on each side, including deleted messages)</strong>,
+              and does not subject them to internal viewing or analysis for improving the quality or usability of the Service.
+              <!-- 2026-10-20 4차 개정. 제2조에서 메시지를 「콘텐츠」에 넣었기 때문에 이 단서가 **반드시** 필요하다 —
+                   그대로 두면 제1항의 「전시·전송」과 「내부 열람·분석」이 사적 대화에까지 걸린다. 제14조(초상·실연
+                   동의)는 「게시」를 전제로 쓰여 있어 메시지에 자연히 닿지 않지만, 이 조는 「게시한 콘텐츠」라
+                   문언만으로는 갈리지 않는다. --></li>
+            <li>The license in paragraph 1 terminates when the member deletes the content or deletes their account. However, with respect to the handling of content upon
+              account deletion under <a class="ref" href="#art-7">Article 7(4)</a> and Its that have already been composited,
+              that provision prevails, and to the extent that deleted content, or content of a member who has deleted their account, is retained for a certain period to review reports,
+              <a class="x" href="privacy.en.html#art-3">Article 3 of the Privacy Policy</a> prevails.</li>
+          </ol>
+        </section>
+
+        <section id="art-14">
+          <h3 class="art"><span class="art__no">Article 14</span>Jam Participation and Consent to Use of Likeness, Voice, and Performance <a class="art__link" href="#art-14" aria-label="Link to Article 14">#</a></h3>
+          <ol class="clauses">
+            <li>Tracks may include a member’s face, body, and voice, and their musical performance.</li>
+            <li><strong>By uploading a track to a post and joining a jam, a member is deemed to consent to the following:</strong>
+              <ol class="sub">
+                <li>The track being shown and played to other users within the Service</li>
+                <li><strong>The member’s track (including the member’s likeness, voice, and performance) being included in the combination</strong>
+                  when another member who joined the same post creates an Its</li>
+                <li>The creator of an Its so created saving it to their own device or sharing it outside the Service (such as on social media)</li>
+              </ol>
+            </li>
+            <li>The creator of an Its must <strong>include at least one track they uploaded themselves</strong>; an Its cannot be
+              created from other people’s tracks alone.</li>
+            <li>A member may withdraw consent to the future creation of Its by deleting their track. However, the withdrawal may not extend to Its that were
+              already created and saved to a device, or shared outside the Service, before the deletion.
+              <strong>Even if a member deletes their account, the member’s tracks included in Its created by other members are retained together with those Its,
+              and the member consents to this by joining a jam.</strong> Its created by the member themselves are handled in accordance with
+              <a class="ref" href="#art-7">Article 7(4), subparagraph 2</a>.</li>
+          </ol>
+        </section>
+
+        <section id="art-15">
+          <h3 class="art"><span class="art__no">Article 15</span>Members’ Obligations and Prohibited Acts <a class="art__link" href="#art-15" aria-label="Link to Article 15">#</a></h3>
+          <ol class="clauses">
+            <li>Members must comply with relevant laws, these Terms, and the guidance provided within the Service.</li>
+            <li>Members must not engage in any of the following acts:
+              <ol class="sub">
+                <li>Posting obscene material, sexually objectifying content, or any sexual content involving children or adolescents</li>
+                <li>Posting violent or gruesome content, or content that encourages self-harm or suicide</li>
+                <li>Hate, discrimination, disparagement, harassment, threats, or stalking directed at specific individuals or groups</li>
+                <li>Posting content that infringes the rights of others, such as copyright, portrait rights, or personal information (including footage of others recorded without their consent)</li>
+                <li>Impersonating others or spreading false information</li>
+                <li>Advertising, spam, repetitive posting, or mass posting of content unrelated to the purpose of the Service</li>
+                <li>Unauthorized access to the Service’s source code, servers, or APIs, reverse engineering, or fraudulent use by automated means</li>
+                <li><strong>Repeatedly sending messages that the other person does not want in a chat</strong>, sending advertising or spam to chat rooms,
+                  or disclosing the contents of a conversation externally without the other party’s consent</li>
+                <li>Misuse of the reporting feature (false or repeated reports)</li>
+                <li>Any other act that violates relevant laws or is contrary to good morals</li>
+              </ol>
+            </li>
+          </ol>
+        </section>
+
+        <section id="art-16">
+          <h3 class="art"><span class="art__no">Article 16</span>Zero-Tolerance Policy for Objectionable Content and Abusive Users <a class="art__link" href="#art-16" aria-label="Link to Article 16">#</a></h3>
+          <ol class="clauses">
+            <li><strong>The Operator applies a zero-tolerance policy to objectionable content and abusive users.</strong></li>
+            <li>Members may report posts, tracks, Its, <strong>messages</strong>, or users through the reporting feature within the Service.
+              Using the blocking feature under <a class="ref" href="#art-18">Article 18</a>, members may <strong>block one-on-one
+              conversations</strong> with a specific member; in chat rooms with multiple participants, the member remains in the room together with the
+              blocked member, but <strong>their messages are hidden from each other</strong>.
+              <!-- 2026-10-20 정정. 초안은 「특정 회원과의 채팅을 차단할 수 있습니다」였는데, 제2조에서 「채팅」에
+                   단체·스페이스 방을 포함시켰으므로 그 낱말로 쓰면 단체방에 대해 거짓이다 — 차단 판정은 1:1에만
+                   있다(ChattingGate: DIRECT가 아니면 차단 검사를 건너뛴다). 방을 통째로 닫으면 차단 한 번이
+                   남은 사람들의 대화에서 그 사람을 지우는 셈이 되어 그렇게 두지 않았다. 2026-09-23 리뷰. --></li>
+            <li><strong>Within 24 hours of receiving a report, the Operator will check the content concerned and, if it is confirmed to be objectionable content,
+              delete or hide it and exclude the user who posted it from the Service (suspension or permanent suspension).</strong>
+              Any review following the initial check will be completed within <strong>7 business days</strong> from the date the report was received.
+              <!-- 2026-09-01 추가. 24시간은 「확인·1차 조치」이고 영업일 7일은 「검토 종료」다 — 처리방침 제3조가
+                   삭제된 콘텐츠를 30일 보관하는 근거가 이 검토이므로, 검토 기간에 상한이 없으면 그 보관도 상한이
+                   없어진다(privacy.html 제8조 제2항이 이 조를 가리킨다). -->
+              </li>
+            <li>The Operator may operate pre- and post-screening measures to prevent objectionable content from being posted.
+              <strong>Messages are not subject to this paragraph</strong> — the Operator does not look into the contents of conversations
+              between members without a report (<a class="ref" href="#art-13">Article 13</a>(3)).</li>
+            <li>A member who objects to a measure taken under this Article may file an objection through <a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a>,
+              and the Operator will lift the measure if, upon review, there are justifiable grounds.</li>
+          </ol>
+        </section>
+
+        <section id="art-17">
+          <h3 class="art"><span class="art__no">Article 17</span>Reports of Rights Infringement and Takedown <a class="art__link" href="#art-17" aria-label="Link to Article 17">#</a></h3>
+          <ol class="clauses">
+            <li>A person who claims that their rights, such as copyright or portrait rights, are infringed by a member’s content (the &ldquo;Claimant&rdquo;)
+              may, by substantiating that claim, request that the Operator delete the content or suspend its posting.</li>
+            <li>Upon receiving a request under paragraph 1, the Operator will, in accordance with the procedures prescribed by relevant laws such as Article 103 of the Copyright Act,
+              <strong>delete the content or block access to it without delay</strong>, and notify the person who posted the content and the Claimant.</li>
+            <li>The person who posted the content may request that posting be resumed by substantiating that they hold legitimate rights, and the Operator will
+              handle the request in accordance with the procedures prescribed by relevant laws.</li>
+            <li>Channels for reporting rights infringement: the reporting feature within the Service or <a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a></li>
+          </ol>
+        </section>
+
+        <section id="art-18">
+          <h3 class="art"><span class="art__no">Article 18</span>User Blocking <a class="art__link" href="#art-18" aria-label="Link to Article 18">#</a></h3>
+          <ol class="clauses">
+            <li>Members may block other users, and content from a blocked user is not shown in the member’s feed, search, notifications, or elsewhere.
+              <strong>In chat, one-on-one conversations with that user are closed; in chat rooms with multiple participants, the two remain in the room together,
+              but their messages are hidden from each other.</strong> However, in rankings by part (instrument), ranks are shown regardless of any blocking between users.
+              <!-- 2026-10-01 추가. 랭킹은 차단 관계를 거르지 않는다(SessionRankingController 문서의 「목록 규약의 예외」).
+                   랭킹에도 차단 필터를 들이는 날 이 단서를 지우고 개인정보 처리방침 제4조 제4항도 함께 고칠 것. -->
+              <!-- 2026-10-20 추가. 제16조 제2항이 「제18조의 차단 기능으로 1:1 대화를 차단할 수 있다」고 가리키는데
+                   이 조가 채팅을 한 글자도 말하지 않아 근거가 비어 있었다(2026-09-23 리뷰). 항을 새로 두지 않고
+                   제1항을 넓힌 것은 제7조와 같은 이유다 — 번호가 밀리면 가리키는 자리들이 조용히 어긋난다. --></li>
+            <li>The other party is not separately notified of a block, and the member may unblock at any time.</li>
+          </ol>
+        </section>
+
+        <section id="art-19">
+          <h3 class="art"><span class="art__no">Article 19</span>Restrictions on Use <a class="art__link" href="#art-19" aria-label="Link to Article 19">#</a></h3>
+          <ol class="clauses">
+            <li>If a member violates these Terms or interferes with the normal operation of the Service, the Operator may, depending on the severity of the violation,
+              take measures such as a warning, deletion of content, restriction of features, temporary suspension, or permanent suspension, either in stages or immediately.
+              For a violation falling under <a class="ref" href="#art-16">Article 16</a>, the Operator may impose a permanent suspension immediately without going through stages.</li>
+            <li>When the Operator imposes a restriction on use, it will notify the member of the reason for and details of the restriction. However, where urgent action
+              is required, notice may be given after the measure is taken.</li>
+            <li>Members may object to a restriction on use, and if the objection is found to be justified, the Operator will lift the measure immediately.</li>
+            <li>During a suspension, the member cannot log in to the Service, and when they attempt to log in, the reason for the suspension and the date it ends are displayed.
+              <strong>Even if a member deletes their account during a suspension, the suspension period remains in effect</strong>, and during that period (up to 1 year) the member cannot sign up again
+              with the same social account (<a class="ref" href="#art-7">Article 7(6)</a>).</li>
+          </ol>
+        </section>
+
+        <h2 class="chap" id="ch-5"><span class="n">Chapter 5</span>Obligations and Liability</h2>
+
+        <section id="art-20">
+          <h3 class="art"><span class="art__no">Article 20</span>Obligations of the Operator <a class="art__link" href="#art-20" aria-label="Link to Article 20">#</a></h3>
+          <ol class="clauses">
+            <li>The Operator does not engage in acts prohibited by relevant laws or these Terms, and endeavors to provide the Service on a continuous and
+              stable basis.</li>
+            <li>To protect personal information, the Operator establishes and discloses the <a class="x" href="privacy.en.html">JAMIT Privacy Policy</a>
+              and complies with it.</li>
+            <li>If the Operator finds a member’s opinion or complaint to be justified, it will address it and inform the member of the progress.</li>
+          </ol>
+        </section>
+
+        <section id="art-21">
+          <h3 class="art"><span class="art__no">Article 21</span>Disclaimer <a class="art__link" href="#art-21" aria-label="Link to Article 21">#</a></h3>
+          <ol class="clauses">
+            <li>The Operator is not liable for disruptions to the use of the Service caused by natural disasters, force majeure, or reasons attributable to the member.</li>
+            <li>The Operator does not guarantee the reliability, accuracy, or lawfulness of content posted by members, and has no obligation to intervene in disputes
+              arising between members, or between a member and a third party, through content. However,
+              the Operator will perform its obligations to take measures under <a class="ref" href="#art-16">Article 16</a> and <a class="ref" href="#art-17">Article 17</a>
+              regardless.</li>
+            <li>The Operator is not liable for damages incurred by members in connection with services provided free of charge, unless it acted
+              intentionally or with gross negligence.</li>
+          </ol>
+        </section>
+
+        <section id="art-22">
+          <h3 class="art"><span class="art__no">Article 22</span>Compensation for Damages <a class="art__link" href="#art-22" aria-label="Link to Article 22">#</a></h3>
+          <ol class="clauses">
+            <li>If the Operator or a member causes damage to the other party by violating these Terms, it is liable to compensate for that damage.</li>
+            <li>If a third party raises an objection or files a lawsuit against the Operator because of a member’s violation of these Terms, that member must hold
+              the Operator harmless at the member’s own cost and responsibility, and must compensate the Operator for any damage incurred.</li>
+          </ol>
+        </section>
+
+        <h2 class="chap" id="ch-6"><span class="n">Chapter 6</span>Miscellaneous</h2>
+
+        <section id="art-23">
+          <h3 class="art"><span class="art__no">Article 23</span>Governing Law and Jurisdiction <a class="art__link" href="#art-23" aria-label="Link to Article 23">#</a></h3>
+          <ol class="clauses">
+            <li>These Terms and matters relating to the use of the Service are interpreted and applied in accordance with the laws of the Republic of Korea.</li>
+            <li>If a dispute arises between the Operator and a member in connection with the use of the Service, the parties will endeavor to resolve it through mutual consultation;
+              if no agreement is reached, a lawsuit may be filed with the court having jurisdiction under the Civil Procedure Act.</li>
+          </ol>
+        </section>
+
+        <section id="addendum">
+          <h3 class="art"><span class="art__no">Addendum</span>Effective Date <a class="art__link" href="#addendum" aria-label="Link to Addendum">#</a></h3>
+          <ol class="clauses">
+            <li>These Terms take effect on August 25, 2026.</li>
+            <li>Amendment of October 20, 2026 — This amendment reflects the <strong>chat</strong> feature, through which members exchange messages with one another.
+              Definitions of chat and message were added to <a class="x" href="#art-2">Article 2</a>, and messages were included in the definition of &ldquo;content&rdquo;;
+              chat was added to the description of the Service in <a class="x" href="#art-8">Article 8</a> and to the notifications in <a class="x" href="#art-10">Article 10</a>;
+              prohibited acts in chat were added to <a class="x" href="#art-15">Article 15</a>;
+              and messages were added to the items that can be reported under <a class="x" href="#art-16">Article 16</a>.
+              To match the name used on app screens, the Korean term for posts was changed from &ldquo;게시글&rdquo; to &ldquo;모집글&rdquo;; it refers to the same thing.
+              <strong>The license in <a class="x" href="#art-13">Article 13</a>(1) does not apply to messages</strong>
+              — the Operator processes messages only to the extent of delivering and storing them and reviewing reported messages, and does not subject them to
+              internal viewing or analysis for improving the Service (Article 13(3), newly added).
+              <strong>Also corrected</strong> — the wording on unlinking social logins in <a class="x" href="#art-7">Article 7</a>(2) was aligned with
+              actual processing (for an Apple account, account deletion is processed only once the unlink has been completed);
+              <a class="x" href="#art-18">Article 18</a>(1) now states that ranks are shown in rankings by part regardless of any blocking between users;
+              the sign-up order in <a class="x" href="#art-5">Article 5</a>(1) was aligned with the actual order in the app (agreement after social login);
+              and a link to the YouTube Terms of Service, together with a statement that members agree to those terms by using the Service, was added to <a class="x" href="#art-9">Article 9</a>(1). This does not change what is processed; the wording did not match the facts or had been omitted.
+              Notice of this amendment was given in advance beginning September 18, 2026,
+              and it takes effect on October 20, 2026. On the same date, the
+              <a class="x" href="privacy.en.html">Privacy Policy</a> is also amended. However, for members who agree to the
+              amended Terms in the app before then, the amended Terms apply from the time they agree.
+              <!-- 2026-10-01 추가. 2.0.0 은 강제 업데이트와 함께 재동의(PRIVACY_VERSION·TERMS_VERSION = 2026-10-20)를 받으며
+                   나간다. 출시가 시행일보다 빠르면 개정본에 직접 동의한 회원에게는 그때부터 적용한다 — 30일 고지는 「동의 없이
+                   바뀐 조건이 적용되는 것」을 막는 장치라 명시적 동의가 있으면 그보다 강하다. 출시 당일 순서: 이 문서 머지 →
+                   버전값 변경 → 강제 업데이트(머지 전에 버전을 올리면 옛 문서에 동의받는다). -->
+              <!-- 메시지를 「콘텐츠」에 넣으면 제15·16·17조가 채팅에 닿고, 동시에 제13조 이용허락도 닿는다.
+                   전자는 필요하고 후자는 안 된다 — 그래서 제13조에 단서를 신설했다. 둘 중 하나만 하면
+                   「사적 대화를 운영자가 분석할 수 있다」거나 「채팅에서 벌어지는 일에 약관이 닿지 않는다」가 된다. --></li>
+          </ol>
+        </section>
+
+        <nav class="also" aria-label="See also">
+          <p class="eyebrow">See also</p>
+          <div class="also__list">
+            <a href="privacy.en.html">
+              <b>Privacy Policy</b>
+              <span>What we collect, retention periods, outsourcing and overseas transfers, and how to exercise your rights</span>
+            </a>
+            <a href="index.html">
+              <b>Back to JAMIT</b>
+              <span>Record on your own, and the jam comes together</span>
+            </a>
+          </div>
+        </nav>
+
+      </article>
+    </div>
+
+    <footer>
+      <p>&copy; 2026 JamIT</p>
+      <nav aria-label="Footer">
+        <a href="index.html">Home</a>
+        <a href="terms.en.html" aria-current="page">Terms</a>
+        <a href="privacy.en.html">Privacy Policy</a>
+        <a href="#top">Back to top</a>
+      </nav>
+    </footer>
+
+  </div>
+</main>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// 목차 — 지금 읽고 있는 조문을 따라간다
+// ══════════════════════════════════════════════════════════
+(() => {
+  const toc = document.getElementById("toc");
+  const cs  = getComputedStyle(document.documentElement);
+  // 고정 머리 높이는 CSS가 진실이다. 여기서 숫자를 다시 적으면 둘이 어긋난다
+  const off = parseFloat(cs.getPropertyValue("--topbar")) + parseFloat(cs.getPropertyValue("--strip"));
+
+  // 좁은 화면에서는 목차가 접혀 있어야 한다. JS가 없으면 펼쳐진 채로 두는 편이 안전해서
+  // 마크업은 open으로 두고, 접는 일만 여기서 한다
+  const wide = matchMedia("(min-width:900px)");
+  // embed(앱 시트)는 폭이 넓어도 사이드바 레이아웃이 아니다 — 늘 접어 둔다.
+  const inSheet = document.documentElement.classList.contains("embed");
+  const sync = () => { toc.open = wide.matches && !inSheet; };
+  sync();
+  wide.addEventListener("change", sync);
+  toc.querySelectorAll("a").forEach((a) => {
+    a.addEventListener("click", () => { if (!wide.matches) toc.open = false; });
+  });
+
+  // **시트에서는 목차 점프가 히스토리를 늘리면 안 된다.** 앵커 링크는 WKWebView의 back-forward
+  // list에 항목을 쌓는데, 시트는 뒤로 스와이프와 「뒤로」 버튼이 `canGoBack`을 읽는다 — 목차를
+  // 몇 번 누르면 그 둘이 **문서가 아니라 스크롤 위치**로 되돌아가고, 사용자에게는 「뒤로가 안
+  // 먹는」 화면이 된다. `replaceState`라 주소는 남고 히스토리는 그대로다.
+  // 웹(비-embed)은 손대지 않는다 — 브라우저 뒤로가기가 앵커를 되짚는 건 정상 동작이다.
+  if (document.documentElement.classList.contains("embed")) {
+    toc.addEventListener("click", (e) => {
+      const a = e.target.closest("a[href^='#']");
+      if (!a) return;
+      e.preventDefault();
+      const href = a.getAttribute("href");
+      document.getElementById(href.slice(1))?.scrollIntoView({ block: "start" });
+      history.replaceState(null, "", href);
+      toc.open = false;
+    });
+  }
+
+  const heads = [...document.querySelectorAll(".prose h2.chap[id], .prose section[id]")];
+  const links = new Map();
+  toc.querySelectorAll("a[href^='#']").forEach((a) => links.set(a.getAttribute("href").slice(1), a));
+  const panel = toc.querySelector(".toc__list");
+
+  let cur = null, ticking = false;
+  function spy(){
+    ticking = false;
+    document.body.classList.toggle("scrolled", scrollY > 8);
+
+    let hit = null;
+    for (const h of heads){
+      if (h.getBoundingClientRect().top <= off + 24) hit = h; else break;
+    }
+    // 맨 아래에 닿으면 마지막 조문을 가리킨다 — 짧은 조문은 위 기준을 못 넘긴다
+    if (scrollY + innerHeight >= document.documentElement.scrollHeight - 4) hit = heads[heads.length - 1];
+    if (hit === cur) return;
+    cur = hit;
+
+    links.forEach((a) => a.classList.remove("on"));
+    const a = hit && links.get(hit.id);
+    if (!a) return;
+    a.classList.add("on");
+    // 목차가 스스로 스크롤되는 경우에만 따라 움직인다. 페이지는 건드리지 않는다
+    if (wide.matches && panel.scrollHeight > panel.clientHeight + 4){
+      const y = a.offsetTop - panel.clientHeight / 2 + a.offsetHeight / 2;
+      panel.scrollTop = Math.max(0, y);
+    }
+  }
+  addEventListener("scroll", () => { if (!ticking){ ticking = true; requestAnimationFrame(spy); } }, {passive:true});
+  addEventListener("resize", spy, {passive:true});
+  spy();
+})();
+</script>
+</body>
+</html>
