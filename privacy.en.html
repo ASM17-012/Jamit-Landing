@@ -450,8 +450,8 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
           <strong>The operator checks messages only when a report is received, and only the reported message and a few
           messages before and after it.</strong>
           <a class="x" href="#art-3">Article 3</a>·<a class="x" href="terms.en.html#art-13">Terms of Service Article 13</a></li>
-        <li>To operate the service, we entrust processing to AWS, Google, Microsoft, and HubSpot, and some information is
-          <strong>transferred to the United States</strong>. <a class="x" href="#art-5">Article 5</a>·<a class="x" href="#art-6">Article 6</a></li>
+        <li>To operate the service, we entrust processing to AWS, Google, Microsoft, HubSpot, Slack, and Grafana Labs, and some information is
+          <strong>transferred to the United States and Japan</strong>. <a class="x" href="#art-5">Article 5</a>·<a class="x" href="#art-6">Article 6</a></li>
         <li><strong>The app uses Google Firebase Analytics to see which screens and features are used and how
           often.</strong> This is not linked to your member account, and we do not collect advertising identifiers.
           <strong>Collection stops when you delete the app.</strong>
@@ -515,11 +515,14 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
             <li><strong>Provision of the Service</strong>: posting and playback of jam posts, tracks, and Its; automatic sync
               correction of tracks and compositing of Its; features for saving Its to a device and sharing them externally;
               display of profiles; delivery and storage of <strong>chats between members</strong> (one-on-one chats and chat
-              rooms with multiple participants) and display of read status; and determination and display of
-              <strong>achievements and levels</strong>
+              rooms with multiple participants) and display of read status; determination and display of
+              <strong>achievements and levels</strong>; and display of <strong>rankings</strong> by part (instrument)
               <!-- 업적·레벨은 종전부터 제공해 온 기능인데 이 조에 기재가 없었다(2026-10-20 정정) — 처리 내용이
                    바뀐 것이 아니라 빠져 있던 것을 적는 것이다. 제3조의 숏폼 시청 기록 보유 근거가 이 호를
-                   가리키므로, 그 행을 적으면서 함께 드러났다(GamificationService.onViewLogged). --></li>
+                   가리키므로, 그 행을 적으면서 함께 드러났다(GamificationService.onViewLogged). -->
+              <!-- 랭킹도 같은 정정이다(2026-10-01 대조) — 2026-08-28 부터 악기별 누적 XP 순위(SessionRankingController)와
+                   전체·월간·주간 순위(RankingController, RankingPeriod)를 다른 회원에게 보여 왔는데 어디에도 없었다.
+                   보이는 항목은 제4조 제4항이 적는다. --></li>
             <li><strong>Sending notifications</strong>: sending push notifications related to use of the Service, such as joining a jam or publishing an Its</li>
             <li><strong>User protection and operation of the Service</strong>: receiving and handling reports (<strong>when a
               message is reported, the Operator checks the reported message and, from the same chat room, up to 5
@@ -605,8 +608,12 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                     <!-- 앱이 트랙 등록 요청에 싣는 recordingDiagnostics(iOS RecordingDiagnostics, Backend Track.recording_diagnostics).
                          서버는 필드를 거르지 않는다 — iOS·Android 모두 이 목록을 넘지 말 것(블루투스 이름은 제품군으로만).
                          파기는 보관 만료 배치의 행 삭제, 행이 남는 트랙은 Track.destroyMedia 가 진단을 비운다. -->
-                    <tr><td>Automatic collection</td><td>In the course of using the app</td><td>Google Firebase Analytics — a randomly generated app instance identifier, usage events automatically collected by Google Analytics such as app installation, launch, and sessions, and usage events designated by the Operator (login, sign-up, tab view, track registration, Its publication) and their associated items (login method, track registration path), push notification receipt and open records, device information (model name, OS version, app version, language, screen information, etc.), access IP address and the country and region estimated from it</td><td>Automatically collected</td></tr>
+                    <tr><td>Automatic collection</td><td>In the course of using the app</td><td>Google Firebase Analytics — a randomly generated app instance identifier, usage events automatically collected by Google Analytics such as app installation, launch, and sessions, and usage events designated by the Operator (login, sign-up, tab view, track registration, Its publication, message sending) and their associated items (login method, track registration path), push notification receipt and open records, device information (model name, OS version, app version, language, screen information, etc.), access IP address and the country and region estimated from it</td><td>Automatically collected</td></tr>
+                    <!-- 「메시지 전송」은 iOS·Android 의 dm_sent(파라미터 없음, 채팅과 함께 2026-09-16 들어옴)다 — 4차 개정 초안이
+                         지정 이벤트 목록에서 빠뜨렸다(2026-10-01 대조). 이벤트를 더하는 날 제6조 표·제10조 제1항과 함께 고칠 것. -->
                     <tr><td>Reports and inquiries</td><td>Receipt of reports, customer inquiries, sync fix requests</td><td>Information contained in the report or inquiry, the track for which a sync fix was requested, and the time of the request<br><small>Sync fix requests are used by the Operator to check and correct the sync of tracks (Article 1, subparagraphs 2 and 4); they are visible only to the Operator, and are retained and destroyed together with the relevant track</small></td><td>When applicable</td></tr>
+                    <!-- 싱크 보정 요청(FEV-1075, 2026-09-28): 본문 없는 POST 라 요청한 회원·트랙·시각만 남는다(SyncFixRequest).
+                         트랙 행과 함께 지워지고 보관 만료 배치에서도 걷힌다. 영어·일본어판이 먼저 적었고 정본에만 빠져 있었다. -->
                     <!-- 싱크 보정 요청은 Backend SyncFixRequest(sync_fix_requests) — 트랙 행이 하드 삭제되면 DB가 연쇄 삭제한다(@OnDelete CASCADE). -->
                     <tr><td>Pre-registration</td><td>Signing up for launch notifications on the website</td><td>Email</td><td>Optional</td></tr>
                     <tr><td>Website use</td><td>Visiting the website (jamit.kr)</td><td>Visit records, on-screen movement (navigation, clicks, scrolling), cookies, browser and device information</td><td>Automatically collected</td></tr>
@@ -732,22 +739,35 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                    (FEV-543) — 그 문장이 없으면 남은 게시글에서 영상이 사라지는 이유를 이용자가 알 길이 없다. -->
             </li>
             <li><strong>Content is also kept for 30 days when it is deleted without the member deleting their account.</strong>
-              This includes cases where a member deletes tracks, Its, or posts themselves, leaves or is removed from a
-              Space shared by multiple members, or that Space is deleted. In any of these cases, the content becomes
+              This includes cases where a member deletes tracks, Its, or posts themselves; where a member leaves or is
+              removed from a Space shared by multiple members and the tracks and Its they uploaded to that Space are
+              deleted; and where the last member leaves a Space so that the Space ceases to exist and the content in it is
+              deleted. In any of these cases, the content becomes
               invisible in the Service immediately and can no longer be seen by other users. However, to prevent reported
               content from being deleted first by the person concerned so that it cannot be reviewed, it is kept in a state
               accessible only to the Operator for 30 days from the date of deletion and then destroyed, including the
               video and audio files.
+              <p>If you leave or are removed from a Space, <strong>the posts you wrote in that Space are not
+              deleted</strong>; the author is shown as “Left user,” and they remain visible to the remaining members. A
+              reference video you uploaded to such a post also remains with it, and when the Space ceases to exist, they
+              are deleted as described above and destroyed 30 days later.</p>
+              <!-- 2026-10-01 정정. 초안은 나가기·강퇴를 「삭제」와 한 줄에 묶어 모집글까지 지워지는 것처럼 읽혔는데,
+                   SpaceLeavePurger.purgeLeaver 는 잇츠·트랙만 지우고 글은 detachAuthor 로 표식만 남긴다
+                   (PostUserResponse.LEFT_NICKNAME). 기준 영상은 나가는 사람의 REFERENCE_COPY 트랙과 같은 S3 객체라
+                   글과 함께 남는다. 스페이스 「삭제」는 따로 없고 마지막 멤버가 나갈 때 purgeContents 가 전부 지운다.
+                   나가기에서 기준 영상을 떼어 내도록 바꾸는 날 이 문단을 함께 고칠 것. -->
               <p>If another user was using the member’s track in their own Its, <strong>that participation record is
               deleted at the same time as the deletion.</strong> This means the member’s nickname and profile photo
               disappear from the list of participants in that Its. However, faces and voices contained in a jam video
               that has already been made are part of the video itself and cannot be removed.</p>
               <p>On the other hand, <strong>likes and viewing history left by other users</strong> on a deleted Its are
-              not deleted with it. These records are not information about the member who deleted the content but
-              information about the other users who left them, and they are used to check how far the content was
-              exposed when a report is received, and for the personalized recommendations of the users who left those
-              records. These records are destroyed when the user who left them deletes their account, and viewing
-              history is, separately, deleted automatically after 90 days.</p>
+              not deleted as soon as the Its is deleted. These records are not information about the member who deleted
+              the content but information about the other users who left them, and they are used to check how far the
+              content was exposed when a report is received and to determine the achievements of the users who left those
+              records. Viewing history is also used for that user’s own personalized recommendations (to move songs they
+              have already watched further back). These records are destroyed together with the Its when it is destroyed
+              (30 days from the date of deletion), or, if the user who left them deletes their account before then, at
+              that time. Separately, viewing history is deleted automatically after 90 days.</p>
               <!-- 2026-09-01 신설. FEV-506 은 사용자 삭제·나가기·강퇴·방 삭제·탈퇴 다섯 경로를 모두 바꿨는데
                    방침에는 탈퇴 축(제3항)밖에 없었다 — 앱에서 그냥 지우는 쪽이 훨씬 흔하고, 제8조 제2항이 그것을
                    「권리 행사」로 명시하고 있어 명문화가 필요했다.
@@ -801,7 +821,13 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               Its, etc.) posted by a user are made public to other users within the Service, and tracks that take part in a
               jam may, in accordance with the functions of the Service, be combined into other participants’ Its and saved
               to a device or shared externally. Detailed conditions for this are governed by
-              <a class="x" href="terms.en.html#art-13">Terms of Service Article 13</a> and <a class="x" href="terms.en.html#art-14">Article 14</a>.</li>
+              <a class="x" href="terms.en.html#art-13">Terms of Service Article 13</a> and <a class="x" href="terms.en.html#art-14">Article 14</a>.
+              In addition, in the <strong>rankings</strong> by part (instrument) (overall, monthly, and weekly), the
+              member’s nickname, profile photo, experience points (XP), level, tier, and rank are shown to other users,
+              regardless of whether either user has blocked the other.
+              <!-- 2026-10-01 추가. 랭킹 응답(RankingResponse·RankingsResponse)이 userId·닉네임·프로필 사진·XP·레벨·티어를
+                   싣고, 차단 관계를 거르지 않는다(SessionRankingController 문서의 「목록 규약의 예외」). 랭킹에서 빠지는
+                   설정은 없다 — 만드는 날 이 문장에 적을 것. --></li>
           </ol>
         </section>
 
@@ -836,6 +862,19 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                       <td>Receipt and storage of website pre-registration (launch notification) sign-ups</td>
                       <td>See <a class="ref" href="#art-6">Article 6</a> Cross-border transfer</td>
                     </tr>
+                    <tr>
+                      <td>Slack Technologies, LLC</td>
+                      <td>Work messenger (Slack) used to notify the Operator of receipt of reports</td>
+                      <td>See <a class="ref" href="#art-6">Article 6</a> Cross-border transfer</td>
+                    </tr>
+                    <tr>
+                      <td>Raintank, Inc. (Grafana Labs)</td>
+                      <td>Monitoring of service failures and performance (Grafana Cloud) — querying and displaying server logs and metrics</td>
+                      <td>See <a class="ref" href="#art-6">Article 6</a> Cross-border transfer</td>
+                    </tr>
+                    <!-- 2026-10-01 추가. Grafana Cloud 스택(playfulpuma1416)이 IAM 역할로 CloudWatch 지표와 /ecs/jamit-*·
+                         /aws/lambda/jamit-* 로그를 조회한다(Infra modules/grafana-access, FEV-1058 2026-09-28·FEV-1148).
+                         그 로그에 회원 식별번호가 실린다. 로그에서 식별자를 걷어 내면 이 행과 제6조 행을 함께 뺄 수 있다. -->
                   </tbody>
                 </table>
               </div>
@@ -856,23 +895,28 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
         <section id="art-6">
           <h2 class="art"><span class="art__no">Article 6</span>Cross-border transfer of personal information <a class="art__link" href="#art-6" aria-label="Link to Article 6">#</a></h2>
           <p>
-            To use service infrastructure, the Operator transfers personal information overseas (by entrustment or
-            storage) as follows. Data subjects may refuse the cross-border transfer, but in that case use of all or part of
-            the Service (such as push notifications) may be restricted.
-            How to stop the collection of app usage statistics information is described in <a class="x" href="#art-10">Article 10</a>.
+            To provide and operate the Service, the Operator transfers personal information overseas (by entrustment or
+            storage) as follows. Data subjects may refuse the cross-border transfer by making a request to
+            <a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a>. However, app usage statistics information
+            and website usage analysis information are not linked to member accounts and cannot be singled out upon
+            request, so you can stop them by the methods in <a class="x" href="#art-10">Article 10</a> (deleting the app,
+            refusing cookies in your browser). If you refuse, use of all or part of the Service (such as push
+            notifications) may be restricted, or the handling of reports may be delayed.
           </p>
           <div class="tw tw--wide">
             <table>
-              <caption class="sr-only">Recipients, countries, items, methods, purposes, and retention periods of personal information transferred overseas</caption>
+              <caption class="sr-only">Recipients and their contacts, countries, items, methods, purposes, and retention periods of personal information transferred overseas</caption>
               <thead>
                 <tr>
-                  <th scope="col">Recipient</th><th scope="col">Country of transfer</th><th scope="col">Items transferred</th>
+                  <th scope="col">Recipient (contact)</th><th scope="col">Country of transfer</th><th scope="col">Items transferred</th>
                   <th scope="col">Timing and method of transfer</th><th scope="col">Purpose of use</th><th scope="col">Retention period</th>
                 </tr>
               </thead>
               <tbody>
+                <!-- 연락처는 개인정보 보호법 제28조의8 제2항 제4호의 기재사항이다(2026-10-01 추가). 각 사 개인정보처리방침에서
+                     옮겼다 — Google 은 한국어판의 문의 주소, Microsoft 는 개인정보 문의 양식, 나머지는 개인정보 문의 이메일. -->
                 <tr>
-                  <td>Google LLC (Firebase)</td>
+                  <td>Google LLC (Firebase)<br><small>googlekrsupport@google.com</small></td>
                   <td>United States</td>
                   <td>Device push token (FCM), device information transmitted in the FCM registration process (model name, OS version, app version), the title and body of push notifications (depending on the type of notification, these include another member’s nickname and the title of the relevant post or the name of a Space, and <strong>chat notifications include the sending member’s nickname and the beginning of the message content</strong>), and identifiers of the notification and the relevant content</td>
                   <td>Transmission over the network when using the Service</td>
@@ -880,9 +924,9 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                   <td>Until account deletion or invalidation of the token</td>
                 </tr>
                 <tr>
-                  <td>Google LLC (Firebase Analytics)</td>
+                  <td>Google LLC (Firebase Analytics)<br><small>googlekrsupport@google.com</small></td>
                   <td>United States</td>
-                  <td>A randomly generated app instance identifier, usage events automatically collected by Google Analytics such as app installation, launch, and sessions, and usage events designated by the Operator (login, sign-up, tab view, track registration, Its publication) and their associated items (login method, track registration path), push notification receipt and open records, device information (model name, OS version, app version, language, screen information, etc.), access IP address and the country and region estimated from it</td>
+                  <td>A randomly generated app instance identifier, usage events automatically collected by Google Analytics such as app installation, launch, and sessions, and usage events designated by the Operator (login, sign-up, tab view, track registration, Its publication, message sending) and their associated items (login method, track registration path), push notification receipt and open records, device information (model name, OS version, app version, language, screen information, etc.), access IP address and the country and region estimated from it</td>
                   <td>Transmission over the network when using the app</td>
                   <td>App usage statistics analysis and service improvement</td>
                   <td>Event- and device-level data: up to 14 months from the date of collection (the maximum of the Google Analytics data retention setting); aggregate statistics that cannot identify individuals are retained even after that</td>
@@ -891,7 +935,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                      2개월이면 이 문구는 상한으로서 여전히 참이지만, 정확히 적고 싶으면 콘솔 값을 확인해 제3조 제6항과
                      함께 고칠 것. 항목 문구는 제2조 표·제10조 제1항과 글자 단위로 같아야 한다. -->
                 <tr>
-                  <td>Microsoft Corporation</td>
+                  <td>Microsoft Corporation<br><small><a class="x" href="https://go.microsoft.com/fwlink/?linkid=2126612">Privacy inquiry form</a></small></td>
                   <td>United States</td>
                   <td>Website visit records, on-screen movement, cookies, browser and device information</td>
                   <td>Transmission over the network when visiting the website</td>
@@ -899,13 +943,34 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                   <td>1 year from the date of collection (Microsoft Clarity retention policy)</td>
                 </tr>
                 <tr>
-                  <td>HubSpot, Inc.</td>
+                  <td>HubSpot, Inc.<br><small>privacy@hubspot.com</small></td>
                   <td>United States</td>
                   <td>Email submitted for pre-registration</td>
                   <td>Transmission over the network when signing up for pre-registration</td>
                   <td>Sending launch notifications</td>
                   <td>Destroyed without delay after the launch notification is sent</td>
                 </tr>
+                <tr>
+                  <td>Slack Technologies, LLC<br><small>privacy@slack.com</small></td>
+                  <td>United States</td>
+                  <td>Report number, the type and identifier of the reported item, the identifier of the reported member (the member who uploaded the content or message, or the member who was reported), the reason for the report, the identifier of the reporting member, the details of the report (first 200 characters), and the number of reports accumulated for the same item</td>
+                  <td>Transmission over the network when a report is received</td>
+                  <td>Notifying the Operator of receipt of reports</td>
+                  <td>1 year from the date of transmission</td>
+                </tr>
+                <tr>
+                  <td>Raintank, Inc. (Grafana Labs)<br><small>dsr-privacy@grafana.com</small></td>
+                  <td>Japan</td>
+                  <td>Server logs (mainly error and warning records; may include member identification numbers, request paths, etc.), service metrics (number of requests, response times, error rates, etc.)</td>
+                  <td>Transmission over the network when the Operator views the monitoring screens</td>
+                  <td>Detection of and response to service failures, and performance monitoring</td>
+                  <td>Processed only while query results are displayed on screen and not stored separately (original logs are kept in the AWS Seoul Region for up to 14 days)</td>
+                </tr>
+                <!-- 2026-10-01 추가. 국가는 스택 리전(Grafana Cloud prod-ap-northeast-0 = AWS 일본)이다 — staging 의 OTLP
+                     엔드포인트(Infra environments/staging/variables.tf otlp_metrics_url)로 확인했다. 운영 로그는 Grafana 가
+                     CloudWatch 를 조회할 때만 넘어가고(대시보드 jamit-overview 의 원문 패널), prod 의 OTLP 지표 전송은 꺼져
+                     있다(otlp_metrics_enabled 기본 false). prod OTLP 를 켜면 지표가 Grafana Cloud 에 저장되므로 보유 기간
+                     칸을 그 스택의 보존 기간으로 고칠 것. -->
               </tbody>
             </table>
           </div>
@@ -931,12 +996,21 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
             <li>Methods of destruction: information in the form of electronic files is deleted using technical methods that
               make recovery or reproduction impossible, and paper documents are shredded or incinerated.</li>
             <li>Upon account deletion, the social login linkage information held by the Operator is destroyed, and
-              disconnection from each platform is also requested
-              (for Apple, by the Operator’s server; for Kakao and Google, by the app). Even if a disconnection request fails
-              due to a network error or the like, the linkage information held by the Operator is destroyed, and you may
-              also disconnect directly in each platform’s account settings.
+              disconnection from each platform is also handled.
+              For Apple, the Operator’s server requests disconnection, and <strong>account deletion is processed only once
+              the disconnection from Apple has been completed</strong> (if the disconnection request fails, account deletion
+              does not proceed, and you may try again). For Kakao, the app requests disconnection; for Google, the iOS app
+              requests disconnection, while the Android app only clears the sign-in state on the device.
+              Even if a disconnection request to Kakao or Google fails due to a network error or the like, the linkage
+              information held by the Operator is destroyed, and you may disconnect any remaining connection directly in
+              each platform’s account settings.
               <!-- 2026-09-01 정정: 셋 다 보장되는 것처럼 읽혔으나 서버가 확실히 하는 것은 Apple revoke 뿐이고
                    카카오·구글은 앱 SDK 의 베스트에포트다. -->
+              <!-- 2026-10-01 정정: ① Apple revoke 가 실패하면 UserWithdrawalService.withdraw 가 예외로 끝나 DB 를 건드리지
+                   않는다 — 「실패해도 파기」는 Apple 에는 맞지 않았다. ② Android 의 구글은 revoke 가 아니라
+                   ClearCredentialStateRequest(기기의 자격 증명 상태 정리)뿐이다(SocialDisconnect, Credential Manager 에
+                   revoke API 가 없음). iOS 는 GIDSignIn.disconnect 로 실제 revoke 를 보낸다. Android 에 revoke 를
+                   들이는 날 이 문장과 이용약관 제7조 제2항을 함께 고칠 것. -->
               </li>
           </ol>
         </section>
@@ -1005,7 +1079,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
           <ol class="clauses">
             <li>The <strong>app</strong> does not use web browser cookies and does not collect advertising identifiers (IDFA)
               for targeted advertising. However, it uses <strong>Google Firebase Analytics</strong> to understand which
-              screens and features are used and how often, in order to improve the Service. In this process, a randomly generated app instance identifier, usage events automatically collected by Google Analytics such as app installation, launch, and sessions, and usage events designated by the Operator (login, sign-up, tab view, track registration, Its publication) and their associated items (login method, track registration path), push notification receipt and open records, device information (model name, OS version, app version, language, screen information, etc.), access IP address and the country and region estimated from it are
+              screens and features are used and how often, in order to improve the Service. In this process, a randomly generated app instance identifier, usage events automatically collected by Google Analytics such as app installation, launch, and sessions, and usage events designated by the Operator (login, sign-up, tab view, track registration, Its publication, message sending) and their associated items (login method, track registration path), push notification receipt and open records, device information (model name, OS version, app version, language, screen information, etc.), access IP address and the country and region estimated from it are
               transmitted to Google (<a class="x" href="#art-2">Article 2</a>·<a class="x" href="#art-6">Article 6</a>).
               This information is not linked to member accounts (email, nickname, etc.) and is not used for advertising
               purposes. Error collection tools such as Crashlytics are not used.
@@ -1183,14 +1257,14 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               <!-- 즉시 시행 근거는 2차 개정과 같다 — 서비스 출시 전이라 종전 방침에 동의한 이용자가 없다. 다만 이번은
                    2차와 달리 **항목이 늘어나는** 개정이라, 출시 뒤였다면 제14조 제1항의 30일 전 고지 대상이다.
                    ⚠️ 출시 뒤에 항목·목적을 늘리는 개정은 반드시 30일 전 고지부터 하고 시행일을 뒤로 잡을 것. --></li>
-            <li>Correction of September 18, 2026 — We reflected in <a class="x" href="#art-6">Article 6</a> the fact that
+            <li>Correction of September 16, 2026 — We reflected in <a class="x" href="#art-6">Article 6</a> the fact that
               the items transferred to Google (Firebase) to send notifications include <strong>the title and body of
               notifications</strong>. Depending on the type of notification, the notification banner contains another
               member’s nickname and the title of the relevant post or the name of a Space, but the previous table listed
               only the device push token and device information.
               <strong>This does not change what is processed; it corrects a statement that did not match the facts, and
               does not increase the items collected or the purposes of processing.</strong> This correction applies from
-              September 18, 2026.
+              September 16, 2026.
               <!-- 4차 개정(2026-10-20 시행)과 일부러 분리해 오늘 반영한다 — 틀린 기재를 30일 더 「현행」으로 두는 것이
                    30일 고지 원칙을 지키는 것보다 나쁘다고 봤다(2026-09-16 결정). 채팅 메시지 발췌가 실리는 것은 채팅
                    기능이 켜진 뒤의 일이라 여기 적지 않는다 — 그건 4차 개정 본문이 다룬다. --></li>
@@ -1198,9 +1272,10 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               <strong>chats between members</strong>.
               We added subparagraph 6 (personalized recommendations) to <a class="x" href="#art-1">Article 1</a> and
               added chat to subparagraph 2 (provision of the Service); added preferred genres, chat messages, and records
-              of post views, genre filter selections, and Its viewing history to the items collected in
-              <a class="x" href="#art-2">Article 2</a>; added to <a class="x" href="#art-3">Article 3</a> the retention
-              period for those records (90 days from the date of collection) and the retention period for deleted chat
+              of post views and genre filter selections to the items collected in
+              <a class="x" href="#art-2">Article 2</a> and specified Its viewing history there; added to
+              <a class="x" href="#art-3">Article 3</a> the retention period for records of post views and genre filter
+              selections (90 days from the date of collection) and the retention period for deleted chat
               messages (30 days from the date of deletion or account deletion), and clarified how messages are handled upon
               account deletion.
               We added <strong>the beginning of message content included in chat notifications</strong> to the items
@@ -1209,15 +1284,33 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               the automatically collected items in <a class="x" href="#art-2">Article 2</a>; this information is retained
               and destroyed together with the relevant track. In the same Article, we specified <strong>records of sync fix
               requests</strong> in the items for reports and inquiries; these records are also retained and destroyed
-              together with the relevant track. To match the names used on the app screens, we changed the
+              together with the relevant track. We added <strong>message sending</strong> to the usage events designated
+              by the Operator in <a class="x" href="#art-2">Article 2</a>, <a class="x" href="#art-6">Article 6</a>, and
+              <a class="x" href="#art-10">Article 10</a>. To match the names used on the app screens, we changed the
               Korean term for posts from “게시글” to “모집글”; they refer to the same thing.
               <strong>Also corrected</strong> — In <a class="x" href="#art-1">Article 1</a>, subparagraph 2, we listed
-              achievements and levels, which have been provided since before. This does not change what is processed; it
-              had been omitted.
+              achievements and levels, which have been provided since before, and rankings by part (the items shown in
+              rankings are set out in <a class="x" href="#art-4">Article 4</a>, paragraph 4); in
+              <a class="x" href="#art-5">Article 5</a> and <a class="x" href="#art-6">Article 6</a>, we listed Slack
+              (United States), which has been used to notify the Operator of receipt of reports, and Grafana Labs (Japan),
+              which has been used to monitor service failures; and we added the contacts of the recipients to the table in
+              <a class="x" href="#art-6">Article 6</a>. In <a class="x" href="#art-3">Article 3</a>, we corrected the
+              statements that likes and viewing history remaining on a deleted Its are destroyed together with that Its
+              and are also used to determine achievements, and that if a member leaves or is removed from a Space, the
+              posts they wrote in that Space and the reference videos remain; and in <a class="x" href="#art-7">Article 7</a>,
+              we corrected the statements that account deletion is processed only once the disconnection from Apple has been
+              completed, and that for Google accounts the Android app only clears the sign-in state on the device.
+              This does not change what is processed; these had been omitted or did not match the facts. However, Slack
+              report notifications previously also included the member’s nickname; they now include only the member’s
+              identifier, and the earlier notifications that included nicknames have been deleted.
               <strong>This revision increases the items collected and the purposes of processing</strong>; we gave
               advance notice of it on this page from September 18, 2026, and this revision takes effect on October 20, 2026.
-              <strong>Track recording diagnostic information and records of sync fix requests were not included in that
-              notice</strong>, and we are informing you of them together with this revision.
+              <strong>Track recording diagnostic information, records of sync fix requests, and the message sending event
+              were not included in that notice</strong>, and we are informing you of them together with this revision.
+              The above correction of September 16, 2026 was actually posted on this page on September 18, 2026.
+              <!-- 2026-10-01 dev 전체(iOS·Android·Backend·AI)와 Infra 대조에서 나온 것을 이 개정에 함께 실었다.
+                   싱크 보정 요청(FEV-1075)·메시지 전송 이벤트(dm_sent)는 2.0.0 과 함께 나가는 처리라 「고지에 포함되지
+                   않았다」 쪽에, 랭킹·Grafana·연락처·스페이스 나가기·연결 해제는 이미 하던 처리라 「바로잡은 것」 쪽에 둔다. -->
               <p><strong>Some of the content we gave advance notice of will not take effect.</strong> The notice of
                 September 18, 2026 included transferring the title, channel name, and description of videos and the title
                 and tags of posts to Anthropic (United States) in order to infer information about the songs linked to
@@ -1225,14 +1318,17 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                 making that processing unnecessary; therefore, <strong>this transfer will not take effect and is not
                 included in this revision.</strong> Because this means processing less than what was notified, it takes
                 effect without a separate notice period.</p>
-              <p>The same notice did not separately describe the records used for Its recommendations. The <strong>Its
-                viewing history</strong> used to order the Its feed is an item that has been collected since before, and
-                it is used within the notified purpose of “recommending posts and Its to match your interests.”</p>
+              <p><strong>Its viewing history</strong> is a record whose retention period (90 days) has been stated in
+                <a class="x" href="#art-3">Article 3</a> of the previous policy; in this revision, we specified it as an
+                item collected in <a class="x" href="#art-2">Article 2</a>, and we also use it to order the Its feed. The
+                same notice did not separately describe the viewing history used for Its recommendations or the part
+                (instrument) information used to order the two lists, but both are items that have been collected since
+                before (<a class="x" href="#art-2">Article 2</a>) and are used within the notified purpose of
+                “recommending posts and Its to match your interests.”</p>
               <!-- Anthropic 이전은 FEV-792 폐기(2026-09-19)로 사라졌다. **고지했는데 안 하는 것**이라 고지 의무
                    위반이 아니지만, 배너를 읽은 사람이 본문에서 그 항목을 못 찾고 「빠뜨린 것인가」 하지 않도록
                    부칙에 명시한다.
-                   ⚠️ 제5조 위탁 표·제6조 국외 이전 표는 **손대지 않았다** — Google·Microsoft·HubSpot 은 종전
-                   그대로다. 「국외 이전이 없어졌다」가 아니라 「이번에 더하려던 줄이 안 들어갔다」이다.
+                   ⚠️ 제5조·제6조의 Google·Microsoft·HubSpot 행은 종전 그대로다. 「국외 이전이 없어졌다」가 아니라 「이번에 더하려던 줄이 안 들어갔다」이다.
                    ⚠️ 맞춤 추천에 국외 LLM 을 다시 들이려면 제1조 제6호·제5조·제6조를 함께 고치고 제14조 제1항의
                    30일 전 고지부터 다시 해야 한다. --></li>
           </ol>

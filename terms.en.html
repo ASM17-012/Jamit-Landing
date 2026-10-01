@@ -540,9 +540,13 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
           <h3 class="art"><span class="art__no">Article 7</span>Account Deletion <a class="art__link" href="#art-7" aria-label="Link to Article 7">#</a></h3>
           <ol class="clauses">
             <li>Members may terminate the service agreement (delete their account) at any time using the in-app account deletion feature.</li>
-            <li>Upon account deletion, the Operator invalidates the member’s login sessions and push tokens and also requests that the social login
-              link (Kakao, Google, Apple) be removed. Even if the unlink request fails, the link information held by the Operator is destroyed,
-              and the member may remove the link directly in the account settings of each platform.</li>
+            <li>Upon account deletion, the Operator invalidates the member’s login sessions and push tokens and also handles the removal of the social login
+              link (Kakao, Google, Apple). For an Apple account, account deletion is processed only once the unlink has been completed; for Kakao and Google
+              accounts, the link information held by the Operator is destroyed even if the unlink request fails or unlinking is not supported in the app
+              environment. The member may remove the link directly in the account settings of each platform, and the details of this processing are governed by
+              <a class="x" href="privacy.en.html#art-7">Article 7 of the Privacy Policy</a>.
+              <!-- 2026-10-01 정정. Apple revoke 실패는 탈퇴 자체를 막고(UserWithdrawalService), Android 의 구글은 revoke 가
+                   아니라 기기 자격 증명 정리뿐이다 — 「실패해도 파기」를 셋 모두에 걸던 문장이 Apple 에는 맞지 않았다. --></li>
             <li>The personal information of a member who has deleted their account is destroyed as set out in the <a class="x" href="privacy.en.html">JAMIT Privacy Policy</a>.
               <strong>If you delete your account, the messages you sent will no longer be visible on the other party’s screen</strong>, and if no one
               remains in a chat room with multiple participants, the messages in that room, including those written by other members, follow the same
@@ -773,7 +777,9 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
           <ol class="clauses">
             <li>Members may block other users, and content from a blocked user is not shown in the member’s feed, search, notifications, or elsewhere.
               <strong>In chat, one-on-one conversations with that user are closed; in chat rooms with multiple participants, the two remain in the room together,
-              but their messages are hidden from each other.</strong>
+              but their messages are hidden from each other.</strong> However, in rankings by part (instrument), ranks are shown regardless of any blocking between users.
+              <!-- 2026-10-01 추가. 랭킹은 차단 관계를 거르지 않는다(SessionRankingController 문서의 「목록 규약의 예외」).
+                   랭킹에도 차단 필터를 들이는 날 이 단서를 지우고 개인정보 처리방침 제4조 제4항도 함께 고칠 것. -->
               <!-- 2026-10-20 추가. 제16조 제2항이 「제18조의 차단 기능으로 1:1 대화를 차단할 수 있다」고 가리키는데
                    이 조가 채팅을 한 글자도 말하지 않아 근거가 비어 있었다(2026-09-23 리뷰). 항을 새로 두지 않고
                    제1항을 넓힌 것은 제7조와 같은 이유다 — 번호가 밀리면 가리키는 자리들이 조용히 어긋난다. --></li>
@@ -855,6 +861,10 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               <strong>The license in <a class="x" href="#art-13">Article 13</a>(1) does not apply to messages</strong>
               — the Operator processes messages only to the extent of delivering and storing them and reviewing reported messages, and does not subject them to
               internal viewing or analysis for improving the Service (Article 13(3), newly added).
+              <strong>Also corrected</strong> — the wording on unlinking social logins in <a class="x" href="#art-7">Article 7</a>(2) was aligned with
+              actual processing (for an Apple account, account deletion is processed only once the unlink has been completed), and
+              <a class="x" href="#art-18">Article 18</a>(1) now states that ranks are shown in rankings by part regardless of any blocking between users.
+              This does not change what is processed; the wording did not match the facts or had been omitted.
               Notice of this amendment was given in advance beginning September 18, 2026,
               and it takes effect on October 20, 2026. On the same date, the
               <a class="x" href="privacy.en.html">Privacy Policy</a> is also amended.
