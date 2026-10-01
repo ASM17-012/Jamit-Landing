@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Space invite — JAMIT</title>
+<meta name="description" content="A JAMIT Space invite link. Use the invite code in the app to get in and see the jams that stay inside that Space.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://jamit.kr/en/s/">
+<meta name="theme-color" content="#ecedf1">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="JAMIT">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://jamit.kr/en/s/">
+<meta property="og:title" content="You’re invited to a JAMIT Space">
+<meta property="og:description" content="Use the invite code to get in and see the jams that stay inside this Space. Tap the link to join in the app.">
+<meta property="og:image" content="https://jamit.kr/assets/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="JAMIT — Your own track becomes our jam. The app’s home and recording screens.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" as="font" type="font/woff2" href="../../assets/fonts/jetbrains-mono-latin.woff2" crossorigin>
+<link rel="preload" href="../../assets/fonts/pretendard-subset.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23ecedf1"/><rect x="3" y="3" width="26" height="26" fill="none" stroke="%231a1f2b" stroke-width="2"/><rect x="9" y="13" width="3" height="6" fill="%231a1f2b"/><rect x="15" y="8" width="3" height="16" fill="%234c8df6"/><rect x="21" y="11" width="3" height="10" fill="%231a1f2b"/></svg>'>
+
+<script>
+(() => {
+  const INSTALL_URL = "https://testflight.apple.com/join/XXXXXXXX";
+
+  const raw = new URLSearchParams(location.search).get("code") || location.hash.slice(1);
+  const code = (raw || "").trim().toUpperCase();
+  const ok = /^[A-Z0-9]{8}$/.test(code);
+  if (ok) document.documentElement.classList.add("has-code");
+
+  addEventListener("DOMContentLoaded", () => {
+    document.getElementById("install").href = INSTALL_URL;
+    if (!ok) return;
+    document.getElementById("code").textContent = code;
+    document.getElementById("open").href = "jamit://space/join?code=" + code;
+  });
+})();
+</script>
+
+<style>
+@font-face{
+  font-family:"Pretendard";
+  src:url("../../assets/fonts/pretendard-subset.woff2") format("woff2");
+  font-weight:400 800;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"MonoEn";
+  font-weight:100 500;
+  src:local("SFMono-Regular"),local("SF Mono Regular"),local("Menlo-Regular"),
+      url("../../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-display:swap;
+  unicode-range:U+0030-0039, U+0041-005A, U+0061-007A;
+}
+@font-face{
+  font-family:"MonoEn";
+  font-weight:600 900;
+  src:local("SFMono-Bold"),local("SF Mono Bold"),local("Menlo-Bold"),
+      url("../../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-display:swap;
+  unicode-range:U+0030-0039, U+0041-005A, U+0061-007A;
+}
+@font-face{
+  font-family:"MonoAll";
+  font-weight:100 500;
+  src:local("SFMono-Regular"),local("SF Mono Regular"),local("Menlo-Regular"),
+      url("../../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-display:swap;
+}
+@font-face{
+  font-family:"MonoAll";
+  font-weight:600 900;
+  src:local("SFMono-Bold"),local("SF Mono Bold"),local("Menlo-Bold"),
+      url("../../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-display:swap;
+}
+:root{
+  --paper:#ecedf1;
+  --paper-2:#dfe1e8;
+  --cream:#f7f8fb;
+  --ink:#1a1f2b;
+  --ink-2:#4b5468;
+  --mute:#5f6779;
+  --hot:#3a5fd1;
+  --hot-2:#304a95;
+  --mark:#bfd6ff;
+  --line-soft:rgba(26,31,43,.16);
+  --edge:max(clamp(18px,5vw,44px),env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));
+  --sans:"MonoEn","Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  --mono:"MonoAll",ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,"Pretendard",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--paper)}
+body{
+  font-family:var(--sans);color:var(--ink);line-height:1.6;word-break:keep-all;
+  background:var(--paper);-webkit-font-smoothing:antialiased;overflow-x:clip;
+  min-height:100vh;display:flex;flex-direction:column;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:99;pointer-events:none;opacity:.5;mix-blend-mode:multiply;
+  background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3"/></filter><rect width="120" height="120" filter="url(%23n)" opacity="0.28"/></svg>');
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--hot);outline-offset:2px}
+img,svg{display:block}
+::selection{background:var(--mark);color:var(--ink)}
+.wrap{width:min(1180px,calc(100% - var(--edge)*2));margin-inline:auto}
+h1{font-weight:800;letter-spacing:-.035em;line-height:.94;text-wrap:balance}
+p{text-wrap:pretty}
+
+.top{background:var(--paper);border-bottom:1px solid var(--ink)}
+.top__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 0}
+.top__id{display:flex;align-items:center;gap:9px;font-weight:800;font-size:18px;letter-spacing:-.03em}
+.top__nav a{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
+.top__nav a:hover{color:var(--hot)}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 22px;
+  font:inherit;font-size:15px;font-weight:800;letter-spacing:-.01em;
+  background:var(--ink);color:var(--cream);border:1px solid var(--ink);cursor:pointer;
+  box-shadow:6px 6px 0 var(--hot);transition:transform .12s,box-shadow .12s;
+}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--hot)}
+.btn:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--hot)}
+.btn--ghost{background:var(--cream);color:var(--ink);box-shadow:6px 6px 0 var(--ink)}
+.btn--ghost:hover{box-shadow:8px 8px 0 var(--ink)}
+.btn--ghost:active{box-shadow:2px 2px 0 var(--ink)}
+
+main{flex:1;display:grid;place-items:center;padding:clamp(38px,9vw,80px) 0}
+.inv{position:relative;width:min(520px,100%);margin-inline:auto;text-align:center;
+  background:var(--cream);border:1px solid var(--ink);box-shadow:10px 10px 0 var(--hot);
+  padding:clamp(28px,6vw,44px) clamp(20px,5vw,44px)}
+.inv__pin{position:absolute;top:-11px;left:50%;translate:-50% 0;width:22px;height:22px;border-radius:50%;
+  background:var(--hot);border:1px solid var(--ink);box-shadow:2px 3px 0 rgba(0,0,0,.35)}
+.inv__stamp{position:absolute;right:-14px;top:26px;rotate:12deg;padding:5px 10px;
+  border:2px solid var(--hot);color:var(--hot);background:var(--cream);
+  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em}
+.inv__k{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--mute)}
+.inv h1{margin-top:10px;font-size:clamp(1.7rem,6vw,2.5rem);line-height:1.06}
+.inv__lede{margin-top:14px;color:var(--ink-2);font-size:clamp(.95rem,1.3vw,1.05rem);line-height:1.65}
+
+.inv__code{display:block;margin-top:22px;padding:18px 10px;
+  border:1px solid var(--ink);background:var(--paper);
+  font-family:var(--mono);font-size:clamp(2rem,11vw,3.4rem);font-weight:700;
+  letter-spacing:.08em;line-height:1.1;user-select:all;-webkit-user-select:all}
+.inv__cta{margin-top:26px;display:grid;gap:14px}
+.inv__note{margin-top:18px;padding-top:14px;border-top:1px solid var(--line-soft);
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;line-height:1.9;color:var(--mute)}
+
+.inv__ok{display:none}
+.has-code .inv__ok{display:block}
+.has-code .inv__bad{display:none}
+
+footer{padding:26px 0 calc(40px + env(safe-area-inset-bottom,0px));
+  border-top:1px solid var(--ink);display:grid;gap:14px;justify-items:center;text-align:center}
+.foot__id{font-size:18px;font-weight:800;letter-spacing:-.03em;color:var(--ink)}
+.foot__t{display:block;margin-top:5px;font-size:12.5px;color:var(--ink-2)}
+.foot__b{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 22px}
+.foot__b a{font-size:13px;font-weight:700;color:var(--ink-2)}
+.foot__c{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--mute)}
+footer a:hover{color:var(--hot)}
+
+@media(max-width:860px){
+  h1{line-height:1.2;letter-spacing:-.015em}
+  .inv h1{line-height:1.2}
+  .inv__k,.inv__stamp,.top__nav a,.foot__c{letter-spacing:.07em}
+  .inv__lede{font-size:1rem;line-height:1.75}
+  .inv__note{font-size:12px;line-height:1.85;letter-spacing:.02em}
+  .foot__t{font-size:12.5px;line-height:1.75}
+  .foot__b a{font-size:13.5px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="top__id" href="/">
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" fill="#1a1f2b"/>
+        <rect x="9" y="13" width="3" height="6" fill="#f7f8fb"/>
+        <rect x="15" y="8" width="3" height="16" fill="#4c8df6"/>
+        <rect x="21" y="11" width="3" height="10" fill="#f7f8fb"/>
+      </svg>
+      JAMIT
+    </a>
+    <nav class="top__nav"><a href="/">About</a></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="inv">
+    <span class="inv__pin" aria-hidden="true"></span>
+    <span class="inv__stamp" aria-hidden="true">PRIVATE</span>
+
+    <div class="inv__ok">
+      <p class="inv__k">Space invite</p>
+      <h1>You’re invited<br>to a jam room</h1>
+      <p class="inv__lede">Posts and jams in this Space are visible to members only.<br>Use the code below to get in.</p>
+      <strong class="inv__code" id="code">········</strong>
+      <div class="inv__cta">
+        <a class="btn" id="open" href="#">Open in app <span aria-hidden="true">→</span></a>
+        <a class="btn btn--ghost" id="install" href="#">Get the app</a>
+      </div>
+      <p class="inv__note">If the app doesn’t open, tap ⋯ at the top right and open this page in your browser<br>No Android app yet — save the code and hang tight a little longer</p>
+    </div>
+
+    <div class="inv__bad">
+      <p class="inv__k">Space invite</p>
+      <h1>We couldn’t read<br>the invite code</h1>
+      <p class="inv__lede">Please tap the link you received again, exactly as it was sent. If the end of the link gets cut off when it’s copied, the code is lost.<br>Already using the app? You can also enter the 8-character invite code yourself in the Spaces tab.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="wrap">
+  <div>
+    <span class="foot__id">JAMIT</span>
+    <span class="foot__t">An app where everyone’s tracks become one jam · Coming soon to iOS and Android</span>
+  </div>
+  <nav class="foot__b">
+    <a href="/">About</a><a href="/#faq">FAQ</a><a href="mailto:support@jamit.kr">Contact</a>
+  </nav>
+  <span class="foot__c">© 2026 JAMIT · N° 001</span>
+</footer>
+
+</body>
+</html>

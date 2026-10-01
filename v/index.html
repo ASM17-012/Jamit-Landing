@@ -38,7 +38,7 @@
      ══════════════════════════════════════════════════════════ -->
 <script>
 (() => {
-  /* ════ 바꿀 곳은 이 세 줄뿐이다 ════
+  /* ════ 바꿀 곳은 이 세 줄과 en/v/·ja/v/ 사본의 같은 줄이다 ════
      INSTALL_URL — App Store 출시 전이라 TestFlight 자리표시자다(/s/와 같은 상태).
                    ⚠️ 지금 이 주소는 실제로 열리지 않는다.
      API_BASE    — 썸네일을 주는 백엔드. 앱(TestFlight)이 스테이징을 보는 동안은 여기도
@@ -77,7 +77,7 @@
 
   addEventListener("DOMContentLoaded", () => {
     /* 설치 버튼은 id와 무관하게 늘 채운다 — /s/와 같은 이유(href가 비면 안 된다).
-       안내 화면의 것까지 여기서 채우므로 주소를 바꿀 곳은 위 한 줄뿐이다 */
+       안내 화면의 것까지 여기서 채우므로 주소를 바꿀 곳은 위 한 줄(과 사본의 같은 줄)이다 */
     document.getElementById("install").href = INSTALL_URL;
     document.getElementById("install2").href = INSTALL_URL;
     if (!ok) return;
@@ -353,7 +353,7 @@ footer a:hover{color:var(--hot)}
         <a class="btn btn--ghost" id="install" href="#">앱 설치하기</a>
       </div>
       <!-- 두 줄인 이유는 /s/와 같다: 첫 줄은 iOS 회복 경로, 둘째 줄은 안드로이드 안내.
-           안드로이드가 출시되면 둘째 줄만 지운다 -->
+           안드로이드가 출시되면 둘째 줄만 지운다(en/v/·ja/v/ 사본도) -->
       <p class="card__note">앱이 열리지 않으면 카카오톡 오른쪽 위 ⋯ → 다른 브라우저로 열기<br>안드로이드는 아직 앱이 없어요 — 조금만 기다려 주세요</p>
     </div>
 
