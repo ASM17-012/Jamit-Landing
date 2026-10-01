@@ -1,50 +1,35 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ja">
 <head>
 <meta charset="utf-8">
-<!-- viewport-fit=cover — /s/index.html과 같은 이유다: 공유 링크는 거의 전부 노치 기기의
-     인앱 브라우저에서 열린다. 인과는 그쪽 주석이 정본이다 -->
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>모집글 공유 — JAMIT</title>
-<meta name="description" content="JAMIT 모집글 공유 링크입니다. 링크를 눌러 앱에서 이 모집글을 볼 수 있습니다.">
-<!-- 색인은 막는다 — /v/와 같은 판단: 1:1로 전달되는 링크라 검색에서 만날 일이 없고,
-     id 없이 열리는 /p/ 는 안내 문구뿐이다. canonical은 쿼리를 뗀 주소다 -->
+<title>募集投稿の共有 — JAMIT</title>
+<meta name="description" content="JAMITの募集投稿の共有リンクです。リンクをタップすると、アプリでこの募集投稿を見られます。">
 <meta name="robots" content="noindex">
-<link rel="canonical" href="https://jamit.kr/p/">
+<link rel="canonical" href="https://jamit.kr/ja/p/">
 <meta name="theme-color" content="#ecedf1">
 
-<!-- OG는 모집글마다 다르게 만들 수 없다 — /v/와 같은 제약(정적 호스팅 + 크롤러는 JS를 안 돌린다) -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="JAMIT">
-<meta property="og:locale" content="ko_KR">
-<meta property="og:url" content="https://jamit.kr/p/">
-<meta property="og:title" content="JAMIT 모집글을 공유받았습니다">
-<meta property="og:description" content="함께 연주할 사람을 모으는 글이에요. 링크를 눌러 앱에서 참여해 보세요.">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:url" content="https://jamit.kr/ja/p/">
+<meta property="og:title" content="JAMITの募集投稿が共有されました">
+<meta property="og:description" content="一緒に演奏する仲間を募集する投稿です。リンクをタップして、アプリから参加してみてください。">
 <meta property="og:image" content="https://jamit.kr/assets/og.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="JAMIT — 나만의 연주가 우리의 합주로. 앱 홈 화면과 녹화 화면.">
+<meta property="og:image:alt" content="JAMIT — あなただけのトラックが、私たちのセッションに。アプリのホーム画面と録画画面。">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preload" as="font" type="font/woff2" href="../assets/fonts/jetbrains-mono-latin.woff2" crossorigin>
-<link rel="preload" href="../assets/fonts/pretendard-subset.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../../assets/fonts/jetbrains-mono-latin.woff2" crossorigin>
+<link rel="preload" href="../../assets/fonts/pretendard-subset.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23ecedf1"/><rect x="3" y="3" width="26" height="26" fill="none" stroke="%231a1f2b" stroke-width="2"/><rect x="9" y="13" width="3" height="6" fill="%231a1f2b"/><rect x="15" y="8" width="3" height="16" fill="%234c8df6"/><rect x="21" y="11" width="3" height="10" fill="%231a1f2b"/></svg>'>
 
-<!-- 링크 판정 — <style>보다 앞, head 안에서 돈다(/v/와 같은 이유: 상태 class가 첫 그리기 전에
-     붙어야 오류 문구가 번쩍이지 않는다). DOM은 아래 DOMContentLoaded에서 만진다 -->
 <script>
 (() => {
-  /* ════ 바꿀 곳은 이 두 줄과 en/p/·ja/p/ 사본의 같은 줄이다 ════
-     INSTALL_URL — /v/와 같은 TestFlight 자리표시자다. ⚠️ 지금 이 주소는 실제로 열리지 않는다.
-     SCHEME_BASE — 앱이 받는 딥링크. iOS·Android의 PostShareRoute가 이 모양을 파싱한다 —
-                   바꾸려면 그쪽과 함께 바꿔야 한다(주소의 정본은 앱 쪽 PostShareLink).
-     /v/와 달리 API_BASE가 없다 — 이 페이지는 서버에 아무것도 묻지 않는다(FEV-768: 카드 한 장이면
-     「앱에서 열기」라는 이 페이지의 일이 성립하고, 무인증으로 모집글을 내보낼 API를 열지 않았다) */
   const INSTALL_URL = "https://testflight.apple.com/join/XXXXXXXX";
   const SCHEME_BASE = "jamit://post/detail?id=";
 
-  /* id·from 판정은 /v/와 같다 — 숫자만 통과시키므로 아래에서 URL에 그대로 이어 붙여도 안전하고,
-     이름은 글자 단위로 20자에서 자른다. 근거는 그쪽 주석이 정본이다 */
   const params = new URLSearchParams(location.search);
   const raw = (params.get("id") || "").trim();
   const ok = /^\d{1,18}$/.test(raw);
@@ -55,7 +40,6 @@
   if (ok && from) document.documentElement.classList.add("has-from");
 
   addEventListener("DOMContentLoaded", () => {
-    /* 설치 버튼은 id와 무관하게 늘 채운다 — href가 비면 안 된다(/s/ 주석) */
     document.getElementById("install").href = INSTALL_URL;
     document.getElementById("install2").href = INSTALL_URL;
     if (!ok) return;
@@ -64,13 +48,9 @@
     document.getElementById("open").href = deepLink;
 
     if (from) {
-      /* textContent다 — innerHTML로 바꾸면 이 줄이 XSS 주입구가 된다(값이 링크에서 온다) */
       document.getElementById("from-name").textContent = from;
     }
 
-    /* 자동으로 앱을 연다 — /v/와 같은 손익 계산이다: 「누르면 바로 그 글」이 기대라 탭 한 번이
-       경험의 전부이고, 막히는 인앱 브라우저에서는 이 페이지가 그대로 남아 버튼이 회복 경로다.
-       모바일에서만 시도하는 근거도 /v/ 주석에 있다 */
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
       location.href = deepLink;
     }
@@ -79,10 +59,9 @@
 </script>
 
 <style>
-/* 폰트 다섯 벌과 토큰은 /v/index.html과 같다 — 두 페이지가 갈라 보이면 같은 사이트로 안 보인다 */
 @font-face{
   font-family:"Pretendard";
-  src:url("../assets/fonts/pretendard-subset.woff2") format("woff2");
+  src:url("../../assets/fonts/pretendard-subset.woff2") format("woff2");
   font-weight:400 800;
   font-style:normal;
   font-display:swap;
@@ -91,7 +70,7 @@
   font-family:"MonoEn";
   font-weight:100 500;
   src:local("SFMono-Regular"),local("SF Mono Regular"),local("Menlo-Regular"),
-      url("../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+      url("../../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
   font-display:swap;
   unicode-range:U+0030-0039, U+0041-005A, U+0061-007A;
 }
@@ -99,7 +78,7 @@
   font-family:"MonoEn";
   font-weight:600 900;
   src:local("SFMono-Bold"),local("SF Mono Bold"),local("Menlo-Bold"),
-      url("../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+      url("../../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
   font-display:swap;
   unicode-range:U+0030-0039, U+0041-005A, U+0061-007A;
 }
@@ -107,14 +86,14 @@
   font-family:"MonoAll";
   font-weight:100 500;
   src:local("SFMono-Regular"),local("SF Mono Regular"),local("Menlo-Regular"),
-      url("../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+      url("../../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
   font-display:swap;
 }
 @font-face{
   font-family:"MonoAll";
   font-weight:600 900;
   src:local("SFMono-Bold"),local("SF Mono Bold"),local("Menlo-Bold"),
-      url("../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+      url("../../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
   font-display:swap;
 }
 :root{
@@ -151,14 +130,12 @@ img,svg{display:block}
 h1{font-weight:800;letter-spacing:-.035em;line-height:.94;text-wrap:balance}
 p{text-wrap:pretty}
 
-/* ════ 상단 바 — /v/와 동일 ════ */
 .top{background:var(--paper);border-bottom:1px solid var(--ink)}
 .top__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 0}
 .top__id{display:flex;align-items:center;gap:9px;font-weight:800;font-size:18px;letter-spacing:-.03em}
 .top__nav a{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
 .top__nav a:hover{color:var(--hot)}
 
-/* ════ 버튼 — /v/와 동일 ════ */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 22px;
   font:inherit;font-size:15px;font-weight:800;letter-spacing:-.01em;
@@ -171,10 +148,6 @@ p{text-wrap:pretty}
 .btn--ghost:hover{box-shadow:8px 8px 0 var(--ink)}
 .btn--ghost:active{box-shadow:2px 2px 0 var(--ink)}
 
-/* ══════════════════════════════════════════════════════════
-   공유 카드 — /v/의 카드와 같은 규칙(1px 먹 + 크림 + 오프셋 그림자 + 압정).
-   썸네일 액자는 없다 — 이 페이지는 서버에 묻지 않아 그릴 그림이 없고, 빈 액자는 로딩 중으로 읽힌다
-   ══════════════════════════════════════════════════════════ */
 main{flex:1;display:grid;place-items:center;padding:clamp(30px,7vw,64px) 0}
 .card{position:relative;width:min(520px,100%);margin-inline:auto;text-align:center;
   background:var(--cream);border:1px solid var(--ink);box-shadow:10px 10px 0 var(--hot);
@@ -182,14 +155,12 @@ main{flex:1;display:grid;place-items:center;padding:clamp(30px,7vw,64px) 0}
 .card__pin{position:absolute;top:-11px;left:50%;translate:-50% 0;width:22px;height:22px;border-radius:50%;
   background:var(--hot);border:1px solid var(--ink);box-shadow:2px 3px 0 rgba(0,0,0,.35)}
 
-/* 공유 문구 — /v/와 같은 값(이름은 형광펜, h1이지만 문장값) */
 .card__msg{margin-top:20px;font-size:clamp(1.05rem,1.5vw,1.15rem);font-weight:700;
   line-height:1.55;letter-spacing:-.01em}
 .card__msg mark{background:var(--mark);color:var(--ink);padding:0 3px}
 .card__k{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--mute)}
 .card__title{margin-top:10px;font-size:clamp(1.7rem,6vw,2.5rem);line-height:1.06}
 .card__lede{margin-top:14px;color:var(--ink-2);font-size:clamp(.95rem,1.3vw,1.05rem);line-height:1.65}
-/* 이름이 없으면 문장째 바뀐다 — 「님이」가 주어 없이 남지 않게 두 벌을 통째로 갈아 끼운다 */
 .card__msg--named{display:none}
 .has-from .card__msg--named{display:block}
 .has-from .card__msg--anon{display:none}
@@ -198,13 +169,10 @@ main{flex:1;display:grid;place-items:center;padding:clamp(30px,7vw,64px) 0}
 .card__note{margin-top:18px;padding-top:14px;border-top:1px solid var(--line-soft);
   font-family:var(--mono);font-size:11px;letter-spacing:.1em;line-height:1.9;color:var(--mute)}
 
-/* 상태 전환 — 기본값이 「안내」다(/v/와 같은 구조). JS가 죽으면 id도 못 읽은 것이므로
-   빈 카드가 아니라 안내가 남아야 하고, 성공했을 때만 has-post로 뒤집는다 */
 .card__ok{display:none}
 .has-post .card__ok{display:block}
 .has-post .card__bad{display:none}
 
-/* ════ 푸터 — /v/와 동일 ════ */
 footer{padding:26px 0 calc(40px + env(safe-area-inset-bottom,0px));
   border-top:1px solid var(--ink);display:grid;gap:14px;justify-items:center;text-align:center}
 .foot__id{font-size:18px;font-weight:800;letter-spacing:-.03em;color:var(--ink)}
@@ -214,7 +182,6 @@ footer{padding:26px 0 calc(40px + env(safe-area-inset-bottom,0px));
 .foot__c{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--mute)}
 footer a:hover{color:var(--hot)}
 
-/* 폰 타이포 보정 — /v/와 같은 근거(한글 받침·모노 자간·본문 행간) */
 @media(max-width:860px){
   h1{line-height:1.2;letter-spacing:-.015em}
   .card__title{line-height:1.2}
@@ -230,6 +197,9 @@ footer a:hover{color:var(--hot)}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
 }
+/* keep-all이면 띄어쓰기 없는 일본어 문장이 줄바꿈되지 않아 카드를 뚫는다. body 규칙보다 뒤에 와야 이긴다 */
+:root{--sans:"MonoEn","Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif}
+body{word-break:normal;line-break:strict}
 </style>
 </head>
 <body>
@@ -245,7 +215,7 @@ footer a:hover{color:var(--hot)}
       </svg>
       JAMIT
     </a>
-    <nav class="top__nav"><a href="/">소개</a></nav>
+    <nav class="top__nav"><a href="/">紹介</a></nav>
   </div>
 </header>
 
@@ -254,25 +224,23 @@ footer a:hover{color:var(--hot)}
     <span class="card__pin" aria-hidden="true"></span>
 
     <div class="card__ok">
-      <p class="card__k">모집글 공유</p>
-      <h1 class="card__msg card__msg--named"><mark id="from-name"></mark>님이 이 모집글을<br>회원님과 공유했습니다</h1>
-      <h1 class="card__msg card__msg--anon">모집글을 공유받았습니다<br>앱에서 함께 연주해 보세요</h1>
+      <p class="card__k">募集投稿の共有</p>
+      <h1 class="card__msg card__msg--named"><mark id="from-name"></mark>さんがこの募集投稿を<br>あなたと共有しました</h1>
+      <h1 class="card__msg card__msg--anon">募集投稿が共有されました<br>アプリで一緒に演奏してみましょう</h1>
 
       <div class="card__cta">
-        <a class="btn" id="open" href="#">JAMIT 열기 <span aria-hidden="true">→</span></a>
-        <a class="btn btn--ghost" id="install" href="#">앱 설치하기</a>
+        <a class="btn" id="open" href="#">JAMITを開く <span aria-hidden="true">→</span></a>
+        <a class="btn btn--ghost" id="install" href="#">アプリをインストール</a>
       </div>
-      <!-- 두 줄인 이유는 /v/와 같다: 첫 줄은 iOS 회복 경로, 둘째 줄은 안드로이드 안내.
-           안드로이드가 출시되면 둘째 줄만 지운다(en/p/·ja/p/ 사본도) -->
-      <p class="card__note">앱이 열리지 않으면 카카오톡 오른쪽 위 ⋯ → 다른 브라우저로 열기<br>안드로이드는 아직 앱이 없어요 — 조금만 기다려 주세요</p>
+      <p class="card__note">アプリが開かない場合は、右上の ⋯ からブラウザで開いてください<br>Android版アプリはまだありません。もう少しだけお待ちください</p>
     </div>
 
     <div class="card__bad">
-      <p class="card__k">모집글 공유</p>
-      <h1 class="card__title">링크를<br>읽지 못했습니다</h1>
-      <p class="card__lede">받은 링크를 그대로 다시 눌러 주세요. 링크를 옮겨 적는 과정에서 주소 뒷부분이 잘리면 어떤 모집글인지 알 수 없게 됩니다.</p>
+      <p class="card__k">募集投稿の共有</p>
+      <h1 class="card__title">リンクを<br>読み取れませんでした</h1>
+      <p class="card__lede">受け取ったリンクを、そのままもう一度タップしてください。リンクをコピーしたり書き写したりする際にURLの末尾が切れると、どの募集投稿なのか分からなくなります。</p>
       <div class="card__cta">
-        <a class="btn btn--ghost" id="install2" href="#">앱 설치하기</a>
+        <a class="btn btn--ghost" id="install2" href="#">アプリをインストール</a>
       </div>
     </div>
   </div>
@@ -281,10 +249,10 @@ footer a:hover{color:var(--hot)}
 <footer class="wrap">
   <div>
     <span class="foot__id">JAMIT</span>
-    <span class="foot__t">각자의 연주가 하나의 합주가 되는 앱 · 2026년 9월 iOS · Android 출시 예정</span>
+    <span class="foot__t">それぞれのトラックがひとつのセッションになるアプリ · iOS・Android 近日公開</span>
   </div>
   <nav class="foot__b">
-    <a href="/">소개</a><a href="/#faq">질문</a><a href="mailto:support@jamit.kr">문의</a>
+    <a href="/">紹介</a><a href="/#faq">よくある質問</a><a href="mailto:support@jamit.kr">お問い合わせ</a>
   </nav>
   <span class="foot__c">© 2026 JAMIT · N° 001</span>
 </footer>
