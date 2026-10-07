@@ -138,13 +138,12 @@ main{flex:1;display:grid;place-items:center;padding:clamp(32px,8vw,80px) 0}
 .btn:hover{filter:brightness(1.08)}
 .btn:active{transform:scale(.98)}
 
-.stores{display:grid;grid-template-columns:336fr 379fr;gap:12px;max-width:306px;margin:12px auto 0}
+.stores{display:grid;grid-template-columns:336fr 379fr;gap:12px;max-width:306px;margin:20px auto 0}
 .badge{display:block;line-height:0;border-radius:8px;transition:opacity .2s ease,transform .2s ease}
 .badge:hover{opacity:.85}
 .badge:active{transform:scale(.97)}
 .badge img{width:100%;height:auto}
 .badge:focus-visible{outline:2px solid var(--hot);outline-offset:4px}
-
 
 .inv__ok{display:none}
 .has-code .inv__ok{display:block}
@@ -153,13 +152,14 @@ main{flex:1;display:grid;place-items:center;padding:clamp(32px,8vw,80px) 0}
 .foot{border-top:1px solid var(--line);padding:30px 0 calc(30px + env(safe-area-inset-bottom,0px));
   font-size:13px;color:var(--mute)}
 .foot__in{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between}
-.foot__in nav{display:flex;gap:16px}
-.foot__in a{display:inline-block;padding:6px 4px;margin:-6px -4px}
+.foot__in nav{display:flex;flex-wrap:wrap;gap:6px 16px}
+.foot__in a{display:inline-block;padding:6px 4px;margin:-6px -4px;white-space:nowrap}
 .foot a:hover{color:var(--ink)}
 .foot__ack{margin:12px 0 0;font-size:11px;line-height:1.5;word-break:keep-all}
 
 @media(max-width:860px){
   .foot__in a{padding:12px 4px;margin:-12px 0}
+  .foot__in nav{row-gap:24px}
 }
 
 @media(prefers-reduced-motion:reduce){

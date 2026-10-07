@@ -23,7 +23,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" as="font" type="font/woff2" href="../../assets/fonts/jetbrains-mono-latin.woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/pretendard-subset.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23ecedf1"/><rect x="3" y="3" width="26" height="26" fill="none" stroke="%231a1f2b" stroke-width="2"/><rect x="9" y="13" width="3" height="6" fill="%231a1f2b"/><rect x="15" y="8" width="3" height="16" fill="%234c8df6"/><rect x="21" y="11" width="3" height="10" fill="%231a1f2b"/></svg>'>
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon-32.png">
+<link rel="icon" type="image/png" sizes="180x180" href="../../assets/icon-180.png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
 
 <script>
 (() => {
@@ -116,16 +118,14 @@
 }
 :root{
   --paper:#ecedf1;
-  --paper-2:#dfe1e8;
-  --cream:#f7f8fb;
+  --paper-2:#fff;
   --ink:#1a1f2b;
   --ink-2:#4b5468;
   --mute:#5f6779;
   --hot:#3a5fd1;
-  --hot-2:#304a95;
   --mark:#bfd6ff;
-  --line-soft:rgba(26,31,43,.16);
-  --edge:max(clamp(18px,5vw,44px),env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));
+  --line:rgba(26,31,43,.12);
+  --edge:max(clamp(20px,7vw,120px),env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));
   --sans:"MonoEn","Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
   --mono:"MonoAll",ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,"Pretendard",monospace;
 }
@@ -136,98 +136,91 @@ body{
   background:var(--paper);-webkit-font-smoothing:antialiased;overflow-x:clip;
   min-height:100vh;display:flex;flex-direction:column;
 }
-body::before{
-  content:"";position:fixed;inset:0;z-index:99;pointer-events:none;opacity:.5;mix-blend-mode:multiply;
-  background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3"/></filter><rect width="120" height="120" filter="url(%23n)" opacity="0.28"/></svg>');
-}
 a{color:inherit;text-decoration:none}
-:focus-visible{outline:3px solid var(--hot);outline-offset:2px}
+:focus-visible{outline:3px solid var(--hot);outline-offset:3px}
 img,svg{display:block}
 ::selection{background:var(--mark);color:var(--ink)}
-.wrap{width:min(1180px,calc(100% - var(--edge)*2));margin-inline:auto}
-h1{font-weight:800;letter-spacing:-.035em;line-height:.94;text-wrap:balance}
+.wrap{width:min(1240px,calc(100% - var(--edge)*2));margin-inline:auto}
+h1{font-weight:800;letter-spacing:-.03em;line-height:1.18;text-wrap:balance}
 p{text-wrap:pretty}
 
-.top{background:var(--paper);border-bottom:1px solid var(--ink)}
-.top__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 0}
-.top__id{display:flex;align-items:center;gap:9px;font-weight:800;font-size:18px;letter-spacing:-.03em}
-.top__nav a{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
-.top__nav a:hover{color:var(--hot)}
+.top{background:var(--paper);border-bottom:1px solid var(--line)}
+.top__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 0}
+.top__id{display:flex;align-items:center;gap:9px;font-weight:700;font-size:18px;letter-spacing:-.03em}
+.top__mark{display:block;border-radius:22.5%}
+.top__nav a{font-size:14px;font-weight:500;color:var(--ink-2)}
+.top__nav a:hover{color:var(--ink)}
 
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 22px;
-  font:inherit;font-size:15px;font-weight:800;letter-spacing:-.01em;
-  background:var(--ink);color:var(--cream);border:1px solid var(--ink);cursor:pointer;
-  box-shadow:6px 6px 0 var(--hot);transition:transform .12s,box-shadow .12s;
-}
-.btn:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--hot)}
-.btn:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--hot)}
-.btn--ghost{background:var(--cream);color:var(--ink);box-shadow:6px 6px 0 var(--ink)}
-.btn--ghost:hover{box-shadow:8px 8px 0 var(--ink)}
-.btn--ghost:active{box-shadow:2px 2px 0 var(--ink)}
+main{flex:1;display:grid;grid-template-columns:minmax(0,1fr);place-items:center;padding:clamp(32px,8vw,80px) 0}
+.card{width:min(480px,100%);margin-inline:auto;text-align:center;
+  background:var(--paper-2);border-radius:clamp(24px,5vw,36px);
+  padding:clamp(32px,7vw,48px) clamp(20px,6vw,44px);
+  box-shadow:0 1px 2px rgba(26,31,43,.04),0 24px 60px -28px rgba(26,31,43,.22)}
+.kick{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.1em;color:var(--hot)}
+.card__title{margin-top:12px;font-size:clamp(28px,7vw,38px)}
+.card__lede{margin-top:14px;color:var(--ink-2);font-size:clamp(15px,1.4vw,16px);line-height:1.7}
 
-main{flex:1;display:grid;place-items:center;padding:clamp(30px,7vw,64px) 0}
-.card{position:relative;width:min(520px,100%);margin-inline:auto;text-align:center;
-  background:var(--cream);border:1px solid var(--ink);box-shadow:10px 10px 0 var(--hot);
-  padding:clamp(28px,6vw,44px) clamp(20px,5vw,44px)}
-.card__pin{position:absolute;top:-11px;left:50%;translate:-50% 0;width:22px;height:22px;border-radius:50%;
-  background:var(--hot);border:1px solid var(--ink);box-shadow:2px 3px 0 rgba(0,0,0,.35)}
-
-.frame{position:relative;margin:18px auto 0;width:min(216px,58vw);aspect-ratio:9/16;
-  background:var(--ink);border:1px solid var(--ink);box-shadow:6px 6px 0 var(--ink);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;overflow:hidden}
-.frame__thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  opacity:0;transition:opacity .25s}
-.frame__thumb.thumb--on{opacity:1}
-.frame__space{display:none;font-family:var(--mono);font-size:10.5px;letter-spacing:.02em;
-  line-height:1.6;color:#9aa3b5}
-.in-space .frame__space{display:block}
-
-.card__msg{margin-top:20px;font-size:clamp(1.05rem,1.5vw,1.15rem);font-weight:700;
-  line-height:1.55;letter-spacing:-.01em}
-.card__msg mark{background:var(--mark);color:var(--ink);padding:0 3px}
-.card__k{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--mute)}
-.card__title{margin-top:10px;font-size:clamp(1.7rem,6vw,2.5rem);line-height:1.06}
-.card__lede{margin-top:14px;color:var(--ink-2);font-size:clamp(.95rem,1.3vw,1.05rem);line-height:1.65}
+.card__msg{font-size:clamp(20px,5.4vw,26px);line-height:1.4;letter-spacing:-.02em;
+  overflow-wrap:anywhere}
+.card__line{display:block;text-wrap:balance}
+.card__msg mark{color:inherit;padding:0 2px;
+  background:linear-gradient(var(--mark),var(--mark)) 0 76%/100% 44% no-repeat}
 .card__msg--named{display:none}
 .has-from .card__msg--named{display:block}
 .has-from .card__msg--anon{display:none}
 
-.card__cta{margin-top:26px;display:grid;gap:14px}
-.card__note{margin-top:18px;padding-top:14px;border-top:1px solid var(--line-soft);
-  font-family:var(--mono);font-size:11px;letter-spacing:.1em;line-height:1.9;color:var(--mute)}
+.btn{display:flex;width:min(240px,100%);height:46px;align-items:center;justify-content:center;gap:9px;
+  margin:24px auto 0;padding:0 20px;font:inherit;font-size:16px;font-weight:700;letter-spacing:-.01em;
+  background:var(--hot);color:#fff;border:0;border-radius:999px;cursor:pointer;
+  transition:transform .16s ease,filter .16s ease}
+.btn:hover{filter:brightness(1.08)}
+.btn:active{transform:scale(.98)}
+
+.stores{display:grid;grid-template-columns:336fr 379fr;gap:12px;max-width:306px;margin:20px auto 0}
+.card__bad .stores{margin-top:24px}
+.badge{display:block;line-height:0;border-radius:8px;transition:opacity .2s ease,transform .2s ease}
+.badge:hover{opacity:.85}
+.badge:active{transform:scale(.97)}
+.badge img{width:100%;height:auto}
+.badge:focus-visible{outline:2px solid var(--hot);outline-offset:4px}
+
+.frame{position:relative;margin:0 auto 24px;width:min(200px,54vw);aspect-ratio:9/16;
+  background:#0f1115;border-radius:20px;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  box-shadow:0 18px 40px -22px rgba(15,17,21,.6)}
+.frame__thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity .25s}
+.frame__thumb.thumb--on{opacity:1}
+.frame__play{display:grid;place-items:center;width:56px;height:56px;border-radius:50%;
+  background:rgba(255,255,255,.14)}
+.frame__space{display:none;padding:0 14px;font-size:12px;line-height:1.6;color:#9aa3b5}
+.in-space .frame__space{display:block}
 
 .card__ok{display:none}
 .has-its .card__ok{display:block}
 .has-its .card__bad{display:none}
 
-footer{padding:26px 0 calc(40px + env(safe-area-inset-bottom,0px));
-  border-top:1px solid var(--ink);display:grid;gap:14px;justify-items:center;text-align:center}
-.foot__id{font-size:18px;font-weight:800;letter-spacing:-.03em;color:var(--ink)}
-.foot__t{display:block;margin-top:5px;font-size:12.5px;color:var(--ink-2)}
-.foot__b{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 22px}
-.foot__b a{font-size:13px;font-weight:700;color:var(--ink-2)}
-.foot__c{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--mute)}
-footer a:hover{color:var(--hot)}
+.foot{border-top:1px solid var(--line);padding:30px 0 calc(30px + env(safe-area-inset-bottom,0px));
+  font-size:13px;color:var(--mute)}
+.foot__in{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between}
+.foot__in nav{display:flex;flex-wrap:wrap;gap:6px 16px}
+.foot__in a{display:inline-block;padding:6px 4px;margin:-6px -4px;white-space:nowrap}
+.foot a:hover{color:var(--ink)}
+.foot__ack{margin:12px 0 0;font-size:11px;line-height:1.5;word-break:keep-all}
 
 @media(max-width:860px){
-  h1{line-height:1.2;letter-spacing:-.015em}
-  .card__title{line-height:1.2}
-  h1.card__msg{line-height:1.55;letter-spacing:-.01em}
-  .card__k{letter-spacing:.07em}
-  .card__lede{font-size:1rem;line-height:1.75}
-  .top__nav a,.foot__c{letter-spacing:.07em}
-  .card__note{font-size:12px;line-height:1.85;letter-spacing:.02em}
-  .foot__t{font-size:12.5px;line-height:1.75}
-  .foot__b a{font-size:13.5px}
+  .foot__in a{padding:12px 4px;margin:-12px 0}
+  .foot__in nav{row-gap:24px}
 }
 
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
 }
 /* keep-all이면 띄어쓰기 없는 일본어 문장이 줄바꿈되지 않아 카드를 뚫는다. body 규칙보다 뒤에 와야 이긴다 */
-:root{--sans:"MonoEn","Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif}
+:root{--sans:"MonoEn","Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif}
 body{word-break:normal;line-break:strict}
+/* 「読み取れませんでした」 열 자가 320 폭 카드 안쪽(235px)에 한 줄로 들도록 하한을 22px 로 내린다 */
+.card__title{font-size:clamp(22px,6.6vw,38px);word-break:keep-all}
 </style>
 </head>
 <body>
@@ -235,12 +228,7 @@ body{word-break:normal;line-break:strict}
 <header class="top">
   <div class="wrap top__in">
     <a class="top__id" href="/">
-      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
-        <rect width="32" height="32" fill="#1a1f2b"/>
-        <rect x="9" y="13" width="3" height="6" fill="#f7f8fb"/>
-        <rect x="15" y="8" width="3" height="16" fill="#4c8df6"/>
-        <rect x="21" y="11" width="3" height="10" fill="#f7f8fb"/>
-      </svg>
+      <img class="top__mark" src="../../assets/app-icon.png" width="28" height="28" alt="" decoding="async">
       JAMIT
     </a>
     <nav class="top__nav"><a href="/">紹介</a></nav>
@@ -249,52 +237,43 @@ body{word-break:normal;line-break:strict}
 
 <main class="wrap">
   <div class="card">
-    <span class="card__pin" aria-hidden="true"></span>
-
     <div class="card__ok">
       <div class="frame">
         <img class="frame__thumb" id="thumb" alt="">
-        <svg width="46" height="46" viewBox="0 0 46 46" aria-hidden="true">
-          <polygon points="16,11 38,23 16,35" fill="#f7f8fb"/>
-        </svg>
-        <svg width="24" height="20" viewBox="0 0 24 20" aria-hidden="true">
-          <rect x="1" y="8" width="4" height="8" fill="#f7f8fb"/>
-          <rect x="10" y="2" width="4" height="16" fill="#4c8df6"/>
-          <rect x="19" y="5" width="4" height="11" fill="#f7f8fb"/>
-        </svg>
+        <span class="frame__play" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22"><polygon points="7,4 19,11 7,18" fill="#fff"/></svg></span>
         <p class="frame__space">非公開スペースに<br>投稿されたItsです</p>
       </div>
-
-      <h1 class="card__msg card__msg--named"><mark id="from-name"></mark>さんがこのItsを<br>あなたと共有しました</h1>
-      <h1 class="card__msg card__msg--anon">Itsが共有されました<br>アプリでセッション動画を見られます</h1>
-
-      <div class="card__cta">
-        <a class="btn" id="open" href="#">JAMITを開く <span aria-hidden="true">→</span></a>
-        <a class="btn btn--ghost" id="install" href="#">アプリをインストール</a>
+      <h1 class="card__msg card__msg--named"><span class="card__line"><mark id="from-name"></mark>さんがこのItsを</span><span class="card__line">あなたと共有しました</span></h1>
+      <h1 class="card__msg card__msg--anon"><span class="card__line">Itsが共有されました</span><span class="card__line">アプリでセッション動画を見られます</span></h1>
+      <a class="btn" id="open" href="#">JAMITを開く <span aria-hidden="true">→</span></a>
+      <div class="stores">
+        <a class="badge" id="install" href="#"><img src="../../assets/app-store.webp" width="336" height="112" alt="App Storeからダウンロード" decoding="async"></a>
+        <a class="badge" href="https://play.google.com/store/apps/details?id=kr.jamit.app&amp;hl=ja"><img src="../../assets/google-play.webp" width="379" height="112" alt="Google Play で手に入れよう" decoding="async"></a>
       </div>
-      <p class="card__note">アプリが開かない場合は、右上の ⋯ からブラウザで開いてください</p>
     </div>
 
     <div class="card__bad">
-      <p class="card__k">Itsの共有</p>
+      <p class="kick">Itsの共有</p>
       <h1 class="card__title">リンクを<br>読み取れませんでした</h1>
       <p class="card__lede">受け取ったリンクを、そのままもう一度タップしてください。リンクをコピーしたり書き写したりする際にURLの末尾が切れると、どのItsなのか分からなくなります。</p>
-      <div class="card__cta">
-        <a class="btn btn--ghost" id="install2" href="#">アプリをインストール</a>
+      <div class="stores">
+        <a class="badge" id="install2" href="#"><img src="../../assets/app-store.webp" width="336" height="112" alt="App Storeからダウンロード" decoding="async"></a>
+        <a class="badge" href="https://play.google.com/store/apps/details?id=kr.jamit.app&amp;hl=ja"><img src="../../assets/google-play.webp" width="379" height="112" alt="Google Play で手に入れよう" decoding="async"></a>
       </div>
     </div>
   </div>
 </main>
 
-<footer class="wrap">
-  <div>
-    <span class="foot__id">JAMIT</span>
-    <span class="foot__t">それぞれのトラックがひとつのセッションになるアプリ</span>
+<footer class="wrap foot">
+  <div class="foot__in">
+    <span>© JAMIT</span>
+    <nav>
+      <a href="mailto:support@jamit.kr">お問い合わせ</a>
+      <a href="/privacy.html">プライバシーポリシー</a>
+      <a href="/terms.html">利用規約</a>
+    </nav>
   </div>
-  <nav class="foot__b">
-    <a href="/">紹介</a><a href="/#faq">よくある質問</a><a href="mailto:support@jamit.kr">お問い合わせ</a>
-  </nav>
-  <span class="foot__c">© 2026 JAMIT · N° 001</span>
+  <p class="foot__ack" lang="ko">이 성과는 2026년도 과학기술정보통신부의 재원으로 정보통신기획평가원의 지원을 받아 수행된 결과물임 (IITP-2026-AI·SW마에스트로)</p>
 </footer>
 
 </body>
