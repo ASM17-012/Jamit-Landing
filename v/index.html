@@ -21,7 +21,7 @@
 <meta property="og:url" content="https://jamit.kr/v/">
 <meta property="og:title" content="JAMIT 잇츠를 공유받았습니다">
 <meta property="og:description" content="여러 사람의 연주가 하나로 합쳐진 합주 영상이에요. 링크를 눌러 앱에서 보세요.">
-<meta property="og:image" content="https://jamit.kr/assets/og.jpg">
+<meta property="og:image" content="https://jamit.kr/assets/og.jpg?v=3">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -351,9 +351,8 @@ footer a:hover{color:var(--hot)}
         <a class="btn" id="open" href="#">JAMIT 열기 <span aria-hidden="true">→</span></a>
         <a class="btn btn--ghost" id="install" href="#">앱 설치하기</a>
       </div>
-      <!-- 두 줄인 이유는 /s/와 같다: 첫 줄은 iOS 회복 경로, 둘째 줄은 안드로이드 안내.
-           안드로이드가 출시되면 둘째 줄만 지운다(en/v/·ja/v/ 사본도) -->
-      <p class="card__note">앱이 열리지 않으면 카카오톡 오른쪽 위 ⋯ → 다른 브라우저로 열기<br>안드로이드는 아직 앱이 없어요 — 조금만 기다려 주세요</p>
+      <!-- 다른 브라우저로 옮기면 스킴이 열린다 — 인앱 브라우저가 jamit:// 를 막을 때의 회복 경로다 -->
+      <p class="card__note">앱이 열리지 않으면 카카오톡 오른쪽 위 ⋯ → 다른 브라우저로 열기</p>
     </div>
 
     <div class="card__bad">
@@ -370,7 +369,7 @@ footer a:hover{color:var(--hot)}
 <footer class="wrap">
   <div>
     <span class="foot__id">JAMIT</span>
-    <span class="foot__t">각자의 연주가 하나의 합주가 되는 앱 · 2026년 9월 iOS · Android 출시 예정</span>
+    <span class="foot__t">각자의 연주가 하나의 합주가 되는 앱</span>
   </div>
   <nav class="foot__b">
     <a href="/">소개</a><a href="/#faq">질문</a><a href="mailto:support@jamit.kr">문의</a>
