@@ -90,8 +90,6 @@
   --ink-2:#4b5468;
   --mute:#5f6779;
   --hot:#3a5fd1;
-  --go-1:#2f6fe4;
-  --go-2:#6d5df3;
   --mark:#bfd6ff;
   --line:rgba(26,31,43,.12);
   --edge:max(clamp(20px,7vw,120px),env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));
@@ -133,10 +131,9 @@ main{flex:1;display:grid;place-items:center;padding:clamp(32px,8vw,80px) 0}
   font-family:var(--mono);font-size:clamp(2rem,10vw,3rem);font-weight:700;
   letter-spacing:.08em;line-height:1.1;user-select:all;-webkit-user-select:all}
 
-.btn{display:flex;width:fit-content;height:46px;align-items:center;justify-content:center;gap:9px;
-  margin:20px auto 0;padding:0 28px;font:inherit;font-size:16px;font-weight:700;letter-spacing:-.01em;
-  background:linear-gradient(135deg,var(--go-1),var(--go-2));color:#fff;border:0;border-radius:999px;cursor:pointer;
-  box-shadow:0 10px 22px -10px rgba(79,90,240,.7);
+.btn{display:flex;width:min(240px,100%);height:46px;align-items:center;justify-content:center;gap:9px;
+  margin:20px auto 0;padding:0 20px;font:inherit;font-size:16px;font-weight:700;letter-spacing:-.01em;
+  background:var(--hot);color:#fff;border:0;border-radius:999px;cursor:pointer;
   transition:transform .16s ease,filter .16s ease}
 .btn:hover{filter:brightness(1.08)}
 .btn:active{transform:scale(.98)}
@@ -148,8 +145,6 @@ main{flex:1;display:grid;place-items:center;padding:clamp(32px,8vw,80px) 0}
 .badge img{width:100%;height:auto}
 .badge:focus-visible{outline:2px solid var(--hot);outline-offset:4px}
 
-.inv__note{margin-top:24px;padding-top:18px;border-top:1px solid var(--line);
-  font-size:13px;line-height:1.7;color:var(--mute)}
 
 .inv__ok{display:none}
 .has-code .inv__ok{display:block}
@@ -201,7 +196,6 @@ body{word-break:normal;line-break:strict}
         <a class="badge" id="install" href="#"><img src="../../assets/app-store.webp" width="336" height="112" alt="App Storeからダウンロード" decoding="async"></a>
         <a class="badge" href="https://play.google.com/store/apps/details?id=kr.jamit.app&amp;hl=ja"><img src="../../assets/google-play.webp" width="379" height="112" alt="Google Play で手に入れよう" decoding="async"></a>
       </div>
-      <p class="inv__note">アプリが開かない場合は、右上の ⋯ からブラウザで開いてください</p>
     </div>
 
     <div class="inv__bad">
