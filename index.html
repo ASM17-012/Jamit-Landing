@@ -5,10 +5,12 @@
 <meta charset="utf-8">
 <script>
 /* 다른 언어판으로 갈 방문자는 스타일·Clarity 를 받기 전에 떠나야 해서 head 맨 앞에 둔다.
-   봇·링크 미리보기는 대개 언어가 en-US 라, 넘기면 루트의 한국어 본문·카드를 못 읽는다 */
+   봇·링크 미리보기는 대개 언어가 en-US 라, 넘기면 루트의 한국어 본문·카드를 못 읽는다.
+   네이버(Yeti/1.1)·다음(Daum/4.1) 로봇은 UA 에 bot 이 없어 따로 적는다 —
+   daum 뒤의 / 는 다음 앱 인앱 브라우저(DaumApps/…)를 로봇으로 잡지 않으려는 것이다 */
 (function(){
   try {
-    if (location.protocol === 'file:' || /bot|crawl|spider|slurp|lighthouse|headless|facebookexternalhit|kakaotalk-scrap|embedly|preview/i.test(navigator.userAgent)) return;
+    if (location.protocol === 'file:' || /bot|crawl|spider|slurp|yeti|daum\/|lighthouse|headless|facebookexternalhit|kakaotalk-scrap|embedly|preview/i.test(navigator.userAgent)) return;
     var to = localStorage.getItem('jamit-lang');
     if (to !== 'ko' && to !== 'en' && to !== 'ja') {
       var langs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language];
