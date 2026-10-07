@@ -64,6 +64,33 @@
 <meta property="og:image:alt" content="JAMIT — 나만의 연주가 우리의 합주로. 녹화 화면과 합주 영상이 담긴 앱 화면 두 대.">
 <meta name="twitter:card" content="summary_large_image">
 
+<!-- 검색엔진에 「이 사이트 = JAMIT」을 알리는 구조화 데이터. 메인(ko)에만 둔다 —
+     구글 사이트 이름과 네이버 연관 채널 둘 다 홈페이지 한 곳만 읽는다.
+     Organization 의 sameAs 가 네이버 연관 채널이다(앱스토어·구글플레이를 받는다).
+     SoftwareApplication 은 넣지 않는다: 구글 리치 결과는 평점·리뷰가 있어야 붙고,
+     없는 채로 넣으면 서치 콘솔에 오류만 남는다 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "JAMIT",
+  "url": "https://jamit.kr/",
+  "logo": "https://jamit.kr/assets/apple-touch-icon.png",
+  "sameAs": [
+    "https://apps.apple.com/kr/app/id6801850526",
+    "https://play.google.com/store/apps/details?id=kr.jamit.app"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "JAMIT",
+  "url": "https://jamit.kr/"
+}
+</script>
+
 <!-- Microsoft Clarity. 이 페이지에서 유일하게 밖으로 나가는 것이다 — 나머지는 글꼴도
      그림도 전부 같은 도메인에서 준다. 넣는 순간 쿠키도 생기므로 개인정보처리방침에
      그 사실이 적혀 있다. 안내와 실제가 어긋나면 안 된다. 비동기라 그리기를 막지 않는다 -->
