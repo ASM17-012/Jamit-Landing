@@ -210,13 +210,12 @@ main{flex:1;display:grid;place-items:center;padding:clamp(32px,8vw,80px) 0}
 
 /* 스토어 배지 — 애플·구글이 주는 그림을 그대로 쓴다. 두 장의 너비 비(336:379)대로 칸을 나눠
    카드 폭이 줄면 같이 줄어든다. 306px 은 메인과 같은 46px 높이가 되는 폭이다 */
-.stores{display:grid;grid-template-columns:336fr 379fr;gap:12px;max-width:306px;margin:12px auto 0}
+.stores{display:grid;grid-template-columns:336fr 379fr;gap:12px;max-width:306px;margin:20px auto 0}
 .badge{display:block;line-height:0;border-radius:8px;transition:opacity .2s ease,transform .2s ease}
 .badge:hover{opacity:.85}
 .badge:active{transform:scale(.97)}
 .badge img{width:100%;height:auto}
 .badge:focus-visible{outline:2px solid var(--hot);outline-offset:4px}
-
 
 /* 상태 전환. 기본값이 "안내"인 것이 중요하다 — JS가 죽으면 코드도 못 읽은 것이므로
    빈 카드가 아니라 안내가 남아야 한다. 성공했을 때만 JS가 has-code로 뒤집는다 */
@@ -228,14 +227,17 @@ main{flex:1;display:grid;place-items:center;padding:clamp(32px,8vw,80px) 0}
 .foot{border-top:1px solid var(--line);padding:30px 0 calc(30px + env(safe-area-inset-bottom,0px));
   font-size:13px;color:var(--mute)}
 .foot__in{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between}
-.foot__in nav{display:flex;gap:16px}
-.foot__in a{display:inline-block;padding:6px 4px;margin:-6px -4px}
+.foot__in nav{display:flex;flex-wrap:wrap;gap:6px 16px}
+/* 링크 하나가 단어 중간에서 꺾이지 않게 — 일본어는 320 폭에서 「お問い合わ/せ」로 갈렸다 */
+.foot__in a{display:inline-block;padding:6px 4px;margin:-6px -4px;white-space:nowrap}
 .foot a:hover{color:var(--ink)}
 .foot__ack{margin:12px 0 0;font-size:11px;line-height:1.5;word-break:keep-all}
 
 /* 손끝으로 누를 것들은 44px 이상이어야 한다(아이폰 권고) — 메인과 같은 값이다 */
 @media(max-width:860px){
   .foot__in a{padding:12px 4px;margin:-12px 0}
+  /* 링크가 두 줄로 접히면 위아래 누름 영역(45px)이 겹치지 않을 만큼 벌린다 */
+  .foot__in nav{row-gap:24px}
 }
 
 @media(prefers-reduced-motion:reduce){
