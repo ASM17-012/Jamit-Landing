@@ -403,10 +403,34 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
       <dl class="meta">
         <dt>Status</dt><dd>In effect</dd>
         <dt>Effective date</dt><dd><time datetime="2026-08-25">August 25, 2026</time></dd>
-        <dt>Last updated</dt><dd><time datetime="2026-10-20">October 20, 2026</time></dd>
+        <dt>Last updated</dt><dd><time datetime="2026-11-20">November 20, 2026</time></dd>
         <!-- 본문을 고치면 이 날짜도 같이 올린다 — 독자가 「바뀌었는가」를 판단하는 유일한 표지다. -->
         <dt>Related document</dt><dd><a class="x" href="terms.en.html">JAMIT Terms of Service</a></dd>
       </dl>
+
+      <!-- 사전 고지 배너(FEV-1251) — 2026-10-21 게시, 2026-11-20 시행일에 걷어낼 것. 4차(FEV-799)와 달리 아래 본문은 이미 개정본이다.
+           앱의 문서 시트도 이 페이지를 그대로 띄우므로(TermsDocument.matching) 제14조 제1항의 앱 안 고지를 겸한다. -->
+      <aside class="banner" role="note" aria-label="Notice of upcoming revision">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3 2.5 20.5h19L12 3Z"/><path d="M12 10v4.5"/><path d="M12 17.5h.01"/>
+        </svg>
+        <div>
+          <b>The revised Privacy Policy takes effect on November 20, 2026</b>
+          <p>This revision reflects <strong>recommendation alerts</strong>. Only to members who have agreed to receive recommendation
+            alerts, we send app push notifications about posts and Its, and news about the Service, matched to information such as the
+            parts (instruments) you registered (<a class="x" href="#art-1">Article 1</a>, subparagraph 7), and for this purpose we record
+            whether you have agreed to receive recommendation alerts and the time and route of that choice
+            (<a class="x" href="#art-2">Article 2</a>). <strong>This revision increases the items collected and the purposes of
+            processing</strong>, so we are giving advance notice of it on this page from October 21, 2026.</p>
+          <p><strong>The text below is the revised version.</strong> Before the effective date, it applies only to members who choose
+            whether to receive recommendation alerts in the app, from the time they make that choice
+            (<a class="x" href="#addendum">Addendum</a>). Receiving recommendation alerts is optional, and you can turn them off at any
+            time under “Recommendation alerts” in the app’s settings. For inquiries, please contact
+            <a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a>. On the same date, the
+            <a class="x" href="terms.en.html">Terms of Service</a> are also amended.</p>
+        </div>
+      </aside>
 
     </div>
 
@@ -415,7 +439,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
          작성지침(2025.4)도 세부는 링크로 넘기고 핵심을 앞세우는 구성을 권장한다.
          **별도 페이지가 아니라 같은 문서 안의 섹션이다** — 앱 시트는 host+path로 문서를 가르므로
          (`TermsDocument.matching`) 새 path가 생기면 시트 제목이 안 잡히고 「뒤로」 동선이 늘어난다.
-         ⚠️ **본문을 개정하면 이 아홉 줄도 반드시 함께 고칠 것.** 요약과 전문이 어긋나면 요약이
+         ⚠️ **본문을 개정하면 이 열 줄도 반드시 함께 고칠 것.** 요약과 전문이 어긋나면 요약이
          없느니만 못하다. 약관(terms.html)에는 두지 않는다 — 조문이 23개라 일곱 줄로 줄이면
          「이건 안 적혔는데」가 나오기 쉽고, 그쪽은 목차로 충분하다고 봤다(2026-08-25 결정). -->
     <section class="summary" id="summary" aria-labelledby="summary-h">
@@ -444,6 +468,11 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
           days.</strong> The Its feed also reflects popularity, which combines the view counts and like counts of many
           members, but other users cannot see who viewed what.
           <a class="x" href="#art-1">Article 1</a>·<a class="x" href="#art-3">Article 3</a></li>
+        <li><strong>We send recommendation alerts only to those who agree to receive them.</strong> Based on information
+          such as the parts you registered, we let you know about posts, Its, and news about the Service. Agreeing is
+          optional, and you can turn them off at any time under “Recommendation alerts” in the app’s settings. Not
+          agreeing does not affect your use of the Service or other notifications.
+          <a class="x" href="#art-1">Article 1</a>·<a class="x" href="#art-2">Article 2</a></li>
         <li><strong>We store the chat messages that members exchange with each other.</strong> If you delete a message
           or your account, we delete its content after 30 days; to keep read positions accurate, the message number,
           sender, time, and message type remain.
@@ -523,7 +552,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               <!-- 랭킹도 같은 정정이다(2026-10-01 대조) — 2026-08-28 부터 악기별 누적 XP 순위(SessionRankingController)와
                    전체·월간·주간 순위(RankingController, RankingPeriod)를 다른 회원에게 보여 왔는데 어디에도 없었다.
                    보이는 항목은 제4조 제4항이 적는다. --></li>
-            <li><strong>Sending notifications</strong>: sending push notifications related to use of the Service, such as joining a jam or publishing an Its</li>
+            <li><strong>Sending notifications</strong>: sending push notifications related to use of the Service, such as joining a jam or publishing an Its, and notices about the operation of the Service, such as maintenance and updates</li>
             <li><strong>User protection and operation of the Service</strong>: receiving and handling reports (<strong>when a
               message is reported, the Operator checks the reported message and, from the same chat room, up to 5
               member-written messages exchanged before it and up to 5 after it, including deleted messages</strong> —
@@ -572,6 +601,17 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                    ⚠️ 국외 이전은 없다 — 판정과 정렬을 전부 서버(AWS 서울 리전)에서 한다. 곡 정보 추론을 위한
                    국외 LLM 이용은 2026-09-19 에 폐기했다(FEV-792). 다시 들이는 날에는 제5·6조와 이 호를 함께
                    고치고 제14조 제1항의 30일 전 고지부터 해야 한다. --></li>
+            <li><strong>Recommendation and news alerts</strong>: sending app push notifications about jam posts and Its that match a
+              member’s interests, and news about the Service, <strong>only to members who have agreed to receive recommendation
+              alerts</strong>, choosing the recipients using information such as the <strong>part (instrument) information</strong>
+              registered by members. This consent is optional; not agreeing does not restrict your use of the Service or your receipt
+              of the notifications in subparagraph 3, and you may withdraw it at any time under “Recommendation alerts” in the app’s
+              settings.
+              <!-- 2026-11-20 6차 개정으로 추가(FEV-1251). 운영자가 관리자 콘솔에서 받는 사람을 골라 보낸다(FEV-1247) — 연주 세션과 추천 동의 상태로
+                   거르고, 닉네임·이메일로 직접 고를 수도 있어 ‘등’을 붙였다(표는 실제보다 넓게 적는다). 동의 기록은 users.recommend_push_consent 계열
+                   (경로 SIGNUP·POPUP·SETTINGS, 문서 판 2026-11-20)과 recommend_push_consent_logs 이다. 공지(점검·업데이트·운영 안내)는 제3호이고
+                   동의와 상관없이 보낸다. ⚠️ 광고 표기는 하지 않는다(개인 운영·무료). 유료 상품이나 제3자 홍보를 싣는 날에는 광고 표기와
+                   정보통신망법 제50조 절차를 함께 검토할 것. --></li>
           </ol>
         </section>
 
@@ -600,6 +640,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                     <tr><td>Content upload</td><td>Recording and uploading tracks, creating Its</td><td><strong>Video and audio</strong> (may include the user’s face, body, voice, and musical performance)</td><td>Required (when using the relevant feature)</td></tr>
                     <tr><td>Chat</td><td>One-on-one, group, and Space chat rooms</td><td><strong>Content of messages exchanged between members</strong> and the sender and time sent, identifiers of posts, Its, and tracks shared in messages, the number of the last message read in a chat room, and names a member has given to a chat room (not visible to other members)</td><td>Required (when using the relevant feature)</td></tr>
                     <tr><td>Notifications</td><td>App launch, login</td><td><strong>Device push token (FCM token)</strong>, device platform (iOS, Android) and language setting</td><td>Required (when receiving notifications)</td></tr>
+                    <tr><td>Notifications</td><td>Sign-up and re-consent to the terms, in-app prompt, Settings</td><td><strong>Whether you have agreed to receive recommendation alerts</strong>, and the time and route (sign-up, in-app prompt, or Settings) of agreeing, declining, or withdrawing</td><td>Optional</td></tr>
                     <tr><td>Automatic collection</td><td>In the course of using the Service</td><td>Service usage records, access logs, device information (model name, OS version, app version), error logs, the number of times the app was opened on each date (attendance records — used to determine achievements)</td><td>Automatically collected</td></tr>
                     <!-- 2026-10-01 추가. 출석은 사용자×날짜(KST) 한 행에 그날 앱을 연 횟수만 남긴다(UserAttendance) — 탈퇴하면
                          UserWithdrawalPurger 가 지운다. 모집글·닉네임 검색어는 검색에만 쓰고 저장·로그하지 않는다(검색 로그 테이블 없음,
@@ -1034,7 +1075,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
             <li>Data subjects may at any time request the Operator to provide access to, correct or delete, or suspend the processing of their personal information, or withdraw their consent.</li>
             <li>These rights may be exercised in the following ways, and the Operator will act without delay (within the statutory time limit).
               <ol class="sub">
-                <li>In-app features: editing your profile (correction), deleting content, turning off notifications for each chat room or Space (all notifications can be turned off in your device settings), deleting your account (withdrawal of consent, deletion)</li>
+                <li>In-app features: editing your profile (correction), deleting content, turning off notifications for each chat room or Space (all notifications can be turned off in your device settings), turning off recommendation alerts (withdrawal of consent), deleting your account (withdrawal of consent, deletion)</li>
                 <li>Email: <a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a></li>
               </ol>
               <p>When you delete content or your account in the app, <strong>it is no longer displayed in the Service
@@ -1064,7 +1105,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                    만들기 때문이다. 못 지킬 문장을 쓰지 않는 쪽을 택했다. 관리자용 즉시 파기 경로가 생기면
                    이 문장의 「최대 30일」을 걷을 것. -->
               <!-- 2026-09-01 정정: 원래 「가입을 받지 않으며」라고만 적어 가입 시점에 거르는 장치가 있는 것처럼
-                   읽혔다. 실제 앱의 동의 화면(TermsAgreementView)은 필수 2건만 받고 연령을 묻지 않는다 —
+                   읽혔다. 실제 앱의 동의 화면(TermsAgreementView)은 필수 2건과 선택 1건(추천 알림)을 받고 연령을 묻지 않는다 —
                    확인은 사후에만 가능하므로 그렇게 적는다. 앱에 연령 확인을 들이면 이 항과 제1조 제1호를
                    함께 고칠 것. --></li>
           </ol>
@@ -1367,6 +1408,19 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                    ⚠️ 제5조·제6조의 Google·Microsoft·HubSpot 행은 종전 그대로다. 「국외 이전이 없어졌다」가 아니라 「이번에 더하려던 줄이 안 들어갔다」이다.
                    ⚠️ 맞춤 추천에 국외 LLM 을 다시 들이려면 제1조 제6호·제5조·제6조를 함께 고치고 제14조 제1항의
                    30일 전 고지부터 다시 해야 한다. --></li>
+            <li>Sixth revision of November 20, 2026 — We reflected <strong>recommendation alerts</strong>.
+              We added subparagraph 7 (recommendation and news alerts) to <a class="x" href="#art-1">Article 1</a> and notices about the
+              operation of the Service to subparagraph 3, added to the items collected in <a class="x" href="#art-2">Article 2</a> whether a
+              member has agreed to receive recommendation alerts and the time and route of that choice, set out in
+              <a class="x" href="#art-8">Article 8</a> how to turn off recommendation alerts, and also revised the summary (Key points).
+              We send recommendation alerts only to members who agree; agreeing is optional and can be withdrawn at any time in the
+              app’s settings. <strong>This revision increases the items collected and the purposes of processing</strong>; we are giving
+              advance notice of it on this page from October 21, 2026, and this revision takes effect on November 20, 2026. However, for
+              members who choose whether to receive recommendation alerts in the app before then, it applies from the time they make that
+              choice.
+              <!-- 2026-10-21 게시(FEV-1251). 약관·처리방침 버전값(jamit.terms.version·privacy-version)은 올리지 않는다 — 올리면 전원 강제 재동의다.
+                   대신 추천 동의 기록에 문서 판 2026-11-20(Backend jamit.terms.recommend-push-version)을 남긴다. 시행일을 옮기면 그 값도 같이 옮길 것.
+                   게시와 시행 사이가 정확히 30일이다(제14조 제1항) — 게시가 하루라도 밀리면 시행일도 밀어야 한다. --></li>
           </ol>
         </section>
 
