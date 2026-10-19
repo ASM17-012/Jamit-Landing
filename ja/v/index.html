@@ -51,7 +51,7 @@
     document.getElementById("install2").href = INSTALL_URL;
     if (!ok) return;
 
-    const deepLink = SCHEME_BASE + id;
+    const deepLink = SCHEME_BASE + id + (inSpace ? "&s=1" : "");
     document.getElementById("open").href = deepLink;
 
     if (from) {

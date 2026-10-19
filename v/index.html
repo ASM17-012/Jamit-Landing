@@ -84,7 +84,10 @@
     document.getElementById("install2").href = INSTALL_URL;
     if (!ok) return;
 
-    const deepLink = SCHEME_BASE + id;
+    /* 스페이스 표식은 앱에도 넘긴다(FEV-1345) — 앱이 열지 못했을 때(멤버가 아님) 「스페이스 멤버만
+       볼 수 있는 잇츠예요」로 안내를 가를 근거가 이것뿐이다. 서버는 비멤버에게 「없는 잇츠」와 같은
+       404를 주기 때문이다(위 표식 주석). 옛 앱은 모르는 쿼리를 무시한다 */
+    const deepLink = SCHEME_BASE + id + (inSpace ? "&s=1" : "");
     document.getElementById("open").href = deepLink;
 
     if (from) {
