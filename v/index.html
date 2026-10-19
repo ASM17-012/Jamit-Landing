@@ -44,10 +44,14 @@
      INSTALL_URL — App Store 주소.
      API_BASE    — 썸네일을 주는 백엔드. 링크의 id는 앱이 보는 DB의 것이라 스토어 앱과 같은
                    운영을 묻는다 — 스테이징 앱(TestFlight)이 만든 링크는 썸네일 없이 기본 액자로
-                   남는다(받는 쪽은 대개 스토어 앱이라 감수한다). 스테이징 API는 이 오리진에
-                   CORS를 열어 두지 않아, 여기를 스테이징으로 두면 썸네일이 아예 뜨지 않는다.
-     SCHEME_BASE — 앱이 받는 딥링크. iOS ShortformShareRoute가 이 모양을 파싱한다 —
-                   바꾸려면 그쪽과 함께 바꿔야 한다(주소의 정본은 앱 쪽 주석 참조) */
+                   남거나, id가 우연히 운영의 공개 잇츠와 겹치면 그 다른 잇츠의 썸네일이 뜬다
+                   (id는 순번이라 가를 방법이 없다 — 받는 쪽은 대개 스토어 앱이라 감수한다).
+                   스테이징 API는 이 오리진에 CORS를 열어 두지 않아, 여기를 스테이징으로 두면
+                   썸네일이 아예 뜨지 않는다.
+     SCHEME_BASE — 앱이 받는 딥링크. 모양은 `jamit://shortform/watch?id=N[&s=1]`이고(`s=1`은
+                   스페이스 잇츠 표식 — 아래 deepLink 주석), iOS ShortformShareRoute와 Android
+                   ShortformShareRoute(ShortformShareRouter.kt)가 이 모양을 파싱한다 — 바꾸려면
+                   두 앱과 함께 바꿔야 한다(주소의 정본은 앱 쪽 주석 참조) */
   const INSTALL_URL = "https://apps.apple.com/kr/app/jamit-%EB%82%98%EB%A7%8C%EC%9D%98-%EC%97%B0%EC%A3%BC%EA%B0%80-%EC%9A%B0%EB%A6%AC%EC%9D%98-%ED%95%A9%EC%A3%BC%EB%A1%9C/id6801850526";
   const API_BASE = "https://api.jamit.kr";
   const SCHEME_BASE = "jamit://shortform/watch?id=";
