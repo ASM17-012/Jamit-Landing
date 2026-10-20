@@ -42,13 +42,18 @@
 (() => {
   /* ════ 바꿀 곳은 이 세 줄과 en/v/·ja/v/ 사본의 같은 줄이다 ════
      INSTALL_URL — App Store 주소.
-     API_BASE    — 썸네일을 주는 백엔드. 앱(TestFlight)이 스테이징을 보는 동안은 여기도
-                   스테이징이어야 한다 — 링크의 id는 앱이 보는 DB의 것이라, 운영을 물으면
-                   맞는 id가 전부 404로 떨어진다. 앱이 운영으로 넘어가는 날 함께 바꾼다.
-     SCHEME_BASE — 앱이 받는 딥링크. iOS ShortformShareRoute가 이 모양을 파싱한다 —
-                   바꾸려면 그쪽과 함께 바꿔야 한다(주소의 정본은 앱 쪽 주석 참조) */
+     API_BASE    — 썸네일을 주는 백엔드. 링크의 id는 앱이 보는 DB의 것이라 스토어 앱과 같은
+                   운영을 묻는다 — 스테이징 앱(TestFlight)이 만든 링크는 썸네일 없이 기본 액자로
+                   남거나, id가 우연히 운영의 공개 잇츠와 겹치면 그 다른 잇츠의 썸네일이 뜬다
+                   (id는 순번이라 가를 방법이 없다 — 받는 쪽은 대개 스토어 앱이라 감수한다).
+                   스테이징 API는 이 오리진에 CORS를 열어 두지 않아, 여기를 스테이징으로 두면
+                   썸네일이 아예 뜨지 않는다.
+     SCHEME_BASE — 앱이 받는 딥링크. 모양은 `jamit://shortform/watch?id=N[&s=1]`이고(`s=1`은
+                   스페이스 잇츠 표식 — 아래 deepLink 주석), iOS ShortformShareRoute와 Android
+                   ShortformShareRoute(ShortformShareRouter.kt)가 이 모양을 파싱한다 — 바꾸려면
+                   두 앱과 함께 바꿔야 한다(주소의 정본은 앱 쪽 주석 참조) */
   const INSTALL_URL = "https://apps.apple.com/kr/app/jamit-%EB%82%98%EB%A7%8C%EC%9D%98-%EC%97%B0%EC%A3%BC%EA%B0%80-%EC%9A%B0%EB%A6%AC%EC%9D%98-%ED%95%A9%EC%A3%BC%EB%A1%9C/id6801850526";
-  const API_BASE = "https://api-stg.jamit.kr";
+  const API_BASE = "https://api.jamit.kr";
   const SCHEME_BASE = "jamit://shortform/watch?id=";
 
   /* id는 쿼리스트링으로 받는다 — /v/123 경로 세그먼트는 GitHub Pages가 못 준다(/s/ 주석).
@@ -83,7 +88,10 @@
     document.getElementById("install2").href = INSTALL_URL;
     if (!ok) return;
 
-    const deepLink = SCHEME_BASE + id;
+    /* 스페이스 표식은 앱에도 넘긴다(FEV-1345) — 앱이 열지 못했을 때(멤버가 아님) 「스페이스 멤버만
+       볼 수 있는 잇츠예요」로 안내를 가를 근거가 이것뿐이다. 서버는 비멤버에게 「없는 잇츠」와 같은
+       404를 주기 때문이다(위 표식 주석). 옛 앱은 모르는 쿼리를 무시한다 */
+    const deepLink = SCHEME_BASE + id + (inSpace ? "&s=1" : "");
     document.getElementById("open").href = deepLink;
 
     if (from) {
