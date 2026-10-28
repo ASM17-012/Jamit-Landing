@@ -403,20 +403,20 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
       <dl class="meta">
         <dt>Status</dt><dd>In effect</dd>
         <dt>Effective date</dt><dd><time datetime="2026-08-25">August 25, 2026</time></dd>
-        <dt>Last updated</dt><dd><time datetime="2026-11-20">November 20, 2026</time></dd>
-        <!-- 본문을 고치면 이 날짜도 같이 올린다 — 독자가 「바뀌었는가」를 판단하는 유일한 표지다. -->
+        <dt>Last updated</dt><dd><time datetime="2026-11-01">November 1, 2026</time> (the sixth revision takes effect on <time datetime="2026-11-20">November 20, 2026</time>)</dd>
+        <!-- 본문을 고치면 이 날짜도 같이 올린다(시행 전인 개정이 있으면 괄호에 그 시행일을 함께) — 독자가 「바뀌었는가」를 판단하는 유일한 표지다. -->
         <dt>Related document</dt><dd><a class="x" href="terms.en.html">JAMIT Terms of Service</a></dd>
       </dl>
 
-      <!-- 사전 고지 배너(FEV-1251) — 2026-10-21 게시, 2026-11-20 시행일에 걷어낼 것. 4차(FEV-799)와 달리 아래 본문은 이미 개정본이다.
+      <!-- 사전 고지 배너(FEV-1251) — 2026-10-21 게시, 2026-11-20 시행일에 걷어낼 것(셋째 문단의 7차 안내와 머리말 「최종 수정」의 괄호도 함께 정리). 4차(FEV-799)와 달리 아래 본문은 이미 개정본이다.
            앱의 문서 시트도 이 페이지를 그대로 띄우지만(TermsDocument.matching) 회원이 열어야 보이므로, 제14조 제1항의 앱 안 안내는 게시일에 이벤트 팝업이나 공지 알림으로 따로 한다. -->
-      <aside class="banner" role="note" aria-label="Notice of upcoming revision">
+      <aside class="banner" role="note" aria-label="Notice of revision">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M12 3 2.5 20.5h19L12 3Z"/><path d="M12 10v4.5"/><path d="M12 17.5h.01"/>
         </svg>
         <div>
-          <b>The revised Privacy Policy takes effect on November 20, 2026</b>
+          <b>The revised Privacy Policy reflecting recommendation alerts (sixth revision) takes effect on November 20, 2026</b>
           <p>This revision reflects <strong>recommendation alerts</strong>. Only to members who have agreed to receive recommendation
             alerts, we send app push notifications about posts and Its, and news about the Service, matched to information such as the
             parts (instruments) you registered (<a class="x" href="#art-1">Article 1</a>, subparagraph 7), and for this purpose we record
@@ -426,12 +426,16 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
             required updates. These notices are sent regardless of consent to recommendation alerts, while push notifications announcing new
             features and events are sent only as recommendation alerts (Article 1, subparagraphs 3 and 7). <strong>This revision increases the items collected and the purposes of
             processing</strong>, so we are giving advance notice of it on this page from October 21, 2026.</p>
-          <p><strong>The text below is the revised version.</strong> Before the effective date, it applies only to members who choose
+          <p><strong>The text below already reflects this revision.</strong> Before the effective date, this revision applies only to members who choose
             whether to receive recommendation alerts in the app, from the time they make that choice
             (<a class="x" href="#addendum">Addendum</a>). Receiving recommendation alerts is optional, and you can turn them off at any
             time under “Recommendation alerts” in the app’s settings. For inquiries, please contact
             <a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a>. On the same date, the
             <a class="x" href="terms.en.html">Terms of Service</a> are also amended.</p>
+          <p><strong>Separately, we have reflected the seventh revision in the text below, and it takes effect on November 1, 2026.</strong>
+            It concerns collecting the search terms you enter when searching posts and Its, records of the posts and Its we showed you in
+            personalized order, and app error information (Google Firebase Crashlytics)
+            (<a class="x" href="#art-2">Article 2</a>·<a class="x" href="#addendum">Addendum</a>).</p>
         </div>
       </aside>
 
@@ -469,7 +473,9 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
           does not restrict your use of the service. Post views, genre filter selections, and Its viewing history are
           used to refine those recommendations and to determine achievements, and <strong>are deleted after 90
           days.</strong> The Its feed also reflects popularity, which combines the view counts and like counts of many
-          members, but other users cannot see who viewed what.
+          members, but other users cannot see who viewed what. The search terms you enter when searching posts and Its are used to
+          improve search quality, and records of the lists we showed you in personalized order are used to improve
+          recommendations; both are deleted after 90 days.
           <a class="x" href="#art-1">Article 1</a>·<a class="x" href="#art-3">Article 3</a></li>
         <li><strong>We send recommendation alerts only to those who agree to receive them.</strong> Based on information
           such as the parts you registered, we let you know about posts, Its, and news about the Service. Agreeing is
@@ -483,9 +489,9 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
           messages before and after it.</strong>
           <a class="x" href="#art-3">Article 3</a>·<a class="x" href="terms.en.html#art-13">Terms of Service Article 13</a></li>
         <li>To operate the service, we entrust processing to AWS, Google, Microsoft, HubSpot, Slack, and Grafana Labs, and some information is
-          <strong>transferred to the United States and Japan</strong>. <a class="x" href="#art-5">Article 5</a>·<a class="x" href="#art-6">Article 6</a></li>
+          <strong>transferred to the United States and Japan</strong>, and information sent to Google may also be processed at Google facilities outside the United States. <a class="x" href="#art-5">Article 5</a>·<a class="x" href="#art-6">Article 6</a></li>
         <li><strong>The app uses Google Firebase Analytics to see which screens and features are used and how
-          often.</strong> This is not linked to your member account, and we do not collect advertising identifiers.
+          often, and Firebase Crashlytics to fix app errors.</strong> Neither is linked to your member account, and we do not collect advertising identifiers.
           <strong>Collection stops when you delete the app.</strong>
           The website (jamit.kr) uses Microsoft Clarity to view visit records — you can refuse cookies in your browser.
           <a class="x" href="#art-10">Article 10</a></li>
@@ -561,7 +567,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               member-written messages exchanged before it and up to 5 after it, including deleted messages</strong> —
               <a class="x" href="terms.en.html#art-13">Terms of Service Article 13(3)</a>),
               prevention of and sanctions against objectionable content and fraudulent use,
-              provision of the block feature, handling of disputes, identification of service errors, and analysis of usage statistics and quality improvement</li>
+              provision of the block feature, handling of disputes, identification of service errors, and analysis of usage statistics and quality improvement (including improvement of search quality and understanding which songs and artists members look for)</li>
             <li><strong>Service improvement using content</strong>: the Operator internally views and analyzes tracks and Its
               posted by users to the Service (including video and audio such as faces, voices, and musical performances)
               and uses them to improve the quality of recording, sync correction, and Its compositing, and the usability
@@ -579,7 +585,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               (instrument) information</strong> registered by a member to order the list of posts on Home, and using
               <strong>part (instrument) information</strong> and <strong>Its viewing history</strong> to order the
               Its feed, in an order closer to the member’s interests; and collecting <strong>records of post views and
-              genre filter selections</strong> to improve the quality of those recommendations. The order of the Its feed
+              genre filter selections</strong> and <strong>records of recommendation lists shown</strong> (which posts and Its were shown in which position) to improve the quality of those recommendations. The order of the Its feed
               also reflects popularity, which combines the view counts and like counts of many members, and a member’s
               viewing history is added to it only as a number from which it cannot be identified whose history it is.
               Preferred genres are optional, and not registering them does not restrict your use of the Service. Who
@@ -644,11 +650,13 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                     <tr><td>Notifications</td><td>Sign-up and re-consent to the terms, in-app prompt, Settings</td><td><strong>Whether you have agreed to receive recommendation alerts</strong>; the time and route (sign-up, in-app prompt, or Settings) of agreeing, declining, or withdrawing; and the version (effective date) of this Policy that applied at that time</td><td>Optional</td></tr>
                     <tr><td>Automatic collection</td><td>In the course of using the Service</td><td>Service usage records, access logs, device information (model name, OS version, app version), error logs, the number of times the app was opened on each date (attendance records — used to determine achievements)</td><td>Automatically collected</td></tr>
                     <!-- 2026-10-01 추가. 출석은 사용자×날짜(KST) 한 행에 그날 앱을 연 횟수만 남긴다(UserAttendance) — 탈퇴하면
-                         UserWithdrawalPurger 가 지운다. 모집글·닉네임 검색어는 검색에만 쓰고 저장·로그하지 않는다(검색 로그 테이블 없음,
-                         요청 로그는 getRequestURI 라 쿼리 문자열이 안 남는다 — 단 staging ALB 원본 로그(Infra modules/api-access-logs, 11일)에는 keyword 가 남고, prod 에는 ALB 로그가 없다). 검색어를 남기기 시작하면 이 표에 적을 것. -->
+                         UserWithdrawalPurger 가 지운다. 닉네임 검색어는 검색에만 쓰고 저장·로그하지 않는다. 모집글·숏폼 검색어는 아래 검색어 기록 행이 적는다.
+                         요청 로그는 getRequestURI 라 쿼리 문자열이 안 남는다(단 staging ALB 원본 로그(Infra modules/api-access-logs, 11일)에는 keyword 가 남고, prod 에는 ALB 로그가 없다). -->
                     <tr><td>Automatic collection</td><td>Viewing posts, selecting genre filters, viewing Its</td><td><strong>Identifiers and times of posts viewed and Its watched, genre filters selected and the screens on which they were selected, and how long an Its was played (playback duration) and the length of that video</strong><br><small>Used for personalized recommendations (Article 1, subparagraph 6) and determination of achievements (Article 1, subparagraph 2), and not shown to other members</small></td><td>Automatically collected</td></tr>
                     <!-- 재생 시간과 영상 길이는 완료율로 접지 않고 원본 둘을 그대로 남긴다(ShortformViewLog).
                          「몇 시에 봤다」와 「3분 중 2분 47초를 봤다」는 다른 정보라 따로 적는다(2026-09-23 리뷰). -->
+                    <tr><td>Automatic collection</td><td>Searching posts and Its</td><td><strong>Search term records</strong> — the search terms entered, the screen searched (posts or Its), the number of search results, and the time of the search<br><small>Used to improve search quality and to understand which songs and artists members look for (Article 1, subparagraph 4); stored together with the member account and not shown to other members. Search terms for finding members (nicknames) are not stored</small></td><td>Automatically collected</td></tr>
+                    <tr><td>Automatic collection</td><td>Showing the list of posts on Home and the Its feed in personalized order</td><td><strong>Records of recommendation lists shown</strong> — the identifiers of the posts and Its shown, their position in the list (in which place each was shown), and the time they were shown<br><small>Used to evaluate and improve whether the order of personalized recommendations is actually helpful (Article 1, subparagraph 6); stored together with the member account and not shown to other members</small></td><td>Automatically collected</td></tr>
                     <tr><td>Automatic collection</td><td>Recording a track in the app</td><td><strong>Recording diagnostic information</strong> — recording mode (recording along with the original song video, or recording along with another member’s track), device information (model name, OS version, app version), the type of connected audio output device (speaker, wired, Bluetooth, or other external output) and the Bluetooth connection type and product family (e.g., AirPods Pro; the name the user has given the device is not collected), audio latency, buffer, and sample rate settings, the result and time of the app’s “Calibrate sync” measurement, the automatic sync correction value applied to the recording, the number of times the audio device changed during recording and the number of interruptions such as incoming calls, when recording along with another member’s track the number of times and duration that track’s playback stopped, the device’s thermal and low-power state, camera orientation, and the recording length and take number<br><small>Used to identify the cause when a track is out of sync (Article 1, subparagraphs 2 and 4); visible only to the Operator, and retained and destroyed together with the relevant track</small></td><td>Automatically collected</td></tr>
                     <!-- 앱이 트랙 등록 요청에 싣는 recordingDiagnostics(iOS RecordingDiagnostics, Backend Track.recording_diagnostics).
                          서버는 필드를 거르지 않는다 — iOS·Android 모두 이 목록을 넘지 말 것(블루투스 이름은 제품군으로만).
@@ -656,6 +664,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                     <tr><td>Automatic collection</td><td>In the course of using the app</td><td>Google Firebase Analytics — a randomly generated app instance identifier (on iOS, including the identifier for vendor (IDFV)), usage events automatically collected by Google Analytics such as app installation, launch, and sessions, and usage events designated by the Operator (login, sign-up, screen view, start of track creation, track registration, start of Its creation, Its compositing request, Its publication, message sending, sharing, push notification open) and their associated items (login method, name and type of the screen viewed, track registration path, type of post the track was uploaded to, type of chat room (one-on-one, group, Space), Its publication path and choice of whether to make it public, type of content shared and sharing method, type of push notification opened), push notification receipt and open records, device information (model name, OS version, app version, language, screen information, etc.), access IP address and the country and region estimated from it</td><td>Automatically collected</td></tr>
                     <!-- 「메시지 전송」은 iOS·Android 의 dm_sent(5차부터 대화방 종류를 싣는다, 채팅과 함께 2026-09-16 들어옴)다 — 4차 개정 초안이
                          지정 이벤트 목록에서 빠뜨렸다(2026-10-01 대조). 이벤트를 더하는 날 제6조 표·제10조 제1항과 함께 고칠 것. -->
+                    <tr><td>Automatic collection</td><td>When an error occurs in the app or the app terminates abnormally</td><td>Google Firebase Crashlytics — error details (such as the location in the code where the error occurred and the error message) and the time it occurred, app usage events immediately before the error (those recorded in app usage statistics), device information (model name, OS version, app version), device state (memory and storage, screen orientation, whether the device is jailbroken or rooted, etc.), and a randomly generated per-installation identifier and session identifier<br><small>Used to identify and fix app errors (Article 1, subparagraph 4), and not linked to member accounts</small></td><td>Automatically collected</td></tr>
                     <tr><td>Reports and inquiries</td><td>Receipt of reports, customer inquiries, sync fix requests</td><td>Information contained in the report or inquiry, the track for which a sync fix was requested, and the time of the request<br><small>Sync fix requests are used by the Operator to check and correct the sync of tracks (Article 1, subparagraphs 2 and 4); they are visible only to the Operator, and are retained and destroyed together with the relevant track</small></td><td>When applicable</td></tr>
                     <!-- 싱크 보정 요청(FEV-1075, 2026-09-28): 본문 없는 POST 라 요청한 회원·트랙·시각만 남는다(SyncFixRequest).
                          트랙 행과 함께 지워지고 보관 만료 배치에서도 걷힌다. 영어·일본어판이 먼저 적었고 정본에만 빠져 있었다. -->
@@ -696,7 +705,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
           <h2 class="art"><span class="art__no">Article 3</span>Processing and retention periods of personal information <a class="art__link" href="#art-3" aria-label="Link to Article 3">#</a></h2>
           <ol class="clauses">
             <li>The Operator processes and retains personal information within the retention period prescribed by law or the retention period to which the data subject has consented.</li>
-            <li>Personal information, other than the app usage statistics information in paragraph 6, is retained <strong>until the member deletes their account</strong>. <strong>When you delete your account, we destroy without delay the information that can identify you
+            <li>Personal information, other than the app usage statistics information and app error information in paragraph 6, is retained <strong>until the member deletes their account</strong>. <strong>When you delete your account, we destroy without delay the information that can identify you
               — your email, nickname, profile photo, and social login linkage information — and a destroyed account cannot
               be restored.</strong> However, the following items are preserved only for the periods in the table below, to
               the minimum extent necessary to prevent fraudulent use and to handle disputes. A deleted account cannot be
@@ -838,15 +847,22 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               linked to member accounts and therefore cannot be destroyed upon account deletion; it is deleted after up to
               14 months from the date of collection in accordance with the maximum of the Google Analytics data retention
               setting. Aggregate statistics that cannot identify individuals are retained even after that.
+              <strong>App error information</strong> (<a class="x" href="#art-10">Article 10</a>) is likewise not linked to
+              member accounts and therefore cannot be destroyed upon account deletion; it is deleted after 90 days from the
+              date of collection.
               <!-- 2026-09-02 추가. 제2항 「탈퇴 시까지」의 예외가 표 네 행뿐이던 때 이 정보만 자리가 없었다 —
                    제5항이 웹사이트 분석 정보에 같은 자리를 이미 두고 있어 그 대칭이다. 14개월은 GA4 표준 속성의
                    보관 설정 상한(선택지 2개월·14개월)이라 콘솔 값이 2개월이어도 거짓은 아니다 — 정확히 적으려면
                    콘솔 「데이터 보관」을 확인해 제6조 표와 함께 고칠 것. --></li>
-            <li><strong>Records of post views, genre filter selections, and Its viewing history are deleted automatically
+            <li><strong>Records of post views, genre filter selections, Its viewing history, and recommendation lists shown,
+              as well as search term records, are deleted automatically
               after 90 days from the date of collection, and if you delete your account before then, they are destroyed
-              upon account deletion.</strong> These records are used for personalized recommendations
-              (<a class="ref" href="#art-1">Article 1</a>, subparagraph 6) and determination of achievements
-              (<a class="ref" href="#art-1">Article 1</a>, subparagraph 2), and are not shown to other members.
+              upon account deletion.</strong> Records of post views, genre filter selections, and Its viewing history are used
+              for personalized recommendations (<a class="ref" href="#art-1">Article 1</a>, subparagraph 6) and determination
+              of achievements (<a class="ref" href="#art-1">Article 1</a>, subparagraph 2), records of recommendation lists
+              shown are used for personalized recommendations (<a class="ref" href="#art-1">Article 1</a>, subparagraph 6),
+              and search term records are used to improve search quality and to understand which songs and artists members
+              look for (<a class="ref" href="#art-1">Article 1</a>, subparagraph 4); none of them are shown to other members.
               <!-- 🚨 **제2항의 표에 넣었다가 뺐다**(2026-09-23 리뷰). 그 표는 「삭제·탈퇴 후에도 보존하는 항목」이고
                    머리말이 성격을 「부정 이용 방지와 분쟁 대응에 필요한 최소한」으로 한정하는데, 이 기록들은
                    ① 탈퇴하면 함께 파기되고(UserWithdrawalPurger 가 그 사람의 행을 걷는다) ② 보존 근거도 추천·업적이라
@@ -901,7 +917,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                     </tr>
                     <tr>
                       <td>Google LLC (Firebase)</td>
-                      <td>Sending push notifications (FCM), app usage statistics analysis (Firebase Analytics) — error collection tools such as Crashlytics are not used</td>
+                      <td>Sending push notifications (FCM), app usage statistics analysis (Firebase Analytics), app error analysis (Firebase Crashlytics)</td>
                       <td>See <a class="ref" href="#art-6">Article 6</a> Cross-border transfer</td>
                     </tr>
                     <tr>
@@ -949,8 +965,8 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
           <p>
             To provide and operate the Service, the Operator transfers personal information overseas (by entrustment or
             storage) as follows. Data subjects may refuse the cross-border transfer by making a request to
-            <a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a>. However, app usage statistics information
-            and website usage analysis information are not linked to member accounts and cannot be singled out upon
+            <a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a>. However, app usage statistics information,
+            app error information, and website usage analysis information are not linked to member accounts and cannot be singled out upon
             request, so you can stop them by the methods in <a class="x" href="#art-10">Article 10</a> (deleting the app,
             refusing cookies in your browser). If you refuse, use of all or part of the Service (such as push
             notifications) may be restricted, or the handling of reports may be delayed.
@@ -969,7 +985,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                      옮겼다 — Google 은 한국어판의 문의 주소, Microsoft 는 개인정보 문의 양식, 나머지는 개인정보 문의 이메일. -->
                 <tr>
                   <td>Google LLC (Firebase)<br><small>googlekrsupport@google.com</small></td>
-                  <td>United States</td>
+                  <td>The United States and other countries where Google LLC maintains data processing facilities</td>
                   <td>Device push token (FCM), device information transmitted in the FCM registration process (model name, OS version, app version), the title and body of push notifications (depending on the type of notification, these include another member’s nickname and the title of the relevant post or the name of a Space, and <strong>chat notifications include the sending member’s nickname and the beginning of the message content</strong>), and identifiers of the notification and the relevant content</td>
                   <td>Transmission over the network when using the Service</td>
                   <td>Sending push notifications</td>
@@ -977,7 +993,7 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                 </tr>
                 <tr>
                   <td>Google LLC (Firebase Analytics)<br><small>googlekrsupport@google.com</small></td>
-                  <td>United States</td>
+                  <td>The United States and other countries where Google LLC maintains data processing facilities</td>
                   <td>A randomly generated app instance identifier (on iOS, including the identifier for vendor (IDFV)), usage events automatically collected by Google Analytics such as app installation, launch, and sessions, and usage events designated by the Operator (login, sign-up, screen view, start of track creation, track registration, start of Its creation, Its compositing request, Its publication, message sending, sharing, push notification open) and their associated items (login method, name and type of the screen viewed, track registration path, type of post the track was uploaded to, type of chat room (one-on-one, group, Space), Its publication path and choice of whether to make it public, type of content shared and sharing method, type of push notification opened), push notification receipt and open records, device information (model name, OS version, app version, language, screen information, etc.), access IP address and the country and region estimated from it</td>
                   <td>Transmission over the network when using the app</td>
                   <td>App usage statistics analysis and service improvement</td>
@@ -986,6 +1002,14 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
                 <!-- 14개월은 GA4 표준 속성의 보관 설정 상한이다(선택지는 2개월·14개월). 콘솔 「데이터 보관」이
                      2개월이면 이 문구는 상한으로서 여전히 참이지만, 정확히 적고 싶으면 콘솔 값을 확인해 제3조 제6항과
                      함께 고칠 것. 항목 문구는 제2조 표·제10조 제1항과 글자 단위로 같아야 한다. -->
+                <tr>
+                  <td>Google LLC (Firebase Crashlytics)<br><small>googlekrsupport@google.com</small></td>
+                  <td>The United States and other countries where Google LLC maintains data processing facilities</td>
+                  <td>Error details (such as the location in the code where the error occurred and the error message) and the time it occurred, app usage events immediately before the error (those recorded in app usage statistics), device information (model name, OS version, app version), device state (memory and storage, screen orientation, whether the device is jailbroken or rooted, etc.), and a randomly generated per-installation identifier and session identifier</td>
+                  <td>Transmission over the network when using the app</td>
+                  <td>Identifying and fixing app errors</td>
+                  <td>90 days from the date of collection (Firebase Crashlytics retention policy)</td>
+                </tr>
                 <tr>
                   <td>Microsoft Corporation<br><small><a class="x" href="https://go.microsoft.com/fwlink/?linkid=2126612">Privacy inquiry form</a></small></td>
                   <td>United States</td>
@@ -1139,14 +1163,17 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               screens and features are used and how often, in order to improve the Service. In this process, a randomly generated app instance identifier (on iOS, including the identifier for vendor (IDFV)), usage events automatically collected by Google Analytics such as app installation, launch, and sessions, and usage events designated by the Operator (login, sign-up, screen view, start of track creation, track registration, start of Its creation, Its compositing request, Its publication, message sending, sharing, push notification open) and their associated items (login method, name and type of the screen viewed, track registration path, type of post the track was uploaded to, type of chat room (one-on-one, group, Space), Its publication path and choice of whether to make it public, type of content shared and sharing method, type of push notification opened), push notification receipt and open records, device information (model name, OS version, app version, language, screen information, etc.), access IP address and the country and region estimated from it are
               transmitted to Google (<a class="x" href="#art-2">Article 2</a>·<a class="x" href="#art-6">Article 6</a>).
               This information is not linked to member accounts (email, nickname, etc.) and is not used for advertising
-              purposes. Error collection tools such as Crashlytics are not used.
-              <!-- 2026-09-02 반영. 앱에 연결된 Firebase 제품은 FirebaseMessaging(푸시)·FirebaseAnalytics 둘이다
-                   (iOS FEV-476). 릴리스 빌드는 켜고 디버그는 끈다(PushDelegate.swift). 앱 안에서 끄는 스위치는
-                   없다 — FEV-632 는 2026-09-03 보류(통계는 항상 수집한다는 결정). Crashlytics·IDFA(FirebaseAnalyticsIdentitySupport)를 붙이는 날 이 항과
+              purposes. The app also uses <strong>Google Firebase Crashlytics</strong> to identify and fix app errors. When
+              an error occurs in the app or the app terminates abnormally, error details (such as the location in the code where the error occurred and the error message) and the time it occurred, app usage events immediately before the error (those recorded in app usage statistics), device information (model name, OS version, app version), device state (memory and storage, screen orientation, whether the device is jailbroken or rooted, etc.), and a randomly generated per-installation identifier and session identifier are
+              transmitted to Google (<a class="x" href="#art-2">Article 2</a>·<a class="x" href="#art-6">Article 6</a>); this
+              information is also not linked to member accounts.
+              <!-- 앱에 연결된 Firebase 제품은 FirebaseMessaging(푸시)·FirebaseAnalytics·FirebaseCrashlytics 셋이다.
+                   릴리스 빌드는 켜고 디버그는 끈다(PushDelegate.swift). 앱 안에서 끄는 스위치는
+                   없다 — FEV-632 는 2026-09-03 보류(통계는 항상 수집한다는 결정). IDFA(FirebaseAnalyticsIdentitySupport)를 붙이는 날 이 항과
                    제2·5·6조, App Store 「앱 개인정보」 라벨을 함께 고칠 것. --></li>
             <li>This collection cannot be turned off separately within the app, and <strong>it stops when you delete the
-              app.</strong> The app instance identifier is deleted with the app and a new one is created if you reinstall
-              it. Information already transmitted is kept for the period in <a class="x" href="#art-3">Article 3</a>,
+              app.</strong> The app instance identifier and the per-installation identifier are deleted with the app, and new
+              ones are created if you reinstall it. Information already transmitted is kept for the period in <a class="x" href="#art-3">Article 3</a>,
               paragraph 6. Because this information is not linked to member accounts and the data of a specific user cannot
               be singled out, individual requests for deletion or suspension of processing cannot be accommodated.
               Other inquiries may be sent to <a class="x" href="mailto:support@jamit.kr">support@jamit.kr</a>.
@@ -1424,8 +1451,29 @@ html.embed .prose section[id] + section[id] .art{padding-top:20px;border-top:1px
               members who choose whether to receive recommendation alerts in the app before then, it applies from the time they make that
               choice.
               <!-- 2026-10-21 게시(FEV-1251). 약관·처리방침 버전값(jamit.terms.version·privacy-version)은 올리지 않는다 — 더해진 것은 선택 동의(추천 알림)뿐이라 전 회원 재동의 대상이 아니다.
-                   대신 추천 동의 기록에 문서 판 2026-11-20(Backend jamit.terms.recommend-push-version)을 남긴다. 시행일을 옮기면 그 값도 같이 옮길 것. ⚠️ 처리방침을 다시 개정하는 날 이 값도 그 시행일로 올릴 것 — 제2조 표가 동의 기록에 「그때 적용된 처리방침의 버전」이 남는다고 적는다.
+                   대신 추천 동의 기록에 문서 판 2026-11-20(Backend jamit.terms.recommend-push-version)을 남긴다. 시행일을 옮기면 그 값도 같이 옮길 것. ⚠️ 처리방침을 다시 개정하는 날 이 값도 그 시행일로 올릴 것 — 제2조 표가 동의 기록에 「그때 적용된 처리방침의 버전」이 남는다고 적는다. 7차는 이 값을 올리지 않는다(추천 알림 조항은 6차 그대로).
                    게시와 시행 사이가 정확히 30일이다(제14조 제1항) — 게시가 하루라도 밀리면 시행일도 밀어야 한다. --></li>
+            <li>Seventh revision of November 1, 2026 — We reflected <strong>search term records</strong>, <strong>records of
+              recommendation lists shown</strong>, and <strong>app error information</strong> (Google Firebase Crashlytics).
+              We added to the items collected in <a class="x" href="#art-2">Article 2</a> the search terms entered when searching
+              posts and Its, which posts and Its were shown in which position when the list of posts on Home and the Its feed are
+              shown in personalized order, and app error information; set out records of recommendation lists shown in
+              <a class="x" href="#art-1">Article 1</a>, subparagraph 6, and the fact that quality improvement in subparagraph 4
+              includes improvement of search quality; added their retention periods (90 days from the date of
+              collection in each case) to <a class="x" href="#art-3">Article 3</a>; added app error information to the scope of
+              entrustment to and cross-border transfer to Google in <a class="x" href="#art-5">Article 5</a> and
+              <a class="x" href="#art-6">Article 6</a>; and in <a class="x" href="#art-5">Article 5</a> and
+              <a class="x" href="#art-10">Article 10</a>, deleted the statement that error collection tools such as Crashlytics
+              are not used and described the collection of app error information. We also revised the Key points. Search term
+              records and records of recommendation lists shown are destroyed upon account deletion, and app error information
+              is not linked to member accounts.
+              <strong>Also corrected</strong> — In <a class="x" href="#art-6">Article 6</a>, we corrected the stated country of
+              transfer to Google for sending push notifications, app usage statistics analysis, and app error analysis to “the
+              United States and other countries where Google LLC maintains data processing facilities,” to reflect that Google may
+              also carry out this processing at facilities outside the United States, and updated the cross-border transfer item
+              in the Key points accordingly.
+              This revision takes effect on November 1, 2026. It is separate from the sixth revision above (effective November 20,
+              2026) and takes effect before it.</li>
           </ol>
         </section>
 
