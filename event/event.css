@@ -1,0 +1,123 @@
+@font-face{
+  font-family:"Pretendard";
+  src:url("../assets/fonts/pretendard-subset.woff2") format("woff2");
+  font-weight:400 800;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"MonoEn";
+  font-weight:100 500;
+  src:local("SFMono-Regular"),local("SF Mono Regular"),local("Menlo-Regular"),
+      url("../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-display:swap;
+  unicode-range:U+0030-0039, U+0041-005A, U+0061-007A;
+}
+@font-face{
+  font-family:"MonoEn";
+  font-weight:600 900;
+  src:local("SFMono-Bold"),local("SF Mono Bold"),local("Menlo-Bold"),
+      url("../assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-display:swap;
+  unicode-range:U+0030-0039, U+0041-005A, U+0061-007A;
+}
+
+:root{
+  --paper:#ecedf1;
+  --paper-2:#fff;
+  --ink:#1a1f2b;
+  --ink-2:#4b5468;
+  --mute:#5f6779;
+  --hot:#3a5fd1;
+  --mark:#bfd6ff;
+  --line:rgba(26,31,43,.12);
+  --edge:max(clamp(20px,7vw,120px),env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));
+  --sans:"MonoEn","Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--paper)}
+body{
+  font-family:var(--sans);color:var(--ink);line-height:1.6;word-break:keep-all;
+  background:var(--paper);-webkit-font-smoothing:antialiased;overflow-x:clip;
+  min-height:100vh;display:flex;flex-direction:column;
+}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--hot);outline-offset:3px}
+img,svg{display:block}
+::selection{background:var(--mark);color:var(--ink)}
+.wrap{width:min(1240px,calc(100% - var(--edge)*2));margin-inline:auto}
+h1{font-weight:800;letter-spacing:-.03em;line-height:1.18;text-wrap:balance}
+p{text-wrap:pretty}
+
+.top{background:var(--paper);border-bottom:1px solid var(--line)}
+.top__in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 0}
+.top__id{display:flex;align-items:center;gap:9px;font-weight:700;font-size:18px;letter-spacing:-.03em}
+.top__mark{display:block;border-radius:22.5%}
+.top__nav a{font-size:14px;font-weight:500;color:var(--ink-2)}
+.top__nav a:hover{color:var(--ink)}
+
+main{flex:1;padding:clamp(24px,6vw,64px) 0}
+.card{width:min(560px,100%);margin-inline:auto}
+.card__title{font-size:clamp(26px,6vw,32px)}
+.card__lede{margin-top:8px;color:var(--ink-2);font-size:15px;line-height:1.7}
+
+.lookup{display:flex;gap:8px;margin-top:24px}
+/* 16px 미만이면 iOS가 입력창에 포커스할 때 화면을 확대한다 */
+.lookup__input{flex:1;min-width:0;height:46px;padding:0 14px;font:inherit;font-size:16px;
+  color:var(--ink);background:var(--paper-2);border:1px solid rgba(26,31,43,.22);border-radius:6px}
+.lookup__input::placeholder{color:var(--mute)}
+.btn{flex:none;height:46px;padding:0 20px;font:inherit;font-size:16px;font-weight:700;
+  white-space:nowrap;background:var(--hot);color:#fff;border:0;border-radius:6px;cursor:pointer}
+.btn:hover{background:#2f4fb5}
+.btn:disabled{opacity:.6;cursor:default}
+
+.msg{margin-top:16px;font-size:15px;line-height:1.6}
+
+.result{margin-top:32px}
+.notice{margin-bottom:16px;padding:10px 12px;border:1px solid var(--ink);border-radius:4px;
+  font-size:15px;font-weight:700}
+.who{font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1.35;overflow-wrap:anywhere}
+.who mark{color:inherit;padding:0 2px;
+  background:linear-gradient(var(--mark),var(--mark)) 0 76%/100% 44% no-repeat}
+.summary{margin-top:4px;font-size:16px;font-weight:700}
+.period{margin-top:2px;font-size:14px;color:var(--mute)}
+.rule{margin-top:6px;font-size:13px;line-height:1.5;color:var(--mute)}
+.tickets{list-style:none;margin-top:20px;border-top:1px solid var(--ink)}
+
+.ticket{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.ticket__thumb{position:relative;flex:none;width:48px;aspect-ratio:9/16;display:grid;place-items:center;
+  background:#0f1115;border-radius:3px;overflow:hidden}
+.ticket__play{display:block;width:9px;height:11px;margin-left:2px;background:#fff;
+  clip-path:polygon(0 0,100% 50%,0 100%)}
+.ticket__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity .25s}
+.ticket__img--on{opacity:1}
+.ticket__body{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.ticket__kind{font-size:13px;color:var(--mute)}
+.ticket__title{font-size:16px;font-weight:700;line-height:1.4;overflow-wrap:anywhere}
+.ticket__meta{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 8px;margin-top:4px}
+.ticket__time{font-size:13px;color:var(--mute)}
+.badge{font-size:14px;font-weight:700}
+.badge--approved{color:#0a6b45}
+.badge--pending{color:var(--mute)}
+.badge--rejected{color:#b3261e}
+.ticket__eligible{margin-top:4px;font-size:13px;line-height:1.5;color:var(--mute)}
+.ticket__why{list-style:none;display:grid;gap:2px;margin-top:6px}
+.ticket__why li{font-size:14px;line-height:1.5;color:#b3261e;overflow-wrap:anywhere}
+
+.foot{border-top:1px solid var(--line);padding:30px 0 calc(30px + env(safe-area-inset-bottom,0px));
+  font-size:13px;color:var(--mute)}
+.foot__in{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between}
+.foot__in nav{display:flex;flex-wrap:wrap;gap:6px 16px}
+.foot__in a{display:inline-block;padding:6px 4px;margin:-6px -4px;white-space:nowrap}
+.foot a:hover{color:var(--ink)}
+.foot__ack{margin:12px 0 0;font-size:11px;line-height:1.5;word-break:keep-all}
+
+@media(max-width:860px){
+  .foot__in a{padding:12px 4px;margin:-12px 0}
+  .foot__in nav{row-gap:24px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
+}
