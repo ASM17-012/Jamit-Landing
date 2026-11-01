@@ -47,24 +47,6 @@ function el(tag, className, text) {
   return node;
 }
 
-function isMediaUrl(url) {
-  return typeof url === "string" &&
-    (url.startsWith("https://media.jamit.kr/") || url.startsWith("https://media-stg.jamit.kr/"));
-}
-
-function thumb(url) {
-  const frame = el("div", "ticket__thumb");
-  frame.append(el("span", "ticket__play"));
-  if (isMediaUrl(url)) {
-    const img = el("img", "ticket__img");
-    img.alt = "";
-    img.addEventListener("load", () => img.classList.add("ticket__img--on"));
-    img.src = url;
-    frame.append(img);
-  }
-  return frame;
-}
-
 function ticketCard(ticket, drawn) {
   const status = Object.prototype.hasOwnProperty.call(STATUS, ticket.status)
     ? STATUS[ticket.status]
@@ -73,30 +55,27 @@ function ticketCard(ticket, drawn) {
   const label = ticket.status === "PENDING" && drawn ? "추첨 전 심사 못 함" : status.label;
 
   const card = el("li", "ticket");
-  if (!isTrack) card.append(thumb(ticket.thumbnailUrl));
-
-  const body = el("div", "ticket__body");
-  if (isTrack) body.append(el("p", "ticket__kind", (ticket.instrument ? ticket.instrument + " " : "") + "연주"));
-  body.append(el("p", "ticket__title", ticket.title || "제목 없음"));
+  const kind = isTrack ? (ticket.instrument ? ticket.instrument + " " : "") + "연주" : "잇츠";
+  card.append(el("p", "ticket__kind", kind));
+  card.append(el("p", "ticket__title", ticket.title || "제목 없음"));
 
   const meta = el("div", "ticket__meta");
   meta.append(el("span", "ticket__time", kstText(parseKst(ticket.uploadedAt))));
   meta.append(el("span", "badge badge--" + status.cls, label));
-  body.append(meta);
+  card.append(meta);
 
   if (!drawn && ticket.eligibleFrom) {
     const from = parseKst(ticket.eligibleFrom);
     const prefix = ticket.status === "PENDING" ? "확정되면 " : "";
-    if (from > Date.now()) body.append(el("p", "ticket__eligible", prefix + kstText(from) + "부터 추첨 대상이에요"));
+    if (from > Date.now()) card.append(el("p", "ticket__eligible", prefix + kstText(from) + "부터 추첨 대상이에요"));
   }
 
   if (ticket.status === "REJECTED") {
     const why = el("ul", "ticket__why");
     for (const reason of ticket.rejectReasons) why.append(el("li", null, reason));
-    body.append(why);
+    card.append(why);
   }
 
-  card.append(body);
   return card;
 }
 
