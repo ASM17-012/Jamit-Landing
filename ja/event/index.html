@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src https://api.jamit.kr https://api-stg.jamit.kr; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'">
+<!-- CSP meta는 자기보다 뒤에 오는 요소에만 적용된다. 이 줄 앞에 다른 요소를 두지 않는다 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>応募券の確認 — JAMIT</title>
+<meta name="description" content="JAMITの応募券確認ページです。ニックネームを入力すると、応募券の状態（確定・審査中・不承認）を確認できます。">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://jamit.kr/ja/event/">
+<meta name="theme-color" content="#ecedf1">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="JAMIT">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:url" content="https://jamit.kr/ja/event/">
+<meta property="og:title" content="JAMIT 応募券の確認">
+<meta property="og:description" content="ニックネームを入力すると、自分の応募券の状態をすぐに確認できます。">
+<meta property="og:image" content="https://jamit.kr/assets/og-ja.jpg?v=3">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="JAMIT — あなたのトラックが私たちのセッションに。アプリの録画画面とセッション動画。">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" as="font" type="font/woff2" href="../../assets/fonts/jetbrains-mono-latin.woff2" crossorigin>
+<link rel="preload" href="../../assets/fonts/pretendard-subset.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon-32.png">
+<link rel="icon" type="image/png" sizes="180x180" href="../../assets/icon-180.png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../../event/event.css?v=1">
+<script src="../../event/event.js?v=1" defer></script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="top__id" href="/ja/">
+      <img class="top__mark" src="../../assets/app-icon.png" width="28" height="28" alt="" decoding="async">
+      JAMIT
+    </a>
+    <nav class="top__nav">
+      <a href="/ja/">紹介</a>
+      <div class="lang" role="group" aria-label="言語">
+        <a href="/event/" lang="ko" hreflang="ko">KO</a>
+        <span aria-hidden="true">·</span>
+        <a href="/en/event/" lang="en" hreflang="en">EN</a>
+        <span aria-hidden="true">·</span>
+        <a href="/ja/event/" lang="ja" hreflang="ja" aria-current="page">JA</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="card">
+    <h1 class="card__title">応募券の確認</h1>
+    <p class="card__lede">ニックネームを入力すると、応募券の状態（確定・審査中・不承認）を確認できます。</p>
+
+    <form class="lookup" id="form">
+      <input class="lookup__input" id="nickname" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="ニックネーム" aria-label="ニックネーム">
+      <button class="btn" id="submit" type="submit">確認</button>
+    </form>
+
+    <p class="msg" id="message" role="alert" hidden></p>
+
+    <section class="result" id="result" hidden>
+      <p class="notice" id="drawn" hidden>抽選は終了しました</p>
+      <h2 class="who"><mark id="who-name"></mark>さんの応募券</h2>
+      <p class="summary" id="summary" aria-live="polite"></p>
+      <p class="period" id="period"></p>
+      <p class="rule" id="rule" hidden>確定した応募券のうち、動画が抽選まで24時間以上公開され続けたものだけが抽選の対象です。途中で非公開にすると、再び公開した時点から24時間を数え直します。</p>
+      <ul class="tickets" id="list"></ul>
+    </section>
+
+    <section class="terms" aria-labelledby="terms-title">
+      <h2 class="terms__title" id="terms-title">注意事項</h2>
+      <ul class="terms__list" role="list">
+        <li>募集投稿に公開でアップロードしたトラック、公開したIts 1本ごとに応募券を1枚お渡しします。</li>
+        <li>イベント期間中に新しく投稿した動画だけが対象です。</li>
+        <li>運営チームが動画を確認したあと応募券が確定します。ほぼ同じ動画は対象外です。</li>
+        <li>スペース内のトラックと非公開動画は対象外です。</li>
+        <li>動画を削除すると応募券もなくなり、非公開にすると再び公開するまで対象から外れます。</li>
+        <li>確定した応募券のうち、動画が抽選まで24時間以上公開され続けたものだけが抽選の対象です。途中で非公開にして再び公開すると、その時点から24時間を数え直します。</li>
+        <li>応募券が多いほど当選確率が上がります。当選は1人1回までです。</li>
+        <li>本イベントはAppleとは一切関係ありません。</li>
+      </ul>
+    </section>
+  </div>
+</main>
+
+<footer class="wrap foot">
+  <div class="foot__in">
+    <span>© JAMIT</span>
+    <nav>
+      <a href="mailto:support@jamit.kr">お問い合わせ</a>
+      <a href="/privacy.ja.html">プライバシーポリシー</a>
+      <a href="/terms.ja.html">利用規約</a>
+    </nav>
+  </div>
+  <p class="foot__ack" lang="ko">이 성과는 2026년도 과학기술정보통신부의 재원으로 정보통신기획평가원의 지원을 받아 수행된 결과물임 (IITP-2026-AI·SW마에스트로)</p>
+</footer>
+
+</body>
+</html>
