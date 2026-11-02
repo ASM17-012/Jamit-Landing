@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src https://api.jamit.kr https://api-stg.jamit.kr; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'">
+<!-- CSP meta는 자기보다 뒤에 오는 요소에만 적용된다. 이 줄 앞에 다른 요소를 두지 않는다 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Raffle tickets — JAMIT</title>
+<meta name="description" content="Check your JAMIT raffle tickets. Enter your nickname to see whether each ticket is confirmed, under review, or rejected.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://jamit.kr/en/event/">
+<meta name="theme-color" content="#ecedf1">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="JAMIT">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://jamit.kr/en/event/">
+<meta property="og:title" content="JAMIT raffle tickets">
+<meta property="og:description" content="Enter your nickname to check your raffle tickets.">
+<meta property="og:image" content="https://jamit.kr/assets/og-en.jpg?v=3">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="JAMIT — Your track, our jam. The app’s recording screen and a jam video.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" as="font" type="font/woff2" href="../../assets/fonts/jetbrains-mono-latin.woff2" crossorigin>
+<link rel="preload" href="../../assets/fonts/pretendard-subset.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon-32.png">
+<link rel="icon" type="image/png" sizes="180x180" href="../../assets/icon-180.png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../../event/event.css?v=1">
+<script src="../../event/event.js?v=1" defer></script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="top__id" href="/en/">
+      <img class="top__mark" src="../../assets/app-icon.png" width="28" height="28" alt="" decoding="async">
+      JAMIT
+    </a>
+    <nav class="top__nav">
+      <a href="/en/">About</a>
+      <div class="lang" role="group" aria-label="Language">
+        <a href="/event/" lang="ko" hreflang="ko">KO</a>
+        <span aria-hidden="true">·</span>
+        <a href="/en/event/" lang="en" hreflang="en" aria-current="page">EN</a>
+        <span aria-hidden="true">·</span>
+        <a href="/ja/event/" lang="ja" hreflang="ja">JA</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="card">
+    <h1 class="card__title">My raffle tickets</h1>
+    <p class="card__lede">Enter your nickname to see whether each ticket is confirmed, under review, or rejected.</p>
+
+    <form class="lookup" id="form">
+      <input class="lookup__input" id="nickname" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Nickname" aria-label="Nickname">
+      <button class="btn" id="submit" type="submit">Check</button>
+    </form>
+
+    <p class="msg" id="message" role="alert" hidden></p>
+
+    <section class="result" id="result" hidden>
+      <p class="notice" id="drawn" hidden>The draw is over</p>
+      <h2 class="who">Tickets for <mark id="who-name"></mark></h2>
+      <p class="summary" id="summary" aria-live="polite"></p>
+      <p class="period" id="period"></p>
+      <p class="rule" id="rule" hidden>Only confirmed tickets whose video has been public for 24+ hours straight at the time of the draw are entered. If you make a video private, the 24-hour count starts over once it’s public again.</p>
+      <ul class="tickets" id="list"></ul>
+    </section>
+
+    <section class="terms" aria-labelledby="terms-title">
+      <h2 class="terms__title" id="terms-title">Rules</h2>
+      <ul class="terms__list" role="list">
+        <li>Every public track you upload to a post and every Its you publish earns 1 raffle ticket.</li>
+        <li>Only new videos posted during the event period earn tickets.</li>
+        <li>Tickets are confirmed after our team reviews the video. Near-duplicate videos aren’t accepted.</li>
+        <li>Tracks inside Spaces and private videos don’t earn tickets.</li>
+        <li>Deleting a video removes its ticket. Making a video private sets its ticket aside until the video is public again.</li>
+        <li>Only confirmed tickets whose video has been public for 24+ hours straight at the time of the draw are entered. If you make a video private and then public again, the 24-hour count starts over.</li>
+        <li>The more tickets you have, the better your odds. Each person can win only once.</li>
+        <li>Apple is not a sponsor of, or involved in, this event in any way.</li>
+      </ul>
+    </section>
+  </div>
+</main>
+
+<footer class="wrap foot">
+  <div class="foot__in">
+    <span>© JAMIT</span>
+    <nav>
+      <a href="mailto:support@jamit.kr">Contact</a>
+      <a href="/privacy.en.html">Privacy Policy</a>
+      <a href="/terms.en.html">Terms of Service</a>
+    </nav>
+  </div>
+  <p class="foot__ack" lang="ko">이 성과는 2026년도 과학기술정보통신부의 재원으로 정보통신기획평가원의 지원을 받아 수행된 결과물임 (IITP-2026-AI·SW마에스트로)</p>
+</footer>
+
+</body>
+</html>
